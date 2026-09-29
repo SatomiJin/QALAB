@@ -1,0 +1,2 @@
+-- Minimal seed data, applied by `supabase db reset` after migrations.
+-- Skills and a sample course are added in Phase 2.

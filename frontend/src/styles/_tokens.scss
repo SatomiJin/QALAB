@@ -1,0 +1,26 @@
+// Design tokens shared by SCSS modules.
+// Colors are CSS variables so they follow the active theme (see global.scss);
+// keep their values in sync with src/features/preferences/antd-theme.ts.
+
+$color-primary: var(--qa-color-primary);
+$color-bg-layout: var(--qa-color-bg-layout);
+$color-bg-container: var(--qa-color-bg-container);
+$color-border: var(--qa-color-border);
+$color-text: var(--qa-color-text);
+$color-text-secondary: var(--qa-color-text-secondary);
+
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+
+$radius: 8px;
+
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+
+$sider-width: 232px;
+$header-height: 56px;
+$content-max-width: 1200px;

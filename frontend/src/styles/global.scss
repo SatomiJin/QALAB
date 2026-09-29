@@ -1,0 +1,43 @@
+@use 'tokens' as *;
+
+// Theme colors. `data-theme` is set on <html> by an inline script in
+// index.html (before first paint) and then by PreferencesProvider.
+:root,
+:root[data-theme='light'] {
+  --qa-color-primary: #1f5eff;
+  --qa-color-bg-layout: #f5f7fb;
+  --qa-color-bg-container: #ffffff;
+  --qa-color-border: #e6e9f0;
+  --qa-color-text: #1f2430;
+  --qa-color-text-secondary: #5b6475;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --qa-color-primary: #4d7dff;
+  --qa-color-bg-layout: #0f1115;
+  --qa-color-bg-container: #171a21;
+  --qa-color-border: #262b36;
+  --qa-color-text: #e6e8ee;
+  --qa-color-text-secondary: #9aa3b5;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: $color-bg-layout;
+  color: $color-text;
+  -webkit-font-smoothing: antialiased;
+}

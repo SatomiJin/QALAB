@@ -1,0 +1,78 @@
+@use '../styles/tokens' as *;
+
+.shell {
+  min-height: 100vh;
+}
+
+.sider {
+  position: sticky !important;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  border-right: 1px solid $color-border;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  height: $header-height;
+  padding: 0 $space-4;
+  color: $color-text;
+  font-weight: 600;
+  font-size: 15px;
+  border-bottom: 1px solid $color-border;
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+.brandSuffix {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: $color-text-secondary;
+  line-height: 1;
+}
+
+.menu {
+  border-inline-end: none !important;
+  padding-top: $space-2;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-4;
+  height: $header-height;
+  padding: 0 $space-5;
+  background: $color-bg-container;
+  border-bottom: 1px solid $color-border;
+  line-height: normal;
+
+  @media (max-width: $breakpoint-md) {
+    padding: 0 $space-3;
+  }
+}
+
+.headerLeft,
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+}
+
+.content {
+  padding: $space-5;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $space-4;
+  }
+}
+
+.main {
+  max-width: $content-max-width;
+  margin: 0 auto;
+}
