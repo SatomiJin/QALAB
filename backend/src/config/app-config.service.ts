@@ -37,6 +37,14 @@ export class AppConfigService {
     return this.config.get('SWAGGER_ENABLED', { infer: true });
   }
 
+  get authRateLimit(): number {
+    return this.config.get('AUTH_RATE_LIMIT', { infer: true });
+  }
+
+  get trustProxyHops(): number {
+    return this.config.get('TRUST_PROXY_HOPS', { infer: true });
+  }
+
   get supabaseUrl(): string {
     return this.config.get('SUPABASE_URL', { infer: true });
   }

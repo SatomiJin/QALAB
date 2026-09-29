@@ -37,7 +37,12 @@ export type RefreshHandler = () => Promise<boolean>;
 export interface ApiClientConfig {
   baseUrl: string;
   fetch?: typeof fetch;
+  /** Current time in ms. Injectable for tests. */
+  now?: () => number;
 }
+
+/** Refresh this long before the access token expires. */
+export const REFRESH_MARGIN_SECONDS = 30;
 
 export interface ApiClient {
   request<T>(path: string, options?: RequestOptions): Promise<T>;
@@ -64,7 +69,7 @@ export interface ApiClient {
     path: string,
     options?: Omit<RequestOptions, 'method' | 'body'>,
   ): Promise<T>;
-  /** Wired in Phase 1 to call `POST /auth/refresh`. */
+  /** Renews tokens (`POST /auth/refresh`). Set by the auth feature. */
   setRefreshHandler(handler: RefreshHandler | null): void;
   /** Called when a request is unauthorized and refresh is not possible. */
   setUnauthorizedHandler(handler: (() => void) | null): void;
@@ -122,6 +127,19 @@ export function createApiClient(config: ApiClientConfig): ApiClient {
     return refreshInFlight;
   }
 
+  /**
+   * True when the access token is missing (after a reload only the refresh
+   * token survives) or about to expire.
+   */
+  function shouldRefreshFirst(): boolean {
+    if (!refreshHandler || !authStorage.getRefreshToken()) return false;
+    const expiresAt = authStorage.getExpiresAt();
+    if (!authStorage.getAccessToken()) return true;
+    if (!expiresAt) return false;
+    const now = (config.now ?? Date.now)() / 1000;
+    return expiresAt - now < REFRESH_MARGIN_SECONDS;
+  }
+
   async function send(
     path: string,
     options: RequestOptions,
@@ -156,6 +174,9 @@ export function createApiClient(config: ApiClientConfig): ApiClient {
     path: string,
     options: RequestOptions = {},
   ): Promise<T> {
+    if (options.auth !== false && shouldRefreshFirst()) {
+      await refreshOnce();
+    }
     let response = await send(path, options);
 
     if (response.status === 401 && options.auth !== false) {

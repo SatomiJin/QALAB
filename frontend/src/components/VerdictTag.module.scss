@@ -1,0 +1,28 @@
+@use '../styles/tokens' as *;
+
+.tag {
+  display: inline-block;
+  padding: 0 $space-2;
+  border-radius: $radius-tag;
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 650;
+  font-stretch: 75%;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+@each $name,
+  $color
+    in (
+      pass: $color-pass,
+      fail: $color-fail,
+      blocked: $color-blocked,
+      notRun: $color-not-run
+    )
+{
+  .#{$name} {
+    color: $color;
+    background: color-mix(in srgb, #{$color} 14%, transparent);
+  }
+}

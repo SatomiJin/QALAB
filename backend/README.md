@@ -5,9 +5,7 @@ NestJS API for QA Learning Lab. The frontend talks only to this API; the API tal
 ## Requirements
 
 * Node.js 22+
-* A Supabase project, either:
-  * **Local** — Docker Desktop + `npm run db:start`, or
-  * **Cloud** — free project at supabase.com
+* A Supabase cloud project, linked from this folder (`npx supabase link`). There is no local Supabase (no Docker).
 
 ## Setup
 
@@ -18,11 +16,29 @@ cp .env.example .env   # then fill in the Supabase values
 
 Where to find the Supabase values:
 
-| Variable | Local (`npm run db:status`) | Cloud (Project Settings → API) |
-|---|---|---|
-| `SUPABASE_URL` | API URL | Project URL |
-| `SUPABASE_ANON_KEY` | anon key | anon / publishable key |
-| `SUPABASE_SERVICE_ROLE_KEY` | service_role key | service_role / secret key |
+| Variable | Supabase dashboard (Project Settings → API) |
+|---|---|
+| `SUPABASE_URL` | Project URL |
+| `SUPABASE_ANON_KEY` | anon / publishable key |
+| `SUPABASE_SERVICE_ROLE_KEY` | service_role / secret key |
+
+Other variables (`AUTH_RATE_LIMIT`, `TRUST_PROXY_HOPS`, …) are described in `.env.example`.
+
+### Database
+
+```bash
+npx supabase db push   # apply supabase/migrations to the linked project
+```
+
+### Supabase Auth settings (cloud dashboard)
+
+Email links must open the **frontend**, which posts the token hash to this API. Set once per project:
+
+1. **Authentication → URL Configuration**: Site URL = frontend URL; add `<FRONTEND_URL>/auth/verify` and `<FRONTEND_URL>/auth/reset-password` to Redirect URLs.
+2. **Authentication → Email Templates**: paste `supabase/templates/confirmation.html` into *Confirm signup* and `supabase/templates/recovery.html` into *Reset password*. Both link to `{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=…`.
+3. **Authentication → Sign In / Providers → Email**: Confirm email on; minimum password length 8.
+
+The same values are recorded in `supabase/config.toml` (`[auth]`). The built-in Supabase SMTP sends only a few emails per hour and only to project team members; set up custom SMTP for real users.
 
 The app validates all env variables at startup and refuses to boot if any are missing or invalid.
 
@@ -47,9 +63,9 @@ npm run build && npm run start:prod
 | `npm run lint` | Lint with oxlint |
 | `npm run format` | Format with Prettier |
 | `npm test` | Unit tests (`src/**/*.spec.ts`) |
-| `npm run test:e2e` | API tests with Supertest (`test/**/*.e2e-spec.ts`) |
-| `npm run db:start` / `db:stop` / `db:status` | Local Supabase (Docker) |
-| `npm run db:reset` | Recreate local DB from migrations + seed |
+| `npm run test:e2e` | API tests with Supertest; Supabase Auth faked in memory (`test/api/*.e2e-spec.ts`) |
+| `npm run test:int` | Integration tests against the linked project: RLS + real auth flows (`test/integration/*.int-spec.ts`). Creates and deletes `qalab-it-*@example.com` users; sends no email |
+| `npm run db:push` | Apply migrations to the linked project |
 | `npm run db:migration <name>` | Create a new migration file |
 | `npm run db:types` | Generate DB types into `src/supabase/database.types.ts` |
 
@@ -66,14 +82,19 @@ src/
 │   ├── filters/            # AllExceptionsFilter
 │   └── pipes/              # Global ValidationPipe
 ├── supabase/               # SupabaseService: forUser(), anon(), service()
+├── auth/                   # /auth/*, JwtAuthGuard (global), RolesGuard, @Public, @Roles, @CurrentUser
+├── profile/                # GET/PATCH /me, ProfilesRepository
 └── health/                 # GET /api/v1/health
 supabase/
-├── config.toml             # Local Supabase config
+├── config.toml             # Supabase config (auth section mirrors the cloud project)
+├── templates/              # Auth email templates
 ├── migrations/             # All DB changes
 └── seed.sql
 test/
-├── setup-env.ts            # Deterministic env for tests
-└── app.e2e-spec.ts
+├── setup-env.ts            # Deterministic env for API tests
+├── support/                # Fake Supabase Auth (real ES256 JWTs) + test app factory
+├── api/                    # Supertest API tests
+└── integration/            # Against the linked Supabase project
 ```
 
 ## Conventions
@@ -87,6 +108,8 @@ test/
 
 * Unknown fields in request bodies are rejected (`400`).
 * Unexpected errors return a generic `500` message; details are only logged server-side.
+* Every route needs `Authorization: Bearer <accessToken>` unless marked `@Public()`. Access tokens are verified locally against the project JWKS (ES256).
+* Admin routes add `@Roles('admin')`. The role is read from `profiles`, never from the token or the request body.
 * Supabase clients:
   * `forUser(token)` — per request, RLS applies. Default choice.
   * `anon()` — fresh client for public auth calls.

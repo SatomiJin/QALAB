@@ -1,6 +1,6 @@
-import { Typography } from 'antd';
 import type { ReactNode } from 'react';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import styles from './PageHeader.module.scss';
 
 interface PageHeaderProps {
   title: string;
@@ -12,23 +12,10 @@ export function PageHeader({ title, description, extra }: PageHeaderProps) {
   useDocumentTitle(title);
 
   return (
-    <header
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        gap: 16,
-        marginBottom: 24,
-      }}
-    >
+    <header className={styles.header}>
       <div>
-        <Typography.Title level={2} style={{ margin: 0 }}>
-          {title}
-        </Typography.Title>
-        {description && (
-          <Typography.Paragraph type="secondary" style={{ margin: '4px 0 0' }}>
-            {description}
-          </Typography.Paragraph>
-        )}
+        <h1 className={styles.title}>{title}</h1>
+        {description && <div className={styles.description}>{description}</div>}
       </div>
       {extra}
     </header>

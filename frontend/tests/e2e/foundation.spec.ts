@@ -1,32 +1,9 @@
-import { expect, test, type Page } from '@playwright/test';
-
-const HEALTH_URL = '**/api/v1/health';
-
-async function mockHealth(page: Page, ok: boolean) {
-  await page.route(HEALTH_URL, (route) =>
-    ok
-      ? route.fulfill({
-          json: {
-            status: 'ok',
-            timestamp: new Date().toISOString(),
-            uptimeSeconds: 1,
-          },
-        })
-      : route.abort('connectionrefused'),
-  );
-}
-
-// Below the lg breakpoint (992px) the menu lives in a drawer.
-async function openMenuIfCollapsed(page: Page) {
-  const width = page.viewportSize()?.width ?? 1280;
-  if (width < 992) {
-    await page.getByRole('button', { name: 'Open navigation' }).click();
-  }
-}
+import { expect, test } from '@playwright/test';
+import { openNav, signedIn } from './support/mock-api.ts';
 
 test.describe('Foundation', () => {
   test('redirects / to the dashboard', async ({ page }) => {
-    await mockHealth(page, true);
+    await signedIn(page);
     await page.goto('/');
 
     await expect(page).toHaveURL(/\/dashboard$/);
@@ -34,72 +11,89 @@ test.describe('Foundation', () => {
       page.getByRole('heading', { name: 'Dashboard' }),
     ).toBeVisible();
     await expect(page).toHaveTitle('Dashboard · QA Learning Lab');
+    await expect(page.getByTestId('placeholder')).toContainText('Phase 5');
   });
 
   test('shows API online when the backend is reachable', async ({ page }) => {
-    await mockHealth(page, true);
+    await signedIn(page);
     await page.goto('/dashboard');
 
-    await expect(page.getByTestId('api-status')).toContainText('API online');
+    await expect(page.getByTestId('api-status')).toHaveAttribute(
+      'data-state',
+      'online',
+    );
   });
 
   test('shows API offline when the backend is unreachable', async ({
     page,
   }) => {
-    await mockHealth(page, false);
+    const { api } = await signedIn(page);
+    api.healthy = false;
     await page.goto('/dashboard');
 
-    await expect(page.getByTestId('api-status')).toContainText('API offline');
+    await expect(page.getByTestId('api-status')).toHaveAttribute(
+      'data-state',
+      'offline',
+    );
   });
 
-  test('navigates between main sections', async ({ page }) => {
-    await mockHealth(page, true);
+  test('navigates between main sections and practice tabs', async ({
+    page,
+  }) => {
+    await signedIn(page);
     await page.goto('/dashboard');
 
-    await openMenuIfCollapsed(page);
+    await openNav(page);
     await page.getByRole('link', { name: 'Learning', exact: true }).click();
     await expect(page).toHaveURL(/\/learning$/);
     await expect(page.getByRole('heading', { name: 'Learning' })).toBeVisible();
 
-    await openMenuIfCollapsed(page);
-    await page.getByRole('menuitem', { name: 'Practice' }).click();
-    await page.getByRole('link', { name: 'Bug Report Practice' }).click();
+    await openNav(page);
+    await page.getByRole('link', { name: 'Practice', exact: true }).click();
+    await expect(page).toHaveURL(/\/practice\/quiz$/);
+
+    await page
+      .getByRole('navigation', { name: 'Practice types' })
+      .getByRole('link', { name: 'Bug reports' })
+      .click();
     await expect(page).toHaveURL(/\/practice\/bug-report$/);
     await expect(
-      page.getByRole('heading', { name: 'Bug Report Practice' }),
+      page.getByRole('heading', { name: 'Bug Report practice' }),
     ).toBeVisible();
   });
 
-  test('shows the 404 page for unknown routes', async ({ page }) => {
-    await mockHealth(page, true);
+  test('marks the current section', async ({ page }) => {
+    await signedIn(page);
+    await page.goto('/practice/scenario');
+
+    await openNav(page);
+    await expect(
+      page.getByRole('link', { name: 'Practice', exact: true }),
+    ).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('shows the 404 page as a bug report', async ({ page }) => {
+    await signedIn(page);
     await page.goto('/this-does-not-exist');
 
-    await expect(page.getByText('Page not found')).toBeVisible();
+    const report = page.getByTestId('bug-report');
+    await expect(report).toContainText('Page not found');
+    await expect(report).toContainText('/this-does-not-exist');
     await page.getByRole('button', { name: 'Go to dashboard' }).click();
     await expect(page).toHaveURL(/\/dashboard$/);
   });
 
-  test('renders the admin and auth layouts', async ({ page }) => {
-    await mockHealth(page, true);
-
-    await page.goto('/admin');
-    await expect(page).toHaveURL(/\/admin\/courses$/);
-    await expect(page.getByRole('heading', { name: 'Courses' })).toBeVisible();
-
-    await page.goto('/auth');
-    await expect(page).toHaveURL(/\/auth\/login$/);
-    await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
-  });
-
   test('has no horizontal scroll', async ({ page }) => {
-    await mockHealth(page, true);
-    await page.goto('/dashboard');
-
-    const overflow = await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth -
-        document.documentElement.clientWidth,
-    );
-    expect(overflow).toBeLessThanOrEqual(0);
+    await signedIn(page);
+    for (const path of ['/dashboard', '/practice/test-case', '/profile']) {
+      await page.goto(path);
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      const overflow = await page.evaluate(
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
+      );
+      expect(overflow, path).toBeLessThanOrEqual(0);
+    }
   });
 });

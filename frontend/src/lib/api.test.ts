@@ -273,4 +273,85 @@ describe('createApiClient', () => {
       expect(refresh).not.toHaveBeenCalled();
     });
   });
+
+  describe('refresh before sending', () => {
+    const NOW = 1_700_000_000_000;
+
+    function setupAt(now: number) {
+      const fetchMock = vi.fn<typeof fetch>();
+      const client = createApiClient({
+        baseUrl: BASE_URL,
+        fetch: fetchMock,
+        now: () => now,
+      });
+      const refresh = vi.fn(async () => {
+        authStorage.setTokens({
+          accessToken: 'new',
+          refreshToken: 'r2',
+          expiresAt: NOW / 1000 + 3600,
+        });
+        return true;
+      });
+      client.setRefreshHandler(refresh);
+      fetchMock.mockImplementation(async () => json(200, {}));
+      return { client, fetchMock, refresh };
+    }
+
+    const authHeader = (fetchMock: ReturnType<typeof vi.fn<typeof fetch>>) =>
+      (lastRequest(fetchMock).init.headers as Record<string, string>)
+        .Authorization;
+
+    it('refreshes when the access token is about to expire', async () => {
+      const { client, fetchMock, refresh } = setupAt(NOW);
+      authStorage.setTokens({
+        accessToken: 'old',
+        refreshToken: 'r',
+        expiresAt: NOW / 1000 + 10,
+      });
+
+      await client.get('/me');
+
+      expect(refresh).toHaveBeenCalledOnce();
+      expect(fetchMock).toHaveBeenCalledOnce();
+      expect(authHeader(fetchMock)).toBe('Bearer new');
+    });
+
+    it('refreshes when only the refresh token survived a reload', async () => {
+      const { client, refresh } = setupAt(NOW);
+      // After a reload only the stored refresh token exists.
+      window.localStorage.setItem('qalab.refreshToken', 'r');
+
+      await client.get('/me');
+
+      expect(refresh).toHaveBeenCalledOnce();
+    });
+
+    it('does not refresh a token that is still valid', async () => {
+      const { client, fetchMock, refresh } = setupAt(NOW);
+      authStorage.setTokens({
+        accessToken: 'valid',
+        refreshToken: 'r',
+        expiresAt: NOW / 1000 + 600,
+      });
+
+      await client.get('/me');
+
+      expect(refresh).not.toHaveBeenCalled();
+      expect(authHeader(fetchMock)).toBe('Bearer valid');
+    });
+
+    it('does not refresh for public requests or when signed out', async () => {
+      const { client, refresh } = setupAt(NOW);
+
+      await client.get('/health');
+      authStorage.setTokens({
+        accessToken: 'old',
+        refreshToken: 'r',
+        expiresAt: NOW / 1000 + 10,
+      });
+      await client.post('/auth/login', {}, { auth: false });
+
+      expect(refresh).not.toHaveBeenCalled();
+    });
+  });
 });

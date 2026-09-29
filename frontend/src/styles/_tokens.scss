@@ -1,13 +1,56 @@
-// Design tokens shared by SCSS modules.
+// Design tokens shared by SCSS modules (see docs/design.md).
 // Colors are CSS variables so they follow the active theme (see global.scss);
 // keep their values in sync with src/features/preferences/antd-theme.ts.
 
-$color-primary: var(--qa-color-primary);
-$color-bg-layout: var(--qa-color-bg-layout);
-$color-bg-container: var(--qa-color-bg-container);
-$color-border: var(--qa-color-border);
-$color-text: var(--qa-color-text);
-$color-text-secondary: var(--qa-color-text-secondary);
+$color-paper: var(--qa-paper);
+$color-sheet: var(--qa-sheet);
+$color-ink: var(--qa-ink);
+$color-ink-muted: var(--qa-ink-muted);
+$color-rule: var(--qa-rule);
+$color-highlighter: var(--qa-highlighter);
+
+$color-pass: var(--qa-pass);
+$color-fail: var(--qa-fail);
+$color-blocked: var(--qa-blocked);
+$color-not-run: var(--qa-not-run);
+
+$font-family:
+  'Archivo Variable',
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  sans-serif;
+
+// Type scale: size / line-height, weight, width axis.
+$font-size-body: 15px;
+$line-height-body: 24px;
+$font-size-small: 13px;
+$line-height-small: 20px;
+
+@mixin type-page-title {
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 650;
+  font-stretch: 112%;
+}
+
+@mixin type-section-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  font-stretch: 106%;
+}
+
+@mixin type-small {
+  font-size: $font-size-small;
+  line-height: $line-height-small;
+  font-weight: 450;
+}
+
+@mixin type-id {
+  font-variant-numeric: tabular-nums;
+  font-stretch: 88%;
+}
 
 $space-1: 4px;
 $space-2: 8px;
@@ -15,12 +58,15 @@ $space-3: 12px;
 $space-4: 16px;
 $space-5: 24px;
 $space-6: 32px;
+$space-7: 48px;
 
-$radius: 8px;
+$radius-tag: 2px;
+$radius-control: 4px;
+$radius-float: 6px;
 
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 
-$sider-width: 232px;
-$header-height: 56px;
-$content-max-width: 1200px;
+$topbar-height: 56px;
+$content-max-width: 1040px;
+$measure: 68ch;

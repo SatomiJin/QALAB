@@ -1,23 +1,16 @@
-import { Button, Result } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { useLocation } from 'react-router';
+import { BugReport } from '../components/BugReport';
 
 export function NotFoundPage() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  useDocumentTitle(t('errors.notFoundTitle'));
+  const { pathname } = useLocation();
 
   return (
-    <Result
-      status="404"
+    <BugReport
       title={t('errors.notFoundTitle')}
-      subTitle={t('errors.notFoundDescription')}
-      extra={
-        <Button type="primary" onClick={() => navigate('/dashboard')}>
-          {t('errors.goToDashboard')}
-        </Button>
-      }
+      expected={t('errors.notFoundExpected', { path: pathname })}
+      actual={t('errors.notFoundActual')}
     />
   );
 }

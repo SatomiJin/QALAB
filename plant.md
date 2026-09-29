@@ -111,14 +111,19 @@ QALAB/
 │
 ├── docs/
 │   ├── architecture.md
+│   ├── design.md           # Visual direction: palette, type, layout, principles
 │   ├── api.md
 │   ├── database.md
 │   ├── testing-strategy.md
 │   └── curriculum.md
 │
-├── CLAUDE.md
+├── .claude/
+│   └── skills/             # Project skills (e.g. frontend-design)
+├── CLAUDE.md               # Agent rules for the whole repo
 └── README.md
 ```
+
+Agent configuration (rules and skills) lives only at the repo root, never inside `backend/` or `frontend/`.
 
 No root-level monorepo tooling is required. Each project installs and runs independently.
 

@@ -14,6 +14,8 @@ describe('validateEnv', () => {
     expect(env.PORT).toBe(3000);
     expect(env.CORS_ORIGIN).toBe('http://localhost:5173');
     expect(env.SWAGGER_ENABLED).toBe(true);
+    expect(env.AUTH_RATE_LIMIT).toBe(5);
+    expect(env.TRUST_PROXY_HOPS).toBe(0);
   });
 
   it('converts string values from process.env', () => {
@@ -46,6 +48,8 @@ describe('validateEnv', () => {
     ['NODE_ENV', 'staging'],
     ['SUPABASE_URL', 'not-a-url'],
     ['FRONTEND_URL', 'localhost:5173'],
+    ['AUTH_RATE_LIMIT', '0'],
+    ['TRUST_PROXY_HOPS', '-1'],
   ])('rejects invalid %s=%s', (key, value) => {
     expect(() => validateEnv({ ...REQUIRED, [key]: value })).toThrow(key);
   });

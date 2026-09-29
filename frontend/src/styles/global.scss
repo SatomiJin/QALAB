@@ -1,25 +1,34 @@
 @use 'tokens' as *;
 
-// Theme colors. `data-theme` is set on <html> by an inline script in
-// index.html (before first paint) and then by PreferencesProvider.
+// Theme colors (see docs/design.md). `data-theme` is set on <html> by an
+// inline script in index.html (before first paint) and then by
+// PreferencesProvider. Keep in sync with src/features/preferences/antd-theme.ts.
 :root,
 :root[data-theme='light'] {
-  --qa-color-primary: #1f5eff;
-  --qa-color-bg-layout: #f5f7fb;
-  --qa-color-bg-container: #ffffff;
-  --qa-color-border: #e6e9f0;
-  --qa-color-text: #1f2430;
-  --qa-color-text-secondary: #5b6475;
+  --qa-paper: #f6f7f4;
+  --qa-sheet: #ffffff;
+  --qa-ink: #1e2a36;
+  --qa-ink-muted: #5a6673;
+  --qa-rule: #dde1dc;
+  --qa-highlighter: #f4d35e;
+  --qa-pass: #2f7d4e;
+  --qa-fail: #c0392b;
+  --qa-blocked: #a86200;
+  --qa-not-run: #6b7580;
   color-scheme: light;
 }
 
 :root[data-theme='dark'] {
-  --qa-color-primary: #4d7dff;
-  --qa-color-bg-layout: #0f1115;
-  --qa-color-bg-container: #171a21;
-  --qa-color-border: #262b36;
-  --qa-color-text: #e6e8ee;
-  --qa-color-text-secondary: #9aa3b5;
+  --qa-paper: #12171d;
+  --qa-sheet: #1a2129;
+  --qa-ink: #e6eaed;
+  --qa-ink-muted: #98a3ae;
+  --qa-rule: #2a333d;
+  --qa-highlighter: #e3c14f;
+  --qa-pass: #5cb880;
+  --qa-fail: #e8776b;
+  --qa-blocked: #e0a443;
+  --qa-not-run: #8c96a0;
   color-scheme: dark;
 }
 
@@ -32,12 +41,37 @@
 html,
 body,
 #root {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
   margin: 0;
-  background: $color-bg-layout;
-  color: $color-text;
+  background: $color-paper;
+  color: $color-ink;
+  font-family: $font-family;
+  font-size: $font-size-body;
+  line-height: $line-height-body;
   -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid $color-ink;
+  outline-offset: 2px;
+}
+
+// Reduced motion: Ant Design animations are switched off with its `motion`
+// token (PreferencesProvider); our own transitions opt out where declared.
+// Do NOT shorten animations globally here: antd positions popups during
+// their enter animation, and near-zero durations left dropdowns off-screen.
+
+// Links are ink with an underline; there is no separate link colour.
+a {
+  color: $color-ink;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: $color-ink;
+    text-decoration-thickness: 2px;
+  }
 }

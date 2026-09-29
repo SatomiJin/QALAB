@@ -22,21 +22,22 @@ import {
 
 const ANTD_LOCALES = { en: enUS, vi: viVN } as const;
 const DARK_QUERY = '(prefers-color-scheme: dark)';
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
-function useSystemPrefersDark(): boolean {
-  const [prefersDark, setPrefersDark] = useState(
-    () => window.matchMedia(DARK_QUERY).matches,
+/** Tracks an OS-level media query such as dark mode or reduced motion. */
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(
+    () => window.matchMedia(query).matches,
   );
 
   useEffect(() => {
-    const media = window.matchMedia(DARK_QUERY);
-    const onChange = (event: MediaQueryListEvent) =>
-      setPrefersDark(event.matches);
+    const media = window.matchMedia(query);
+    const onChange = (event: MediaQueryListEvent) => setMatches(event.matches);
     media.addEventListener('change', onChange);
     return () => media.removeEventListener('change', onChange);
-  }, []);
+  }, [query]);
 
-  return prefersDark;
+  return matches;
 }
 
 export function PreferencesProvider({ children }: { children: ReactNode }) {
@@ -44,7 +45,8 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [themeMode, setThemeModeState] = useState<ThemeMode>(() =>
     parseThemeMode(readPreference(THEME_STORAGE_KEY)),
   );
-  const systemPrefersDark = useSystemPrefersDark();
+  const systemPrefersDark = useMediaQuery(DARK_QUERY);
+  const reduceMotion = useMediaQuery(REDUCED_MOTION_QUERY);
   const resolvedTheme = resolveTheme(themeMode, systemPrefersDark);
 
   const setLanguage = useCallback((next: Language) => {
@@ -71,8 +73,8 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     [language, setLanguage, themeMode, setThemeMode, resolvedTheme],
   );
   const antdTheme = useMemo(
-    () => buildAntdTheme(resolvedTheme),
-    [resolvedTheme],
+    () => buildAntdTheme(resolvedTheme, { reduceMotion }),
+    [resolvedTheme, reduceMotion],
   );
 
   return (

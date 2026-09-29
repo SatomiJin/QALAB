@@ -1,29 +1,44 @@
-import { Card } from 'antd';
+import { ConfigProvider } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { Outlet } from 'react-router';
+import { Link, Outlet } from 'react-router';
 import {
   LanguageSwitcher,
   ThemeSwitcher,
 } from '../features/preferences/PreferenceControls';
+import { palette } from '../features/preferences/antd-theme';
+import { usePreferences } from '../features/preferences/preferences-context';
 import styles from './AuthLayout.module.scss';
 
+/**
+ * Brand top left, preferences top right, and the form centred on a sheet.
+ * Inputs on the sheet use the paper colour so they read as fields to fill.
+ */
 export function AuthLayout() {
   const { t } = useTranslation();
+  const { resolvedTheme } = usePreferences();
 
   return (
     <div className={styles.page}>
-      <div className={styles.toolbar}>
-        <LanguageSwitcher />
-        <ThemeSwitcher />
-      </div>
-      <main className={styles.container}>
-        <div className={styles.brand}>
-          <img src="/favicon.svg" alt="" width={36} height={36} />
+      <header className={styles.topbar}>
+        <Link to="/auth/login" className={styles.brand}>
+          <img src="/favicon.svg" alt="" width={24} height={24} />
           <span>{t('app.name')}</span>
+        </Link>
+        <div className={styles.actions}>
+          <LanguageSwitcher />
+          <ThemeSwitcher />
         </div>
-        <Card>
-          <Outlet />
-        </Card>
+      </header>
+      <main className={styles.main}>
+        <div className={styles.column}>
+          <ConfigProvider
+            theme={{
+              token: { colorBgContainer: palette[resolvedTheme].paper },
+            }}
+          >
+            <Outlet />
+          </ConfigProvider>
+        </div>
       </main>
     </div>
   );

@@ -1,135 +1,123 @@
-import { MenuOutlined, UserOutlined } from '@ant-design/icons';
-import {
-  Avatar,
-  Button,
-  Drawer,
-  Grid,
-  Layout,
-  Menu,
-  type MenuProps,
-} from 'antd';
+import { CloseOutlined, MenuOutlined } from '@ant-design/icons';
+import { Button, Drawer, Grid } from 'antd';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, Outlet, useLocation } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
+import { UserMenu } from '../features/auth/UserMenu';
 import {
   LanguageSwitcher,
   ThemeSwitcher,
 } from '../features/preferences/PreferenceControls';
 import { ApiStatus } from '../features/system/ApiStatus';
-import { selectedMenuKey } from './navigation';
+import type { NavLinkItem } from './navigation';
 import styles from './AppShell.module.scss';
 
-type MenuItem = Required<MenuProps>['items'][number];
-
 interface AppShellProps {
-  menuItems: MenuItem[];
+  links: NavLinkItem[];
   brandSuffix?: string;
-  headerExtra?: ReactNode;
+  /** Extra link shown after the main links (e.g. "Back to app"). */
+  extra?: ReactNode;
 }
 
-function collectKeys(items: MenuItem[]): string[] {
-  return items.flatMap((item) => {
-    if (!item || !('key' in item) || item.key === undefined) return [];
-    const children =
-      'children' in item && Array.isArray(item.children) ? item.children : [];
-    return [String(item.key), ...collectKeys(children as MenuItem[])];
-  });
+function linkClass({ isActive }: { isActive: boolean }) {
+  return isActive ? `${styles.navLink} ${styles.active}` : styles.navLink;
 }
 
 /**
- * Shared frame for the learner and admin areas: a fixed sidebar on desktop,
- * a drawer opened from the header on smaller screens.
+ * Shared frame for the learner and admin areas: a top bar with the sections
+ * and a single reading column, like a document (see docs/design.md).
+ * Below the lg breakpoint the sections move into a drawer.
  */
-export function AppShell({
-  menuItems,
-  brandSuffix,
-  headerExtra,
-}: AppShellProps) {
+export function AppShell({ links, brandSuffix, extra }: AppShellProps) {
   const { t } = useTranslation();
-  const { pathname } = useLocation();
   const screens = Grid.useBreakpoint();
   const [drawerOpen, setDrawerOpen] = useState(false);
   // Until breakpoints are measured, assume desktop to avoid a layout flash.
   const isDesktop = screens.lg ?? true;
 
-  const selected = selectedMenuKey(pathname, collectKeys(menuItems));
-  const openParent = selected?.split('/').slice(0, 2).join('/');
-
-  const brand = (
-    <Link to="/" className={styles.brand}>
-      <img src="/favicon.svg" alt="" width={28} height={28} />
-      <span>
-        {t('app.name')}
-        {brandSuffix && (
-          <small className={styles.brandSuffix}>{brandSuffix}</small>
-        )}
-      </span>
-    </Link>
-  );
-
-  const menu = (
-    <nav aria-label={t('nav.mainLabel')}>
-      <Menu
-        mode="inline"
-        items={menuItems}
-        selectedKeys={selected ? [selected] : []}
-        defaultOpenKeys={openParent ? [openParent] : []}
-        className={styles.menu}
-        // Close the drawer after picking a page (leaf items only).
-        onClick={() => setDrawerOpen(false)}
-      />
-    </nav>
+  const navList = (
+    <ul className={styles.navList}>
+      {links.map((link) => (
+        <li key={link.path}>
+          <NavLink
+            to={link.path}
+            className={linkClass}
+            onClick={() => setDrawerOpen(false)}
+          >
+            {t(link.labelKey)}
+          </NavLink>
+        </li>
+      ))}
+    </ul>
   );
 
   return (
-    <Layout className={styles.shell}>
-      {isDesktop && (
-        <Layout.Sider width={232} theme="light" className={styles.sider}>
-          {brand}
-          {menu}
-        </Layout.Sider>
-      )}
+    <div className={styles.shell}>
+      <header className={styles.topbar}>
+        <Link to="/" className={styles.brand}>
+          <img src="/favicon.svg" alt="" width={24} height={24} />
+          <span>{t('app.name')}</span>
+          {brandSuffix && (
+            <span className={styles.brandSuffix}>{brandSuffix}</span>
+          )}
+        </Link>
+
+        {isDesktop && (
+          <nav aria-label={t('nav.mainLabel')} className={styles.nav}>
+            {navList}
+            {extra}
+          </nav>
+        )}
+
+        <div className={styles.actions}>
+          <LanguageSwitcher />
+          <ThemeSwitcher />
+          <UserMenu />
+          {!isDesktop && (
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
+              aria-label={t('nav.open')}
+              aria-expanded={drawerOpen}
+              onClick={() => setDrawerOpen(true)}
+            />
+          )}
+        </div>
+      </header>
+
       {!isDesktop && (
         <Drawer
-          placement="left"
+          placement="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
-          size={264}
+          size={280}
           closable={false}
-          styles={{ body: { padding: 0 } }}
-        >
-          {brand}
-          {menu}
-        </Drawer>
-      )}
-      <Layout>
-        <Layout.Header className={styles.header}>
-          <div className={styles.headerLeft}>
-            {!isDesktop && (
+          title={
+            <div className={styles.drawerHeader}>
+              <span>{t('app.name')}</span>
               <Button
                 type="text"
-                icon={<MenuOutlined />}
-                aria-label={t('nav.open')}
-                aria-expanded={drawerOpen}
-                onClick={() => setDrawerOpen(true)}
+                icon={<CloseOutlined />}
+                aria-label={t('nav.close')}
+                onClick={() => setDrawerOpen(false)}
               />
-            )}
-            {headerExtra}
-          </div>
-          <div className={styles.headerRight}>
-            <ApiStatus />
-            <LanguageSwitcher />
-            <ThemeSwitcher />
-            {/* Replaced by the user menu in Phase 1. */}
-            <Avatar icon={<UserOutlined />} aria-label={t('nav.user')} />
-          </div>
-        </Layout.Header>
-        <Layout.Content className={styles.content}>
-          <main className={styles.main}>
-            <Outlet />
-          </main>
-        </Layout.Content>
-      </Layout>
-    </Layout>
+            </div>
+          }
+        >
+          <nav aria-label={t('nav.mainLabel')} className={styles.drawerNav}>
+            {navList}
+            {extra}
+          </nav>
+        </Drawer>
+      )}
+
+      <main className={styles.main}>
+        <Outlet />
+      </main>
+
+      <footer className={styles.footer}>
+        <ApiStatus />
+      </footer>
+    </div>
   );
 }

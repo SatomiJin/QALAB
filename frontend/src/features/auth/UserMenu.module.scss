@@ -1,0 +1,31 @@
+@use '../../styles/tokens' as *;
+
+.trigger {
+  padding: 0 $space-1;
+}
+
+.avatar {
+  background: $color-ink;
+  color: $color-paper;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  max-width: 240px;
+  color: $color-ink;
+  cursor: default;
+
+  strong {
+    font-weight: 600;
+  }
+
+  span {
+    @include type-small;
+    color: $color-ink-muted;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

@@ -1,78 +1,173 @@
 @use '../styles/tokens' as *;
 
+// The top bar and footer span the full width; the content sits in a centred
+// column whose side padding grows on wide screens.
+$gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
+
 .shell {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-.sider {
-  position: sticky !important;
+.topbar {
+  position: sticky;
   top: 0;
-  height: 100vh;
-  overflow: auto;
-  border-right: 1px solid $color-border;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: $space-6;
+  height: $topbar-height;
+  padding: 0 $space-6;
+  background: $color-paper;
+  border-bottom: 1px solid $color-rule;
+
+  @media (max-width: $breakpoint-md) {
+    gap: $space-3;
+    padding: 0 $space-4;
+  }
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: $space-2;
-  height: $header-height;
-  padding: 0 $space-4;
-  color: $color-text;
-  font-weight: 600;
-  font-size: 15px;
-  border-bottom: 1px solid $color-border;
+  flex-shrink: 0;
+  color: $color-ink;
+  font-weight: 650;
+  font-stretch: 106%;
+  text-decoration: none;
 
   &:hover {
-    color: $color-primary;
+    color: $color-ink;
   }
 }
 
 .brandSuffix {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  color: $color-text-secondary;
-  line-height: 1;
+  @include type-small;
+  padding-left: $space-2;
+  border-left: 1px solid $color-rule;
+  color: $color-ink-muted;
 }
 
-.menu {
-  border-inline-end: none !important;
-  padding-top: $space-2;
-}
-
-.header {
+.nav {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: $space-4;
-  height: $header-height;
-  padding: 0 $space-5;
-  background: $color-bg-container;
-  border-bottom: 1px solid $color-border;
-  line-height: normal;
+  align-items: stretch;
+  align-self: stretch;
+  gap: $space-5;
+  flex: 1;
+  min-width: 0;
+}
 
-  @media (max-width: $breakpoint-md) {
-    padding: 0 $space-3;
+.navList {
+  display: flex;
+  gap: $space-5;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
   }
 }
 
-.headerLeft,
-.headerRight {
+.navLink {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: $space-4;
+  color: $color-ink-muted;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    color: $color-ink;
+  }
+
+  // The highlighter mark: "you are here".
+  &::after {
+    content: '';
+    position: absolute;
+    right: -$space-1;
+    bottom: -1px;
+    left: -$space-1;
+    height: 4px;
+    background: $color-highlighter;
+    transform: scaleX(0);
+    transition: transform 150ms ease-out;
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
 }
 
-.content {
-  padding: $space-5;
+.active {
+  color: $color-ink;
+  font-weight: 600;
 
-  @media (max-width: $breakpoint-md) {
-    padding: $space-4;
+  &::after {
+    transform: scaleX(1);
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  margin-left: auto;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 650;
+}
+
+.drawerNav {
+  .navList {
+    flex-direction: column;
+    gap: $space-1;
+  }
+
+  .navLink {
+    padding: $space-2 $space-3;
+    border-radius: $radius-control;
+
+    &::after {
+      top: $space-2;
+      right: auto;
+      bottom: $space-2;
+      left: 0;
+      width: 4px;
+      height: auto;
+      transform: scaleY(0);
+    }
+  }
+
+  .active::after {
+    transform: scaleY(1);
   }
 }
 
 .main {
-  max-width: $content-max-width;
-  margin: 0 auto;
+  flex: 1;
+  width: 100%;
+  padding: $space-7 $gutter;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $space-5 $space-4;
+  }
+}
+
+.footer {
+  padding: $space-3 $space-6;
+  border-top: 1px solid $color-rule;
+  @include type-small;
+  color: $color-ink-muted;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $space-3 $space-4;
+  }
 }

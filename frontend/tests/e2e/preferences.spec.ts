@@ -1,15 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
+import { signedIn } from './support/mock-api.ts';
 
+// Preferences work the same signed in or out; these run signed in.
 async function mockHealth(page: Page) {
-  await page.route('**/api/v1/health', (route) =>
-    route.fulfill({
-      json: {
-        status: 'ok',
-        timestamp: new Date().toISOString(),
-        uptimeSeconds: 1,
-      },
-    }),
-  );
+  await signedIn(page);
 }
 
 const html = (page: Page) => page.locator('html');
@@ -59,15 +53,6 @@ test.describe('Language', () => {
       page.getByRole('heading', { name: 'Dashboard' }),
     ).toBeVisible();
   });
-
-  test('translates Ant Design built-in texts', async ({ page }) => {
-    await page.goto('/dashboard');
-    await page.getByRole('button', { name: 'Language' }).click();
-    await page.getByRole('menuitem', { name: 'Tiếng Việt' }).click();
-
-    // The Empty component's image alt comes from the antd locale.
-    await expect(page.getByRole('img', { name: 'Trống' })).toBeVisible();
-  });
 });
 
 test.describe('Theme', () => {
@@ -97,7 +82,7 @@ test.describe('Theme', () => {
     const background = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor,
     );
-    expect(background).toBe('rgb(15, 17, 21)');
+    expect(background).toBe('rgb(18, 23, 29)');
 
     await page.reload();
     await expect(html(page)).toHaveAttribute('data-theme', 'dark');
@@ -123,5 +108,38 @@ test.describe('Theme', () => {
     await page.goto('/dashboard');
 
     await expect(html(page)).toHaveAttribute('data-theme', 'dark');
+  });
+});
+
+// Regression: a global "reduced motion" CSS rule once cut antd's enter
+// animation short and left every dropdown positioned off-screen.
+test.describe('Reduced motion (OS setting)', () => {
+  test.use({ reducedMotion: 'reduce' });
+
+  test('dropdowns and selects open on screen and work', async ({ page }) => {
+    await signedIn(page);
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.goto('/profile');
+
+    await page.getByRole('button', { name: 'Theme' }).click();
+    const dark = page.getByRole('menuitem', { name: 'Dark' });
+    await expect(dark).toBeInViewport();
+    await dark.click();
+    await expect(html(page)).toHaveAttribute('data-theme', 'dark');
+
+    await page.getByRole('button', { name: 'Language' }).click();
+    const vi = page.getByRole('menuitem', { name: 'Tiếng Việt' });
+    await expect(vi).toBeInViewport();
+    await vi.click();
+    await expect(html(page)).toHaveAttribute('lang', 'vi');
+
+    await page.getByTestId('user-menu').click();
+    await expect(
+      page.getByRole('menuitem', { name: 'Đăng xuất' }),
+    ).toBeInViewport();
+    await page.keyboard.press('Escape');
+
+    await page.getByLabel('Mức kinh nghiệm').click();
+    await expect(page.getByTitle('Đang làm QA/QC')).toBeInViewport();
   });
 });

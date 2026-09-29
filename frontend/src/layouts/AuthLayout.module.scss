@@ -1,34 +1,66 @@
 @use '../styles/tokens' as *;
 
 .page {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: $space-6 + $space-4 $space-4 $space-4;
-}
+  justify-content: space-between;
+  height: $topbar-height;
+  padding: 0 $space-6;
 
-.toolbar {
-  position: absolute;
-  top: $space-3;
-  right: $space-3;
-  display: flex;
-  gap: $space-1;
-}
-
-.container {
-  width: 100%;
-  max-width: 420px;
+  @media (max-width: $breakpoint-md) {
+    padding: 0 $space-4;
+  }
 }
 
 .brand {
   display: flex;
   align-items: center;
+  gap: $space-2;
+  color: $color-ink;
+  font-weight: 650;
+  font-stretch: 106%;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-ink;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: $space-1;
+}
+
+// The form sits centred on its own sheet, lifted off the paper background.
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: $space-3;
-  margin-bottom: $space-5;
-  font-size: 20px;
-  font-weight: 600;
-  color: $color-text;
+  // Extra bottom padding keeps the sheet a little above the optical centre.
+  padding: $space-6 $space-4 $space-7 * 2;
+
+  @media (max-width: $breakpoint-md) {
+    align-items: flex-start;
+    padding: $space-4 $space-4 $space-6;
+  }
+}
+
+.column {
+  width: 100%;
+  max-width: 440px;
+  padding: $space-6 $space-6 $space-5;
+  background: $color-sheet;
+  border: 1px solid $color-rule;
+  border-radius: $radius-float;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $space-5 $space-4 $space-4;
+  }
 }

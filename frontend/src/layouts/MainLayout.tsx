@@ -1,6 +1,10 @@
+import { useAuth } from '../features/auth/auth-context';
 import { AppShell } from './AppShell';
-import { useMainMenuItems } from './navigation';
+import { ADMIN_ENTRY, MAIN_LINKS } from './navigation';
 
 export function MainLayout() {
-  return <AppShell menuItems={useMainMenuItems()} />;
+  const { isAdmin } = useAuth();
+  return (
+    <AppShell links={isAdmin ? [...MAIN_LINKS, ADMIN_ENTRY] : MAIN_LINKS} />
+  );
 }

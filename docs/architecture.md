@@ -21,7 +21,7 @@
 1. `helmet` — security headers
 2. CORS — only origins in `CORS_ORIGIN`
 3. Global prefix `/api/v1`
-4. Guards (Phase 1+) — `JwtAuthGuard`, `RolesGuard`
+4. Guards — `JwtAuthGuard` (global; verifies the JWT against the Supabase JWKS; `@Public()` opts out), `RolesGuard` (`@Roles()`; role read from `profiles`), `ThrottlerGuard` on `/auth/*`
 5. `ValidationPipe` — whitelist + reject unknown fields → `400` with `details`
 6. Controller → service → Supabase
 7. `AllExceptionsFilter` — converts every error to `{ statusCode, error, message, details? }`
@@ -31,7 +31,7 @@
 1. Components call TanStack Query hooks (`features/*`).
 2. Hooks call the shared `api` client (`lib/http.ts`).
 3. `api` attaches `Authorization: Bearer <accessToken>` when a token exists.
-4. On `401`: one shared refresh call (wired in Phase 1), retry once, otherwise clear tokens and notify the unauthorized handler.
+4. Before sending: if the access token is missing (after a reload) or expires within 30 s, refresh first. On `401`: one shared refresh call, retry once, otherwise clear tokens and notify the unauthorized handler (→ login).
 5. Non-2xx responses become `ApiError` with the backend error shape; network failures are `status 0`.
 6. Queries retry only network/5xx errors.
 
@@ -44,3 +44,11 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | Phase | Backend | Frontend |
 |---|---|---|
 | 0 — Foundation | Done | Done |
+| 1 — Authentication & Profile | Done | Done |
+
+## Authentication
+
+* Access token in memory only; refresh token in `localStorage` (`qalab.refreshToken`). On load, `AuthProvider` exchanges the refresh token for a session (`checking → signedIn | signedOut`).
+* Refresh tokens rotate (single use). The start-up restore and the API client share one in-flight refresh, so a token is never sent twice.
+* Route guards: `RequireAuth` (→ `/auth/login?redirect=…`), `RequireAdmin` (no-access page), `GuestOnly` (login, register, forgot password). They are UX only; the API and RLS enforce access.
+* Email links (`/auth/verify`, `/auth/reset-password`) open the frontend with `token_hash`; the frontend posts it to the API. Contracts: [api.md](api.md). Tables and policies: [database.md](database.md). Tests: [testing-strategy.md](testing-strategy.md).

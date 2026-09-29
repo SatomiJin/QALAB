@@ -1,0 +1,31 @@
+@use '../styles/tokens' as *;
+
+.report {
+  max-width: $measure;
+  padding: 0;
+}
+
+.title {
+  @include type-page-title;
+  margin: 0 0 $space-5;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: $space-2 $space-5;
+  margin: 0 0 $space-6;
+  padding: $space-4 0;
+  border-top: 1px solid $color-rule;
+  border-bottom: 1px solid $color-rule;
+
+  dt {
+    color: $color-ink-muted;
+    font-weight: 600;
+  }
+
+  dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}

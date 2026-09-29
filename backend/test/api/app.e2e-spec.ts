@@ -5,12 +5,11 @@ import {
   Module,
   Post,
 } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
 import { IsEmail, IsString, MinLength } from 'class-validator';
 import request from 'supertest';
 import { App } from 'supertest/types.js';
-import { AppModule } from '../src/app.module.js';
-import { configureApp } from '../src/app.setup.js';
+import { Public } from '../../src/auth/decorators/public.decorator.js';
+import { createTestApp } from '../support/create-test-app.js';
 
 // Test-only endpoint to exercise the global validation pipe end to end.
 class EchoDto {
@@ -22,6 +21,7 @@ class EchoDto {
   password: string;
 }
 
+@Public()
 @Controller('__test')
 class EchoController {
   @Post('echo')
@@ -37,13 +37,7 @@ describe('App (e2e)', () => {
   let app: INestApplication<App>;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule, EchoModule],
-    }).compile();
-
-    app = moduleRef.createNestApplication();
-    configureApp(app);
-    await app.init();
+    ({ app } = await createTestApp({ imports: [EchoModule] }));
   });
 
   afterAll(async () => {

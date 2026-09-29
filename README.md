@@ -32,4 +32,5 @@ See [backend/README.md](backend/README.md) and [frontend/README.md](frontend/REA
 | Phase | Status |
 |---|---|
 | 0 — Foundation | Done |
-| 1 — Authentication & Profile | Next |
+| 1 — Authentication & Profile | Done (waiting for approval) |
+| 2 — Learning | Next |

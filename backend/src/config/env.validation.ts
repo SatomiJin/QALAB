@@ -43,6 +43,21 @@ export class EnvironmentVariables {
   @IsBoolean()
   SWAGGER_ENABLED = true;
 
+  /** Requests per minute per IP for each `/auth/*` endpoint. */
+  @Transform(({ value }) => (value === undefined ? value : Number(value)))
+  @IsInt()
+  @Min(1)
+  AUTH_RATE_LIMIT = 5;
+
+  /**
+   * Number of reverse proxies in front of the API (Render, Railway, …).
+   * Needed so rate limiting sees the client IP instead of the proxy's.
+   */
+  @Transform(({ value }) => (value === undefined ? value : Number(value)))
+  @IsInt()
+  @Min(0)
+  TRUST_PROXY_HOPS = 0;
+
   @IsUrl(URL_OPTIONS)
   SUPABASE_URL: string;
 

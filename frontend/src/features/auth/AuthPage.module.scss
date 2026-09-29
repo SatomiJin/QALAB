@@ -1,0 +1,58 @@
+@use '../../styles/tokens' as *;
+
+.title {
+  @include type-page-title;
+  margin: 0 0 $space-2;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+.description {
+  margin: 0 0 $space-6;
+  color: $color-ink-muted;
+}
+
+.form {
+  margin-top: $space-5;
+}
+
+.submit {
+  width: 100%;
+}
+
+.inlineLink {
+  display: flex;
+  justify-content: flex-end;
+  margin: (-$space-3) 0 $space-4;
+  @include type-small;
+}
+
+.alt {
+  margin: $space-6 0 0;
+  padding-top: $space-4;
+  border-top: 1px solid $color-rule;
+  color: $color-ink-muted;
+
+  a {
+    font-weight: 600;
+  }
+}
+
+.notice {
+  margin-bottom: $space-5;
+}
+
+.email {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.linkButton {
+  height: auto;
+  padding: 0;
+  font-weight: 600;
+  text-decoration: underline;
+}

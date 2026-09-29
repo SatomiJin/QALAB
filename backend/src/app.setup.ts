@@ -1,5 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import type { Express } from 'express';
 import helmet from 'helmet';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 import { createValidationPipe } from './common/pipes/validation.pipe.js';
@@ -15,6 +16,11 @@ export const DOCS_PATH = 'api/docs';
 export function configureApp(app: INestApplication): void {
   const config = app.get(AppConfigService);
 
+  if (config.trustProxyHops > 0) {
+    // Lets rate limiting see the client IP behind the host's proxy.
+    const server = app.getHttpAdapter().getInstance() as Express;
+    server.set('trust proxy', config.trustProxyHops);
+  }
   app.setGlobalPrefix(API_PREFIX);
   // JSON-only API: CSP is disabled so Swagger UI can load its assets.
   app.use(helmet({ contentSecurityPolicy: false }));

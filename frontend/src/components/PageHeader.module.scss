@@ -1,0 +1,26 @@
+@use '../styles/tokens' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $space-4;
+  margin-bottom: $space-6;
+}
+
+.title {
+  @include type-page-title;
+  margin: 0;
+  color: $color-ink;
+
+  @media (max-width: $breakpoint-md) {
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+.description {
+  max-width: $measure;
+  margin-top: $space-2;
+  color: $color-ink-muted;
+}

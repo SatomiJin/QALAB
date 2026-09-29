@@ -1,27 +1,21 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import { NavLink } from 'react-router';
 import { AppShell } from './AppShell';
-import { useAdminMenuItems } from './navigation';
+import styles from './AppShell.module.scss';
+import { ADMIN_LINKS } from './navigation';
 
-// Access is restricted to admins in Phase 1 (route guard + backend RolesGuard).
+// Only rendered for admins (RequireAdmin route guard + backend RolesGuard).
 export function AdminLayout() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   return (
     <AppShell
-      menuItems={useAdminMenuItems()}
+      links={ADMIN_LINKS}
       brandSuffix={t('app.admin')}
-      headerExtra={
-        <Button
-          type="text"
-          icon={<ArrowLeftOutlined />}
-          onClick={() => navigate('/dashboard')}
-        >
+      extra={
+        <NavLink to="/dashboard" className={styles.navLink} end>
           {t('nav.backToApp')}
-        </Button>
+        </NavLink>
       }
     />
   );
