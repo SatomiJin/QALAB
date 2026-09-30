@@ -63,6 +63,106 @@ $space-7: 48px;
 $radius-tag: 2px;
 $radius-control: 4px;
 $radius-float: 6px;
+$radius-card: 8px;
+
+$shadow-hover: var(--qa-shadow-hover);
+
+// Motion: short and eased out, only in answer to the person (hover, press,
+// focus, navigation). Everything is switched off under reduced motion.
+$motion-fast: 120ms;
+$motion-base: 180ms;
+$ease-out: cubic-bezier(0.2, 0, 0, 1);
+
+// Colour / underline changes on links and tabs.
+@mixin color-transition {
+  transition:
+    color $motion-fast $ease-out,
+    text-decoration-color $motion-fast $ease-out,
+    box-shadow $motion-fast $ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// Item cards (a course, a lesson, an exercise): Sheet on Paper, Rule border.
+// The whole card is the item's link (`card-link` on the one link inside);
+// hover and keyboard focus lift it slightly. Lists of cards use `card-list`.
+@mixin item-card {
+  position: relative;
+  padding: $space-4 $space-5;
+  border: 1px solid $color-rule;
+  border-radius: $radius-card;
+  background: $color-sheet;
+  transition:
+    border-color $motion-base $ease-out,
+    box-shadow $motion-base $ease-out,
+    transform $motion-base $ease-out;
+
+  &:hover,
+  &:focus-within {
+    border-color: $color-ink-muted;
+    box-shadow: $shadow-hover;
+    transform: translateY(-2px);
+  }
+
+  // Pressed: settles back down, quicker than the lift.
+  &:active {
+    box-shadow: none;
+    transform: translateY(0);
+    transition-duration: $motion-fast;
+  }
+
+  &:focus-within:has(:focus-visible) {
+    outline: 2px solid $color-ink;
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover,
+    &:focus-within,
+    &:active {
+      transform: none;
+    }
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: $space-3 $space-4;
+  }
+}
+
+// The card's link covers the whole card, so anywhere on it opens the item.
+// No underline: the card itself (border, lift on hover) says "this opens".
+@mixin card-link {
+  color: $color-ink;
+  text-decoration: none;
+
+  &:hover {
+    color: $color-ink;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  // The card draws the focus ring.
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+@mixin card-list {
+  display: grid;
+  gap: $space-3;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;

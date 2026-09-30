@@ -40,7 +40,7 @@ export function LessonExercises({ lessonId }: { lessonId: string }) {
       <h2 id="lesson-practice-title" className={styles.sectionTitle}>
         {t('practice.lesson.title')}
       </h2>
-      <ul className={styles.rows}>
+      <ul className={styles.cards}>
         {exercises.data.items.map((exercise) => (
           <ExerciseRow
             key={exercise.id}

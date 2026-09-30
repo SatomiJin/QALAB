@@ -129,7 +129,7 @@ export function PracticeListPage({ kind }: { kind: PracticeKind }) {
         </div>
       ) : (
         <ul
-          className={styles.rows}
+          className={styles.cards}
           aria-busy={exercises.isPlaceholderData}
           data-testid="exercise-list"
         >

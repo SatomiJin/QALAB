@@ -55,7 +55,7 @@ export function AttemptHistory({
         </p>
       ) : (
         <>
-          <ul className={styles.rows}>
+          <ul className={styles.attemptRows}>
             {page.items.map((attempt) => (
               <li
                 key={attempt.id}

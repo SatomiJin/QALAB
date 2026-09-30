@@ -1,0 +1,8 @@
+@use '../styles/tokens' as *;
+
+// Radius follows the tile in the image (controls size).
+.mark {
+  display: block;
+  flex-shrink: 0;
+  border-radius: 4px;
+}

@@ -89,7 +89,7 @@ Desktop (≥ 992px):
 * **Practice** is one top-level item; its four kinds are tabs above the page title on the Practice pages, not a nested menu. Top nav stays at five items (+ Admin for admins).
 * **Profile** moves to the avatar menu (it is not a place you study).
 * API status moves out of the header into a quiet footer line — in QA terms, it is the *environment*.
-* No cards around page content. Surfaces are only for things that float (drawer, popovers) or take input.
+* No cards around page *sections* (headers, lesson text, results, forms). **Items you can open** (a course, a lesson, an exercise) are cards: see *Item cards* below. Other surfaces are only for things that float (drawer, popovers) or take input.
 
 Mobile (< 992px):
 
@@ -112,9 +112,9 @@ Auth pages: brand top left, preferences top right, and the form centred on a She
 * **Verdict tag:** condensed text in a 2px-radius tinted chip. The only rounded-rectangle-with-colour in the UI.
 * **Buttons:** primary = Highlighter background + Ink text (one per screen). Secondary = Ink outline. Text buttons for low-emphasis actions. 4px radius.
 * **Inputs:** Sheet background, Rule border, 4px radius, 2px Ink focus ring.
-* **Radius by role:** tags 2px, controls 4px, floating layers 6px. Nothing larger.
-* **Shadow:** only on floating layers (drawer, dropdown). Flat everywhere else.
-* **Motion:** none on load. The highlighter mark grows in under the new nav item on navigation (it does not travel between items) (150ms, disabled under `prefers-reduced-motion`).
+* **Radius by role:** tags 2px, controls 4px, floating layers 6px, item cards 8px. Nothing larger.
+* **Shadow:** on floating layers (drawer, dropdown), and a soft lift under a hovered item card (`--qa-shadow-hover`). Flat everywhere else.
+* **Motion:** none on load; only in answer to the person. Tokens: `$motion-fast` 120ms, `$motion-base` 180ms, `$ease-out` `cubic-bezier(0.2, 0, 0, 1)`. The highlighter mark grows in under the new nav item on navigation (it does not travel between items). Item cards lift on hover/focus and settle on press; tabs fade their colour (`color-transition` mixin). Everything is disabled under `prefers-reduced-motion`.
 
 ## Copy
 
@@ -153,7 +153,7 @@ The one bold thing is the verdict + highlighter system. Everything else stays qu
 
 ## Learning screens (Phase 2)
 
-* **Learning** (`/learning`): a *Continue* block first, the one "do next" on the page: a reason line (Start here / Pick up where you stopped / Up next), the lesson title marked with a highlighter stroke, a course | module trail, one primary button. It sits under a 1px Ink rule (the top of the plan). Below it, every skill in order as a section (240px skill column + its courses), like the sections of a test plan. Skills without courses stay listed with "No courses yet." so the whole plan is visible. A course is a row: title link, description, verdict, "1 of 4 lessons", minutes.
+* **Learning** (`/learning`): a *Continue* block first, the one "do next" on the page: a reason line (Start here / Pick up where you stopped / Up next), the lesson title marked with a highlighter stroke (a 3px Highlighter line under the text, like the current tab; changed after review: the half-height fill behind the text was hard to read, above all in dark mode), a course | module trail, one primary button. It sits under a 1px Ink rule (the top of the plan). Below it, every skill in order as a section (240px skill column + its courses), like the sections of a test plan. Skills without courses stay listed with "No courses yet." so the whole plan is visible. A course is a row: title link, description, verdict, "1 of 4 lessons", minutes.
 * **Course** (`/learning/courses/:slug`): back link, title, description; verdict + count + minutes + skill; primary *Start course* / *Continue course* (secondary *Review from the first lesson* once completed). Modules are sections ("Module 1" in small tabular text, then the title). Lessons are rows of a test run: number `1.2` (tabular), title, minutes, verdict, in fixed columns so they line up.
 * **Lesson** (`/learning/lessons/:id`): course | module trail, title, verdict + reading time, an optional *Jump to where you stopped (40%)* text button, the Markdown body at 68ch, then a rule, the primary *Mark as complete* (or "Passed, Completed on …"), and previous / next lesson links with small labels and no arrows. The last lesson links back to the course.
 * Lesson Markdown: h2/h3 on the type scale, tables with Rule lines and tabular figures (wide tables scroll inside their own box), quotes with a 3px Rule bar in Ink muted, code on a 7% Ink tint.
@@ -163,7 +163,7 @@ The one bold thing is the verdict + highlighter system. Everything else stays qu
 ## Navigation, lists and translation (Phase 2, second pass)
 
 * **Page trail** above every course and lesson title: a 32px outlined back button (arrow icon, tooltip + accessible name "Back to courses" / "Back to the lesson list") and a breadcrumb "Learning › Course › Lesson" in small text; ancestors are muted links, the current page is Ink and not a link. Separators are a small chevron icon.
-* **Learning list** replaces the per-skill sections: the Continue block, then skill tabs (same style as the Practice tabs: highlighter mark under the current tab, "All skills" first, scrolling sideways inside their own box on mobile), then one flat list of course rows separated by Rules (rows span the column; text keeps the 68ch measure; the skill name is in each row's meta). An empty skill says "No courses in this skill yet."
+* **Learning list** replaces the per-skill sections: the Continue block, then skill tabs (same style as the Practice tabs: highlighter mark under the current tab, "All skills" first, scrolling sideways inside their own box on mobile), then one list of course cards (see *Item cards*; cards span the column; text keeps the 68ch measure; the skill name is in each card's meta). An empty skill says "No courses in this skill yet."
 * **Pager** under the list: a tabular "1–20 of 46 courses" range on the left; our own page-size select (20 / 50 / 100) and Ant Design's pager on the right. The select is ours because Ant Design hides its size changer on small screens (changed after review: mobile users could not change the page size).
 * **Translation note** (Vietnamese UI only): one small muted sentence with a translate icon, flowing as text — "Vietnamese version. QA terms stay in English." (manual) or "Machine-translated from English. QA terms, code and links stay in English." — plus a text button to show the English original (and back). "Not available" gets its own sentence and no button. It sits under the lesson's status line, and under the title on the course and Learning pages.
 
@@ -171,11 +171,27 @@ The one bold thing is the verdict + highlighter system. Everything else stays qu
 
 * **The one bold thing: the result is a test run of your answer.** Under a 1px Ink rule: the score in page-title size with tabular figures, "out of 100", and a verdict tag; one muted sentence with the pass rule (choice types: every answer right; free text: 70 or more, keyword checks are approximate). Free-text results list the score parts in small tabular text ("Required fields: 75 (30% of the score)"). Then a table of **checks** with fixed columns *Check / Expected / Actual / verdict*, like executed test steps: required fields filled in, severity and priority, concepts mentioned, options chosen, items in the right group. Rows with nothing to judge (an option rightly left out) are muted and have no verdict. On mobile each check is a block with "Expected" / "Actual" as inline labels.
 * After the checks: Explanation, Model answer (free text) and the self-assessment checklist ("Check your answer against the model"), each a section title + Markdown.
-* **Lists** (one per Practice tab): the tabs, title and description, two selects (skill, difficulty; full width on mobile), then flat rows between Rules with fixed columns: question as a link (plain text, two lines max), meta (type, difficulty, lesson), your best score and attempt count (tabular), and the verdict (Not run / Passed / Failed; any passing attempt makes the exercise Passed). No numbering: the list is not a sequence. Same pager as Learning.
+* **Lists** (one per Practice tab): the tabs, title and description, two selects (skill, difficulty; full width on mobile), then item cards (see *Item cards*) with fixed columns: question as a link (plain text, two lines max), meta (type, difficulty, lesson), your best score and attempt count (tabular), and the verdict (Not run / Passed / Failed; any passing attempt makes the exercise Passed). No numbering: the list is not a sequence. Same pager as Learning.
 * **Exercise page:** page trail (Practice › tab › type), the type as the title, verdict + difficulty + "From the lesson …" link, the question as Markdown at 68ch and 17px, then the form (max 720px). Test case and bug report forms follow the document template field by field; field names stay in English (QA terms) in Vietnamese; steps are numbered (a real sequence) with add / remove. One primary per screen: *Submit answer*; on the result, *Save self-assessment* until it is saved, otherwise *Try again*. *Try again* restores the last answer.
 * **Your attempts** under a Rule: date, score, verdict, *Show result* (tabular, fixed columns); the one on screen says "Shown above".
-* **Lesson page:** "Practise this lesson" lists the lesson's exercises (same rows, without the lesson) between the article and the footer; the list's last row has no bottom rule because the footer's rule closes it.
+* **Lesson page:** "Practise this lesson" lists the lesson's exercises (same cards, without the lesson) between the article and the footer.
 * Changed after review: the multiple-choice checks first said "Chosen, correct" in the Expected column, which read like a result; Expected / Actual now say only *Chosen* / *Not chosen* and the verdict says whether that was right. The attempt verdict tag stretched to its column width; the lesson list ended in a double rule above the footer; the checklist's save button had its own rule.
+
+## Item cards (asked for after Phase 3)
+
+The learner asked for each item to sit in its own rounded card with a light hover, so that items are easier to tell apart and the lists look friendlier. This replaces the flat rows between Rules for **openable items**:
+
+* **Where:** course rows on Learning, lesson rows on a course page, exercise rows on the Practice tabs and on "Practise this lesson". Not for sections, tables or read-only rows (result checks, attempt history, module headings keep Rules).
+* **Look:** Sheet background on Paper, 1px Rule border, 8px radius, 16×24px padding (12×16 on mobile), 12px between cards (8px for lessons inside a module). Fixed grid columns inside the card stay, so numbers, minutes, scores and verdicts still line up from card to card; verdicts sit at the right edge.
+* **Behaviour:** the whole card opens the item (the title link is stretched over the card with `::after`), so there is one tab stop per card. Hover or keyboard focus: border to Ink muted, soft shadow, lift by 2px (180ms, ease-out); card titles have no underline (the card itself says "this opens"; changed after review: the underline looked out of place inside a card). Press: back down, quicker (120ms). Keyboard focus also draws a 2px Ink ring around the card. Reduced motion: colour and shadow change without movement or transition.
+* **Implementation:** mixins `item-card`, `card-link`, `card-list` and `color-transition` in `styles/_tokens.scss`; tokens `$radius-card`, `$shadow-hover` (`--qa-shadow-hover`, light and dark in `global.scss`), `$motion-fast`, `$motion-base`, `$ease-out`.
+* Changed after review: on mobile an exercise without attempts had an empty stats line at the bottom of its card (now hidden when empty); lesson verdicts sat in the middle of the card (now at the right edge).
+
+## Brand mark
+
+* Source files: `Assets/Logos/` (the author's "S" logo). The app uses only the monochrome one (`logoiconnobg.png`): recoloured to a Highlighter "S" on an Ink tile with 4px corners, generated into `frontend/public/brand-mark.png` (top bar, 28px, `components/BrandMark.tsx`), `favicon.png` (48px) and `apple-touch-icon.png` (180px). Fixed colours, like a printed logo, the same in both themes (as the first favicon was). The name "QA Learning Lab" stays next to it.
+* The neon purple versions are **not** used in the UI: saturated colour is reserved for verdicts, and a purple mark would read as one more status colour. The full-name logo ("Satomi Jin") signs the README; it can also be the GitHub social preview.
+* Changed after review: a mask of the bare strokes in Ink looked thin and grey at 24px next to the bold brand name; the filled tile holds its weight.
 
 ## Not in this pass
 

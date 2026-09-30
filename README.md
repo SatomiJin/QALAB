@@ -1,3 +1,5 @@
+<p align="center"><img src="Assets/Logos/logofullnamewithbg.png" alt="Satomi Jin" width="220" /></p>
+
 # QA Learning Lab
 
 Personal platform for learning QA / Software Testing: lessons, exercises, test-case and bug-report practice, and progress tracking.
@@ -32,5 +34,7 @@ See [backend/README.md](backend/README.md) and [frontend/README.md](frontend/REA
 | Phase | Status |
 |---|---|
 | 0 — Foundation | Done |
-| 1 — Authentication & Profile | Done (waiting for approval) |
-| 2 — Learning | Next |
+| 1 — Authentication & Profile | Done |
+| 2 — Learning | Done |
+| 3 — Practice | Done |
+| 4 — Admin CMS | Next |

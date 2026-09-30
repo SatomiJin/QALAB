@@ -3,6 +3,7 @@ import { Button, Drawer, Grid } from 'antd';
 import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Outlet } from 'react-router';
+import { BrandMark } from '../components/BrandMark';
 import { UserMenu } from '../features/auth/UserMenu';
 import {
   LanguageSwitcher,
@@ -55,7 +56,7 @@ export function AppShell({ links, brandSuffix, extra }: AppShellProps) {
     <div className={styles.shell}>
       <header className={styles.topbar}>
         <Link to="/" className={styles.brand}>
-          <img src="/favicon.svg" alt="" width={24} height={24} />
+          <BrandMark />
           <span>{t('app.name')}</span>
           {brandSuffix && (
             <span className={styles.brandSuffix}>{brandSuffix}</span>

@@ -73,16 +73,16 @@
   }
 }
 
-// The highlighter stroke: "this is where you are".
+// The highlighter stroke: "this is where you are". A 3px line under the text
+// (like the current tab), not a fill behind it: the text keeps full contrast.
 .mark {
-  padding: 0 2px;
-  background: linear-gradient(
-    to bottom,
-    transparent 52%,
-    color-mix(in srgb, #{$color-highlighter} 75%, transparent) 52%
-  );
+  background: none;
   color: inherit;
-  box-decoration-break: clone;
+  text-decoration-line: underline;
+  text-decoration-color: $color-highlighter;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  text-decoration-skip-ink: none;
 }
 
 .allDone {
@@ -97,11 +97,13 @@
 // Rows span the column so their rules line up with the pager; the text
 // inside keeps the reading measure.
 .course {
+  @include item-card;
   display: grid;
   gap: $space-1;
 }
 
 .courseTitle {
+  @include card-link;
   font-size: 17px;
   line-height: 26px;
   font-weight: 600;
@@ -147,6 +149,7 @@
 }
 
 .filterTab {
+  @include color-transition;
   padding: $space-2 0;
   color: $color-ink-muted;
   font-weight: 500;
@@ -165,13 +168,5 @@
 }
 
 .flatList {
-  display: grid;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  > li {
-    padding: $space-4 0;
-    border-bottom: 1px solid $color-rule;
-  }
+  @include card-list;
 }

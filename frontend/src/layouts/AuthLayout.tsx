@@ -5,6 +5,7 @@ import {
   LanguageSwitcher,
   ThemeSwitcher,
 } from '../features/preferences/PreferenceControls';
+import { BrandMark } from '../components/BrandMark';
 import { palette } from '../features/preferences/antd-theme';
 import { usePreferences } from '../features/preferences/preferences-context';
 import styles from './AuthLayout.module.scss';
@@ -21,7 +22,7 @@ export function AuthLayout() {
     <div className={styles.page}>
       <header className={styles.topbar}>
         <Link to="/auth/login" className={styles.brand}>
-          <img src="/favicon.svg" alt="" width={24} height={24} />
+          <BrandMark />
           <span>{t('app.name')}</span>
         </Link>
         <div className={styles.actions}>
