@@ -11,11 +11,12 @@ Cloud project linked from `backend/`. No Docker, no local database. Current sche
 
 ## Migrations
 
-* Every change is a new file: `cd backend && npx supabase migration new <snake_name>`. Never edit a migration that has been pushed; write a new one.
+* Every change is a new file: `cd backend && npx supabase migration new <snake_name>`. Never edit a migration that has been pushed; write a new one. Before editing any existing migration, check `npx supabase migration list`: if the version has a `remote` value it is pushed, even when you did not push it yourself (the user may have). Example: `20260930064552_content_translations_manual` exists because `20260930041356` was edited after it had been pushed.
 * Apply with `npx supabase db push` (from `backend/`). Pushing changes the shared cloud database: say so before doing it.
 * One migration per feature/phase is fine; keep it readable with section comments.
 * Record each migration in the table in `docs/database.md`.
 * Check with `npx supabase db push --dry-run [--include-seed]` first. The push itself needs the user's permission (the agent may be blocked from running it): if so, finish everything else and hand the exact command to the user, then run `npm run test:int`.
+* `db push --include-seed` runs `seed.sql` only the **first** time. When the file changed after that, the dry-run says `(hash update)` and the push only records the new hash, without running anything. To apply new seed rows, run the (idempotent) seed again: `npx supabase db query --linked -f supabase/seed.sql`, then verify the rows exist.
 * Reference data the app depends on (e.g. the 7 skills) goes in a migration. Sample/demo content goes in `supabase/seed.sql` with fixed UUIDs and `on conflict do nothing`, so re-running is safe.
 
 ## Every table

@@ -1,6 +1,6 @@
 # Database
 
-Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a migration in `backend/supabase/migrations`, applied with `npx supabase db push` (`--include-seed` also applies `supabase/seed.sql`).
+Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a migration in `backend/supabase/migrations`, applied with `npx supabase db push` (`--include-seed` also applies `supabase/seed.sql`, but only the first time; after the seed changes, re-run it with `npx supabase db query --linked -f supabase/seed.sql`).
 
 ## Migrations
 
@@ -9,6 +9,7 @@ Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a m
 | `20260929045519_profiles.sql` | 1 | Enums `user_role`, `experience_level`; `set_updated_at()`; `profiles` + trigger from `auth.users`; `is_admin()`; RLS and grants |
 | `20260930024128_learning.sql` | 2 | Enums `content_status`, `lesson_status`; `skills` (+ the 7 skills), `courses`, `modules`, `lessons`, `lesson_progress`; `is_lesson_published()`; forward-only progress trigger; RLS, grants, indexes |
 | `20260930041356_content_translations.sql` | 2 | `content_translations` (machine-translation cache); `is_content_published()`; delete triggers on content; RLS |
+| `20260930064552_content_translations_manual.sql` | 2 | `provider` `manual` \| `google`, `pipeline_version` (machine rows only), unique key per provider. Upgrades the table as first pushed; idempotent |
 
 Seed (`supabase/seed.sql`): one published sample course, *QA fundamentals: first steps* (2 modules, 4 lessons), with fixed ids. Idempotent.
 

@@ -30,7 +30,8 @@ Vietnamese content comes first from manual translations in `content_translations
 
 ```bash
 npx supabase db push                  # apply supabase/migrations to the linked project
-npx supabase db push --include-seed   # … and supabase/seed.sql (sample course)
+npx supabase db push --include-seed   # … and supabase/seed.sql (sample course), first time only
+npx supabase db query --linked -f supabase/seed.sql   # re-run the (idempotent) seed after editing it
 ```
 
 Skills are reference data inside a migration. `seed.sql` holds sample content only; it uses fixed ids and `on conflict do nothing`, so re-running it is safe. Run `npm run test:int` after pushing: it checks RLS against the real database.
