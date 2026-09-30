@@ -1,6 +1,15 @@
+
+
 # QA Learning Lab — Agent Guide
 
 Personal QA/Software Testing learning platform. Full spec and phase plan: [plant.md](plant.md). Read it before starting a phase.
+For every new user task, before inspecting the repository, planning, using a
+tool, or editing a file, start the first user-facing reply exactly with:
+
+```text
+Konnichiwa, watashi wa Satomi Jin desu!
+```
+
 
 ## Repository layout
 
