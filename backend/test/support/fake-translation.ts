@@ -39,6 +39,8 @@ export class FakeTranslationsRepository {
   readonly rows = new Map<string, TranslationRow>();
   /** Reads fail like a missing table (Postgres 42P01, a plain object). */
   failReads = false;
+  /** Extra read policy (RLS), given the row and the caller's token. */
+  canRead: (row: TranslationRow, token: string) => boolean = () => true;
 
   addManual(row: Omit<TranslationRow, 'provider' | 'pipeline_version'>): void {
     this.rows.set(
@@ -48,7 +50,7 @@ export class FakeTranslationsRepository {
   }
 
   async findForEntities(
-    _token: string,
+    token: string,
     entityIds: string[],
     language: TranslationLanguage,
   ): Promise<TranslationRow[]> {
@@ -56,7 +58,10 @@ export class FakeTranslationsRepository {
       throw { code: '42P01', message: 'relation does not exist' };
     }
     return [...this.rows.values()].filter(
-      (row) => row.language === language && entityIds.includes(row.entity_id),
+      (row) =>
+        row.language === language &&
+        entityIds.includes(row.entity_id) &&
+        this.canRead(row, token),
     );
   }
 

@@ -21,7 +21,10 @@ src/<feature>/
 └── dto/<feature>.dto.ts        # request/response classes (class-validator + Swagger)
 ```
 
-* Put decisions (what counts as "completed", which lesson comes next, how progress merges) in pure functions and unit-test them. Services load rows, call those functions, map to DTOs.
+* Put decisions (what counts as "completed", which lesson comes next, how progress merges, how an answer is graded) in pure functions and unit-test them. Services load rows, call those functions, map to DTOs.
+* JSON documents whose shape depends on a row's type (exercise `prompt_data`, answer keys, answers) are validated by pure `parse*` functions returning `{ ok, value } | { ok: false, errors: [{ field, message }] }` (`practice/exercise-schema.ts`), not by class-validator. The DTO only checks `@IsObject()`; the service turns parse errors into `400 { details }` with paths like `answer.mapping.login`. Unknown keys are errors.
+* Data that is ours and broken (invalid prompt data, missing answer key) is a server bug: throw a plain `Error` with a precise message (the filter logs it and answers a generic 500). Never put secret values (answer keys) in that message.
+* Features reuse another module's repositories through `exports` (`LearningModule` exports `ContentRepository` for practice), never by re-declaring the provider.
 
 * Shared code: `src/common/` (errors, filters, pipes), `src/config/` (env), `src/supabase/` (`SupabaseService`).
 * ESM: relative imports end in `.js` (`'./profile.service.js'`). Type-only imports use `import type`.
@@ -36,7 +39,8 @@ src/<feature>/
 * Use `@HttpCode` for non-201 POSTs (e.g. `200` login, `200` lesson progress, `204` logout).
 * UUID path params go through `ParseUUIDPipe` (invalid → `400`). Query strings use a DTO class (`@Query() query: XQueryDto`), so unknown query params are `400` too. Numbers in query strings need `@Transform` to `Number` (the pipe has no implicit conversion); defaults are class field initialisers. Shared query DTOs extend each other (`ListCoursesQueryDto extends LanguageQueryDto`).
 * Content a learner may not see is `404` whatever the reason (draft, archived, unpublished parent, unknown) — never `403`, which would confirm it exists.
-* Rate-limited routes (`/auth/*`) use `ThrottlerGuard`; limit from config, not hard-coded.
+* Rate limits are named throttlers in `AuthModule`'s `ThrottlerModule` (limits from config, not hard-coded): `default` for `/auth/*` per IP (`ThrottlerGuard`), `attempts` for attempt submission per user (`AttemptThrottlerGuard`, tracker = `req.user.id`). Every throttler applies to every guarded route, so each route skips the others (`@SkipThrottle({ attempts: true })` on `AuthController`, `@SkipThrottle({ default: true })` on the attempt route). A new limit = a new named throttler + env variable.
+* List query params that accept several values take them comma-separated (`?type=a,b`): `@Transform` split to an array, `@IsIn(values, { each: true })`.
 
 ## DTOs and validation
 
@@ -48,7 +52,7 @@ src/<feature>/
 ## Data access
 
 * `SupabaseService.forUser(user.accessToken)` for all user data, so RLS applies.
-* `anon()` only for public auth calls. `service()` (bypasses RLS) only for grading with answer keys, revoking sessions, and writing server-generated data no API role may write (the translation cache, `TranslationsRepository.saveMany`); filter its results before returning.
+* `anon()` only for public auth calls. `service()` (bypasses RLS) only for reading answer keys (`ExerciseAnswersRepository`), revoking sessions, and writing server-generated data no API role may write (the translation cache `TranslationsRepository.saveMachine`, graded attempts `AttemptsRepository.insert`); filter its results before returning.
 * Repository pattern: `const { data, error } = await …; if (error) throw error; return data;` Select explicit columns (`COLUMNS` constant), use `maybeSingle()` when a row may be missing, and let the service turn `null` into `NotFoundException`.
 * Typed lists: end the chain with `.overrideTypes<Row[], { merge: false }>()` (`.returns()` is deprecated in supabase-js 2.117). Guard `.in()` with an early `return []` for empty id lists.
 * Learner reads of content also filter `status = 'published'` explicitly: RLS lets admins read drafts, but learner endpoints must show everyone the learner view.
@@ -76,7 +80,8 @@ src/<feature>/
 
 * Each endpoint: happy path, validation `400`, `401` without/expired token, `403` wrong role, not found, plus the rules in `plant.md` for the phase.
 * When a new Supabase Auth call is used, extend the fake server to model it.
-* API tests never hit Supabase for data: every repository has an in-memory fake in `test/support/fake-*.ts` (`FakeProfilesRepository`, `FakeContentRepository`, `FakeLessonProgressRepository`), registered in `create-test-app.ts` with `overrideProvider`. A fake must mirror what RLS/filters/triggers do (published-only, per-user rows, forward-only progress), or the API test proves nothing.
+* API tests never hit Supabase for data: every repository has an in-memory fake in `test/support/fake-*.ts` (`FakeProfilesRepository`, `FakeContentRepository`, `FakeLessonProgressRepository`, `FakeExercisesRepository`, `FakeExerciseAnswersRepository`, `FakeAttemptsRepository`), registered in `create-test-app.ts` with `overrideProvider`. A read policy that depends on the caller is modelled with a hook (`FakeTranslationsRepository.canRead(row, token)`, user id from the fake JWT via `userIdFromToken`).
+* Seed content the app parses (exercise prompts and answer keys) is checked by a unit test that reads `supabase/seed.sql` (`practice/seed-exercises.spec.ts`). A fake must mirror what RLS/filters/triggers do (published-only, per-user rows, forward-only progress), or the API test proves nothing.
 * Sanity-check a new suite by breaking the rule it guards once (e.g. drop a visibility check) and seeing it fail.
 * Integration test users: `qalab-it-*@example.com`, created with the admin API, deleted after each file. Never send real email from tests.
 

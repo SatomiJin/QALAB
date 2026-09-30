@@ -9,3 +9,4 @@ process.env.SUPABASE_ANON_KEY = 'test-anon-key';
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key';
 // High enough that only the dedicated rate-limit spec ever hits it.
 process.env.AUTH_RATE_LIMIT ??= '1000';
+process.env.ATTEMPT_RATE_LIMIT ??= '1000';

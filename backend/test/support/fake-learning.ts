@@ -114,6 +114,16 @@ export class FakeContentRepository {
     entry.row = { ...entry.row, content_md };
   }
 
+  /** The lesson, its module and its course are all published. */
+  isLessonVisible(id: string): boolean {
+    const lesson = this.lessons.get(id);
+    const module = lesson && this.modules.get(lesson.row.module_id);
+    const course = module && this.courses.get(module.row.course_id);
+    return [lesson, module, course].every(
+      (entry) => entry?.status === 'published',
+    );
+  }
+
   private published<T>(map: Map<string, Stored<T>>): T[] {
     return [...map.values()]
       .filter((entry) => entry.status === 'published')

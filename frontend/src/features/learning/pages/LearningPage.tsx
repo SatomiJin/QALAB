@@ -1,4 +1,4 @@
-import { Button, Pagination, Select } from 'antd';
+import { Button } from 'antd';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
@@ -7,13 +7,8 @@ import { ErrorState } from '../../../components/feedback/ErrorState';
 import { PageLoader } from '../../../components/feedback/PageLoader';
 import { PageHeader } from '../../../components/PageHeader';
 import { VerdictTag } from '../../../components/VerdictTag';
-import {
-  type ContinueItem,
-  type CourseSummary,
-  PAGE_SIZES,
-  type PageSize,
-  type Skill,
-} from '../../../types/api';
+import { ListPager } from '../../../components/ListPager';
+import type { ContinueItem, CourseSummary, Skill } from '../../../types/api';
 import {
   lastPage,
   type ListParams,
@@ -115,9 +110,6 @@ export function LearningPage() {
     );
   }
 
-  const start = (page.page - 1) * page.pageSize + 1;
-  const end = start + page.items.length - 1;
-
   return (
     <>
       {header}
@@ -143,36 +135,17 @@ export function LearningPage() {
       )}
 
       {page.total > 0 && (
-        <div className={styles.pager}>
-          <span className={styles.range} data-testid="course-range">
-            {t('learning.list.range', {
-              start: Math.min(start, page.total),
-              end: Math.max(end, 0),
-              total: page.total,
-            })}
-          </span>
-          <div className={styles.pagerControls}>
-            {/* Our own size picker: antd hides its one on small screens. */}
-            <Select<PageSize>
-              value={page.pageSize}
-              aria-label={t('learning.list.pageSizeLabel')}
-              data-testid="page-size"
-              options={PAGE_SIZES.map((size) => ({
-                value: size,
-                label: t('learning.list.pageSize', { count: size }),
-              }))}
-              // A new page size starts again from the first page.
-              onChange={(pageSize) => go({ ...params, pageSize, page: 1 })}
-            />
-            <Pagination
-              current={page.page}
-              pageSize={page.pageSize}
-              total={page.total}
-              showSizeChanger={false}
-              onChange={(nextPage) => go({ ...params, page: nextPage })}
-            />
-          </div>
-        </div>
+        <ListPager
+          page={page.page}
+          pageSize={page.pageSize}
+          total={page.total}
+          count={page.items.length}
+          rangeTestId="course-range"
+          rangeLabel={(range) => t('learning.list.range', range)}
+          sizeLabel={t('learning.list.pageSizeLabel')}
+          optionLabel={(size) => t('learning.list.pageSize', { count: size })}
+          onChange={(next) => go({ ...params, ...next })}
+        />
       )}
     </>
   );

@@ -2,7 +2,8 @@
 -- (cloud) or `supabase db reset` (local). Idempotent: fixed ids; existing
 -- content rows are left untouched, translations are refreshed. Skills are
 -- reference data and live in the
--- 20260930024128_learning migration. The full curriculum arrives in Phase 6.
+-- 20260930024128_learning migration. Sample exercises (Phase 3) follow the
+-- lessons. The full curriculum arrives in Phase 6.
 
 insert into public.courses (id, skill_id, title, slug, description, status, order_index)
 select
@@ -311,5 +312,325 @@ select
   'manual'
 from vi
 join source using (entity_type, entity_id, field)
+on conflict (entity_type, entity_id, field, language, provider)
+do update set text = excluded.text, source_hash = excluded.source_hash;
+
+-- Practice (Phase 3): one or two exercises per sample lesson, covering all
+-- five types. Answer keys live in `exercise_answers` (never readable by
+-- learners). Existing rows are left untouched.
+
+insert into public.exercises (id, lesson_id, type, question, prompt_data, difficulty, status, order_index) values
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002001',
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000001001',
+  'multiple_choice',
+  'Which of these activities is testing, even though no code is run?',
+  $j${"options": [
+    {"id": "review", "text": "Reviewing the requirements for gaps and contradictions"},
+    {"id": "coding", "text": "Writing the code for the feature"},
+    {"id": "deploy", "text": "Deploying the release to production"},
+    {"id": "estimate", "text": "Estimating the sprint"}
+  ]}$j$,
+  'easy', 'published', 1
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002002',
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000001002',
+  'classification',
+  'Classify each situation as an **error**, a **defect** or a **failure**.',
+  $j${"categories": [
+    {"id": "error", "text": "Error (human mistake)"},
+    {"id": "defect", "text": "Defect (flaw in the product)"},
+    {"id": "failure", "text": "Failure (wrong behaviour observed)"}
+  ], "items": [
+    {"id": "misread", "text": "A developer misreads the discount rule in the requirements"},
+    {"id": "wrong-rate", "text": "The code applies a 10 % discount where the rule says 15 %"},
+    {"id": "charged", "text": "A customer is charged the wrong amount at checkout"},
+    {"id": "null-check", "text": "The price function has no check for an empty basket"},
+    {"id": "crash", "text": "The checkout page crashes when the basket is empty"}
+  ]}$j$,
+  'easy', 'published', 1
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002003',
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000001002',
+  'bug_report',
+  $q$Write a bug report for what you observed.
+
+While testing checkout on **staging** (Chrome 128, Windows 11), you add one item priced 20.00 USD to the basket and apply the discount code `SAVE15` (15 % off). The order summary shows a total of **18.00 USD**. The specification says the total must be 17.00 USD.$q$,
+  '{}',
+  'medium', 'published', 2
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002004',
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000001003',
+  'multiple_choice',
+  'Which of these are among the seven testing principles? Select all that apply.',
+  $j${"multiple": true, "options": [
+    {"id": "exhaustive", "text": "Exhaustive testing is impossible"},
+    {"id": "clustering", "text": "Defects cluster together"},
+    {"id": "no-defects", "text": "Testing proves that there are no defects"},
+    {"id": "early", "text": "Early testing saves time and money"},
+    {"id": "automate", "text": "Everything should be automated"}
+  ]}$j$,
+  'easy', 'published', 1
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002005',
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000001003',
+  'scenario',
+  $q$Your manager says: *"Run every possible value through the new age field (valid ages are 18 to 65) so we can be sure it has no bugs."*
+
+How do you answer, and what would you test instead?$q$,
+  '{}',
+  'medium', 'published', 2
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002006',
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000001004',
+  'test_case',
+  'Write a test case for the login form: a registered user signs in with a valid email and password and lands on the dashboard.',
+  '{}',
+  'easy', 'published', 1
+)
+on conflict (id) do nothing;
+
+insert into public.exercise_answers (exercise_id, answer_data, explanation) values
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002001',
+  '{"correct": ["review"]}',
+  $md$Reviewing requirements is **static testing**: you look for problems without running anything. It finds defects at the cheapest possible moment, before any code is written. Coding, deploying and estimating are not testing activities.$md$
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002002',
+  '{"mapping": {"misread": "error", "wrong-rate": "defect", "charged": "failure", "null-check": "defect", "crash": "failure"}}',
+  $md$The chain is **error → defect → failure**: a person makes a mistake (error), which leaves a flaw in the product (defect), which shows up as wrong behaviour when the code runs (failure). A defect that is never executed causes no failure.$md$
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002003',
+  $j${
+    "requiredFields": ["title", "environment", "stepsToReproduce", "actualResult", "expectedResult", "severity", "priority"],
+    "expectedSeverity": "major",
+    "expectedPriority": "high",
+    "expectedConcepts": [
+      {"concept": "Discount code", "keywords": ["save15", "discount", "coupon", "giam gia"]},
+      {"concept": "Actual total", "keywords": ["18"]},
+      {"concept": "Expected total", "keywords": ["17"]},
+      {"concept": "Staging environment", "keywords": ["staging", "chrome"]}
+    ],
+    "modelAnswer": "**Title:** Checkout total ignores part of the SAVE15 discount (18.00 instead of 17.00 USD)\n\n**Environment:** staging, Chrome 128, Windows 11\n\n**Steps to reproduce:**\n\n1. Add one item priced 20.00 USD to the basket.\n2. Go to checkout.\n3. Apply the discount code SAVE15.\n\n**Actual result:** the order total is 18.00 USD.\n\n**Expected result:** the order total is 17.00 USD (15 % off 20.00).\n\n**Severity:** major (wrong amount charged, but checkout still works). **Priority:** high (customers pay the wrong price).",
+    "rubric": [
+      {"id": "title", "text": "My title says what is wrong and where, without opening the report"},
+      {"id": "repro", "text": "Someone else could reproduce it from my steps alone"},
+      {"id": "results", "text": "I gave the actual and the expected total, with numbers"},
+      {"id": "env", "text": "I named the environment and browser"},
+      {"id": "sev-pri", "text": "I kept severity (impact) and priority (urgency) apart"}
+    ]
+  }$j$,
+  $md$A good bug report lets someone who was not there reproduce the problem. The numbers matter: "the total is wrong" is not enough, "18.00 instead of 17.00" is. The customer is charged the wrong price, so the impact is **major** (not critical: checkout still works) and fixing it is urgent, so priority is **high**.$md$
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002004',
+  '{"correct": ["exhaustive", "clustering", "early"]}',
+  $md$Exhaustive testing is impossible, defects cluster together, and early testing saves time and money are three of the seven principles. Testing shows the **presence** of defects, never their absence, and "automate everything" is not a principle at all.$md$
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002005',
+  $j${
+    "expectedConcepts": [
+      {"concept": "Exhaustive testing is impossible", "keywords": ["exhaustive", "impossible", "every possible", "all values", "khong the"]},
+      {"concept": "Boundary values", "keywords": ["boundar", "edge", "17", "66", "bien"]},
+      {"concept": "Equivalence partitions", "keywords": ["partition", "equivalence", "class", "group", "phan vung", "nhom"]},
+      {"concept": "Invalid values", "keywords": ["invalid", "negative", "letters", "empty", "khong hop le"]}
+    ],
+    "modelAnswer": "Testing every value is impossible (and would still not prove there are no bugs), so I choose the values most likely to find them:\n\n* **Equivalence partitions:** below 18, 18–65, above 65: one value from each is enough, e.g. 10, 40, 80.\n* **Boundary values:** 17, 18, 65 and 66, where off-by-one mistakes hide.\n* **Invalid input:** empty, negative, letters, decimals.\n\nThat is about ten tests instead of millions, and they target the risky places.",
+    "rubric": [
+      {"id": "impossible", "text": "I explained why testing every value is not possible"},
+      {"id": "partitions", "text": "I split the input into valid and invalid groups"},
+      {"id": "boundaries", "text": "I tested on and just outside both boundaries (17, 18, 65, 66)"},
+      {"id": "invalid", "text": "I included input that is not a number at all"}
+    ]
+  }$j$,
+  $md$This is the principle **exhaustive testing is impossible**: even a simple field has more inputs than you can run. Test design techniques pick a small set of values that find most defects: **equivalence partitioning** (one value per group) and **boundary value analysis** (values on and next to each edge).$md$
+),
+(
+  '6f1d2a4e-0c1b-4d7e-9a3f-000000002006',
+  $j${
+    "requiredFields": ["testCaseId", "title", "preconditions", "testData", "steps", "expectedResult", "priority"],
+    "expectedConcepts": [
+      {"concept": "Registered user", "keywords": ["registered", "existing", "account", "da dang ky", "tai khoan"]},
+      {"concept": "Valid credentials", "keywords": ["valid", "correct", "hop le"]},
+      {"concept": "Email and password", "keywords": ["email", "password", "mat khau"]},
+      {"concept": "Dashboard shown", "keywords": ["dashboard"]}
+    ],
+    "modelAnswer": "| Field | Value |\n|---|---|\n| Test case ID | TC-LOGIN-001 |\n| Title | Registered user logs in with valid email and password |\n| Preconditions | An account exists for learner@example.com and is verified; the user is logged out |\n| Test data | Email learner@example.com, password Correct-Pass-1 |\n| Steps | 1. Open the login page. 2. Enter the email. 3. Enter the password. 4. Press **Log in**. |\n| Expected result | The dashboard opens and shows the user's name |\n| Priority | High |\n| Test type | Functional |",
+    "rubric": [
+      {"id": "one-thing", "text": "My test case checks one thing only"},
+      {"id": "preconditions", "text": "The preconditions say what must be true before step 1"},
+      {"id": "data", "text": "I gave concrete test data, not \"a valid email\""},
+      {"id": "expected", "text": "The expected result can be checked as pass or fail"}
+    ]
+  }$j$,
+  $md$A test case must be repeatable by someone else: **preconditions** set the starting state, **test data** is concrete, each **step** is one action, and the **expected result** is observable, so the verdict is a clear pass or fail. Login is a core flow, so priority is high.$md$
+)
+on conflict (exercise_id) do nothing;
+
+-- Vietnamese translations of the sample exercises (manual). Review texts
+-- (explanation, model answer, rubric) are readable by a learner only after
+-- attempting the exercise (RLS on content_translations).
+with source (entity_id, field, text) as (
+  select e.id, 'question', e.question from public.exercises e
+  union all
+  select e.id, 'option.' || (o ->> 'id'), o ->> 'text'
+  from public.exercises e,
+    jsonb_array_elements(coalesce(e.prompt_data -> 'options', '[]')) o
+  union all
+  select e.id, 'category.' || (c ->> 'id'), c ->> 'text'
+  from public.exercises e,
+    jsonb_array_elements(coalesce(e.prompt_data -> 'categories', '[]')) c
+  union all
+  select e.id, 'item.' || (i ->> 'id'), i ->> 'text'
+  from public.exercises e,
+    jsonb_array_elements(coalesce(e.prompt_data -> 'items', '[]')) i
+  union all
+  select a.exercise_id, 'explanation', a.explanation
+  from public.exercise_answers a
+  union all
+  select a.exercise_id, 'model_answer', a.answer_data ->> 'modelAnswer'
+  from public.exercise_answers a
+  where a.answer_data ? 'modelAnswer'
+  union all
+  select a.exercise_id, 'rubric.' || (r ->> 'id'), r ->> 'text'
+  from public.exercise_answers a,
+    jsonb_array_elements(coalesce(a.answer_data -> 'rubric', '[]')) r
+),
+vi (entity_id, field, text) as (
+  values
+  -- 2001 multiple choice: static testing
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002001'::uuid, 'question',
+   'Hoạt động nào dưới đây là kiểm thử, dù không chạy dòng code nào?'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002001'::uuid, 'option.review',
+   'Review requirement để tìm chỗ thiếu và chỗ mâu thuẫn'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002001'::uuid, 'option.coding', 'Viết code cho tính năng'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002001'::uuid, 'option.deploy', 'Deploy bản release lên production'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002001'::uuid, 'option.estimate', 'Ước lượng sprint'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002001'::uuid, 'explanation',
+   $vi$Review requirement là **static testing**: bạn tìm vấn đề mà không cần chạy gì cả. Nó tìm ra defect ở thời điểm rẻ nhất, trước khi có dòng code nào. Viết code, deploy và ước lượng không phải là hoạt động kiểm thử.$vi$),
+  -- 2002 classification: error, defect, failure
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'question',
+   'Xếp mỗi tình huống vào **error**, **defect** hoặc **failure**.'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'category.error', 'Error (lỗi của con người)'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'category.defect', 'Defect (khiếm khuyết trong sản phẩm)'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'category.failure', 'Failure (hành vi sai quan sát được)'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'item.misread',
+   'Developer đọc nhầm quy tắc giảm giá trong requirement'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'item.wrong-rate',
+   'Code áp dụng giảm 10 % trong khi quy tắc là 15 %'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'item.charged',
+   'Khách hàng bị tính sai số tiền khi thanh toán'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'item.null-check',
+   'Hàm tính giá không kiểm tra trường hợp giỏ hàng trống'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'item.crash',
+   'Trang checkout bị crash khi giỏ hàng trống'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002002'::uuid, 'explanation',
+   $vi$Chuỗi là **error → defect → failure**: một người mắc lỗi (error), để lại khiếm khuyết trong sản phẩm (defect), và khiếm khuyết đó lộ ra thành hành vi sai khi code chạy (failure). Một defect không bao giờ được thực thi thì không gây ra failure.$vi$),
+  -- 2003 bug report: discount
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'question', $vi$Viết bug report cho điều bạn quan sát được.
+
+Khi test checkout trên **staging** (Chrome 128, Windows 11), bạn thêm một sản phẩm giá 20.00 USD vào giỏ và áp mã giảm giá `SAVE15` (giảm 15 %). Phần tóm tắt đơn hàng hiển thị tổng **18.00 USD**. Theo đặc tả, tổng phải là 17.00 USD.$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'explanation',
+   $vi$Một bug report tốt giúp người không có mặt lúc đó tái hiện được vấn đề. Con số rất quan trọng: "tổng tiền bị sai" là chưa đủ, "18.00 thay vì 17.00" mới đủ. Khách hàng bị tính sai giá nên mức ảnh hưởng là **major** (không phải critical: checkout vẫn hoạt động), và cần sửa gấp nên priority là **high**.$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'model_answer', $vi$**Title:** Tổng tiền checkout bỏ sót một phần giảm giá SAVE15 (18.00 thay vì 17.00 USD)
+
+**Environment:** staging, Chrome 128, Windows 11
+
+**Steps to reproduce:**
+
+1. Thêm một sản phẩm giá 20.00 USD vào giỏ hàng.
+2. Vào checkout.
+3. Áp mã giảm giá SAVE15.
+
+**Actual result:** tổng đơn hàng là 18.00 USD.
+
+**Expected result:** tổng đơn hàng là 17.00 USD (giảm 15 % của 20.00).
+
+**Severity:** major (tính sai tiền, nhưng checkout vẫn chạy). **Priority:** high (khách hàng trả sai giá).$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'rubric.title',
+   'Title của tôi nói rõ cái gì sai và ở đâu, không cần mở report'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'rubric.repro',
+   'Người khác có thể tái hiện chỉ bằng các bước của tôi'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'rubric.results',
+   'Tôi ghi cả tổng thực tế và tổng mong đợi, có con số'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'rubric.env',
+   'Tôi ghi rõ môi trường và trình duyệt'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002003'::uuid, 'rubric.sev-pri',
+   'Tôi tách bạch severity (mức ảnh hưởng) và priority (mức khẩn cấp)'),
+  -- 2004 multiple choice (several answers): principles
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002004'::uuid, 'question',
+   'Những điều nào dưới đây thuộc bảy nguyên tắc kiểm thử? Chọn tất cả đáp án đúng.'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002004'::uuid, 'option.exhaustive', 'Không thể kiểm thử toàn bộ (exhaustive testing)'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002004'::uuid, 'option.clustering', 'Defect thường tập trung thành cụm'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002004'::uuid, 'option.no-defects', 'Kiểm thử chứng minh rằng không có defect'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002004'::uuid, 'option.early', 'Kiểm thử sớm tiết kiệm thời gian và chi phí'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002004'::uuid, 'option.automate', 'Mọi thứ đều nên được tự động hoá'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002004'::uuid, 'explanation',
+   $vi$Không thể kiểm thử toàn bộ, defect tập trung thành cụm, và kiểm thử sớm tiết kiệm thời gian và chi phí là ba trong bảy nguyên tắc. Kiểm thử cho thấy defect **có mặt**, không bao giờ chứng minh được chúng không tồn tại; còn "tự động hoá mọi thứ" hoàn toàn không phải là một nguyên tắc.$vi$),
+  -- 2005 scenario: exhaustive testing
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002005'::uuid, 'question', $vi$Quản lý của bạn nói: *"Hãy chạy mọi giá trị có thể qua ô nhập tuổi mới (tuổi hợp lệ từ 18 đến 65) để chắc chắn nó không có bug."*
+
+Bạn trả lời thế nào, và bạn sẽ test những gì thay vào đó?$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002005'::uuid, 'explanation',
+   $vi$Đây là nguyên tắc **không thể kiểm thử toàn bộ**: ngay cả một ô nhập đơn giản cũng có nhiều giá trị hơn mức bạn chạy được. Các kỹ thuật test design chọn ra một tập nhỏ giá trị tìm được phần lớn defect: **equivalence partitioning** (một giá trị cho mỗi nhóm) và **boundary value analysis** (giá trị nằm trên và sát mỗi biên).$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002005'::uuid, 'model_answer', $vi$Không thể test mọi giá trị (và dù có làm được thì cũng không chứng minh được là không có bug), nên tôi chọn những giá trị dễ tìm ra bug nhất:
+
+* **Equivalence partitions:** dưới 18, 18–65, trên 65: mỗi nhóm một giá trị là đủ, ví dụ 10, 40, 80.
+* **Boundary values:** 17, 18, 65 và 66, nơi các lỗi lệch một đơn vị hay ẩn nấp.
+* **Invalid input:** để trống, số âm, chữ cái, số thập phân.
+
+Khoảng mười test thay vì hàng triệu, và chúng nhắm đúng vào chỗ rủi ro.$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002005'::uuid, 'rubric.impossible',
+   'Tôi giải thích được vì sao không thể test mọi giá trị'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002005'::uuid, 'rubric.partitions',
+   'Tôi chia input thành các nhóm hợp lệ và không hợp lệ'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002005'::uuid, 'rubric.boundaries',
+   'Tôi test trên và sát ngoài cả hai biên (17, 18, 65, 66)'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002005'::uuid, 'rubric.invalid',
+   'Tôi có thử input hoàn toàn không phải là số'),
+  -- 2006 test case: login
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002006'::uuid, 'question',
+   'Viết một test case cho form đăng nhập: người dùng đã đăng ký đăng nhập bằng email và mật khẩu hợp lệ và vào được dashboard.'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002006'::uuid, 'explanation',
+   $vi$Một test case phải lặp lại được bởi người khác: **preconditions** đặt trạng thái ban đầu, **test data** cụ thể, mỗi **step** là một thao tác, và **expected result** quan sát được, để verdict là pass hoặc fail rõ ràng. Đăng nhập là luồng cốt lõi nên priority là high.$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002006'::uuid, 'model_answer', $vi$| Trường | Giá trị |
+|---|---|
+| Test case ID | TC-LOGIN-001 |
+| Title | Người dùng đã đăng ký đăng nhập bằng email và mật khẩu hợp lệ |
+| Preconditions | Tài khoản learner@example.com đã tồn tại và đã xác minh; người dùng đang đăng xuất |
+| Test data | Email learner@example.com, mật khẩu Correct-Pass-1 |
+| Steps | 1. Mở trang đăng nhập. 2. Nhập email. 3. Nhập mật khẩu. 4. Bấm **Log in**. |
+| Expected result | Dashboard mở ra và hiển thị tên người dùng |
+| Priority | High |
+| Test type | Functional |$vi$),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002006'::uuid, 'rubric.one-thing',
+   'Test case của tôi chỉ kiểm tra một điều'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002006'::uuid, 'rubric.preconditions',
+   'Preconditions nói rõ điều gì phải đúng trước bước 1'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002006'::uuid, 'rubric.data',
+   'Tôi đưa test data cụ thể, không phải "một email hợp lệ"'),
+  ('6f1d2a4e-0c1b-4d7e-9a3f-000000002006'::uuid, 'rubric.expected',
+   'Expected result có thể kiểm tra được là pass hay fail')
+)
+insert into public.content_translations
+  (entity_type, entity_id, field, language, source_hash, text, provider)
+select
+  'exercise',
+  vi.entity_id,
+  vi.field,
+  'vi',
+  encode(sha256(convert_to(source.text, 'UTF8')), 'hex'),
+  vi.text,
+  'manual'
+from vi
+join source using (entity_id, field)
 on conflict (entity_type, entity_id, field, language, provider)
 do update set text = excluded.text, source_hash = excluded.source_hash;

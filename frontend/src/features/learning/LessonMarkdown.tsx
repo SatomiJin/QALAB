@@ -27,11 +27,16 @@ const components: Components = {
 
 interface LessonMarkdownProps {
   source: string;
+  testId?: string;
 }
 
-export function LessonMarkdown({ source }: LessonMarkdownProps) {
+/** Markdown from the database (lessons, exercise questions and reviews). */
+export function LessonMarkdown({
+  source,
+  testId = 'lesson-content',
+}: LessonMarkdownProps) {
   return (
-    <div className={styles.markdown} data-testid="lesson-content">
+    <div className={styles.markdown} data-testid={testId}>
       <Markdown remarkPlugins={[remarkGfm]} components={components}>
         {source}
       </Markdown>

@@ -9,6 +9,7 @@ import {
   type PreparedText,
 } from './markdown-translate.js';
 import {
+  MARKDOWN_FIELDS,
   type TranslatableEntity,
   type TranslatableField,
   type TranslationRow,
@@ -164,10 +165,9 @@ export class ContentTranslationService {
     const prepared: { ref: TextRef; text: PreparedText; offset: number }[] = [];
     const fragments: string[] = [];
     for (const ref of refs) {
-      const text =
-        ref.field === 'content_md'
-          ? prepareMarkdown(ref.text)
-          : prepareInline(ref.text);
+      const text = MARKDOWN_FIELDS.has(ref.field)
+        ? prepareMarkdown(ref.text)
+        : prepareInline(ref.text);
       prepared.push({ ref, text, offset: fragments.length });
       fragments.push(...text.pieces);
     }

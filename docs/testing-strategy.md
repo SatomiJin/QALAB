@@ -54,3 +54,16 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | RLS on `content_translations`: learners read published only, nobody writes, delete trigger | `backend/test/integration/translations-rls.int-spec.ts` |
 | URL list params (parse, defaults, round trip) | `frontend/src/features/learning/list-params.test.ts` |
 | E2E: breadcrumb + back buttons, back returns to the same list page, pagination (desktop + mobile size picker), skill filter, invalid URL params, machine translation note + English original toggle, unavailable note | `frontend/tests/e2e/learning.spec.ts` |
+
+## Phase 3 coverage (practice)
+
+| Requirement (plant.md) | Test |
+| --- | --- |
+| Grading per type (mandatory): exact match, % classification, required fields, severity/priority, concept coverage, reweighting, pass score, keyword matching (accents, word start, regex characters) | `backend/src/practice/grading.spec.ts` |
+| Prompt, answer key, answer and self-assessment validation per type (ids exist, limits, unknown keys, empty forms) | `backend/src/practice/exercise-schema.spec.ts` |
+| Every seeded exercise has a prompt and answer key the grader accepts | `backend/src/practice/seed-exercises.spec.ts` |
+| Practice endpoints: 401, invalid UUID / query 400, filters (several types), catalogue order, pagination, no answer key in any response, 404 for draft / hidden-lesson / unknown, grading per type, client `score` / `isCorrect` / `userId` rejected, attempt stored for the token's user, history per user newest first, stats, self-assessment once (409), other user's attempt 404, missing key → generic 500, translations incl. review texts only after an attempt | `backend/test/api/practice.e2e-spec.ts` (fakes: `test/support/fake-practice.ts`) |
+| Attempt rate limit per user, not per IP | `backend/test/api/practice-rate-limit.e2e-spec.ts` |
+| RLS: published-only exercises, no answer keys for learners (admins read), no attempt insert / delete / score update by learners, own attempts only, self-assessment once, immutable even for the service role, FK restrict, review-text translations gated by an attempt | `backend/test/integration/practice-rls.int-spec.ts` |
+| Tab ↔ type mapping, verdicts, URL params, form values ↔ answer, backend field errors → form fields | `frontend/src/features/practice/practice.test.ts` |
+| E2E: tab lists, filters + clear, all five forms (client validation, steps add/remove), result checks, explanation, model answer, self-assessment, try again keeps the answer, history + show an older result, list verdict / best score, lesson "Practise this lesson", empty / error + retry / 404, failed submit, Vietnamese | `frontend/tests/e2e/practice.spec.ts` (mock: `tests/e2e/support/mock-practice.ts`, grades with the backend rules) |

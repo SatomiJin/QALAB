@@ -15,11 +15,16 @@ import {
 @Module({
   imports: [
     ProfileModule,
-    // Applied per controller (`@UseGuards(ThrottlerGuard)`), not globally.
+    // Applied per route or controller, not globally. `default`: `/auth/*`
+    // per IP. `attempts`: attempt submission per user (AttemptThrottlerGuard).
+    // Each route skips the throttler that is not its own.
     ThrottlerModule.forRootAsync({
       inject: [AppConfigService],
       useFactory: (config: AppConfigService) => ({
-        throttlers: [{ ttl: 60_000, limit: config.authRateLimit }],
+        throttlers: [
+          { name: 'default', ttl: 60_000, limit: config.authRateLimit },
+          { name: 'attempts', ttl: 60_000, limit: config.attemptRateLimit },
+        ],
         errorMessage: 'Too many requests. Try again later.',
       }),
     }),

@@ -2,8 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service.js';
 import type { TranslationLanguage } from './translator.js';
 
-export type TranslatableEntity = 'course' | 'module' | 'lesson';
-export type TranslatableField = 'title' | 'description' | 'content_md';
+export type TranslatableEntity = 'course' | 'module' | 'lesson' | 'exercise';
+
+/**
+ * Exercise review texts (`explanation`, `model_answer`, `rubric.<id>`) are
+ * readable by a learner only after an attempt (RLS), like the answer itself.
+ */
+export type TranslatableField =
+  | 'title'
+  | 'description'
+  | 'content_md'
+  | 'question'
+  | 'explanation'
+  | 'model_answer'
+  | `${'option' | 'item' | 'category' | 'rubric'}.${string}`;
+
+/** Fields translated as Markdown documents (line by line, code kept). */
+export const MARKDOWN_FIELDS: ReadonlySet<TranslatableField> = new Set([
+  'content_md',
+  'question',
+  'explanation',
+  'model_answer',
+]);
 
 /** `manual`: written by a person, preferred. `google`: machine, cached. */
 export type TranslationProvider = 'manual' | 'google';

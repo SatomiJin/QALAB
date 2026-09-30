@@ -135,7 +135,7 @@
   vertical-align: baseline;
 }
 
-// Skill filter (same tabs as the Practice pages) and pagination -----------
+// Skill filter (same tabs as the Practice pages) --------------------------
 
 .filter {
   display: flex;
@@ -174,26 +174,4 @@
     padding: $space-4 0;
     border-bottom: 1px solid $color-rule;
   }
-}
-
-.pager {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: $space-3;
-  margin-top: $space-5;
-}
-
-.pagerControls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: $space-3;
-}
-
-.range {
-  @include type-small;
-  @include type-id;
-  color: $color-ink-muted;
 }

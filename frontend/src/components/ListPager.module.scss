@@ -1,0 +1,23 @@
+@use '../styles/tokens' as *;
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-top: $space-5;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
+.range {
+  @include type-small;
+  @include type-id;
+  color: $color-ink-muted;
+}

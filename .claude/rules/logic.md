@@ -45,10 +45,16 @@ Business and security rules that both sides must follow. They come from `plant.m
 * Lists that can grow are paginated with `page` (≥ 1) and `pageSize` ∈ {20, 50, 100}, default 20; responses carry `items`, `total`, `page`, `pageSize`. Past the end → empty `items` with the real `total` (the UI moves to the last page).
 * Sort the lightweight rows first, then load details only for the page.
 
-## Grading (Phase 3+)
+## Grading (Phase 3)
 
 * Submissions are stored with the user id from the token; the score, verdict and feedback are computed server-side with `service()` reading the answer key, then only the result is returned.
-* Re-grading or changing an attempt's score from the client is never possible.
+* Graded attempts are **inserted by the backend with the service role**; learners have no insert, delete or score-update privilege on `exercise_attempts` (plant.md said "insert own"; changed so a JWT + anon key cannot write a score through PostgREST). Attempts are immutable (trigger): only the self-assessment may be added, once.
+* Re-grading or changing an attempt's score from the client is never possible. A body with `score`, `isCorrect`, `userId`… is `400`.
+* Answer keys, the explanation, the model answer and the rubric are the **review**: returned only with the user's own attempt (submit response, attempt history). The explanation is stored with the answer key (`exercise_answers.explanation`), not on `exercises`, because it gives the answer away. Their translations are readable only after an attempt (RLS).
+* Grading is deterministic and per type (`backend/src/practice/grading.ts`): multiple choice exact set (100 / 0); classification % right, correct = all right; test case fields 40 % + concepts 60 %; bug report fields 30 % + severity 20 % + priority 20 % + concepts 30 %; scenario concepts 100 %. Free-text types pass at **70** (`PASS_SCORE`, mirrored in `frontend/src/types/api.ts`). A part with nothing to check is dropped and the rest reweighted.
+* Keyword matching: case- and accent-insensitive, at the start of a word. It is approximate, so free-text results always show the model answer and a self-assessment checklist; the self-assessment is saved once per attempt (`409` on a second save).
+* Structured answers may be incomplete (lower score) but not empty. Answers are validated against the exercise type and its prompt ids (`parseAnswer`); answer keys against type + prompt (`parseAnswerKey`, to be reused by the Admin CMS). A broken or missing key is a generic `500`; logs name field paths, never key values.
+* Attempt submission is rate-limited per user (`ATTEMPT_RATE_LIMIT`/minute, default 20).
 
 ## Content (Phase 4+)
 
@@ -56,7 +62,8 @@ Business and security rules that both sides must follow. They come from `plant.m
 * Content with learner progress or attempts is archived, never hard-deleted. Hard delete only when unused, with UI confirmation.
 * Content tables store `created_by`, `updated_by` (from the token), `created_at`, `updated_at`.
 * Slugs: lowercase `a-z0-9-`, unique within their scope. Answer keys are validated against the exercise type on the backend.
-* Grading is deterministic (no AI in V1). Free-text answers also show the model answer + self-assessment checklist; both results are stored in `exercise_attempts`.
+* Grading is deterministic (no AI in V1). Free-text answers also show the model answer + self-assessment checklist; both results are stored in `exercise_attempts` (see Grading).
+* Visible exercise = the exercise **and** its lesson, module and course are `published`; anything else is `404`.
 
 ## Keep in sync
 

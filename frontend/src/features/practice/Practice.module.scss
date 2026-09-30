@@ -1,0 +1,370 @@
+@use '../../styles/tokens' as *;
+
+// Shared by the Practice list, exercise page and the lesson's practice list.
+
+.muted {
+  margin: 0;
+  color: $color-ink-muted;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $space-1 $space-4;
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.count {
+  @include type-id;
+}
+
+// A text button that lines up with the text around it.
+.linkButton {
+  height: auto;
+  padding: 0;
+}
+
+// Filters ------------------------------------------------------------------
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+  margin-bottom: $space-5;
+
+  > * {
+    min-width: 200px;
+
+    @media (max-width: $breakpoint-md) {
+      flex: 1 1 100%;
+    }
+  }
+}
+
+// Exercise rows: fixed columns so the stats and verdicts line up ----------
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid $color-rule;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 128px 88px;
+  align-items: baseline;
+  gap: $space-2 $space-4;
+  padding: $space-4 0;
+  border-bottom: 1px solid $color-rule;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    .rowStats {
+      grid-column: 1;
+      grid-row: 2;
+      text-align: left;
+    }
+
+    .rowVerdict {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+}
+
+.rowMain {
+  display: grid;
+  gap: $space-1;
+  min-width: 0;
+}
+
+.rowTitle {
+  max-width: $measure;
+  font-weight: 600;
+  // Long questions: two lines in the list, the whole text on the page.
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rowStats {
+  @include type-small;
+  @include type-id;
+  color: $color-ink-muted;
+  text-align: right;
+}
+
+.rowVerdict {
+  justify-self: end;
+}
+
+// Exercise page ------------------------------------------------------------
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2 $space-4;
+  margin: (-$space-4) 0 $space-5;
+}
+
+.question {
+  max-width: $measure;
+  margin-bottom: $space-5;
+  font-size: 17px;
+  line-height: 27px;
+}
+
+.hint {
+  max-width: $measure;
+  margin: 0 0 $space-4;
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.form {
+  max-width: 720px;
+}
+
+.choices {
+  display: grid;
+  gap: $space-3;
+}
+
+// Classification: item text, then its group choice.
+.classify {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid $color-rule;
+
+  > li {
+    padding: $space-3 0 0;
+    border-bottom: 1px solid $color-rule;
+  }
+}
+
+.classifyItem {
+  margin: 0 0 $space-2;
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: $space-2;
+}
+
+.stepNumber {
+  padding-top: 5px;
+  @include type-id;
+  color: $color-ink-muted;
+  text-align: right;
+}
+
+.fieldPair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 $space-4;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.actions {
+  display: grid;
+  justify-items: start;
+  gap: $space-3;
+  padding-top: $space-5;
+  border-top: 1px solid $color-rule;
+}
+
+// Result: the answer's own test run ----------------------------------------
+
+.result {
+  display: grid;
+  gap: $space-5;
+  padding-top: $space-5;
+  border-top: 1px solid $color-ink;
+  scroll-margin-top: $space-6;
+}
+
+.score {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $space-2 $space-4;
+}
+
+.scoreValue {
+  @include type-page-title;
+  @include type-id;
+}
+
+.scoreUnit {
+  color: $color-ink-muted;
+}
+
+.parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1 $space-4;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  @include type-small;
+  @include type-id;
+  color: $color-ink-muted;
+}
+
+// Checks read like executed test steps: check, expected, actual, verdict.
+.checks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid $color-rule;
+}
+
+.checkHead,
+.check {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) 88px;
+  align-items: baseline;
+  gap: $space-1 $space-4;
+  padding: $space-2 0;
+  border-bottom: 1px solid $color-rule;
+}
+
+.checkHead {
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.checkVerdict {
+  justify-self: end;
+}
+
+// Small screens: each check is a block; the column names come back as
+// labels in front of expected / actual.
+.cellLabel {
+  display: none;
+  color: $color-ink-muted;
+}
+
+@media (max-width: $breakpoint-md) {
+  .checkHead {
+    display: none;
+  }
+
+  .check {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .checkName {
+    grid-column: 1;
+  }
+
+  .checkVerdict {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .checkCell {
+    grid-column: 1 / -1;
+    @include type-small;
+  }
+
+  .cellLabel {
+    display: inline;
+    margin-right: $space-2;
+  }
+}
+
+.checkMuted {
+  color: $color-ink-muted;
+}
+
+.sectionTitle {
+  @include type-section-title;
+  margin: 0 0 $space-2;
+}
+
+.rubric {
+  display: grid;
+  gap: $space-2;
+}
+
+.rubricActions {
+  display: grid;
+  justify-items: start;
+  gap: $space-3;
+  margin-top: $space-4;
+}
+
+// History ------------------------------------------------------------------
+
+.history {
+  margin-top: $space-6;
+  padding-top: $space-5;
+  border-top: 1px solid $color-rule;
+}
+
+.attempt {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px 88px 128px;
+  align-items: baseline;
+  gap: $space-2 $space-4;
+  padding: $space-3 0;
+  border-bottom: 1px solid $color-rule;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+
+    .attemptAction {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+  }
+}
+
+.attemptVerdict {
+  justify-self: start;
+}
+
+.historyPager {
+  margin-top: $space-4;
+}
+
+.attemptScore {
+  @include type-id;
+  text-align: right;
+}
+
+.attemptAction {
+  justify-self: end;
+  @include type-small;
+}
+
+// Lesson page: "Practise this lesson" -------------------------------------
+
+.lessonPractice {
+  max-width: $measure;
+  margin-bottom: $space-5;
+
+  // The lesson footer's rule closes the list: no double line.
+  .row:last-child {
+    border-bottom: 0;
+  }
+}

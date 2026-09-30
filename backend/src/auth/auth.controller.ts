@@ -17,7 +17,7 @@ import {
   ApiTooManyRequestsResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { ErrorResponseDto } from '../common/errors/error-response.dto.js';
 import type { AuthUser } from './auth-user.js';
 import { AuthService } from './auth.service.js';
@@ -42,6 +42,7 @@ import {
   description: 'Rate limit per IP and endpoint (`AUTH_RATE_LIMIT`/minute)',
 })
 @UseGuards(ThrottlerGuard)
+@SkipThrottle({ attempts: true })
 @Controller('auth')
 export class AuthController {
   constructor(private readonly auth: AuthService) {}

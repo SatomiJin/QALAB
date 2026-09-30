@@ -211,3 +211,225 @@ export interface UpdateLessonProgressRequest {
   progressPercent?: number;
   complete?: boolean;
 }
+
+// Practice (Phase 3) ---------------------------------------------------------
+
+export const EXERCISE_TYPES = [
+  'multiple_choice',
+  'classification',
+  'test_case',
+  'bug_report',
+  'scenario',
+] as const;
+export type ExerciseType = (typeof EXERCISE_TYPES)[number];
+
+export const DIFFICULTIES = ['easy', 'medium', 'hard'] as const;
+export type Difficulty = (typeof DIFFICULTIES)[number];
+
+/** Mirrors backend `PRIORITIES`, `SEVERITIES`, `TEST_TYPES`. */
+export const PRIORITIES = ['high', 'medium', 'low'] as const;
+export type Priority = (typeof PRIORITIES)[number];
+export const SEVERITIES = ['critical', 'major', 'minor', 'trivial'] as const;
+export type Severity = (typeof SEVERITIES)[number];
+export const TEST_TYPES = [
+  'functional',
+  'negative',
+  'boundary',
+  'regression',
+  'smoke',
+  'usability',
+  'performance',
+  'security',
+] as const;
+export type TestType = (typeof TEST_TYPES)[number];
+
+/** Mirrors backend `ANSWER_LIMITS`. */
+export const ANSWER_LIMITS = {
+  idLength: 50,
+  titleLength: 200,
+  textLength: 2000,
+  steps: 30,
+  stepLength: 500,
+  scenarioLength: 5000,
+  attachmentLength: 500,
+} as const;
+
+/** Free-text types pass at this score (backend `PASS_SCORE`). */
+export const PASS_SCORE = 70;
+
+export interface Label {
+  id: string;
+  text: string;
+}
+
+/** Mirrors backend `ExercisePromptDto`. Empty for free-text types. */
+export interface ExercisePrompt {
+  options?: Label[];
+  multiple?: boolean;
+  categories?: Label[];
+  items?: Label[];
+}
+
+/** Mirrors backend `ExerciseStatsDto`: your attempts at the exercise. */
+export interface ExerciseStats {
+  attemptCount: number;
+  bestScore: number | null;
+  lastScore: number | null;
+  lastAttemptedAt: string | null;
+  passed: boolean;
+}
+
+/** Mirrors backend `ExerciseSummaryDto`. */
+export interface ExerciseSummary {
+  id: string;
+  type: ExerciseType;
+  difficulty: Difficulty;
+  /** Markdown. */
+  question: string;
+  lesson: LessonRef;
+  course: { id: string; slug: string; title: string };
+  skill: { code: string; name: string };
+  stats: ExerciseStats;
+}
+
+/** Mirrors backend `ExercisePageDto`. */
+export interface ExercisePage extends Localized {
+  items: ExerciseSummary[];
+  total: number;
+  page: number;
+  pageSize: PageSize;
+}
+
+/** Mirrors backend `ExerciseDto`. Never contains the answer key. */
+export interface Exercise extends ExerciseSummary, Localized {
+  prompt: ExercisePrompt;
+}
+
+export interface TestCaseAnswer {
+  testCaseId: string;
+  title: string;
+  preconditions: string;
+  testData: string;
+  steps: string[];
+  expectedResult: string;
+  priority: Priority | null;
+  testType: TestType | null;
+}
+
+export interface BugReportAnswer {
+  bugId: string;
+  title: string;
+  environment: string;
+  preconditions: string;
+  stepsToReproduce: string[];
+  actualResult: string;
+  expectedResult: string;
+  severity: Severity | null;
+  priority: Priority | null;
+  attachment: string;
+}
+
+export interface AnswerByType {
+  multiple_choice: { selected: string[] };
+  classification: { mapping: Record<string, string> };
+  test_case: TestCaseAnswer;
+  bug_report: BugReportAnswer;
+  scenario: { text: string };
+}
+
+export type TestCaseField = keyof TestCaseAnswer;
+export type BugReportField = keyof BugReportAnswer;
+
+export interface ConceptResult {
+  concept: string;
+  matched: boolean;
+}
+
+export interface ScorePart {
+  part: 'fields' | 'concepts' | 'severity' | 'priority';
+  score: number;
+  weight: number;
+}
+
+export interface MatchResult<T extends string> {
+  expected: T;
+  given: T | null;
+  match: boolean;
+}
+
+/** Mirrors backend `Feedback` (per type, `type` discriminates). */
+export type Feedback =
+  | {
+      type: 'multiple_choice';
+      options: { id: string; selected: boolean; correct: boolean }[];
+    }
+  | {
+      type: 'classification';
+      items: {
+        id: string;
+        chosen: string;
+        correct: string;
+        isCorrect: boolean;
+      }[];
+      correctCount: number;
+      total: number;
+    }
+  | {
+      type: 'test_case';
+      parts: ScorePart[];
+      fields: { field: TestCaseField; present: boolean }[];
+      concepts: ConceptResult[];
+    }
+  | {
+      type: 'bug_report';
+      parts: ScorePart[];
+      fields: { field: BugReportField; present: boolean }[];
+      severity: MatchResult<Severity>;
+      priority: MatchResult<Priority>;
+      concepts: ConceptResult[];
+    }
+  | { type: 'scenario'; parts: ScorePart[]; concepts: ConceptResult[] };
+
+/** Mirrors backend `AttemptDto`. */
+export interface Attempt {
+  id: string;
+  exerciseId: string;
+  score: number;
+  isCorrect: boolean;
+  answer: Record<string, unknown>;
+  feedback: Feedback;
+  selfAssessment: { checked: string[] } | null;
+  attemptedAt: string;
+}
+
+/** Mirrors backend `ReviewDto`: shown after an attempt. */
+export interface Review {
+  explanation: string;
+  modelAnswer: string | null;
+  rubric: Label[];
+}
+
+/** Mirrors backend `AttemptResultDto`. */
+export interface AttemptResult extends Localized {
+  attempt: Attempt;
+  review: Review;
+}
+
+/** Mirrors backend `AttemptPageDto`. */
+export interface AttemptPage extends Localized {
+  items: Attempt[];
+  total: number;
+  page: number;
+  pageSize: PageSize;
+  review: Review | null;
+}
+
+/** Mirrors backend `SubmitAttemptDto`. */
+export interface SubmitAttemptRequest {
+  answer: AnswerByType[ExerciseType];
+}
+
+/** Mirrors backend `SaveSelfAssessmentDto`. */
+export interface SaveSelfAssessmentRequest {
+  checked: string[];
+}

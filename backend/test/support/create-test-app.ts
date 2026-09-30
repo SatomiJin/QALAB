@@ -6,6 +6,9 @@ import { configureApp } from '../../src/app.setup.js';
 import { JWT_KEY_SET } from '../../src/auth/jwt-verifier.service.js';
 import { ContentRepository } from '../../src/learning/content.repository.js';
 import { LessonProgressRepository } from '../../src/learning/lesson-progress.repository.js';
+import { AttemptsRepository } from '../../src/practice/attempts.repository.js';
+import { ExerciseAnswersRepository } from '../../src/practice/exercise-answers.repository.js';
+import { ExercisesRepository } from '../../src/practice/exercises.repository.js';
 import { ProfilesRepository } from '../../src/profile/profiles.repository.js';
 import { SupabaseService } from '../../src/supabase/supabase.service.js';
 import { TranslationsRepository } from '../../src/translation/translations.repository.js';
@@ -15,6 +18,12 @@ import {
   FakeContentRepository,
   FakeLessonProgressRepository,
 } from './fake-learning.js';
+import {
+  FakeAttemptsRepository,
+  FakeExerciseAnswersRepository,
+  FakeExercisesRepository,
+  userIdFromToken,
+} from './fake-practice.js';
 import {
   FakeTranslationsRepository,
   FakeTranslator,
@@ -28,7 +37,12 @@ export interface TestApp {
   progress: FakeLessonProgressRepository;
   translator: FakeTranslator;
   translations: FakeTranslationsRepository;
+  exercises: FakeExercisesRepository;
+  answers: FakeExerciseAnswersRepository;
+  attempts: FakeAttemptsRepository;
 }
+
+const REVIEW_FIELD = /^(explanation|model_answer|rubric\..+)$/;
 
 /**
  * The real app (same modules, pipes, filters and guards as production) with
@@ -42,6 +56,14 @@ export async function createTestApp(
   const progress = new FakeLessonProgressRepository();
   const translator = new FakeTranslator();
   const translations = new FakeTranslationsRepository();
+  const exercises = new FakeExercisesRepository(content);
+  const answers = new FakeExerciseAnswersRepository();
+  const attempts = new FakeAttemptsRepository();
+  // Mirrors the content_translations read policy for exercise review texts.
+  translations.canRead = (row, token) =>
+    row.entity_type !== 'exercise' ||
+    !REVIEW_FIELD.test(row.field) ||
+    attempts.hasAttempted(userIdFromToken(token), row.entity_id);
   const auth = await FakeAuthServer.create((user) => profiles.addFor(user));
 
   const fakeSupabase: Pick<SupabaseService, 'anon' | 'service' | 'forUser'> = {
@@ -69,6 +91,12 @@ export async function createTestApp(
     .useValue(translator)
     .overrideProvider(TranslationsRepository)
     .useValue(translations)
+    .overrideProvider(ExercisesRepository)
+    .useValue(exercises)
+    .overrideProvider(ExerciseAnswersRepository)
+    .useValue(answers)
+    .overrideProvider(AttemptsRepository)
+    .useValue(attempts)
     .compile();
 
   const app = moduleRef.createNestApplication<INestApplication<App>>({
@@ -76,5 +104,16 @@ export async function createTestApp(
   });
   configureApp(app);
   await app.init();
-  return { app, auth, profiles, content, progress, translator, translations };
+  return {
+    app,
+    auth,
+    profiles,
+    content,
+    progress,
+    translator,
+    translations,
+    exercises,
+    answers,
+    attempts,
+  };
 }

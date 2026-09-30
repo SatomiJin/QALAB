@@ -292,17 +292,8 @@ export class LanguageQueryDto {
   lang: ContentLanguage = 'en';
 }
 
-export class ListCoursesQueryDto extends LanguageQueryDto {
-  @ApiPropertyOptional({
-    example: 'fundamentals',
-    description: 'Skill code. Unknown codes return an empty page.',
-  })
-  @IsOptional()
-  @IsString()
-  @MaxLength(40)
-  @Matches(/^[a-z][a-z0-9_]*$/, { message: 'skill must be a skill code' })
-  skill?: string;
-
+/** `?page=&pageSize=` (and `?lang=`) on paginated lists. */
+export class PageQueryDto extends LanguageQueryDto {
   @ApiPropertyOptional({ minimum: 1, default: 1 })
   @Transform(toNumber)
   @IsOptional()
@@ -316,6 +307,18 @@ export class ListCoursesQueryDto extends LanguageQueryDto {
   @IsOptional()
   @IsIn(PAGE_SIZES, { message: 'pageSize must be one of 20, 50, 100' })
   pageSize: PageSize = 20;
+}
+
+export class ListCoursesQueryDto extends PageQueryDto {
+  @ApiPropertyOptional({
+    example: 'fundamentals',
+    description: 'Skill code. Unknown codes return an empty page.',
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(40)
+  @Matches(/^[a-z][a-z0-9_]*$/, { message: 'skill must be a skill code' })
+  skill?: string;
 }
 
 /**

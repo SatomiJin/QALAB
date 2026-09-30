@@ -13,7 +13,7 @@ Applies to everything in `frontend/`. Visual rules: [design.md](design.md). Cros
 src/
 ├── app/          # App, Providers, router
 ├── features/<x>/ # feature code: <x>-api.ts, queries.ts, pure helpers + *.test.ts, pages/, components, *.module.scss
-├── components/   # shared UI (PageHeader, VerdictTag, BugReport, feedback/{PageLoader,ErrorState,EmptyState})
+├── components/   # shared UI (PageHeader, PageTrail, ListPager, VerdictTag, BugReport, feedback/{PageLoader,ErrorState,EmptyState})
 ├── layouts/      # AppShell, AuthLayout, MainLayout, PracticeLayout, AdminLayout, navigation.ts
 ├── pages/        # app-level pages (404, no access, placeholder, route error)
 ├── hooks/        # shared hooks (useErrorMessage, useDocumentTitle)
@@ -44,7 +44,11 @@ src/
 ## States and errors
 
 * Every data view renders loading (`PageLoader`), error (`ErrorState` with retry), and empty (`EmptyState`) states. With several queries, check `isPending` / `isError` per query (`a.isError || b.isError`) so TypeScript narrows `data`; `a.error ?? b.error` does not narrow.
-* User-facing error text comes from `useErrorMessage(error)`. Backend `400` field `details` are mapped onto the form with `applyFieldErrors` / `hasFieldErrors` (`features/auth/form-helpers.ts`).
+* User-facing error text comes from `useErrorMessage(error)` (or `errorMessage(error, t)` inside a callback, e.g. a mutation's `onError`).
+* Forms whose API errors come back under a prefix (`answer.title`, `answer.mapping.login`, `answer.steps[2]`) map them with a feature helper (`answerFieldErrors` in `features/practice/answers.ts`) onto `form.setFields`; details with no field go into the form's `Alert`.
+* A page that swaps a form for its result keeps the form **mounted but hidden** (`hidden`), so "Try again" keeps what was typed; restore a previous answer with `form.setFieldsValue`.
+* Lists of text rows share `components/ListPager` (range, page-size select, pager); give it the feature's range label and `rangeTestId`.
+* Optional sections on a page (a lesson's exercises) render nothing while loading or empty, and a one-line retry on error, so the main content does not jump. Backend `400` field `details` are mapped onto the form with `applyFieldErrors` / `hasFieldErrors` (`features/auth/form-helpers.ts`).
 * Forms: Ant Design `Form` with client rules mirroring backend limits; the backend stays the authority. Emails use `inputMode="email"`, not `type="email"`.
 
 ## Routing and access
@@ -72,7 +76,7 @@ src/
 
 ## Markdown content
 
-* Render lesson/content Markdown only with `LessonMarkdown` (`react-markdown` + `remark-gfm`). Never enable raw HTML (`rehype-raw`) or use `dangerouslySetInnerHTML`: content comes from the database. An e2e test checks that `<script>` / HTML in content is not rendered.
+* Render lesson/content Markdown (lessons, exercise questions, explanations, model answers) only with `LessonMarkdown` (`react-markdown` + `remark-gfm`; pass `testId` when it is not the lesson body). In lists, show a question as one plain line (`plainText`). Never enable raw HTML (`rehype-raw`) or use `dangerouslySetInnerHTML`: content comes from the database. An e2e test checks that `<script>` / HTML in content is not rendered.
 * Content `h1` is demoted to `h2` (the page title is the only `h1`); external links open in a new tab with `rel="noreferrer noopener"`; tables scroll inside their own wrapper.
 
 ## Tests
@@ -82,7 +86,7 @@ src/
 | Unit | `src/**/*.test.ts` | pure logic (api client, redirects, storage) |
 | E2E | `tests/e2e/*.spec.ts` | Playwright, desktop + mobile, production build, API mocked by `tests/e2e/support/mock-api.ts` |
 
-* Keep `mock-api.ts` in sync with `docs/api.md` whenever the contract changes. Each feature's endpoints live in their own mock (`support/mock-learning.ts`), delegated from `MockApi.handle`'s default branch; mocks copy the backend rules (forward-only progress, continue choice) and expose switches for states (`empty`, `failing`) and a call log (`progressCalls`).
+* Keep `mock-api.ts` in sync with `docs/api.md` whenever the contract changes. Each feature's endpoints live in their own mock (`support/mock-learning.ts`, `support/mock-practice.ts` which grades with the backend rules), delegated from `MockApi.handle`'s default branch; mocks copy the backend rules (forward-only progress, continue choice) and expose switches for states (`empty`, `failing`) and a call log (`progressCalls`).
 * Test files import with the `.ts` extension (`'./support/mock-api.ts'`); a missing extension fails the build that Playwright runs first.
 * Screenshot reviews: write a throwaway spec + config outside the committed suites (or delete them after); do not leave review harnesses in `tests/`.
 * Select by role/label or `data-testid` / `data-state`; never by translated text when the test is not about the text.

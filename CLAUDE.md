@@ -41,7 +41,7 @@ Reference docs (what exists now): [architecture](docs/architecture.md), [api](do
 * Frontend talks **only** to the Backend API (`VITE_API_BASE_URL`). No Supabase SDK or keys in the frontend.
 * Auth goes through backend `/auth/*`, which wraps Supabase Auth.
 * Backend derives `user_id` from the verified JWT. Never trust `user_id`, `role`, or `score` from the client.
-* Backend queries use `SupabaseService.forUser(token)` so RLS applies. `service()` (bypasses RLS) only for grading answer keys, session revocation, and writing the machine-translation cache (`content_translations`).
+* Backend queries use `SupabaseService.forUser(token)` so RLS applies. `service()` (bypasses RLS) only for grading (reading answer keys, inserting graded attempts), session revocation, and writing the machine-translation cache (`content_translations`).
 * Exercise answer keys are never returned by any endpoint. Scoring happens on the backend.
 * RLS on every table. Admin checks in both `RolesGuard` and RLS `is_admin()`.
 * All DB changes via migrations in `backend/supabase/migrations`.

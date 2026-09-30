@@ -14,14 +14,14 @@
 * The backend wraps Supabase Auth (`/auth/*`) and serves all data.
 * The backend verifies the JWT on every protected request and derives `user_id` from it.
 * Queries run through a per-request Supabase client carrying the user's JWT, so RLS is enforced as a second layer.
-* The service-role key lives only in the backend and is used only for grading (answer keys), session revocation, and writing the machine-translation cache.
+* The service-role key lives only in the backend and is used only for grading (reading answer keys, writing graded attempts), session revocation, and writing the machine-translation cache.
 
 ## Request pipeline (backend)
 
 1. `helmet` — security headers
 2. CORS — only origins in `CORS_ORIGIN`
 3. Global prefix `/api/v1`
-4. Guards — `JwtAuthGuard` (global; verifies the JWT against the Supabase JWKS; `@Public()` opts out), `RolesGuard` (`@Roles()`; role read from `profiles`), `ThrottlerGuard` on `/auth/*`
+4. Guards — `JwtAuthGuard` (global; verifies the JWT against the Supabase JWKS; `@Public()` opts out), `RolesGuard` (`@Roles()`; role read from `profiles`), `ThrottlerGuard` on `/auth/*` (per IP), `AttemptThrottlerGuard` on attempt submission (per user)
 5. `ValidationPipe` — whitelist + reject unknown fields → `400` with `details`
 6. Controller → service → Supabase
 7. `AllExceptionsFilter` — converts every error to `{ statusCode, error, message, details? }`
@@ -46,6 +46,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 0 — Foundation | Done | Done |
 | 1 — Authentication & Profile | Done | Done |
 | 2 — Learning (learner side) | Done | Done |
+| 3 — Practice | Done | Done |
 
 ## Authentication
 
@@ -71,3 +72,10 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
   3. New machine translations are saved with the service role. The response says `translation: manual` (all human), `machine` (some machine) or `unavailable`.
 * The provider is optional: without `GOOGLE_TRANSLATE_API_KEY` only manual translations are served. Any failure (no key, provider error, cache unreadable) falls back to English with `translation: unavailable`; the request never fails because of translation.
 * The frontend requests content in the UI language (`useContentLanguage`) and includes it in query keys. The lesson page can switch to the English original. A note explains machine translation.
+
+## Practice (Phase 3)
+
+* Backend module `src/practice/`: `ExercisesRepository` (as the user, published only), `ExerciseAnswersRepository` (service role: answer keys), `AttemptsRepository` (reads and the self-assessment as the user; graded attempts inserted with the service role). `PracticeService` checks visibility (exercise + lesson chain), validates the answer, grades, stores and builds the review. The pure parts are `exercise-schema.ts` (shapes and validation of prompt, answer key, answer and self-assessment per type) and `grading.ts` (deterministic scoring), both unit-tested.
+* Attempt flow: `POST /exercises/:id/attempts` → visible? (404) → `parseAnswer` (400 with `details`) → answer key (service role) → `grade` → insert (service role, `user_id` from the JWT) → translate the review (after the insert: review translations are readable only once you have an attempt) → `{ attempt, review }`.
+* Frontend `features/practice/`: API + TanStack Query hooks (`practiceKeys`), `kinds.ts` (tab ↔ types, verdicts, URL params), `answers.ts` (form ↔ request, backend errors → fields), pages `PracticeListPage` (one per tab; filters and page in the URL) and `ExercisePage` (`/practice/exercises/:id`: question, `AnswerForm`, `ResultView`, `AttemptHistory`), and `LessonExercises` on the lesson page.
+* The shared pager is `components/ListPager.tsx` (Learning and Practice lists).

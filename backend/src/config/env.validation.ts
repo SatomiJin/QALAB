@@ -50,6 +50,12 @@ export class EnvironmentVariables {
   @Min(1)
   AUTH_RATE_LIMIT = 5;
 
+  /** Attempt submissions per minute per user. */
+  @Transform(({ value }) => (value === undefined ? value : Number(value)))
+  @IsInt()
+  @Min(1)
+  ATTEMPT_RATE_LIMIT = 20;
+
   /**
    * Number of reverse proxies in front of the API (Render, Railway, …).
    * Needed so rate limiting sees the client IP instead of the proxy's.

@@ -8,6 +8,8 @@ import { VerifyEmailPage } from '../features/auth/pages/VerifyEmailPage';
 import { CourseDetailPage } from '../features/learning/pages/CourseDetailPage';
 import { LearningPage } from '../features/learning/pages/LearningPage';
 import { LessonPage } from '../features/learning/pages/LessonPage';
+import { ExercisePage } from '../features/practice/pages/ExercisePage';
+import { PracticeListPage } from '../features/practice/pages/PracticeListPage';
 import { ProfilePage } from '../features/profile/ProfilePage';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
@@ -43,16 +45,23 @@ export const routes: RouteObject[] = [
               },
               {
                 path: 'practice',
-                element: <PracticeLayout />,
                 children: [
                   {
-                    index: true,
-                    element: <Navigate to={PRACTICE_LINKS[0].path} replace />,
+                    element: <PracticeLayout />,
+                    children: [
+                      {
+                        index: true,
+                        element: (
+                          <Navigate to={PRACTICE_LINKS[0].path} replace />
+                        ),
+                      },
+                      ...PRACTICE_LINKS.map((link) => ({
+                        path: link.path.replace('/practice/', ''),
+                        element: <PracticeListPage kind={link.page} />,
+                      })),
+                    ],
                   },
-                  ...PRACTICE_LINKS.map((link) => ({
-                    path: link.path.replace('/practice/', ''),
-                    element: <PlaceholderPage page={link.page} phase={3} />,
-                  })),
+                  { path: 'exercises/:exerciseId', element: <ExercisePage /> },
                 ],
               },
               {

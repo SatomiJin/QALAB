@@ -12,6 +12,7 @@ import { useErrorMessage } from '../../../hooks/useErrorMessage';
 import { ApiError } from '../../../lib/api';
 import { NotFoundPage } from '../../../pages/NotFoundPage';
 import type { Lesson, LessonRef } from '../../../types/api';
+import { LessonExercises } from '../../practice/LessonExercises';
 import { LessonMarkdown } from '../LessonMarkdown';
 import { learningListPath } from '../list-params';
 import { verdictFor } from '../progress';
@@ -157,6 +158,8 @@ function LessonView({
           <EmptyState description={t('learning.lesson.empty')} />
         )}
       </article>
+
+      <LessonExercises lessonId={lesson.id} />
 
       <footer className={styles.footer}>
         {completed ? (

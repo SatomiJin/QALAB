@@ -138,6 +138,64 @@ Rules:
   * `unavailable` — some or all text is English because no provider is configured (`GOOGLE_TRANSLATE_API_KEY` unset) or it failed. The request still succeeds.
 * Per text: a manual translation of the current English source, else a cached machine translation of it, else a new machine translation (if configured), else English. Translations are tied to the source text by hash: editing the English makes them stale. Machine ones are cached, so each version of a text is translated (and billed) once. Skill names are translated in the frontend by `code`.
 
+## Practice
+
+All routes need a JWT. An exercise is visible when it **and** its lesson, module and course are published; anything else is `404 Exercise not found`. Answer keys are never returned by any route; the explanation, model answer and rubric (the *review*) come only with your own attempt.
+
+| Method | Path | Body / query | Success | Errors |
+|---|---|---|---|---|
+| GET | `/exercises` | `?type=&skill=&difficulty=&lessonId=&page=&pageSize=&lang=` (all optional) | `200 ExercisePage` in catalogue order (skill, course, module, lesson, exercise order) | `400` unknown type/difficulty, invalid skill code, lessonId not a UUID, pageSize, unknown query parameter |
+| GET | `/exercises/:id` | `?lang=` | `200 Exercise` (no answer key) | `400` not a UUID; `404` |
+| POST | `/exercises/:id/attempts` | `{ answer }`, `?lang=` | `201 AttemptResult` | `400` invalid answer (`details`, e.g. `answer.selected`) or unknown field (`score`, `userId`…); `404`; `429` more than `ATTEMPT_RATE_LIMIT` (default 20) per minute **per user** |
+| GET | `/exercises/:id/attempts` | `?page=&pageSize=&lang=` | `200 AttemptPage`, your attempts newest first | `400`; `404` |
+| POST | `/exercises/:id/attempts/:attemptId/self-assessment` | `{ checked: string[] }` | `200 Attempt` | `400` choice type, or unknown / repeated rubric id; `404` not your attempt at this exercise; `409` already saved |
+
+```json
+// ExercisePage: { items: [ExerciseSummary], total, page, pageSize, language, translation }
+// ExerciseSummary (Exercise adds prompt, language, translation)
+{
+  "id": "uuid", "type": "bug_report", "difficulty": "medium", "question": "Markdown…",
+  "lesson": { "id": "uuid", "title": "…" }, "course": { "id": "uuid", "slug": "…", "title": "…" },
+  "skill": { "code": "fundamentals", "name": "QA Fundamentals" },
+  "stats": { "attemptCount": 2, "bestScore": 80, "lastScore": 60, "lastAttemptedAt": "…", "passed": true }
+}
+// Exercise.prompt — multiple_choice: { options: [{ id, text }], multiple }; classification: { categories, items }; free-text types: {}
+
+// AttemptResult
+{
+  "attempt": {
+    "id": "uuid", "exerciseId": "uuid", "score": 65, "isCorrect": false, "answer": { … as graded },
+    "feedback": { "type": "bug_report", "parts": [{ "part": "fields", "score": 100, "weight": 30 }, …],
+                  "fields": [{ "field": "title", "present": true }],
+                  "severity": { "expected": "major", "given": "major", "match": true },
+                  "priority": { "expected": "high", "given": "low", "match": false },
+                  "concepts": [{ "concept": "Discount code", "matched": true }] },
+    "selfAssessment": null, "attemptedAt": "…"
+  },
+  "review": { "explanation": "Markdown", "modelAnswer": "Markdown or null", "rubric": [{ "id": "repro", "text": "…" }] },
+  "language": "en", "translation": "none"
+}
+// AttemptPage: { items: [Attempt], total, page, pageSize, review: Review | null (null before the first attempt), language, translation }
+```
+
+Answers per type (`answer`):
+
+| Type | Answer | Grading (`backend/src/practice/grading.ts`) |
+|---|---|---|
+| `multiple_choice` | `{ selected: string[] }` — exactly one unless `prompt.multiple` | exact set → 100, else 0; correct = 100 |
+| `classification` | `{ mapping: { [itemId]: categoryId } }` — every item | % of items right; correct = all right |
+| `test_case` | `{ testCaseId, title, preconditions, testData, steps[], expectedResult, priority, testType }` | required fields present 40 % + concepts 60 % |
+| `bug_report` | `{ bugId, title, environment, preconditions, stepsToReproduce[], actualResult, expectedResult, severity, priority, attachment }` | required fields 30 % + severity 20 % + priority 20 % + concepts 30 % |
+| `scenario` | `{ text }` (1–5000) | concepts 100 % |
+
+Rules:
+
+* `?type=` takes one type or several, comma-separated (`multiple_choice,classification` for the Quiz tab). `?lessonId=` lists one lesson's exercises; a lesson you cannot see gives an empty page. Pagination as for `/courses`.
+* Structured answers may be incomplete (missing fields lower the score) but not empty (`answer.title`: "Fill in at least one field"). Text is trimmed, empty steps dropped; `attempt.answer` is the normalised answer. Limits: IDs ≤ 50, titles ≤ 200, texts ≤ 2000, ≤ 30 steps of ≤ 500, attachment ≤ 500. `priority` `high|medium|low`, `severity` `critical|major|minor|trivial`, `testType` `functional|negative|boundary|regression|smoke|usability|performance|security`, each nullable.
+* Concepts: a concept counts when any of its keywords appears at the start of a word, case- and accent-insensitive (`boundar` finds "boundaries"). Approximate by design: free-text results always show the model answer and a self-assessment checklist. Free-text types pass at **70**. A part with nothing to check is left out and the others reweighted.
+* The score, verdict and feedback are computed on the server from the answer key; the client cannot send or change them. The self-assessment (free-text types) is saved once per attempt.
+* `?lang=vi` translates the question, options, items and categories, and (after an attempt) the explanation, model answer and rubric. Concept names and enum values stay English (QA terms). A broken or missing answer key is a generic `500` (logged with field paths, never the key).
+
 ## Health
 
 `GET /health` (public) → `200 { status: "ok", timestamp, uptimeSeconds }`.

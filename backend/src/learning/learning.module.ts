@@ -9,5 +9,6 @@ import { LessonProgressRepository } from './lesson-progress.repository.js';
   imports: [TranslationModule],
   controllers: [LearningController],
   providers: [LearningService, ContentRepository, LessonProgressRepository],
+  exports: [ContentRepository],
 })
 export class LearningModule {}
