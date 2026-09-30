@@ -32,10 +32,7 @@ export function userIdFromToken(token: string): string {
  * published exercises whose lesson, module and course are published.
  */
 export class FakeExercisesRepository {
-  private readonly rows = new Map<
-    string,
-    { row: ExerciseRow; status: Status }
-  >();
+  readonly rows = new Map<string, { row: ExerciseRow; status: Status }>();
 
   constructor(private readonly content: FakeContentRepository) {}
 

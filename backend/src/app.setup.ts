@@ -1,4 +1,5 @@
 import { INestApplication } from '@nestjs/common';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { Express } from 'express';
 import helmet from 'helmet';
@@ -21,6 +22,9 @@ export function configureApp(app: INestApplication): void {
     const server = app.getHttpAdapter().getInstance() as Express;
     server.set('trust proxy', config.trustProxyHops);
   }
+  // Lesson Markdown may be 100 000 characters (up to ~400 kB of UTF-8, more
+  // once JSON-escaped): above the 100 kB default.
+  (app as NestExpressApplication).useBodyParser('json', { limit: '1mb' });
   app.setGlobalPrefix(API_PREFIX);
   // JSON-only API: CSP is disabled so Swagger UI can load its assets.
   app.use(helmet({ contentSecurityPolicy: false }));

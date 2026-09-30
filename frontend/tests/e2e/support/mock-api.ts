@@ -1,4 +1,5 @@
 import type { Page, Route } from '@playwright/test';
+import { MockAdmin } from './mock-admin.ts';
 import { MockLearning } from './mock-learning.ts';
 import { MockPractice } from './mock-practice.ts';
 
@@ -47,6 +48,7 @@ export class MockApi {
   healthy = true;
   readonly learning = new MockLearning();
   readonly practice = new MockPractice();
+  readonly admin = new MockAdmin();
 
   addUser(input: Partial<MockUser> & { email: string }): MockUser {
     const user: MockUser = {
@@ -295,6 +297,7 @@ export class MockApi {
         if (!user) return unauthorized;
         const query = new URL(route.request().url()).searchParams;
         return (
+          this.admin.handle(method, path, body, user.role, query) ??
           this.learning.handle(method, path, body, user.id, query) ??
           this.practice.handle(method, path, body, user.id, query) ??
           error(404, 'Not Found', `Cannot ${method} ${path}`)

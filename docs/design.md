@@ -193,6 +193,20 @@ The learner asked for each item to sit in its own rounded card with a light hove
 * The neon purple versions are **not** used in the UI: saturated colour is reserved for verdicts, and a purple mark would read as one more status colour. The full-name logo ("Satomi Jin") signs the README; it can also be the GitHub social preview.
 * Changed after review: a mask of the bare strokes in Ink looked thin and grey at 24px next to the bold brand name; the filled tile holds its weight.
 
+## Admin CMS (Phase 4)
+
+The same system, no new devices. The admin works on the plan itself, so the screens read as the plan being edited.
+
+* **Content status is not a verdict.** Draft / published / archived use the stamp shape of the verdict tag without saturated colour: *Draft* grey on a grey tint (like Not run), *Published* Ink outline, *Archived* dashed Ink-muted outline. Next to it, one muted sentence says whether learners see the item ("Visible to learners." / "Hidden from learners: it or a parent is not published.") and "In use by learners" when progress or attempts exist.
+* **The one bold thing: the course outline is the test plan.** Modules are sections under a Rule with "Module 1" in small tabular text; their lessons are item cards numbered `1.2` (a real sequence). Each row starts with a drag handle and up / down arrows (Ink muted text buttons); lessons show minutes, exercise count, "in use" and the status tag at the right edge.
+* **Course list:** page title with the one primary *New course*, two filter selects (skill, status; full width on mobile), course cards (title, skill, module and lesson counts, updated date, status), the shared pager. With one skill and no status filter, the cards get reorder handles.
+* **Editors** (course, lesson, exercise): page trail (Courses, Course, Lesson, ...), title, status line, secondary actions (publish / move to draft / archive, *Preview as learner*, delete as a danger text button, disabled with a tooltip when in use), then the form (fields up to 720px) with the one primary *Save changes* / *Create exercise*. Sections are separated by Rules, no cards.
+* **Markdown editor:** text area and live preview side by side from 992px (the preview is a Sheet panel as tall as the text area and renders exactly like the lesson page); below that, *Write / Preview* segmented tabs. Character count in small tabular text. The text area uses Archivo like every input (no monospace in the UI).
+* **Exercise editor:** question (Markdown), difficulty and status, then *Answer key* with a muted note that learners never see it, and the rows for the type (options with a *Correct* checkbox, categories, items with their correct category, required fields as a checkbox grid, expected Severity / Priority, concepts as concept + keywords pairs, model answer, checklist). Add buttons stay compact under their rows. When learners have answered, an info alert says rows can be edited but not added or removed.
+* **Preview as learner:** the lesson page layout (title, Not run tag, module, reading time, 68ch article, "Practise this lesson" with the published exercises only), under a quiet note between an Ink and a Rule line: what the preview is, the status line, and *Back to the editor*.
+* **Danger:** delete is the only red outside verdicts (Ant Design danger text button + confirmation dialog). Accepted because destroying content is a failure-grade action and people expect it red; it is never a filled button.
+* Changed after review: the breadcrumb first had "Admin, Courses" (two links to the same page); preview panels had a 320px minimum height that left big empty boxes next to short fields; add-row buttons stretched across the section; the preview's exercise card lacked its stats column, so the verdict sat in the middle.
+
 ## Not in this pass
 
-Dashboard content and admin screens are designed in their own phases, using this system.
+Dashboard content is designed in its own phase, using this system.

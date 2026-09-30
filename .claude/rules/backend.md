@@ -25,6 +25,7 @@ src/<feature>/
 * JSON documents whose shape depends on a row's type (exercise `prompt_data`, answer keys, answers) are validated by pure `parse*` functions returning `{ ok, value } | { ok: false, errors: [{ field, message }] }` (`practice/exercise-schema.ts`), not by class-validator. The DTO only checks `@IsObject()`; the service turns parse errors into `400 { details }` with paths like `answer.mapping.login`. Unknown keys are errors.
 * Data that is ours and broken (invalid prompt data, missing answer key) is a server bug: throw a plain `Error` with a precise message (the filter logs it and answers a generic 500). Never put secret values (answer keys) in that message.
 * Features reuse another module's repositories through `exports` (`LearningModule` exports `ContentRepository` for practice), never by re-declaring the provider.
+* The Admin CMS (`src/admin/`) has one repository for all content tables (`AdminContentRepository`, generic `find/insert/update/remove` by `ContentKind`, typed with `RowByKind` / `WriteByKind` / `UpdateByKind`), because courses, modules, lessons and exercises are edited together. Its write types list only the columns the DB grants. Big routers split into several controllers on the same prefix (`AdminCoursesController`, `AdminLessonsController`); a service may use another (`AdminExercisesService` uses `AdminService.findOr404` / `reorder` / `removeUnused`).
 
 * Shared code: `src/common/` (errors, filters, pipes), `src/config/` (env), `src/supabase/` (`SupabaseService`).
 * ESM: relative imports end in `.js` (`'./profile.service.js'`). Type-only imports use `import type`.
@@ -39,6 +40,8 @@ src/<feature>/
 * Use `@HttpCode` for non-201 POSTs (e.g. `200` login, `200` lesson progress, `204` logout).
 * UUID path params go through `ParseUUIDPipe` (invalid → `400`). Query strings use a DTO class (`@Query() query: XQueryDto`), so unknown query params are `400` too. Numbers in query strings need `@Transform` to `Number` (the pipe has no implicit conversion); defaults are class field initialisers. Shared query DTOs extend each other (`ListCoursesQueryDto extends LanguageQueryDto`).
 * Content a learner may not see is `404` whatever the reason (draft, archived, unpublished parent, unknown) — never `403`, which would confirm it exists.
+* Static segments on a parameterised path are declared before it (`PATCH courses/reorder` above `PATCH courses/:id`), or `ParseUUIDPipe` answers `400` for "reorder".
+* PATCH DTOs have only optional fields; the service writes `definedOnly(...)` of them, and an empty body returns the resource unchanged.
 * Rate limits are named throttlers in `AuthModule`'s `ThrottlerModule` (limits from config, not hard-coded): `default` for `/auth/*` per IP (`ThrottlerGuard`), `attempts` for attempt submission per user (`AttemptThrottlerGuard`, tracker = `req.user.id`). Every throttler applies to every guarded route, so each route skips the others (`@SkipThrottle({ attempts: true })` on `AuthController`, `@SkipThrottle({ default: true })` on the attempt route). A new limit = a new named throttler + env variable.
 * List query params that accept several values take them comma-separated (`?type=a,b`): `@Transform` split to an array, `@IsIn(values, { each: true })`.
 
@@ -54,6 +57,9 @@ src/<feature>/
 * `SupabaseService.forUser(user.accessToken)` for all user data, so RLS applies.
 * `anon()` only for public auth calls. `service()` (bypasses RLS) only for reading answer keys (`ExerciseAnswersRepository`), revoking sessions, and writing server-generated data no API role may write (the translation cache `TranslationsRepository.saveMachine`, graded attempts `AttemptsRepository.insert`); filter its results before returning.
 * Repository pattern: `const { data, error } = await …; if (error) throw error; return data;` Select explicit columns (`COLUMNS` constant), use `maybeSingle()` when a row may be missing, and let the service turn `null` into `NotFoundException`.
+* Postgres errors the client can cause are mapped in the service with `isPgError(error, code)` (`common/errors/pg-error.ts`): `23505` unique → `409` with `details[field]`, `23503` restrict FK → `409`. Check the rule first (clear message), keep the mapping for races.
+* Multi-row changes that must be all-or-nothing (reorders) go through a SQL function called with `.rpc()` as the user; read `rpc` results as `(data ?? []) as Row[]` (`overrideTypes` does not fit set-returning functions).
+* Two-table writes without a transaction (exercise + answer key) validate everything first, write the parent, then the child, and remove the parent if the child write fails.
 * Typed lists: end the chain with `.overrideTypes<Row[], { merge: false }>()` (`.returns()` is deprecated in supabase-js 2.117). Guard `.in()` with an early `return []` for empty id lists.
 * Learner reads of content also filter `status = 'published'` explicitly: RLS lets admins read drafts, but learner endpoints must show everyone the learner view.
 
@@ -65,6 +71,10 @@ src/<feature>/
 * Field errors go in `details: [{ field, message }]` with `field` = the camelCase DTO property, so the frontend can show them on the form.
 * Messages are English, short, and never reveal whether an account exists or internal details.
 * Log errors with `describeError()` (`src/common/errors/describe-error.ts`): Supabase errors are plain objects and `String(error)` logs `[object Object]`. A 500 with `[42P01] relation … does not exist` means a migration has not been pushed.
+
+## App setup
+
+* `configureApp` (shared with tests) sets the JSON body limit to 1 MB: lesson Markdown may be 100 000 characters.
 
 ## Config
 
@@ -81,6 +91,8 @@ src/<feature>/
 * Each endpoint: happy path, validation `400`, `401` without/expired token, `403` wrong role, not found, plus the rules in `plant.md` for the phase.
 * When a new Supabase Auth call is used, extend the fake server to model it.
 * API tests never hit Supabase for data: every repository has an in-memory fake in `test/support/fake-*.ts` (`FakeProfilesRepository`, `FakeContentRepository`, `FakeLessonProgressRepository`, `FakeExercisesRepository`, `FakeExerciseAnswersRepository`, `FakeAttemptsRepository`), registered in `create-test-app.ts` with `overrideProvider`. A read policy that depends on the caller is modelled with a hook (`FakeTranslationsRepository.canRead(row, token)`, user id from the fake JWT via `userIdFromToken`).
+* The admin fake (`FakeAdminContentRepository`, `test/support/fake-admin.ts`) works on the learner fakes' stores (they expose `courses` / `modules` / `lessons` / `rows`), so an admin write is what learner endpoints (do not) show. It mirrors unique slugs (`23505`), restrict FKs (`23503`), cascades and `reorder_content` (`22023`). To test a race, replace a fake method for one request and restore it in `finally`.
+* Admin endpoints: one parameterised test over the full route list for `403` (learner) and `401` (no token).
 * Seed content the app parses (exercise prompts and answer keys) is checked by a unit test that reads `supabase/seed.sql` (`practice/seed-exercises.spec.ts`). A fake must mirror what RLS/filters/triggers do (published-only, per-user rows, forward-only progress), or the API test proves nothing.
 * Sanity-check a new suite by breaking the rule it guards once (e.g. drop a visibility check) and seeing it fail.
 * Integration test users: `qalab-it-*@example.com`, created with the admin API, deleted after each file. Never send real email from tests.

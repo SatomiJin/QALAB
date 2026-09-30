@@ -433,3 +433,191 @@ export interface SubmitAttemptRequest {
 export interface SaveSelfAssessmentRequest {
   checked: string[];
 }
+
+// Admin CMS (Phase 4) --------------------------------------------------------
+
+export const CONTENT_STATUSES = ['draft', 'published', 'archived'] as const;
+export type ContentStatus = (typeof CONTENT_STATUSES)[number];
+
+/** Mirrors backend `CONTENT_LIMITS` (and the DB checks). */
+export const CONTENT_LIMITS = {
+  titleLength: 160,
+  slugLength: 100,
+  descriptionLength: 2000,
+  contentLength: 100_000,
+  minutesMin: 1,
+  minutesMax: 600,
+  questionLength: 2000,
+  explanationLength: 10_000,
+} as const;
+
+/** Mirrors backend `SLUG_PATTERN`. */
+export const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** Mirrors backend `LABEL_ID`: option / item / category / rubric ids. */
+export const LABEL_ID_PATTERN = /^[a-z0-9][a-z0-9_-]{0,39}$/;
+
+export interface AdminSkillRef {
+  id: string;
+  code: string;
+  name: string;
+}
+
+export interface AdminRef {
+  id: string;
+  title: string;
+  status: ContentStatus;
+}
+
+export interface AdminCourseRef extends AdminRef {
+  slug: string;
+}
+
+interface AdminNode {
+  id: string;
+  status: ContentStatus;
+  orderIndex: number;
+  /** Learner progress or attempts here or below: archive, never delete. */
+  inUse: boolean;
+}
+
+/** Public prompt data as stored (`prompt_data`). */
+export type PromptData = ExercisePrompt;
+
+export interface Concept {
+  concept: string;
+  keywords: string[];
+}
+
+/** Answer key (`answer_data`), per type. Mirrors backend `AnswerKeyByType`. */
+export interface AnswerData {
+  correct?: string[];
+  mapping?: Record<string, string>;
+  requiredFields?: string[];
+  expectedSeverity?: Severity;
+  expectedPriority?: Priority;
+  expectedConcepts?: Concept[];
+  modelAnswer?: string;
+  rubric?: Label[];
+}
+
+export interface AdminExerciseSummary extends AdminNode {
+  type: ExerciseType;
+  difficulty: Difficulty;
+  question: string;
+  promptData: PromptData;
+}
+
+export interface AdminLessonSummary extends AdminNode {
+  slug: string;
+  title: string;
+  estimatedMinutes: number;
+  exercises: AdminExerciseSummary[];
+}
+
+export interface AdminModule extends AdminNode {
+  title: string;
+  description: string;
+  lessons: AdminLessonSummary[];
+}
+
+export interface AdminCourseSummary {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  status: ContentStatus;
+  orderIndex: number;
+  skill: AdminSkillRef;
+  moduleCount: number;
+  lessonCount: number;
+  publishedLessonCount: number;
+  updatedAt: string;
+}
+
+export interface AdminCoursePage {
+  items: AdminCourseSummary[];
+  total: number;
+  page: number;
+  pageSize: PageSize;
+}
+
+export interface AdminCourse extends AdminNode {
+  slug: string;
+  title: string;
+  description: string;
+  skill: AdminSkillRef;
+  canPublish: boolean;
+  createdAt: string;
+  updatedAt: string;
+  modules: AdminModule[];
+}
+
+export interface AdminLesson extends AdminNode {
+  slug: string;
+  title: string;
+  contentMd: string;
+  estimatedMinutes: number;
+  visibleToLearners: boolean;
+  module: AdminRef;
+  course: AdminCourseRef;
+  exercises: AdminExerciseSummary[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminExercise extends AdminExerciseSummary {
+  answerData: AnswerData | null;
+  explanation: string;
+  visibleToLearners: boolean;
+  lesson: AdminRef;
+  module: AdminRef;
+  course: AdminCourseRef;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCourseRequest {
+  skillId: string;
+  title: string;
+  slug: string;
+  description?: string;
+}
+
+export type UpdateCourseRequest = Partial<CreateCourseRequest>;
+
+export interface CreateModuleRequest {
+  title: string;
+  description?: string;
+  status?: ContentStatus;
+}
+
+export type UpdateModuleRequest = Partial<CreateModuleRequest>;
+
+export interface CreateLessonRequest {
+  title: string;
+  slug: string;
+  contentMd?: string;
+  estimatedMinutes?: number;
+  status?: ContentStatus;
+}
+
+export type UpdateLessonRequest = Partial<CreateLessonRequest>;
+
+export interface CreateExerciseRequest {
+  type: ExerciseType;
+  question: string;
+  promptData: PromptData;
+  answerData: AnswerData;
+  explanation?: string;
+  difficulty?: Difficulty;
+  status?: ContentStatus;
+}
+
+export type UpdateExerciseRequest = Partial<
+  Omit<CreateExerciseRequest, 'type'>
+>;
+
+export interface ReorderRequest {
+  ids: string[];
+}

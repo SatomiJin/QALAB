@@ -81,10 +81,10 @@ export function sortByCatalogueOrder(
 }
 
 /** Same order for bare course rows (used to paginate before loading). */
-export function sortCoursesByCatalogue(
-  courses: CourseRow[],
+export function sortCoursesByCatalogue<T extends CourseRow>(
+  courses: T[],
   skills: SkillRow[],
-): CourseRow[] {
+): T[] {
   const skillById = new Map(skills.map((skill) => [skill.id, skill]));
   return courses
     .map((course) => ({ course, skill: skillById.get(course.skill_id) }))

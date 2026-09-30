@@ -56,12 +56,19 @@ Business and security rules that both sides must follow. They come from `plant.m
 * Structured answers may be incomplete (lower score) but not empty. Answers are validated against the exercise type and its prompt ids (`parseAnswer`); answer keys against type + prompt (`parseAnswerKey`, to be reused by the Admin CMS). A broken or missing key is a generic `500`; logs name field paths, never key values.
 * Attempt submission is rate-limited per user (`ATTEMPT_RATE_LIMIT`/minute, default 20).
 
-## Content (Phase 4+)
+## Content and the Admin CMS (Phase 4)
 
-* Lifecycle `draft → published → archived`. Learners see only `published` content whose parents are also `published` (RLS + query filter).
-* Content with learner progress or attempts is archived, never hard-deleted. Hard delete only when unused, with UI confirmation.
-* Content tables store `created_by`, `updated_by` (from the token), `created_at`, `updated_at`.
-* Slugs: lowercase `a-z0-9-`, unique within their scope. Answer keys are validated against the exercise type on the backend.
+* Lifecycle `draft → published → archived`. Learners see only `published` content whose parents are also `published` (RLS + query filter). Admin endpoints show every status and say `visibleToLearners`.
+* Every `/admin/*` route: `RolesGuard` (`403` for learners, before validation) **and** RLS `is_admin()` on every write (the backend writes as the admin, never with `service()`).
+* A course is published only through `POST /admin/courses/:id/publish`, and only when it has a published lesson in a published module (`409` otherwise; decided as a hard block). Modules, lessons and exercises take `status` in their PATCH. Unpublishing children later does not unpublish the course.
+* `inUse` = learner progress (lesson) or attempts (exercise) at or below the item. In use → archive only; hard delete answers `409`, and the `restrict` foreign keys give the same `409` if a learner starts in between. Hard delete (with UI confirmation) cascades to children, answer keys and translations.
+* Content never moves to another parent, and an exercise's type never changes (no DTO field, no column grant). To move or retype, create new content and archive the old one.
+* Once an exercise has attempts, its option / item / category ids and `multiple` are fixed (stored answers and feedback refer to them); texts may change.
+* Prompt data and answer key are validated together with the grader's parsers (`parsePrompt`, `parseAnswerKey`) and stored normalised. A PATCH with only `promptData` is checked against the stored key.
+* Reorder requests list every child of the parent exactly once (the full new order), applied in one statement. New items go to the end (`max(order_index) + 1`).
+* Content tables store `created_by`, `updated_by` (set by a DB trigger from `auth.uid()`, never from the client), `created_at`, `updated_at`.
+* Slugs: lowercase `a-z0-9-`, course slugs unique, lesson slugs unique within their module; a used slug is `409` with `details[slug]`.
+* Editing English text makes manual Vietnamese translations stale (English is shown until someone retranslates); translation editing in the CMS is not built yet.
 * Grading is deterministic (no AI in V1). Free-text answers also show the model answer + self-assessment checklist; both results are stored in `exercise_attempts` (see Grading).
 * Visible exercise = the exercise **and** its lesson, module and course are `published`; anything else is `404`.
 

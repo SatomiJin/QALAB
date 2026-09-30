@@ -11,6 +11,7 @@ Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a m
 | `20260930041356_content_translations.sql` | 2 | `content_translations` (machine-translation cache); `is_content_published()`; delete triggers on content; RLS |
 | `20260930064552_content_translations_manual.sql` | 2 | `provider` `manual` \| `google`, `pipeline_version` (machine rows only), unique key per provider. Upgrades the table as first pushed; idempotent |
 | `20260930070812_practice.sql` | 3 | Enums `exercise_type`, `difficulty`; `exercises`, `exercise_answers`, `exercise_attempts`; `is_exercise_published()`; immutable-attempt trigger; RLS and grants; `content_translations` accepts exercises (fields, review-text read rule, delete trigger) |
+| `20260930090356_admin_cms.sql` | 4 | Admin writes: `set_content_audit()` trigger on content; insert/update/delete policies (`is_admin()`) and column grants on `courses`, `modules`, `lessons`, `exercises`, insert/update on `exercise_answers`; `reorder_content()`, `content_usage()` |
 
 Seed (`supabase/seed.sql`): one published sample course, *QA fundamentals: first steps* (2 modules, 4 lessons), and 6 exercises on its lessons covering all five types (with answer keys and Vietnamese manual translations), with fixed ids. Idempotent. `backend/src/practice/seed-exercises.spec.ts` checks every seeded prompt and answer key against the grader.
 
@@ -77,7 +78,7 @@ Indexes: `(skill_id, order_index)`, `(course_id, order_index)`, `(module_id, ord
 
 ## `content_translations`
 
-Translations of content, one row per (entity, field, language, provider). `manual` rows are written by a person (the seed has the sample course in Vietnamese; the Admin CMS will edit them); `google` rows are machine translations cached by the backend. Reads prefer `manual`.
+Translations of content, one row per (entity, field, language, provider). `manual` rows are written by a person (the seed has the sample course in Vietnamese; editing them in the Admin CMS is a later step); `google` rows are machine translations cached by the backend. Reads prefer `manual`.
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -100,6 +101,9 @@ Translations of content, one row per (entity, field, language, provider). `manua
 * `is_content_published(type, id)` — `stable`, invoker: a course, module, lesson or exercise and all its parents are `published`. Used by the `content_translations` read policy.
 * `is_exercise_published(exercise_id)` — `stable`, invoker: the exercise is `published` and `is_lesson_published(lesson_id)`. Used by the attempt update policy.
 * `set_updated_at()` — shared `before update` trigger function for every table.
+* `set_content_audit()` — `before insert or update` on `courses`, `modules`, `lessons`, `exercises`: `created_by` / `updated_by` = `auth.uid()` (kept as given when there is no user, e.g. the seed); `created_by` never changes on update.
+* `reorder_content(kind, parent_id, ids[])` — invoker (RLS decides): sets `order_index` = position for the children of one parent (course → skill, module → course, lesson → module, exercise → lesson) in one statement; raises `22023` for duplicates, an unknown kind, or when not every id was updated (a child of another parent, or a caller who may not update — so learners get an error, not a silent no-op).
+* `content_usage(lesson_ids[], exercise_ids[])` — invoker, stable: `(kind, id)` of the given lessons with progress and exercises with attempts. Admins see everyone's rows; anyone else only their own. The backend uses it for `inUse`.
 
 ## RLS and privileges
 
@@ -107,19 +111,19 @@ Translations of content, one row per (entity, field, language, provider). `manua
 | --- | --- | --- | --- |
 | `profiles` | select own; update own `display_name`, `experience_level`, `learning_goals` | select all | none |
 | `skills` | select | select | none |
-| `courses` | select `published` | select all | none |
-| `modules`, `lessons` | select when it and every parent are `published` | select all | none |
+| `courses` | select `published` | select all; insert / update / delete | none |
+| `modules`, `lessons` | select when it and every parent are `published` | select all; insert / update / delete | none |
 | `lesson_progress` | select own; insert/update own on published lessons | select all | none |
-| `exercises` | select when it and its lesson chain are `published` | select all | none |
-| `exercise_answers` | **none** | select all | none |
+| `exercises` | select when it and its lesson chain are `published` | select all; insert / update / delete | none |
+| `exercise_answers` | **none** | select all; insert / update (removed only with the exercise) | none |
 | `exercise_attempts` | select own; update own `self_assessment` only (on published exercises); **no insert, no delete** | select all | none |
 | `content_translations` | select when the content is published (`is_content_published`); exercise review texts only after an own attempt at that exercise | select all | none |
 
-* No insert/update/delete on content for any API role yet (admin writes arrive with the Admin CMS, Phase 4).
+* Content writes (Phase 4): the grants are to `authenticated`, the policies allow admins only (`is_admin()`). A learner's insert is `42501`; a learner's update / delete matches no row (RLS) and changes nothing. Column grants: nobody writes `id`, `created_by`, `updated_by` or timestamps; nobody updates a module's `course_id`, a lesson's `module_id`, an exercise's `lesson_id` or `type` (content does not move, types do not change). Hard deletes of content with progress or attempts fail on the `restrict` foreign keys (`23503`); cascaded children and translations go with an allowed delete.
 * No delete on `lesson_progress`. Column grants keep `id`, `created_at`, `updated_at` unwritable; `user_id`/`lesson_id` are in the update grant only because upserts set them, and the trigger keeps them unchanged.
 * `profiles.role`, `id` and timestamps are read-only for every API role, admins included (column-level grants). An attempt returns Postgres `42501`.
 * Learner API queries filter on `status = 'published'` on top of RLS, so admins see what learners see on learner endpoints.
 
 * Answer keys are read by the backend with the service role only, to grade and to build the review of the user's own attempt.
 
-Verified by `backend/test/integration/profiles-rls.int-spec.ts`, `learning-rls.int-spec.ts`, `translations-rls.int-spec.ts` and `practice-rls.int-spec.ts`.
+Verified by `backend/test/integration/profiles-rls.int-spec.ts`, `learning-rls.int-spec.ts`, `translations-rls.int-spec.ts`, `practice-rls.int-spec.ts` and `admin-rls.int-spec.ts`.

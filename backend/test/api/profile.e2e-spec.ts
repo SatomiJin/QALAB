@@ -8,7 +8,7 @@ import {
 } from '../support/fake-auth-server.js';
 import { createTestApp } from '../support/create-test-app.js';
 
-// Test-only admin route: the real admin endpoints arrive in Phase 4.
+// Test-only admin route: checks RolesGuard on its own, apart from the admin CMS.
 @Roles('admin')
 @Controller('__test/admin')
 class AdminOnlyController {

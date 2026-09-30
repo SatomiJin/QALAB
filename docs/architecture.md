@@ -47,6 +47,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 1 — Authentication & Profile | Done | Done |
 | 2 — Learning (learner side) | Done | Done |
 | 3 — Practice | Done | Done |
+| 4 — Admin CMS | Done | Done |
 
 ## Authentication
 
@@ -79,3 +80,9 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 * Attempt flow: `POST /exercises/:id/attempts` → visible? (404) → `parseAnswer` (400 with `details`) → answer key (service role) → `grade` → insert (service role, `user_id` from the JWT) → translate the review (after the insert: review translations are readable only once you have an attempt) → `{ attempt, review }`.
 * Frontend `features/practice/`: API + TanStack Query hooks (`practiceKeys`), `kinds.ts` (tab ↔ types, verdicts, URL params), `answers.ts` (form ↔ request, backend errors → fields), pages `PracticeListPage` (one per tab; filters and page in the URL) and `ExercisePage` (`/practice/exercises/:id`: question, `AnswerForm`, `ResultView`, `AttemptHistory`), and `LessonExercises` on the lesson page.
 * The shared pager is `components/ListPager.tsx` (Learning and Practice lists).
+
+## Admin CMS (Phase 4)
+
+* Backend module `src/admin/`: `AdminCoursesController` (courses, modules) and `AdminLessonsController` (lessons, exercises), both `@Roles('admin')`. `AdminService` / `AdminExercisesService` load the course tree, apply the rules and map to DTOs; the pure rules are in `content-rules.ts` (in use, can publish, complete reorder, locked prompt ids) and unit-tested. `AdminContentRepository` reads and writes every status **as the admin** (`forUser`), so RLS `is_admin()` checks every write a second time; reorders and usage go through the SQL functions `reorder_content` and `content_usage`. Exercise prompt data and answer keys are validated with the grader's own parsers (`practice/exercise-schema.ts`).
+* Unique-slug (`23505`) and restrict-FK (`23503`) errors become `409` (`common/errors/pg-error.ts`).
+* Frontend `features/admin/`: `admin-api.ts`, `queries.ts` (`adminKeys`, `useAdminMutation`: returned details go into their cache, then every admin / learning / practice query is refreshed), pages `AdminCoursesPage` (filters in the URL, New course dialog, course reorder when one skill is shown), `AdminCoursePage` (details, publish / unpublish / archive / delete, outline with modules and lessons), `AdminLessonPage` (fields, `MarkdownEditor` with live preview, exercises), `AdminExercisePage` (per-type answer-key form; `exercise-form.ts` converts form and API shapes), `AdminLessonPreviewPage` (preview as learner). Reordering is `SortableList` (dnd-kit: pointer, touch, keyboard; plus up / down buttons), shown at once and put back if saving fails.

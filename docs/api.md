@@ -196,6 +196,62 @@ Rules:
 * The score, verdict and feedback are computed on the server from the answer key; the client cannot send or change them. The self-assessment (free-text types) is saved once per attempt.
 * `?lang=vi` translates the question, options, items and categories, and (after an attempt) the explanation, model answer and rubric. Concept names and enum values stay English (QA terms). A broken or missing answer key is a generic `500` (logged with field paths, never the key).
 
+## Admin (Phase 4)
+
+Every `/admin/*` route needs a JWT **and** `profiles.role = 'admin'` (`RolesGuard`): a learner gets `403` on every one, before any validation. The database checks the same rule again (RLS `is_admin()` on every write). All statuses are visible; nothing is translated (English only).
+
+| Method | Path | Body / query | Success | Errors |
+|---|---|---|---|---|
+| GET | `/admin/courses` | `?skill=&status=&page=&pageSize=` | `200 AdminCoursePage` in catalogue order (skill, course order) | `400` unknown status / query parameter; unknown skill → empty page |
+| POST | `/admin/courses` | `{ skillId, title, slug, description? }` | `201 AdminCourse` (draft, at the end of its skill) | `400` (`skillId is not a skill`, slug format, `status` not allowed); `409` slug used |
+| PATCH | `/admin/courses/reorder` | `{ skillId, ids }` | `204` | `400` not every course of the skill exactly once |
+| GET | `/admin/courses/:id` | | `200 AdminCourse` with the full tree | `400`; `404` |
+| PATCH | `/admin/courses/:id` | `{ skillId?, title?, slug?, description? }` (empty body = unchanged) | `200 AdminCourse`; a new skill puts it at the end of that skill | `400`; `404`; `409` slug used |
+| POST | `/admin/courses/:id/publish` · `/unpublish` · `/archive` | | `200 AdminCourse` (`unpublish` = back to draft, also from archived) | `404`; `409` publish without a published lesson in a published module |
+| DELETE | `/admin/courses/:id` | | `204` (modules, lessons, exercises, keys and translations go with it) | `404`; `409` in use |
+| POST | `/admin/courses/:id/modules` | `{ title, description?, status? }` | `201 AdminModule` (at the end) | `400`; `404` |
+| PATCH | `/admin/courses/:id/modules/reorder` | `{ ids }` | `204` | `400`; `404` |
+| PATCH | `/admin/modules/:id` | `{ title?, description?, status? }` | `200 AdminModule` | `400` (`courseId` not allowed); `404` |
+| DELETE | `/admin/modules/:id` | | `204` | `404`; `409` in use |
+| POST | `/admin/modules/:id/lessons` | `{ title, slug, contentMd?, estimatedMinutes?, status? }` | `201 AdminLesson` | `400`; `404`; `409` slug used in this module |
+| PATCH | `/admin/modules/:id/lessons/reorder` | `{ ids }` | `204` | `400`; `404` |
+| GET | `/admin/lessons/:id` | | `200 AdminLesson` (draft content, exercises) | `400`; `404` |
+| PATCH | `/admin/lessons/:id` | `{ title?, slug?, contentMd?, estimatedMinutes?, status? }` | `200 AdminLesson` | `400` (`moduleId` not allowed); `404`; `409` slug |
+| DELETE | `/admin/lessons/:id` | | `204` | `404`; `409` in use |
+| POST | `/admin/lessons/:id/exercises` | `{ type, question, promptData, answerData, explanation?, difficulty?, status? }` | `201 AdminExercise` | `400` with `details` (`promptData.options[1].text`, `answerData.correct`…); `404` |
+| PATCH | `/admin/lessons/:id/exercises/reorder` | `{ ids }` | `204` | `400`; `404` |
+| GET | `/admin/exercises/:id` | | `200 AdminExercise` **with the answer key** | `400`; `404` |
+| PATCH | `/admin/exercises/:id` | `{ question?, promptData?, answerData?, explanation?, difficulty?, status? }` | `200 AdminExercise` | `400` (`type` not allowed; key does not fit the prompt; changed ids after attempts); `404` |
+| DELETE | `/admin/exercises/:id` | | `204` | `404`; `409` attempted |
+
+```json
+// AdminCoursePage: { items: [AdminCourseSummary], total, page, pageSize }
+// AdminCourseSummary
+{ "id": "uuid", "slug": "…", "title": "…", "description": "…", "status": "draft", "orderIndex": 1,
+  "skill": { "id": "uuid", "code": "fundamentals", "name": "QA Fundamentals" },
+  "moduleCount": 2, "lessonCount": 4, "publishedLessonCount": 3, "updatedAt": "…" }
+// AdminCourse: summary fields (no counts) + inUse, canPublish, createdAt, modules:
+//   [{ id, title, description, status, orderIndex, inUse,
+//      lessons: [{ id, slug, title, estimatedMinutes, status, orderIndex, inUse,
+//                  exercises: [{ id, type, difficulty, question, promptData, status, orderIndex, inUse }] }] }]
+// AdminLesson: { id, slug, title, contentMd, estimatedMinutes, status, orderIndex, inUse, visibleToLearners,
+//                module: { id, title, status }, course: { id, slug, title, status }, exercises: [...], createdAt, updatedAt }
+// AdminExercise: exercise summary + answerData (null if missing), explanation, visibleToLearners,
+//                lesson / module / course refs, createdAt, updatedAt
+```
+
+Rules:
+
+* **Status.** New courses are drafts; modules, lessons and exercises take `status` (default `draft`). Learners see an item only when it and every parent are published (`visibleToLearners`). A course is published only through `/publish`, which needs `canPublish` (a published lesson in a published module); otherwise `409`. Unpublishing a lesson later does not unpublish its course.
+* **Delete.** `inUse` = learner progress (lessons) or attempts (exercises) here or below. Content in use answers `409 "Learners have progress or attempts here. Archive it instead."`; the database's `restrict` foreign keys give the same `409` if a learner starts in between. Hard delete cascades to children, answer keys and translations.
+* **Slugs.** `^[a-z0-9]+(-[a-z0-9]+)*$`, ≤ 100. Course slugs are unique; lesson slugs unique within their module. A used slug is `409` with `details: [{ field: "slug" }]`.
+* **Reorder.** `ids` lists every child of the parent exactly once, in the new order (first = 1); otherwise `400 details[ids]`. Written in one statement (`reorder_content`). Spec said `[ { id, orderIndex } ]`; a complete ordered list was chosen so concurrent edits cannot leave a half-applied order.
+* **Content never moves** between parents, and an exercise's `type` never changes (`400` unknown field; the DB has no update grant on those columns).
+* **Exercises.** `promptData` and `answerData` are checked together with the grader's parsers (`parsePrompt`, `parseAnswerKey`) and stored normalised (trimmed). A new `promptData` alone is checked against the stored key. Once learners have attempted an exercise, option / item / category ids (and `multiple`) cannot change (`400` on `promptData.options`…); texts can. The key is stored in `exercise_answers` (explanation included).
+* **Limits** (DTO = DB = `frontend/src/types/api.ts`): titles 1–160, descriptions ≤ 2000, `contentMd` ≤ 100 000, minutes 1–600, question 1–2000, explanation ≤ 10 000. The JSON body limit is 1 MB.
+* Audit columns (`created_by`, `updated_by`) come from the token, set by a DB trigger; the client cannot send them.
+* Editing English text makes its Vietnamese translations stale (they fall back to English until retranslated); editing translations in the CMS is not built yet.
+
 ## Health
 
 `GET /health` (public) → `200 { status: "ok", timestamp, uptimeSeconds }`.

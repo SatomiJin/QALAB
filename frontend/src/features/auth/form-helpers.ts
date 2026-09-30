@@ -16,15 +16,18 @@ export function hasFieldErrors(
 }
 
 /**
- * Shows backend validation `details` on the matching form fields.
- * Returns true when at least one field error was applied.
+ * Shows backend `details` on the matching form fields: validation (400) and
+ * conflicts such as a used slug (409). Returns true when at least one field
+ * error was applied.
  */
 export function applyFieldErrors(
   form: FormInstance,
   error: unknown,
   fields: readonly string[],
 ): boolean {
-  if (!(error instanceof ApiError) || error.status !== 400) return false;
+  if (!(error instanceof ApiError) || ![400, 409].includes(error.status)) {
+    return false;
+  }
   const byField = new Map<string, string[]>();
   for (const detail of error.details) {
     if (!fields.includes(detail.field)) continue;

@@ -1,6 +1,7 @@
 import { INestApplication, ModuleMetadata } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { App } from 'supertest/types.js';
+import { AdminContentRepository } from '../../src/admin/admin-content.repository.js';
 import { AppModule } from '../../src/app.module.js';
 import { configureApp } from '../../src/app.setup.js';
 import { JWT_KEY_SET } from '../../src/auth/jwt-verifier.service.js';
@@ -13,6 +14,7 @@ import { ProfilesRepository } from '../../src/profile/profiles.repository.js';
 import { SupabaseService } from '../../src/supabase/supabase.service.js';
 import { TranslationsRepository } from '../../src/translation/translations.repository.js';
 import { Translator } from '../../src/translation/translator.js';
+import { FakeAdminContentRepository } from './fake-admin.js';
 import { FakeAuthServer, FakeProfilesRepository } from './fake-auth-server.js';
 import {
   FakeContentRepository,
@@ -40,6 +42,7 @@ export interface TestApp {
   exercises: FakeExercisesRepository;
   answers: FakeExerciseAnswersRepository;
   attempts: FakeAttemptsRepository;
+  admin: FakeAdminContentRepository;
 }
 
 const REVIEW_FIELD = /^(explanation|model_answer|rubric\..+)$/;
@@ -59,6 +62,13 @@ export async function createTestApp(
   const exercises = new FakeExercisesRepository(content);
   const answers = new FakeExerciseAnswersRepository();
   const attempts = new FakeAttemptsRepository();
+  const admin = new FakeAdminContentRepository(
+    content,
+    exercises,
+    answers,
+    progress,
+    attempts,
+  );
   // Mirrors the content_translations read policy for exercise review texts.
   translations.canRead = (row, token) =>
     row.entity_type !== 'exercise' ||
@@ -97,6 +107,8 @@ export async function createTestApp(
     .useValue(answers)
     .overrideProvider(AttemptsRepository)
     .useValue(attempts)
+    .overrideProvider(AdminContentRepository)
+    .useValue(admin)
     .compile();
 
   const app = moduleRef.createNestApplication<INestApplication<App>>({
@@ -115,5 +127,6 @@ export async function createTestApp(
     exercises,
     answers,
     attempts,
+    admin,
   };
 }

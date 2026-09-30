@@ -143,11 +143,14 @@ describe('practice RLS (integration)', () => {
         question: 'x',
       });
       expect(error?.code).toBe('42501');
+      // Granted for admins; RLS leaves learners no row to update.
       const update = await asAlice
         .from('exercises')
         .update({ question: 'hacked' })
-        .eq('id', ids.exercise);
-      expect(update.error?.code).toBe('42501');
+        .eq('id', ids.exercise)
+        .select('id');
+      expect(update.error).toBeNull();
+      expect(update.data).toEqual([]);
     });
   });
 
@@ -169,11 +172,19 @@ describe('practice RLS (integration)', () => {
     });
 
     it('learners cannot write answer keys', async () => {
-      const { error } = await asAlice
+      // No select policy for learners, so there is no row to update.
+      const { data, error } = await asAlice
         .from('exercise_answers')
         .update({ answer_data: { correct: ['a'] } })
-        .eq('exercise_id', ids.exercise);
-      expect(error?.code).toBe('42501');
+        .eq('exercise_id', ids.exercise)
+        .select('exercise_id');
+      expect(error).toBeNull();
+      expect(data).toEqual([]);
+      const insert = await asAlice.from('exercise_answers').insert({
+        exercise_id: ids.draftExercise,
+        answer_data: { correct: ['a'] },
+      });
+      expect(insert.error?.code).toBe('42501');
     });
   });
 

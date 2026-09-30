@@ -11,9 +11,9 @@ import type {
   LessonProgressWrite,
 } from '../../src/learning/lesson-progress.repository.js';
 
-type Status = 'draft' | 'published' | 'archived';
+export type Status = 'draft' | 'published' | 'archived';
 
-interface Stored<T> {
+export interface Stored<T> {
   row: T;
   status: Status;
 }
@@ -29,9 +29,9 @@ const byOrder = <T extends { order_index: number; title: string }>(
  */
 export class FakeContentRepository {
   readonly skills: SkillRow[] = [];
-  private readonly courses = new Map<string, Stored<CourseRow>>();
-  private readonly modules = new Map<string, Stored<ModuleRow>>();
-  private readonly lessons = new Map<string, Stored<LessonRow>>();
+  readonly courses = new Map<string, Stored<CourseRow>>();
+  readonly modules = new Map<string, Stored<ModuleRow>>();
+  readonly lessons = new Map<string, Stored<LessonRow>>();
 
   addSkill(code: string, order_index = this.skills.length + 1): SkillRow {
     const skill = {

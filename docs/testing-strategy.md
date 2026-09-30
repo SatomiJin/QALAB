@@ -55,6 +55,20 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | URL list params (parse, defaults, round trip) | `frontend/src/features/learning/list-params.test.ts` |
 | E2E: breadcrumb + back buttons, back returns to the same list page, pagination (desktop + mobile size picker), skill filter, invalid URL params, machine translation note + English original toggle, unavailable note | `frontend/tests/e2e/learning.spec.ts` |
 
+## Phase 4 coverage (Admin CMS)
+
+| Requirement (plant.md) | Test |
+| --- | --- |
+| Learner gets 403 on every admin endpoint (23 routes), 401 without a token | `backend/test/api/admin.e2e-spec.ts` (access) |
+| Draft content is invisible to learners: course / lesson / exercise 404 on learner endpoints while draft or after unpublish; admins read it | `admin.e2e-spec.ts` (publish rules); RLS: `backend/test/integration/admin-rls.int-spec.ts` (learners) |
+| Delete is blocked when progress / attempts exist (lesson, module, course, exercise), also when the DB refuses after the check; unused content deletes with its children and keys | `admin.e2e-spec.ts` (delete rules); FK `23503` in `admin-rls.int-spec.ts` |
+| Slug uniqueness gives 409 (courses global, lessons per module) | `admin.e2e-spec.ts`; `23505` in `admin-rls.int-spec.ts` |
+| Publish rule, reorder (complete list, other parent, bad ids), course moved to another skill, empty PATCH, answer key vs prompt, type and parent immutable, prompt ids locked after attempts, answer key only for admins | `admin.e2e-spec.ts` (fake: `test/support/fake-admin.ts`, shares the learner fakes' stores) |
+| Pure rules: in use, can publish, next order, complete reorder, locked ids | `backend/src/admin/content-rules.spec.ts` |
+| RLS / grants: admin writes with audit columns from the JWT; forged audit columns / ids / parents / type give `42501`; learners write nothing; `reorder_content`, `content_usage` | `backend/test/integration/admin-rls.int-spec.ts` (learning / practice RLS suites updated: a learner update now matches no row instead of `42501`) |
+| Slugify, list params, move, exercise form and payload per type, backend errors onto form fields | `frontend/src/features/admin/admin.test.ts` |
+| E2E: list + filters, create course (auto slug, 409 on the field), outline (module, lesson, Markdown preview without raw HTML, publish), reorder by arrows (and rollback on failure), delete blocked / confirmed, exercise editor (multiple choice, scenario, bug report), locked answer rows, preview as learner, error / 404, learner no access | `frontend/tests/e2e/admin.spec.ts` (mock: `tests/e2e/support/mock-admin.ts`; runs with reduced motion so Select options are never clicked mid-animation) |
+
 ## Phase 3 coverage (practice)
 
 | Requirement (plant.md) | Test |

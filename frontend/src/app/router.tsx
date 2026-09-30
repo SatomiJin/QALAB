@@ -1,4 +1,12 @@
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router';
+import { AdminCoursePage } from '../features/admin/pages/AdminCoursePage';
+import { AdminCoursesPage } from '../features/admin/pages/AdminCoursesPage';
+import {
+  AdminExercisePage,
+  AdminNewExercisePage,
+} from '../features/admin/pages/AdminExercisePage';
+import { AdminLessonPage } from '../features/admin/pages/AdminLessonPage';
+import { AdminLessonPreviewPage } from '../features/admin/pages/AdminLessonPreviewPage';
 import { GuestOnly, RequireAdmin, RequireAuth } from '../features/auth/guards';
 import { ForgotPasswordPage } from '../features/auth/pages/ForgotPasswordPage';
 import { LoginPage } from '../features/auth/pages/LoginPage';
@@ -83,9 +91,20 @@ export const routes: RouteObject[] = [
                     index: true,
                     element: <Navigate to="/admin/courses" replace />,
                   },
+                  { path: 'courses', element: <AdminCoursesPage /> },
+                  { path: 'courses/:courseId', element: <AdminCoursePage /> },
+                  { path: 'lessons/:lessonId', element: <AdminLessonPage /> },
                   {
-                    path: 'courses',
-                    element: <PlaceholderPage page="adminCourses" phase={4} />,
+                    path: 'lessons/:lessonId/preview',
+                    element: <AdminLessonPreviewPage />,
+                  },
+                  {
+                    path: 'lessons/:lessonId/exercises/new',
+                    element: <AdminNewExercisePage />,
+                  },
+                  {
+                    path: 'exercises/:exerciseId',
+                    element: <AdminExercisePage />,
                   },
                   { path: '*', element: <NotFoundPage /> },
                 ],

@@ -186,26 +186,29 @@ describe('learning RLS (integration)', () => {
       }
     });
 
-    it.each([
-      ['learner', () => asAlice],
-      ['admin (writes arrive in Phase 4)', () => asAdmin],
-    ])('does not let a %s write content', async (_label, client) => {
-      const insertRes = await client()
+    // Admin writes: admin-rls.int-spec.ts.
+    it('does not let a learner write content', async () => {
+      const insertRes = await asAlice
         .from('courses')
         .insert({ skill_id: ids.course, title: 'x', slug: `x-${tag}` });
       expect(insertRes.error?.code).toBe('42501');
 
-      const updateRes = await client()
+      // Update/delete are granted (for admins) but RLS leaves learners no row.
+      const updateRes = await asAlice
         .from('lessons')
         .update({ title: 'Hacked' })
-        .eq('id', ids.lesson);
-      expect(updateRes.error?.code).toBe('42501');
+        .eq('id', ids.lesson)
+        .select('id');
+      expect(updateRes.error).toBeNull();
+      expect(updateRes.data).toEqual([]);
 
-      const deleteRes = await client()
+      const deleteRes = await asAlice
         .from('lessons')
         .delete()
-        .eq('id', ids.lesson);
-      expect(deleteRes.error?.code).toBe('42501');
+        .eq('id', ids.lesson)
+        .select('id');
+      expect(deleteRes.error).toBeNull();
+      expect(deleteRes.data).toEqual([]);
     });
   });
 

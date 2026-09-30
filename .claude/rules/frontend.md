@@ -33,6 +33,8 @@ src/
 * Request/response types live in `types/api.ts` and must match the backend DTOs (and their limits, e.g. `PASSWORD_MIN_LENGTH`). Change both sides together.
 * Server data goes through TanStack Query: `useQuery` for reads (query keys as exported `const` arrays, e.g. `ME_QUERY_KEY`), `useMutation` for writes, then update or invalidate the affected keys. Pass `signal` to GET calls.
 * A feature with several queries keeps its hooks in `features/<x>/queries.ts` with a key factory (`learningKeys.course(slug)`, all starting with the feature name) so a mutation can invalidate the whole group by prefix. Put the saved result into the detail cache (`setQueryData`) and invalidate the lists.
+* Features that write many kinds of content (Admin CMS) wrap writes in one hook (`useAdminMutation` in `features/admin/queries.ts`): the returned detail goes into its cache (`setQueryData`), then every query of the affected features (admin, learning, practice) is invalidated.
+* A form keyed by its saved item (`key={item.updatedAt}`, so a save refills it) remounts when the result is cached, and `mutate(vars, { onSuccess })` callbacks are dropped for unmounted components: use `void save.mutateAsync(vars).then(onSuccess, onError)` there.
 * Background writes (e.g. reading progress) are fire-and-forget: no error UI, the next write retries. User-triggered writes (e.g. *Mark as complete*) use their own `useMutation` so they have their own `isPending` / error.
 * Content requests pass the content language (`useContentLanguage()`, from the UI language) and include it in the query key, so switching language refetches. A per-page override (lesson "English original") is local state; `placeholderData` keeps the same item on screen meanwhile.
 * List state (filter, page, page size) lives in the URL (`list-params.ts`: parse with safe defaults, write without defaults); lists use `placeholderData: keepPreviousData`. The last list URL is remembered in `sessionStorage` (try/catch) so back buttons return to it.
@@ -50,6 +52,11 @@ src/
 * Lists of text rows share `components/ListPager` (range, page-size select, pager); give it the feature's range label and `rangeTestId`.
 * Optional sections on a page (a lesson's exercises) render nothing while loading or empty, and a one-line retry on error, so the main content does not jump. Backend `400` field `details` are mapped onto the form with `applyFieldErrors` / `hasFieldErrors` (`features/auth/form-helpers.ts`).
 * Forms: Ant Design `Form` with client rules mirroring backend limits; the backend stays the authority. Emails use `inputMode="email"`, not `type="email"`.
+* Give every `Form` a `name` when two forms can be on screen (a page form and a dialog): field ids are the field names otherwise, and duplicate ids point labels at the wrong input. Custom controls inside `Form.Item` forward the `id` prop to the real input (`StatusSelect`, `MarkdownEditor`), or the label is not linked.
+* `applyFieldErrors` maps `details` of `400` and `409` (e.g. a used slug) onto fields. Nested paths from JSON documents (`promptData.options[1].text`, `answerData.mapping.login`) are mapped by a feature helper (`exerciseFieldErrors` in `features/admin/exercise-form.ts`); list-level errors go to the form's `Alert`.
+* Values the user does not type but the API needs (label ids of options / items / rubric) live in the form store (set when a row is added: `nextLabelId`) and are read with `form.getFieldsValue(true)` on submit.
+* Reorderable lists use `features/admin/SortableList.tsx` (dnd-kit: pointer, touch, keyboard, translated screen-reader announcements; plus up / down buttons). The new order shows at once, `onReorder` saves it, a rejected promise puts the old order back. Derive the shown order during render (`local.base === items ? local.order : items`), not with `setState` in an effect.
+* Hard deletes go through `DeleteButton` (confirmation dialog; disabled with the "archive instead" tooltip when `inUse`).
 
 ## Routing and access
 
@@ -74,6 +81,13 @@ src/
 * Ant Design `Pagination` hides its size changer on small screens: render the page-size `Select` yourself (`aria-label`, options from `PAGE_SIZES`) next to `Pagination showSizeChanger={false}`.
 * Row lists that should read as a table (lessons, later attempts) use fixed grid column widths so columns line up across rows.
 
+## Admin CMS
+
+* Feature folder `features/admin/`: pages under `pages/`, shared pieces (`StatusTag`, `StatusLine`, `SortableList`, `DeleteButton`, `MarkdownEditor`, `CourseFields` / `SlugField`, dialogs) next to them, pure helpers in `content.ts` (slugify, list params, move) and `exercise-form.ts` (form values and API payload per exercise type), tested in `admin.test.ts`.
+* Content status uses `StatusTag` (never `VerdictTag`: a status is not a result).
+* Slugs are generated from the title (`slugify`, accents removed) until the slug field is edited by hand (`form.isFieldTouched('slug')`).
+* Editing Markdown uses `MarkdownEditor` (live preview with `LessonMarkdown`, side by side from `lg`, tabs below).
+
 ## Markdown content
 
 * Render lesson/content Markdown (lessons, exercise questions, explanations, model answers) only with `LessonMarkdown` (`react-markdown` + `remark-gfm`; pass `testId` when it is not the lesson body). In lists, show a question as one plain line (`plainText`). Never enable raw HTML (`rehype-raw`) or use `dangerouslySetInnerHTML`: content comes from the database. An e2e test checks that `<script>` / HTML in content is not rendered.
@@ -89,7 +103,10 @@ src/
 * Keep `mock-api.ts` in sync with `docs/api.md` whenever the contract changes. Each feature's endpoints live in their own mock (`support/mock-learning.ts`, `support/mock-practice.ts` which grades with the backend rules), delegated from `MockApi.handle`'s default branch; mocks copy the backend rules (forward-only progress, continue choice) and expose switches for states (`empty`, `failing`) and a call log (`progressCalls`).
 * Test files import with the `.ts` extension (`'./support/mock-api.ts'`); a missing extension fails the build that Playwright runs first.
 * Screenshot reviews: write a throwaway spec + config outside the committed suites (or delete them after); do not leave review harnesses in `tests/`.
-* Select by role/label or `data-testid` / `data-state`; never by translated text when the test is not about the text.
+* Select by role/label or `data-testid` / `data-state`; never by translated text when the test is not about the text. Labels that are substrings of others ("Option 1" / "Remove: Option 1", "Skill" / "Filter by skill") need `exact: true` or a role (`getByRole('textbox', { name, exact: true })`).
+* Specs that pick many Select options run with `test.use({ reducedMotion: 'reduce' })` and pick inside the open dropdown (`.ant-select-dropdown:not(.ant-select-dropdown-hidden)`), then expect it closed: a click during the open animation can be lost.
+* A 5xx error state appears only after the global retries: give that assertion a longer timeout (15 s).
+* Set mock failure switches only after the page has loaded, or the initial GET fails instead of the write under test.
 * A fixed bug gets a regression test.
 
 ## Before you finish
