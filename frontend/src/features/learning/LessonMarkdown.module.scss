@@ -1,0 +1,114 @@
+@use '../../styles/tokens' as *;
+
+// Lesson body: a printed page. Type does the work; rules only where a table
+// or quote needs a boundary.
+.markdown {
+  max-width: $measure;
+  overflow-wrap: break-word;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  p,
+  ul,
+  ol,
+  blockquote,
+  pre,
+  .tableWrap {
+    margin: 0 0 $space-4;
+  }
+
+  h2 {
+    @include type-section-title;
+    margin: $space-6 0 $space-3;
+  }
+
+  h3,
+  h4 {
+    margin: $space-5 0 $space-2;
+    font-size: $font-size-body;
+    line-height: $line-height-body;
+    font-weight: 650;
+  }
+
+  ul,
+  ol {
+    padding-left: $space-5;
+  }
+
+  li + li {
+    margin-top: $space-1;
+  }
+
+  strong {
+    font-weight: 650;
+  }
+
+  blockquote {
+    padding-left: $space-4;
+    border-left: 3px solid $color-rule;
+    color: $color-ink-muted;
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Code is lesson content, not UI: it keeps a monospace face so `>=` and
+  // `>` read differently (docs/design.md › Lesson content).
+  code {
+    padding: 0 $space-1;
+    border-radius: $radius-tag;
+    background: color-mix(in srgb, #{$color-ink} 7%, transparent);
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-size: 0.9em;
+  }
+
+  pre {
+    overflow-x: auto;
+    padding: $space-3 $space-4;
+    border: 1px solid $color-rule;
+    border-radius: $radius-control;
+    background: $color-sheet;
+
+    code {
+      padding: 0;
+      background: none;
+    }
+  }
+
+  hr {
+    margin: $space-6 0;
+    border: 0;
+    border-top: 1px solid $color-rule;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.tableWrap {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  th,
+  td {
+    padding: $space-2 $space-3;
+    border-bottom: 1px solid $color-rule;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    font-weight: 600;
+    border-bottom-color: $color-ink-muted;
+  }
+}

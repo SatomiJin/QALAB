@@ -33,3 +33,24 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | RLS: profile access | `test/integration/profiles-rls.int-spec.ts` |
 | `/me`, protected fields, `RolesGuard` | `test/api/profile.e2e-spec.ts` |
 | E2E: register → verify → login → logout | `frontend/tests/e2e/auth.spec.ts` |
+
+## Phase 2 coverage
+
+| Requirement (plant.md) | Test |
+| --- | --- |
+| Continue / progress / catalogue logic (outline, next lesson, forward-only progress, continue choice) | `backend/src/learning/outline.spec.ts` |
+| Learner endpoints: happy path, 401, invalid UUID 400, validation 400 (incl. `userId`, `status`), 404 for draft / draft-parent / unknown content, per-user progress | `backend/test/api/learning.e2e-spec.ts` (fakes: `test/support/fake-learning.ts`) |
+| RLS: published-only content (parents too), admin reads drafts, anon denied, no content writes, own progress only, forward-only trigger, no delete, FK restrict | `backend/test/integration/learning-rls.int-spec.ts` |
+| Reading-progress maths (percent, 10-point reporting steps, verdict mapping) | `frontend/src/features/learning/progress.test.ts` |
+| E2E: skills in order, start → read → scroll tracked → complete → next lesson; course progress; resume; raw HTML not rendered; empty, error + retry, 404; Vietnamese | `frontend/tests/e2e/learning.spec.ts` (mock: `tests/e2e/support/mock-learning.ts`) |
+
+## Pagination and translation coverage
+
+| Requirement | Test |
+| --- | --- |
+| Markdown ↔ HTML pipeline: identity round trip, structure/code/URLs/tables kept, glossary terms, entity decoding | `backend/src/translation/markdown-translate.spec.ts` |
+| Google provider: key in header (not URL), errors do not leak the key, batching | `backend/src/translation/translator.spec.ts` (`fetch` stubbed) |
+| `/courses` pages (default 20, 50/100, across skills, past the end, invalid values → 400); `?lang=vi` on lesson, course, list, continue; cache reuse and invalidation on edit; fallback with no key, provider failure, unreadable cache | `backend/test/api/learning-i18n-pages.e2e-spec.ts` (fakes: `test/support/fake-translation.ts`) |
+| RLS on `content_translations`: learners read published only, nobody writes, delete trigger | `backend/test/integration/translations-rls.int-spec.ts` |
+| URL list params (parse, defaults, round trip) | `frontend/src/features/learning/list-params.test.ts` |
+| E2E: breadcrumb + back buttons, back returns to the same list page, pagination (desktop + mobile size picker), skill filter, invalid URL params, machine translation note + English original toggle, unavailable note | `frontend/tests/e2e/learning.spec.ts` |

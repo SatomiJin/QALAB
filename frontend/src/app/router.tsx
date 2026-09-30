@@ -5,6 +5,9 @@ import { LoginPage } from '../features/auth/pages/LoginPage';
 import { RegisterPage } from '../features/auth/pages/RegisterPage';
 import { ResetPasswordPage } from '../features/auth/pages/ResetPasswordPage';
 import { VerifyEmailPage } from '../features/auth/pages/VerifyEmailPage';
+import { CourseDetailPage } from '../features/learning/pages/CourseDetailPage';
+import { LearningPage } from '../features/learning/pages/LearningPage';
+import { LessonPage } from '../features/learning/pages/LessonPage';
 import { ProfilePage } from '../features/profile/ProfilePage';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
@@ -32,7 +35,11 @@ export const routes: RouteObject[] = [
               },
               {
                 path: 'learning',
-                element: <PlaceholderPage page="learning" phase={2} />,
+                children: [
+                  { index: true, element: <LearningPage /> },
+                  { path: 'courses/:slug', element: <CourseDetailPage /> },
+                  { path: 'lessons/:lessonId', element: <LessonPage /> },
+                ],
               },
               {
                 path: 'practice',

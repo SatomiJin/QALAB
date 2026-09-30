@@ -1,0 +1,79 @@
+@use '../../../styles/tokens' as *;
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2 $space-4;
+  margin: (-$space-4) 0 $space-6;
+}
+
+.resume {
+  height: auto;
+  padding: 0;
+  @include type-small;
+}
+
+.article {
+  padding-bottom: $space-6;
+}
+
+.footer {
+  display: grid;
+  gap: $space-6;
+  max-width: $measure;
+  padding-top: $space-5;
+  border-top: 1px solid $color-rule;
+}
+
+.completeRow {
+  display: grid;
+  justify-items: start;
+  gap: $space-3;
+}
+
+.done {
+  display: flex;
+  align-items: baseline;
+  gap: $space-3;
+  margin: 0;
+  color: $color-ink-muted;
+}
+
+.neighbours {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.neighbour {
+  display: grid;
+  gap: 2px;
+  text-decoration: none;
+
+  &:hover .neighbourTitle {
+    text-decoration-thickness: 2px;
+  }
+}
+
+.end {
+  text-align: right;
+
+  @media (max-width: $breakpoint-md) {
+    text-align: left;
+  }
+}
+
+.neighbourLabel {
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.neighbourTitle {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

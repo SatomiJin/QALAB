@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
   Max,
@@ -68,6 +69,14 @@ export class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   SUPABASE_SERVICE_ROLE_KEY: string;
+
+  /**
+   * Google Cloud Translation API key (v2). Optional: without it, Vietnamese
+   * requests get the English content with `translation: "unavailable"`.
+   */
+  @IsOptional()
+  @IsString()
+  GOOGLE_TRANSLATE_API_KEY?: string;
 }
 
 /**

@@ -41,6 +41,8 @@ Verdicts (text and tag colours; tags use a 12–16% tint of the same hue as back
 | Blocked | `#A86200` | `#E0A443` |
 | Not run | `#6B7580` | `#8C96A0` |
 
+**In progress** (added in Phase 2) is not a result yet, so it gets no colour: Ink text in a 1px Ink-muted outline. Lesson and course progress map to verdicts: completed → Passed, in progress → In progress, not started → Not run.
+
 Links and focus rings use Ink with an underline / 2px outline; there is no separate "brand blue".
 
 ## Type
@@ -56,7 +58,7 @@ One family: **Archivo** (variable, weight + width axes, full Vietnamese support)
 | Verdict tag | 12/16, weight 650, width 75 (condensed, like a stamp), sentence case |
 | IDs and counts (TC-014, 12/40) | body size, `font-variant-numeric: tabular-nums`, width 88 |
 
-Reading measure: body copy max `68ch`. Sentence case everywhere. No all-caps labels, no monospace.
+Reading measure: body copy max `68ch`. Sentence case everywhere. No all-caps labels, no monospace in the UI. One exception: code inside lesson content (`age >= 18`) is content, and a monospace face keeps `>` and `>=` distinct.
 
 ## Layout
 
@@ -149,6 +151,22 @@ The one bold thing is the verdict + highlighter system. Everything else stays qu
 
 * Reduced motion (OS setting): Ant Design animations are turned off with its `motion` token; our own transitions add their own `prefers-reduced-motion` rule. Never shorten animations globally (`* { animation-duration: 0.01ms }`): antd positions popups during the enter animation, and that rule left every dropdown off-screen (regression test in `tests/e2e/preferences.spec.ts`).
 
+## Learning screens (Phase 2)
+
+* **Learning** (`/learning`): a *Continue* block first, the one "do next" on the page: a reason line (Start here / Pick up where you stopped / Up next), the lesson title marked with a highlighter stroke, a course | module trail, one primary button. It sits under a 1px Ink rule (the top of the plan). Below it, every skill in order as a section (240px skill column + its courses), like the sections of a test plan. Skills without courses stay listed with "No courses yet." so the whole plan is visible. A course is a row: title link, description, verdict, "1 of 4 lessons", minutes.
+* **Course** (`/learning/courses/:slug`): back link, title, description; verdict + count + minutes + skill; primary *Start course* / *Continue course* (secondary *Review from the first lesson* once completed). Modules are sections ("Module 1" in small tabular text, then the title). Lessons are rows of a test run: number `1.2` (tabular), title, minutes, verdict, in fixed columns so they line up.
+* **Lesson** (`/learning/lessons/:id`): course | module trail, title, verdict + reading time, an optional *Jump to where you stopped (40%)* text button, the Markdown body at 68ch, then a rule, the primary *Mark as complete* (or "Passed, Completed on …"), and previous / next lesson links with small labels and no arrows. The last lesson links back to the course.
+* Lesson Markdown: h2/h3 on the type scale, tables with Rule lines and tabular figures (wide tables scroll inside their own box), quotes with a 3px Rule bar in Ink muted, code on a 7% Ink tint.
+* Meta lines are separated by gaps or a 1px Rule, never middle dots.
+* Changed after review: the lesson rows first sized their columns per row, so minutes and verdicts did not line up; the Continue block had its own bottom rule right above the first section's rule (a double line).
+
+## Navigation, lists and translation (Phase 2, second pass)
+
+* **Page trail** above every course and lesson title: a 32px outlined back button (arrow icon, tooltip + accessible name "Back to courses" / "Back to the lesson list") and a breadcrumb "Learning › Course › Lesson" in small text; ancestors are muted links, the current page is Ink and not a link. Separators are a small chevron icon.
+* **Learning list** replaces the per-skill sections: the Continue block, then skill tabs (same style as the Practice tabs: highlighter mark under the current tab, "All skills" first, scrolling sideways inside their own box on mobile), then one flat list of course rows separated by Rules (rows span the column; text keeps the 68ch measure; the skill name is in each row's meta). An empty skill says "No courses in this skill yet."
+* **Pager** under the list: a tabular "1–20 of 46 courses" range on the left; our own page-size select (20 / 50 / 100) and Ant Design's pager on the right. The select is ours because Ant Design hides its size changer on small screens (changed after review: mobile users could not change the page size).
+* **Translation note** (Vietnamese UI only): one small muted sentence with a translate icon, flowing as text — "Vietnamese version. QA terms stay in English." (manual) or "Machine-translated from English. QA terms, code and links stay in English." — plus a text button to show the English original (and back). "Not available" gets its own sentence and no button. It sits under the lesson's status line, and under the title on the course and Learning pages.
+
 ## Not in this pass
 
-Dashboard content, lesson reader, practice forms, and admin screens are designed in their own phases, using this system.
+Dashboard content, practice forms, and admin screens are designed in their own phases, using this system.

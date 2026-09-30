@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import styles from './VerdictTag.module.scss';
 
-export type Verdict = 'pass' | 'fail' | 'blocked' | 'notRun';
+export type Verdict = 'pass' | 'fail' | 'blocked' | 'notRun' | 'inProgress';
 
 interface VerdictTagProps {
   verdict: Verdict;
@@ -9,7 +9,8 @@ interface VerdictTagProps {
 
 /**
  * The only coloured chip in the UI: a test verdict. Lessons, exercises and
- * progress all use the same four states (see docs/design.md).
+ * progress all use the same states (see docs/design.md). `inProgress` is
+ * outlined, not coloured: it is not a result yet.
  */
 export function VerdictTag({ verdict }: VerdictTagProps) {
   const { t } = useTranslation();

@@ -33,11 +33,6 @@ export const en = {
       title: 'Dashboard',
       description: 'See what is done, what failed, and what to study next.',
     },
-    learning: {
-      title: 'Learning',
-      description:
-        'Work through courses grouped by skill, one lesson at a time.',
-    },
     quiz: {
       title: 'Quiz',
       description: 'Check your understanding with short quizzes.',
@@ -73,6 +68,7 @@ export const en = {
     fail: 'Failed',
     blocked: 'Blocked',
     notRun: 'Not run',
+    inProgress: 'In progress',
   },
   apiStatus: {
     connecting: 'Connecting to the API…',
@@ -193,6 +189,104 @@ export const en = {
         'The reset link is invalid, already used, or expired. Request a new one.',
       missing: 'Open this page from the link in your password reset email.',
       requestNew: 'Request a new link',
+    },
+  },
+  trail: {
+    label: 'Breadcrumb',
+  },
+  skills: {
+    fundamentals: {
+      name: 'QA Fundamentals',
+      description: 'What testing is, why it matters, SDLC and STLC.',
+    },
+    testing_types: {
+      name: 'Testing Types',
+      description: 'Functional, non-functional, smoke, regression and more.',
+    },
+    test_design: {
+      name: 'Test Design Techniques',
+      description:
+        'Equivalence partitioning, boundary values, decision tables, state transitions.',
+    },
+    test_docs: {
+      name: 'Test Documentation',
+      description: 'Test plans, test cases, test runs and reports.',
+    },
+    defect_mgmt: {
+      name: 'Defect Management',
+      description:
+        'Writing bug reports, Severity vs Priority, defect life cycle.',
+    },
+    api_testing: {
+      name: 'API Testing',
+      description: 'HTTP, REST, status codes and API test cases.',
+    },
+    automation: {
+      name: 'Automation Testing',
+      description: 'When to automate, the test pyramid, UI and API automation.',
+    },
+  },
+  learning: {
+    title: 'Learning',
+    description:
+      'Work through the skills in order, or open any course. Your place is saved as you read.',
+    minutes_one: '{{count}} min',
+    minutes_other: '{{count}} min',
+    lessonsDone: '{{done}} of {{total}} lessons',
+    empty:
+      'No courses are published yet. They will appear here, grouped by skill.',
+    noCourses: 'No courses yet.',
+    list: {
+      filterLabel: 'Filter courses by skill',
+      all: 'All skills',
+      range: '{{start}}–{{end}} of {{total}} courses',
+      emptySkill: 'No courses in this skill yet.',
+      pageSizeLabel: 'Courses per page',
+      pageSize: '{{count}} per page',
+    },
+    translation: {
+      manual: 'Vietnamese version. QA terms stay in English.',
+      machine:
+        'Machine-translated from English. QA terms, code and links stay in English.',
+      unavailable:
+        'The Vietnamese version is not available right now, so this is shown in English.',
+      original: 'Showing the English original.',
+      showOriginal: 'Show the English original',
+      showTranslation: 'Show the Vietnamese version',
+    },
+    continue: {
+      label: 'Continue learning',
+      start: 'Start here',
+      resume: 'Pick up where you stopped',
+      next: 'Up next',
+      startAction: 'Start lesson',
+      resumeAction: 'Continue lesson',
+      read: '{{percent}}% read',
+      allDone:
+        'Every published lesson is completed. New courses will appear here.',
+    },
+    course: {
+      backToList: 'Back to courses',
+      start: 'Start course',
+      continue: 'Continue course',
+      review: 'Review from the first lesson',
+      modulesLabel: 'Modules and lessons',
+      moduleNumber: 'Module {{number}}',
+      noLessons: 'No lessons in this module yet.',
+    },
+    lesson: {
+      backToLessons: 'Back to the lesson list',
+      readingTime_one: '{{count}} min read',
+      readingTime_other: '{{count}} min read',
+      resumeAt: 'Jump to where you stopped ({{percent}}%)',
+      complete: 'Mark as complete',
+      completedOn: 'Completed on {{date}}',
+      completeFailed: 'Could not save your progress. Try again.',
+      neighbours: 'Other lessons in this course',
+      previous: 'Previous lesson',
+      next: 'Next lesson',
+      backToCourse: 'Back to the course',
+      empty: 'This lesson has no content yet.',
     },
   },
   profile: {

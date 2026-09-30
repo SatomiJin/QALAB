@@ -35,3 +35,5 @@ Thumbs.db
 
 # claude code: personal settings (shared config lives in .claude/)
 .claude/settings.local.json
+# Added by code-review-graph
+.code-review-graph/

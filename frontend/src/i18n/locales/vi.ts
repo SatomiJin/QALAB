@@ -37,10 +37,6 @@ export const vi: TranslationSchema = {
       title: 'Tổng quan',
       description: 'Xem phần đã xong, phần chưa đạt và nên học gì tiếp.',
     },
-    learning: {
-      title: 'Học tập',
-      description: 'Học lần lượt từng bài trong các khóa, nhóm theo kỹ năng.',
-    },
     quiz: {
       title: 'Quiz',
       description: 'Kiểm tra mức hiểu bài bằng các quiz ngắn.',
@@ -76,6 +72,7 @@ export const vi: TranslationSchema = {
     fail: 'Failed',
     blocked: 'Blocked',
     notRun: 'Not run',
+    inProgress: 'In progress',
   },
   apiStatus: {
     connecting: 'Đang kết nối API…',
@@ -194,6 +191,104 @@ export const vi: TranslationSchema = {
         'Link đặt lại mật khẩu không hợp lệ, đã được dùng hoặc đã hết hạn. Hãy yêu cầu link mới.',
       missing: 'Hãy mở trang này từ link trong email đặt lại mật khẩu.',
       requestNew: 'Yêu cầu link mới',
+    },
+  },
+  trail: {
+    label: 'Đường dẫn trang',
+  },
+  skills: {
+    fundamentals: {
+      name: 'Nền tảng QA',
+      description: 'Kiểm thử là gì, vì sao cần kiểm thử, SDLC và STLC.',
+    },
+    testing_types: {
+      name: 'Các loại kiểm thử',
+      description: 'Functional, non-functional, smoke, regression và hơn nữa.',
+    },
+    test_design: {
+      name: 'Kỹ thuật thiết kế test',
+      description:
+        'Phân vùng tương đương, giá trị biên, bảng quyết định, chuyển trạng thái.',
+    },
+    test_docs: {
+      name: 'Tài liệu kiểm thử',
+      description: 'Test plan, test case, test run và báo cáo.',
+    },
+    defect_mgmt: {
+      name: 'Quản lý defect',
+      description: 'Viết bug report, Severity và Priority, vòng đời defect.',
+    },
+    api_testing: {
+      name: 'API Testing',
+      description: 'HTTP, REST, status code và test case cho API.',
+    },
+    automation: {
+      name: 'Automation Testing',
+      description:
+        'Khi nào nên tự động hoá, test pyramid, UI và API automation.',
+    },
+  },
+  learning: {
+    title: 'Học tập',
+    description:
+      'Học lần lượt theo kỹ năng, hoặc mở bất kỳ khoá nào. Vị trí đang đọc được lưu lại.',
+    minutes_one: '{{count}} phút',
+    minutes_other: '{{count}} phút',
+    lessonsDone: '{{done}}/{{total}} bài',
+    empty:
+      'Chưa có khoá học nào được xuất bản. Khoá học sẽ hiện ở đây, nhóm theo kỹ năng.',
+    noCourses: 'Chưa có khoá học.',
+    list: {
+      filterLabel: 'Lọc khoá học theo kỹ năng',
+      all: 'Tất cả kỹ năng',
+      range: '{{start}}–{{end}} trong {{total}} khoá học',
+      emptySkill: 'Kỹ năng này chưa có khoá học.',
+      pageSizeLabel: 'Số khoá học mỗi trang',
+      pageSize: '{{count}} / trang',
+    },
+    translation: {
+      manual: 'Bản tiếng Việt. Thuật ngữ QA giữ nguyên tiếng Anh.',
+      machine:
+        'Bản dịch máy từ tiếng Anh. Thuật ngữ QA, code và đường link giữ nguyên tiếng Anh.',
+      unavailable:
+        'Hiện chưa có bản tiếng Việt nên nội dung đang hiển thị bằng tiếng Anh.',
+      original: 'Đang xem bản gốc tiếng Anh.',
+      showOriginal: 'Xem bản gốc tiếng Anh',
+      showTranslation: 'Xem bản tiếng Việt',
+    },
+    continue: {
+      label: 'Học tiếp',
+      start: 'Bắt đầu từ đây',
+      resume: 'Tiếp tục chỗ đang dừng',
+      next: 'Bài tiếp theo',
+      startAction: 'Bắt đầu bài học',
+      resumeAction: 'Học tiếp',
+      read: 'Đã đọc {{percent}}%',
+      allDone:
+        'Bạn đã hoàn thành mọi bài học đã xuất bản. Khoá học mới sẽ hiện ở đây.',
+    },
+    course: {
+      backToList: 'Về danh sách khoá học',
+      start: 'Bắt đầu khoá học',
+      continue: 'Học tiếp khoá này',
+      review: 'Ôn lại từ bài đầu',
+      modulesLabel: 'Module và bài học',
+      moduleNumber: 'Module {{number}}',
+      noLessons: 'Module này chưa có bài học.',
+    },
+    lesson: {
+      backToLessons: 'Về danh sách bài học',
+      readingTime_one: '{{count}} phút đọc',
+      readingTime_other: '{{count}} phút đọc',
+      resumeAt: 'Đến chỗ đang đọc dở ({{percent}}%)',
+      complete: 'Đánh dấu hoàn thành',
+      completedOn: 'Hoàn thành ngày {{date}}',
+      completeFailed: 'Chưa lưu được tiến độ. Thử lại.',
+      neighbours: 'Các bài khác trong khoá',
+      previous: 'Bài trước',
+      next: 'Bài sau',
+      backToCourse: 'Về trang khoá học',
+      empty: 'Bài học này chưa có nội dung.',
     },
   },
   profile: {

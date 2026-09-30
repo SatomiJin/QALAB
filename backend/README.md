@@ -24,11 +24,16 @@ Where to find the Supabase values:
 
 Other variables (`AUTH_RATE_LIMIT`, `TRUST_PROXY_HOPS`, …) are described in `.env.example`.
 
+Vietnamese content comes first from manual translations in `content_translations` (the seed has the sample course; no key needed). `GOOGLE_TRANSLATE_API_KEY` (optional, paid) adds machine translation for everything else. Create it in Google Cloud (Cloud Translation API enabled, billing on), restrict it to that API. Without it, texts that have no manual translation stay English (`translation: "unavailable"`). Translations are cached in `content_translations`, so each text version is billed once.
+
 ### Database
 
 ```bash
-npx supabase db push   # apply supabase/migrations to the linked project
+npx supabase db push                  # apply supabase/migrations to the linked project
+npx supabase db push --include-seed   # … and supabase/seed.sql (sample course)
 ```
+
+Skills are reference data inside a migration. `seed.sql` holds sample content only; it uses fixed ids and `on conflict do nothing`, so re-running it is safe. Run `npm run test:int` after pushing: it checks RLS against the real database.
 
 ### Supabase Auth settings (cloud dashboard)
 

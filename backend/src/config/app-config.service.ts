@@ -56,4 +56,9 @@ export class AppConfigService {
   get supabaseServiceRoleKey(): string {
     return this.config.get('SUPABASE_SERVICE_ROLE_KEY', { infer: true });
   }
+
+  /** Empty string when not configured. */
+  get googleTranslateApiKey(): string {
+    return this.config.get('GOOGLE_TRANSLATE_API_KEY', { infer: true }) ?? '';
+  }
 }

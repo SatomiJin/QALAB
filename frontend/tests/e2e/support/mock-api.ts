@@ -1,4 +1,5 @@
 import type { Page, Route } from '@playwright/test';
+import { MockLearning } from './mock-learning.ts';
 
 /**
  * Stateful stand-in for the backend API, installed with `page.route`. It
@@ -43,6 +44,7 @@ export class MockApi {
   /** Every request the app made, for assertions. */
   readonly calls: { method: string; path: string }[] = [];
   healthy = true;
+  readonly learning = new MockLearning();
 
   addUser(input: Partial<MockUser> & { email: string }): MockUser {
     const user: MockUser = {
@@ -286,8 +288,19 @@ export class MockApi {
         return { status: 200, json: this.profile(user) };
       }
 
-      default:
-        return error(404, 'Not Found', `Cannot ${method} ${path}`);
+      default: {
+        const user = this.currentUser(route);
+        if (!user) return unauthorized;
+        return (
+          this.learning.handle(
+            method,
+            path,
+            body,
+            user.id,
+            new URL(route.request().url()).searchParams,
+          ) ?? error(404, 'Not Found', `Cannot ${method} ${path}`)
+        );
+      }
     }
   }
 }

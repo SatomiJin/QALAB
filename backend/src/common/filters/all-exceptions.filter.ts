@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import type { Response } from 'express';
 import { STATUS_CODES } from 'node:http';
+import { describeError } from '../errors/describe-error.js';
 import {
   ErrorDetailDto,
   ErrorResponseDto,
@@ -65,9 +66,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const body = toErrorResponse(exception);
 
     if (body.statusCode >= 500) {
-      this.logger.error(
-        exception instanceof Error ? exception.stack : String(exception),
-      );
+      this.logger.error(describeError(exception));
     }
 
     response.status(body.statusCode).json(body);
