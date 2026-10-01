@@ -1,0 +1,123 @@
+[
+  {
+    "key": "read-the-rtm",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Here is the RTM for the checkout feature. Which **two** conclusions are correct?\n\n| Requirement | Description | Test cases | Latest result |\n|---|---|---|---|\n| REQ-C1 | Add items to the basket | TC-10, TC-11 | Pass |\n| REQ-C2 | Apply a discount code | TC-12 | Fail (BUG-201) |\n| REQ-C3 | Free shipping for orders of 100.00 USD or more | — | — |\n| REQ-C4 | Pay by card | TC-13, TC-14 | Blocked |\n\nThe test suite also contains **TC-15: gift wrapping option**, which is linked to no requirement.",
+      "vi": "Đây là RTM của tính năng checkout. **Hai** kết luận nào là đúng?\n\n| Requirement | Mô tả | Test case | Kết quả gần nhất |\n|---|---|---|---|\n| REQ-C1 | Thêm sản phẩm vào giỏ hàng | TC-10, TC-11 | Pass |\n| REQ-C2 | Áp mã giảm giá | TC-12 | Fail (BUG-201) |\n| REQ-C3 | Miễn phí vận chuyển cho đơn từ 100.00 USD | — | — |\n| REQ-C4 | Thanh toán bằng thẻ | TC-13, TC-14 | Blocked |\n\nTest suite còn có **TC-15: tùy chọn gói quà**, không gắn với requirement nào."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "c3-gap",
+          "text": {
+            "en": "REQ-C3 has no test case, so requirements coverage is 3 of 4 (75 %) and REQ-C3 needs test cases",
+            "vi": "REQ-C3 không có test case, nên requirements coverage là 3 trên 4 (75 %) và REQ-C3 cần có test case"
+          }
+        },
+        {
+          "id": "orphan",
+          "text": {
+            "en": "TC-15 is an orphan test: ask whether a gift-wrapping requirement is missing",
+            "vi": "TC-15 là test mồ côi: cần hỏi xem có thiếu requirement về gói quà không"
+          }
+        },
+        {
+          "id": "c2-uncovered",
+          "text": {
+            "en": "REQ-C2 is uncovered because its only test case failed",
+            "vi": "REQ-C2 chưa được bao phủ vì test case duy nhất của nó bị fail"
+          }
+        },
+        {
+          "id": "full-coverage",
+          "text": {
+            "en": "Coverage is 100 % because every requirement appears in the matrix",
+            "vi": "Coverage là 100 % vì mọi requirement đều có mặt trong ma trận"
+          }
+        },
+        {
+          "id": "c4-done",
+          "text": {
+            "en": "REQ-C4 is done because it has two test cases",
+            "vi": "REQ-C4 đã xong vì nó có hai test case"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["c3-gap", "orphan"] },
+    "explanation": {
+      "en": "Reading **forward**, REQ-C3 has no test case: coverage is 3 ÷ 4 = 75 % and free shipping is untested. Reading **backward**, TC-15 maps to no requirement, which points to a missing requirement (or a test nobody needs). REQ-C2 *is* covered: a failing test is a result, not a gap. Appearing in the matrix is not coverage; a row needs linked test cases. REQ-C4 has tests but they are blocked, so it is not verified, let alone done.",
+      "vi": "Đọc **xuôi**, REQ-C3 không có test case: coverage là 3 ÷ 4 = 75 % và phần miễn phí vận chuyển chưa được test. Đọc **ngược**, TC-15 không gắn với requirement nào, cho thấy có thể đang thiếu một requirement (hoặc đó là một test không ai cần). REQ-C2 *đã* được bao phủ: test fail là một kết quả, không phải lỗ hổng. Có mặt trong ma trận không có nghĩa là được bao phủ; một dòng cần có test case liên kết. REQ-C4 có test nhưng đang bị blocked, nên chưa được kiểm chứng, càng chưa thể coi là xong."
+    }
+  },
+  {
+    "key": "lockout-test-case",
+    "type": "test_case",
+    "difficulty": "hard",
+    "question": {
+      "en": "The RTM in the lesson shows that **REQ-04** has no test case: *\"Lock the account for 15 minutes after 5 failed login attempts.\"*\n\nWrite the test case that checks the account is locked by the **5th** failed attempt. Link it to the requirement and fill in every field.",
+      "vi": "RTM trong bài học cho thấy **REQ-04** chưa có test case nào: *\"Khóa tài khoản 15 phút sau 5 lần đăng nhập thất bại.\"*\n\nViết test case kiểm tra tài khoản bị khóa ở lần thất bại **thứ 5**. Liên kết nó với requirement và điền đầy đủ mọi trường."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": [
+        "testCaseId",
+        "title",
+        "preconditions",
+        "testData",
+        "steps",
+        "expectedResult",
+        "priority",
+        "testType"
+      ],
+      "expectedConcepts": [
+        { "concept": "Linked to REQ-04", "keywords": ["req-04", "req 04"] },
+        { "concept": "Failed attempts with a wrong password", "keywords": ["wrong password", "failed", "sai mat khau", "that bai"] },
+        { "concept": "Fifth attempt", "keywords": ["5th", "fifth", "5 failed", "lan thu 5", "lan 5"] },
+        { "concept": "Account locked", "keywords": ["lock", "khoa"] },
+        { "concept": "15-minute lock", "keywords": ["15 minutes", "15 min", "15 phut"] }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test Case ID | TC-07 (traces to REQ-04) |\n| Title | Account is locked for 15 minutes after the 5th failed login attempt |\n| Preconditions | Verified account exists for anna@example.com and is not locked; no failed attempts recorded; user is logged out |\n| Test Data | Email anna@example.com, wrong password Wrong-Pass-1, correct password Correct-Pass-1 |\n| Steps | 1. Open the login page. 2. Log in with the wrong password 4 times. 3. Log in with the wrong password a 5th time. 4. Log in with the correct password. |\n| Expected Result | After step 2: generic error, account not locked yet. After step 3: message \"Account locked, try again in 15 minutes\". After step 4: login is refused with the same lock message, the dashboard does not open |\n| Priority | High |\n| Test Type | Functional, security |",
+        "vi": "| Trường | Giá trị |\n|---|---|\n| Test Case ID | TC-07 (truy vết tới REQ-04) |\n| Title | Tài khoản bị khóa 15 phút sau lần đăng nhập thất bại thứ 5 |\n| Preconditions | Đã có tài khoản đã xác minh anna@example.com, chưa bị khóa; chưa có lần đăng nhập thất bại nào; người dùng đang đăng xuất |\n| Test Data | Email anna@example.com, mật khẩu sai Wrong-Pass-1, mật khẩu đúng Correct-Pass-1 |\n| Steps | 1. Mở trang đăng nhập. 2. Đăng nhập với mật khẩu sai 4 lần. 3. Đăng nhập với mật khẩu sai lần thứ 5. 4. Đăng nhập với mật khẩu đúng. |\n| Expected Result | Sau bước 2: hiện lỗi chung, tài khoản chưa bị khóa. Sau bước 3: thông báo \"Account locked, try again in 15 minutes\". Sau bước 4: đăng nhập bị từ chối với cùng thông báo khóa, dashboard không mở ra |\n| Priority | High |\n| Test Type | Functional, security |"
+      },
+      "rubric": [
+        {
+          "id": "traced",
+          "text": {
+            "en": "My test case names the requirement it verifies (REQ-04)",
+            "vi": "Test case của tôi ghi rõ requirement mà nó kiểm chứng (REQ-04)"
+          }
+        },
+        {
+          "id": "clean-start",
+          "text": {
+            "en": "The preconditions say the account starts unlocked with no failed attempts",
+            "vi": "Preconditions nói rõ tài khoản lúc đầu chưa bị khóa và chưa có lần thất bại nào"
+          }
+        },
+        {
+          "id": "boundary",
+          "text": {
+            "en": "I checked the boundary: not locked after 4 attempts, locked after the 5th",
+            "vi": "Tôi kiểm tra boundary: chưa khóa sau 4 lần, bị khóa sau lần thứ 5"
+          }
+        },
+        {
+          "id": "proof",
+          "text": {
+            "en": "The expected result proves the lock: even the correct password is refused",
+            "vi": "Expected result chứng minh việc khóa: ngay cả mật khẩu đúng cũng bị từ chối"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "The test case closes the gap in the RTM, so it names **REQ-04**. The preconditions guarantee a clean start (no earlier failed attempts), otherwise the count is wrong. The interesting **boundary** is between the 4th attempt (not locked) and the 5th (locked), and the strongest proof of a lock is that the *correct* password is refused afterwards. The 15-minute unlock is a separate behaviour and deserves its own test case. A lockout protects accounts against password guessing, so priority is high.",
+      "vi": "Test case này lấp lỗ hổng trong RTM, nên nó ghi rõ **REQ-04**. Preconditions đảm bảo bắt đầu sạch (chưa có lần thất bại nào trước đó), nếu không số lần đếm sẽ sai. **Boundary** đáng kiểm tra nằm giữa lần thứ 4 (chưa khóa) và lần thứ 5 (bị khóa), và bằng chứng mạnh nhất của việc khóa là ngay sau đó cả mật khẩu *đúng* cũng bị từ chối. Việc tự mở khóa sau 15 phút là một hành vi khác và nên có test case riêng. Cơ chế khóa bảo vệ tài khoản khỏi việc đoán mật khẩu, nên priority là high."
+    }
+  }
+]

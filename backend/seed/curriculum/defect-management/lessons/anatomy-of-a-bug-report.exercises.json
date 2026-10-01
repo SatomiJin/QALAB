@@ -1,0 +1,248 @@
+[
+  {
+    "key": "best-title",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "You found that the basket quantity goes back to 1 every time the cart page is refreshed. Which **title** is the best one for the bug report?",
+      "vi": "Bạn phát hiện số lượng trong giỏ hàng quay về 1 mỗi lần tải lại trang giỏ hàng. **Title** nào tốt nhất cho bug report?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "area-symptom-trigger",
+          "text": {
+            "en": "Cart: item quantity resets to 1 after the page is refreshed",
+            "vi": "Cart: số lượng sản phẩm bị đặt lại về 1 sau khi tải lại trang"
+          }
+        },
+        {
+          "id": "vague",
+          "text": {
+            "en": "Cart is broken",
+            "vi": "Giỏ hàng bị hỏng"
+          }
+        },
+        {
+          "id": "cause-guess",
+          "text": {
+            "en": "Cart: quantity is not saved to localStorage in CartService",
+            "vi": "Cart: số lượng không được lưu vào localStorage trong CartService"
+          }
+        },
+        {
+          "id": "emotional",
+          "text": {
+            "en": "URGENT!!! Quantity bug again, very annoying",
+            "vi": "GẤP!!! Lại bug số lượng, rất khó chịu"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["area-symptom-trigger"]
+    },
+    "explanation": {
+      "en": "A good title follows **[Area]: [what is wrong] [when]**: it names the cart, the symptom (quantity resets to 1) and the trigger (page refresh). The CartService title is tempting because it sounds technical, but it guesses the cause in the code, which the tester usually cannot know and which may be wrong. \"Cart is broken\" says nothing, and the urgent one is an opinion.",
+      "vi": "Một title tốt theo công thức **[Khu vực]: [cái gì sai] [khi nào]**: nó nêu giỏ hàng, triệu chứng (số lượng về 1) và điều kiện kích hoạt (tải lại trang). Title nhắc tới CartService dễ gây nhầm vì nghe có vẻ kỹ thuật, nhưng nó đoán nguyên nhân trong code, điều mà tester thường không biết và có thể sai. \"Giỏ hàng bị hỏng\" không nói lên gì, còn title \"GẤP!!!\" chỉ là cảm xúc."
+    }
+  },
+  {
+    "key": "which-field",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "You are writing a bug report about a failed password change. Put each piece of information into the **field** where it belongs.",
+      "vi": "Bạn đang viết bug report về việc đổi mật khẩu thất bại. Xếp mỗi thông tin vào **trường** phù hợp."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "environment",
+          "text": {
+            "en": "Environment",
+            "vi": "Environment"
+          }
+        },
+        {
+          "id": "preconditions",
+          "text": {
+            "en": "Preconditions",
+            "vi": "Preconditions"
+          }
+        },
+        {
+          "id": "steps",
+          "text": {
+            "en": "Steps to Reproduce",
+            "vi": "Steps to Reproduce"
+          }
+        },
+        {
+          "id": "actual",
+          "text": {
+            "en": "Actual Result",
+            "vi": "Actual Result"
+          }
+        },
+        {
+          "id": "expected",
+          "text": {
+            "en": "Expected Result",
+            "vi": "Expected Result"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "build",
+          "text": {
+            "en": "staging, build 3.2.1, Safari 17 on macOS 14",
+            "vi": "staging, build 3.2.1, Safari 17 trên macOS 14"
+          }
+        },
+        {
+          "id": "logged-in",
+          "text": {
+            "en": "Logged in as a verified user whose password is Old-Pass-1",
+            "vi": "Đã đăng nhập bằng một tài khoản đã xác minh, mật khẩu hiện tại là Old-Pass-1"
+          }
+        },
+        {
+          "id": "open-settings",
+          "text": {
+            "en": "Open Settings > Security and enter Old-Pass-1 as the current password",
+            "vi": "Mở Settings > Security và nhập Old-Pass-1 làm mật khẩu hiện tại"
+          }
+        },
+        {
+          "id": "press-save",
+          "text": {
+            "en": "Enter New-Pass-2 twice and press Save",
+            "vi": "Nhập New-Pass-2 hai lần và bấm Save"
+          }
+        },
+        {
+          "id": "error-shown",
+          "text": {
+            "en": "The message \"Something went wrong\" appears and the password is not changed",
+            "vi": "Hiện thông báo \"Something went wrong\" và mật khẩu không được đổi"
+          }
+        },
+        {
+          "id": "success-shown",
+          "text": {
+            "en": "The message \"Password changed\" appears and New-Pass-2 works at the next login",
+            "vi": "Hiện thông báo \"Password changed\" và New-Pass-2 dùng được ở lần đăng nhập sau"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "build": "environment",
+        "logged-in": "preconditions",
+        "open-settings": "steps",
+        "press-save": "steps",
+        "error-shown": "actual",
+        "success-shown": "expected"
+      }
+    },
+    "explanation": {
+      "en": "**Environment** says where (build, browser, OS). **Preconditions** describe the state *before* step 1, so being logged in with a known password is a precondition, not a step. **Steps** are the actions you perform. **Actual Result** is what you observed (the error), **Expected Result** is what should happen (success, and the new password works). Mixing the results into the steps is the most common mistake: stop the steps where the problem appears.",
+      "vi": "**Environment** cho biết ở đâu (build, trình duyệt, hệ điều hành). **Preconditions** mô tả trạng thái *trước* bước 1, nên việc đã đăng nhập với mật khẩu biết trước là precondition, không phải một bước. **Steps** là các thao tác bạn thực hiện. **Actual Result** là điều bạn quan sát được (thông báo lỗi), **Expected Result** là điều lẽ ra phải xảy ra (thành công, và mật khẩu mới dùng được). Lỗi hay gặp nhất là trộn kết quả vào các bước: hãy dừng các bước ở chỗ vấn đề xuất hiện."
+    }
+  },
+  {
+    "key": "avatar-upload-bug-report",
+    "type": "bug_report",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write a complete bug report for what you observed.\n\nYou are testing the **web app** on **staging** (build 2.8.0, Firefox 130, Windows 11), logged in as `learner@example.com`. On **Profile > Photo** you upload `holiday.JPG` (2 MB, taken with a phone). The page shows **\"Unsupported file type\"** and the photo is not saved. The same picture renamed to `holiday.jpg` uploads fine. The specification says JPG and PNG files up to 5 MB are accepted.\n\nContext for rating: profile photos are optional and appear next to forum posts; the team fixes ordinary bugs in the next sprint.",
+      "vi": "Viết một bug report đầy đủ cho điều bạn quan sát được.\n\nBạn đang test **web app** trên **staging** (build 2.8.0, Firefox 130, Windows 11), đăng nhập bằng `learner@example.com`. Ở **Profile > Photo** bạn tải lên `holiday.JPG` (2 MB, chụp bằng điện thoại). Trang hiển thị **\"Unsupported file type\"** và ảnh không được lưu. Cùng bức ảnh đó đổi tên thành `holiday.jpg` thì tải lên bình thường. Đặc tả nói file JPG và PNG tối đa 5 MB được chấp nhận.\n\nBối cảnh để đánh giá: ảnh đại diện là tuỳ chọn và hiển thị cạnh các bài viết trên forum; team sửa các bug thông thường trong sprint kế tiếp."
+    },
+    "answer": {
+      "requiredFields": [
+        "title",
+        "environment",
+        "preconditions",
+        "stepsToReproduce",
+        "actualResult",
+        "expectedResult",
+        "severity",
+        "priority",
+        "attachment"
+      ],
+      "expectedSeverity": "minor",
+      "expectedPriority": "medium",
+      "expectedConcepts": [
+        {
+          "concept": "Profile photo upload",
+          "keywords": ["photo", "avatar", "upload", "anh dai dien", "tai len"]
+        },
+        {
+          "concept": "Uppercase file extension",
+          "keywords": [".jpg", "jpg", "uppercase", "upper case", "extension", "chu hoa"]
+        },
+        {
+          "concept": "Error message shown",
+          "keywords": ["unsupported", "error", "thong bao loi", "bao loi"]
+        },
+        {
+          "concept": "File should be accepted",
+          "keywords": ["accepted", "accept", "saved", "chap nhan", "duoc luu"]
+        },
+        {
+          "concept": "Environment",
+          "keywords": ["staging", "firefox", "2.8.0"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Title:** Profile photo: upload of a .JPG file (uppercase extension) fails with \"Unsupported file type\"\n\n**Environment:** staging, build 2.8.0, Firefox 130, Windows 11\n\n**Preconditions:** logged in as learner@example.com; a JPG file of 2 MB named holiday.JPG\n\n**Steps to reproduce:**\n\n1. Open Profile > Photo.\n2. Choose holiday.JPG and upload it.\n\n**Actual result:** the error \"Unsupported file type\" is shown and the photo is not saved. The same file renamed holiday.jpg is accepted.\n\n**Expected result:** the photo is accepted and saved: JPG files up to 5 MB are allowed, whatever the case of the extension.\n\n**Severity:** minor (an optional feature fails for one kind of file name; renaming is a simple workaround, no data is lost).\n\n**Priority:** medium (many phone photos end in .JPG and avatars are visible on the forum, so it should be fixed in the next sprint, but it is not urgent).\n\n**Attachment:** screenshot of the error, holiday.JPG",
+        "vi": "**Title:** Profile photo: tải lên file .JPG (đuôi chữ hoa) thất bại với thông báo lỗi \"Unsupported file type\"\n\n**Environment:** staging, build 2.8.0, Firefox 130, Windows 11\n\n**Preconditions:** đã đăng nhập bằng learner@example.com; có file JPG 2 MB tên holiday.JPG\n\n**Steps to reproduce:**\n\n1. Mở Profile > Photo.\n2. Chọn holiday.JPG và tải lên.\n\n**Actual result:** hiện thông báo lỗi \"Unsupported file type\" và ảnh đại diện không được lưu. Cùng file đó đổi tên thành holiday.jpg thì được chấp nhận.\n\n**Expected result:** ảnh được chấp nhận và được lưu: file JPG tối đa 5 MB là hợp lệ, dù phần đuôi viết hoa hay viết thường.\n\n**Severity:** minor (một tính năng tuỳ chọn lỗi với một kiểu tên file; đổi tên file là cách workaround đơn giản, không mất dữ liệu).\n\n**Priority:** medium (nhiều ảnh chụp từ điện thoại có đuôi .JPG và ảnh đại diện hiện trên forum, nên cần sửa trong sprint tới, nhưng không gấp).\n\n**Attachment:** ảnh chụp màn hình thông báo lỗi, file holiday.JPG"
+      },
+      "rubric": [
+        {
+          "id": "title",
+          "text": {
+            "en": "My title names the area, the symptom and the trigger (.JPG uppercase extension)",
+            "vi": "Title của tôi nêu khu vực, triệu chứng và điều kiện kích hoạt (đuôi .JPG viết hoa)"
+          }
+        },
+        {
+          "id": "preconditions",
+          "text": {
+            "en": "I put the logged-in user and the test file in the preconditions, not in the steps",
+            "vi": "Tôi đặt người dùng đã đăng nhập và file test vào preconditions, không phải vào các bước"
+          }
+        },
+        {
+          "id": "isolation",
+          "text": {
+            "en": "I mentioned that the lowercase .jpg works, which isolates the cause",
+            "vi": "Tôi nêu rằng đuôi .jpg viết thường vẫn chạy, điều này khoanh vùng được nguyên nhân"
+          }
+        },
+        {
+          "id": "expected-source",
+          "text": {
+            "en": "My expected result refers to the specification (JPG and PNG up to 5 MB)",
+            "vi": "Expected result của tôi dựa trên đặc tả (JPG và PNG tối đa 5 MB)"
+          }
+        },
+        {
+          "id": "evidence",
+          "text": {
+            "en": "I attached a screenshot and the file that fails",
+            "vi": "Tôi đính kèm ảnh chụp màn hình và file bị lỗi"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "The useful detail is the comparison: `holiday.JPG` fails, `holiday.jpg` works, so the report points straight at the case of the extension. **Severity is minor**: an optional feature fails for one kind of file name, there is an easy workaround (rename the file) and nothing is lost. It is not major, because no main flow is blocked. **Priority is medium**: phone cameras often save `.JPG`, avatars are visible to everyone on the forum, and the team's normal rhythm is the next sprint. High would mean dropping other work now, which nothing here justifies; low would mean \"some day\", which ignores how many users meet it.",
+      "vi": "Chi tiết đắt giá là phép so sánh: `holiday.JPG` lỗi, `holiday.jpg` chạy được, nên report chỉ thẳng vào việc viết hoa phần đuôi file. **Severity là minor**: một tính năng tuỳ chọn lỗi với một kiểu tên file, có workaround dễ (đổi tên file) và không mất gì. Không phải major, vì không có luồng chính nào bị chặn. **Priority là medium**: camera điện thoại thường lưu file `.JPG`, ảnh đại diện ai cũng thấy trên forum, và nhịp làm việc bình thường của team là sprint kế tiếp. High nghĩa là phải bỏ việc khác để sửa ngay, điều mà tình huống này không cần; low nghĩa là \"để sau\", bỏ qua việc rất nhiều người dùng sẽ gặp lỗi."
+    }
+  }
+]

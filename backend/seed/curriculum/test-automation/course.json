@@ -1,0 +1,110 @@
+{
+  "skill": "automation",
+  "slug": "test-automation",
+  "order": 1,
+  "title": {
+    "en": "Test automation",
+    "vi": "Test automation"
+  },
+  "description": {
+    "en": "Decide what to automate, write UI and API tests that stay reliable, and run them in CI/CD. Playwright is the tool used in the examples; the principles apply to any tool.",
+    "vi": "Quyết định nên tự động hóa cái gì, viết test UI và API chạy ổn định, và chạy chúng trong CI/CD. Các ví dụ dùng Playwright, nhưng nguyên tắc áp dụng cho mọi công cụ."
+  },
+  "modules": [
+    {
+      "key": "automation-strategy",
+      "title": {
+        "en": "Automation strategy",
+        "vi": "Chiến lược automation"
+      },
+      "description": {
+        "en": "Where automation pays off, and how to balance tests across levels.",
+        "vi": "Automation mang lại giá trị ở đâu, và cách cân bằng test giữa các tầng."
+      },
+      "lessons": [
+        {
+          "slug": "what-to-automate",
+          "title": {
+            "en": "What to automate and what not to",
+            "vi": "Nên và không nên tự động hóa cái gì"
+          },
+          "minutes": 8
+        },
+        {
+          "slug": "automation-pyramid",
+          "title": {
+            "en": "The automation pyramid",
+            "vi": "Kim tự tháp automation"
+          },
+          "minutes": 8
+        }
+      ]
+    },
+    {
+      "key": "writing-automated-tests",
+      "title": {
+        "en": "Writing automated tests",
+        "vi": "Viết test tự động"
+      },
+      "description": {
+        "en": "UI tests with page objects, API tests with clean test data, and assertions that wait the right way.",
+        "vi": "Test UI với page object, test API với test data sạch, và assertion biết chờ đúng cách."
+      },
+      "lessons": [
+        {
+          "slug": "ui-automation-page-objects",
+          "title": {
+            "en": "UI automation and the Page Object Model",
+            "vi": "UI automation và Page Object Model"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "api-automation-test-data",
+          "title": {
+            "en": "API automation, test data and fixtures",
+            "vi": "API automation, test data và fixture"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "assertions-and-waits",
+          "title": {
+            "en": "Assertions and wait strategies",
+            "vi": "Assertion và chiến lược chờ"
+          },
+          "minutes": 9
+        }
+      ]
+    },
+    {
+      "key": "keeping-tests-healthy",
+      "title": {
+        "en": "Keeping tests healthy",
+        "vi": "Giữ cho test khỏe mạnh"
+      },
+      "description": {
+        "en": "Find and fix flaky tests, and make the suite part of every change through CI/CD.",
+        "vi": "Tìm và sửa flaky test, và đưa bộ test vào mọi thay đổi qua CI/CD."
+      },
+      "lessons": [
+        {
+          "slug": "flaky-tests-isolation",
+          "title": {
+            "en": "Flaky tests and test isolation",
+            "vi": "Flaky test và tính độc lập của test"
+          },
+          "minutes": 9
+        },
+        {
+          "slug": "automation-in-ci-cd",
+          "title": {
+            "en": "Automation in CI/CD",
+            "vi": "Automation trong CI/CD"
+          },
+          "minutes": 9
+        }
+      ]
+    }
+  ]
+}

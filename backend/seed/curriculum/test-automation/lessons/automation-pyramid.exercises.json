@@ -1,0 +1,146 @@
+[
+  {
+    "key": "pyramid-levels",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "An online shop has the rule \"orders from 50 USD get free shipping\". Put each check at the **lowest level of the pyramid** that can catch the bug it targets.",
+      "vi": "Một cửa hàng online có quy tắc \"đơn hàng từ 50 USD được miễn phí vận chuyển\". Đặt mỗi phép kiểm tra vào **tầng thấp nhất của kim tự tháp** có thể bắt được bug mà nó nhắm tới."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "unit",
+          "text": {
+            "en": "Unit",
+            "vi": "Unit"
+          }
+        },
+        {
+          "id": "api",
+          "text": {
+            "en": "API / service",
+            "vi": "API / service"
+          }
+        },
+        {
+          "id": "ui",
+          "text": {
+            "en": "UI / end-to-end",
+            "vi": "UI / end-to-end"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "boundaries",
+          "text": {
+            "en": "shippingCost() returns 0 for 50.00 and 5 for 49.99",
+            "vi": "shippingCost() trả về 0 với 50.00 và 5 với 49.99"
+          }
+        },
+        {
+          "id": "rounding",
+          "text": {
+            "en": "The total-calculation function rounds 49.995 correctly",
+            "vi": "Hàm tính tổng làm tròn 49.995 đúng cách"
+          }
+        },
+        {
+          "id": "order-stored",
+          "text": {
+            "en": "POST /orders with a 60 USD basket stores shipping 0 in the database",
+            "vi": "POST /orders với giỏ 60 USD lưu phí vận chuyển 0 vào database"
+          }
+        },
+        {
+          "id": "status-code",
+          "text": {
+            "en": "POST /orders with an empty basket answers status code 400",
+            "vi": "POST /orders với giỏ trống trả về status code 400"
+          }
+        },
+        {
+          "id": "banner-shown",
+          "text": {
+            "en": "A user adds items to the basket and sees \"Free shipping\" on the checkout page",
+            "vi": "Người dùng thêm sản phẩm vào giỏ và thấy \"Free shipping\" trên trang checkout"
+          }
+        },
+        {
+          "id": "journey",
+          "text": {
+            "en": "A user signs in, pays by card and sees the order confirmation",
+            "vi": "Người dùng đăng nhập, thanh toán bằng thẻ và thấy xác nhận đơn hàng"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "boundaries": "unit",
+        "rounding": "unit",
+        "order-stored": "api",
+        "status-code": "api",
+        "banner-shown": "ui",
+        "journey": "ui"
+      }
+    },
+    "explanation": {
+      "en": "Pure calculations (boundary values, rounding) belong in **unit** tests: fast and precise. What an endpoint stores or answers is an **API** check, no browser needed. Only what the user sees on the page and whole journeys need the **UI** level. The tempting mistake is to test the 50.00 boundary through the UI: it would catch the bug, but slowly and fragilely, when a unit test catches the same bug in milliseconds.",
+      "vi": "Các phép tính thuần (boundary value, làm tròn) thuộc về **unit** test: nhanh và chính xác. Thứ một endpoint lưu lại hay trả về là phép kiểm tra **API**, không cần trình duyệt. Chỉ những gì người dùng thấy trên trang và các hành trình trọn vẹn mới cần tầng **UI**. Chỗ dễ nhầm là test giá trị biên 50.00 qua UI: vẫn bắt được bug, nhưng chậm và mong manh, trong khi unit test bắt cùng bug đó trong vài mili giây."
+    }
+  },
+  {
+    "key": "ice-cream-cone",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A team has 400 UI tests, 30 API tests and almost no unit tests. The suite takes 70 minutes and often fails for reasons that are not bugs. Which **two** actions best address the problem?",
+      "vi": "Một team có 400 UI test, 30 API test và gần như không có unit test. Bộ test chạy mất 70 phút và thường fail vì những lý do không phải bug. **Hai** hành động nào giải quyết vấn đề tốt nhất?"
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "move-down",
+          "text": {
+            "en": "Move rule and calculation checks down to API and unit tests, keeping UI tests for key journeys",
+            "vi": "Chuyển các phép kiểm tra quy tắc và tính toán xuống API test và unit test, giữ UI test cho các hành trình chính"
+          }
+        },
+        {
+          "id": "dev-unit",
+          "text": {
+            "en": "Agree with developers that new logic comes with unit tests",
+            "vi": "Thống nhất với developer rằng logic mới phải đi kèm unit test"
+          }
+        },
+        {
+          "id": "more-ui",
+          "text": {
+            "en": "Record more UI tests so that every manual test case is covered in the browser",
+            "vi": "Ghi thêm UI test để mọi test case thủ công đều được bao phủ trên trình duyệt"
+          }
+        },
+        {
+          "id": "nightly",
+          "text": {
+            "en": "Run the suite only once a week so the long duration matters less",
+            "vi": "Chỉ chạy bộ test mỗi tuần một lần để thời gian chạy dài bớt ảnh hưởng"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "move-down",
+        "dev-unit"
+      ]
+    },
+    "explanation": {
+      "en": "This is the **ice-cream cone**: the pyramid upside down. The fix is to rebalance it: check rules at the lowest level that can catch the bug, and build a base of unit tests with developers. Recording more UI tests makes the cone bigger, and running the suite less often hides the problem while bugs reach the release later.",
+      "vi": "Đây là **ice-cream cone** (cây kem ốc quế): kim tự tháp lộn ngược. Cách sửa là cân bằng lại: kiểm tra mỗi quy tắc ở tầng thấp nhất có thể bắt được bug, và cùng developer xây một nền unit test. Ghi thêm UI test chỉ làm cây kem to hơn, còn chạy test ít hơn thì che giấu vấn đề trong khi bug bị phát hiện muộn hơn."
+    }
+  }
+]

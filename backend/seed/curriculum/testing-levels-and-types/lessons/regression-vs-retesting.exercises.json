@@ -1,0 +1,178 @@
+[
+  {
+    "key": "retest-or-regression",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Bug BUG-301 \"Discount code is accepted after its expiry date\" was fixed in build 2.4.1. Classify each activity as **retesting** or **regression testing**.",
+      "vi": "Bug BUG-301 \"Mã giảm giá vẫn được chấp nhận sau ngày hết hạn\" đã được fix trong build 2.4.1. Xếp mỗi hoạt động vào **retesting** hoặc **regression testing**."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "retest", "text": { "en": "Retesting (is the bug fixed?)", "vi": "Retesting (bug đã được sửa chưa?)" } },
+        { "id": "regression", "text": { "en": "Regression testing (did anything else break?)", "vi": "Regression testing (có chỗ nào khác bị hỏng không?)" } }
+      ],
+      "items": [
+        {
+          "id": "expired-code",
+          "text": {
+            "en": "Apply an expired code with the steps from BUG-301 and check that it is refused",
+            "vi": "Áp một mã đã hết hạn theo các bước của BUG-301 và kiểm tra mã bị từ chối"
+          }
+        },
+        {
+          "id": "valid-code",
+          "text": {
+            "en": "Check that a valid, unexpired code still gives its discount",
+            "vi": "Kiểm tra một mã hợp lệ, còn hạn vẫn được giảm giá"
+          }
+        },
+        {
+          "id": "expiry-day",
+          "text": {
+            "en": "Apply a code on its exact expiry day, as described in the bug's boundary note",
+            "vi": "Áp một mã đúng vào ngày hết hạn của nó, như ghi chú về giá trị biên trong bug"
+          }
+        },
+        {
+          "id": "gift-cards",
+          "text": {
+            "en": "Pay with a gift card, which uses the same date-checking function",
+            "vi": "Thanh toán bằng gift card, vốn dùng chung hàm kiểm tra ngày"
+          }
+        },
+        {
+          "id": "core-suite",
+          "text": {
+            "en": "Run the automated core checkout suite on build 2.4.1",
+            "vi": "Chạy bộ test checkout cốt lõi tự động trên build 2.4.1"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "expired-code": "retest",
+        "valid-code": "regression",
+        "expiry-day": "retest",
+        "gift-cards": "regression",
+        "core-suite": "regression"
+      }
+    },
+    "explanation": {
+      "en": "**Retesting** repeats the failing scenario of BUG-301 (an expired code, and its boundary on the expiry day) to confirm the fix. **Regression testing** checks things that worked before and may be affected: valid codes, gift cards that share the date function, and the core checkout suite. The tempting mistake is to call the valid-code check retesting because it is about discount codes, but it never failed: it checks that the fix did not break the normal case.",
+      "vi": "**Retesting** lặp lại kịch bản đã fail của BUG-301 (một mã hết hạn, và giá trị biên đúng ngày hết hạn) để xác nhận bản fix. **Regression testing** kiểm tra những thứ trước đây chạy tốt và có thể bị ảnh hưởng: mã hợp lệ, gift card dùng chung hàm kiểm tra ngày, và bộ test checkout cốt lõi. Nhầm lẫn dễ mắc là gọi việc kiểm tra mã hợp lệ là retesting vì nó liên quan đến mã giảm giá, nhưng trường hợp đó chưa bao giờ fail: nó kiểm tra bản fix không làm hỏng trường hợp bình thường."
+    }
+  },
+  {
+    "key": "impact-analysis",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A developer changed the shared `formatDate()` function to fix a bug on the invoice page. There is time for a targeted regression run only. Which choice of regression tests follows **impact analysis** best?",
+      "vi": "Developer đã sửa hàm dùng chung `formatDate()` để fix một bug trên trang hóa đơn. Chỉ đủ thời gian cho một lượt regression có chọn lọc. Lựa chọn regression test nào theo đúng tinh thần **impact analysis** nhất?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "callers",
+          "text": {
+            "en": "Tests of every screen and API that displays or sends dates through `formatDate()`, plus the core checkout and login flows",
+            "vi": "Test mọi màn hình và API hiển thị hoặc gửi ngày qua `formatDate()`, cộng thêm các luồng checkout và đăng nhập cốt lõi"
+          }
+        },
+        {
+          "id": "invoice-only",
+          "text": {
+            "en": "Only the invoice page tests, because that is where the bug was",
+            "vi": "Chỉ các test của trang hóa đơn, vì bug nằm ở đó"
+          }
+        },
+        {
+          "id": "newest",
+          "text": {
+            "en": "The tests that were written most recently, because they are the most up to date",
+            "vi": "Những test được viết gần đây nhất, vì chúng cập nhật nhất"
+          }
+        },
+        {
+          "id": "random",
+          "text": {
+            "en": "A random 20 % of the full suite, so every area has a chance to be covered",
+            "vi": "Ngẫu nhiên 20 % toàn bộ suite, để vùng nào cũng có cơ hội được bao phủ"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["callers"] },
+    "explanation": {
+      "en": "Impact analysis asks **what uses the changed code**. A shared function affects every feature that calls it, so those features are where regressions are likely, and the critical flows are added because their failure costs the most. Testing only the invoice page is the tempting answer, but that is closer to retesting: it ignores every other caller of `formatDate()`. Recent or random tests are not linked to the change at all.",
+      "vi": "Impact analysis đặt câu hỏi **cái gì đang dùng đoạn code bị thay đổi**. Một hàm dùng chung ảnh hưởng đến mọi tính năng gọi nó, nên đó là nơi dễ có regression nhất, và các luồng quan trọng được thêm vào vì nếu chúng hỏng thì thiệt hại lớn nhất. Chỉ test trang hóa đơn là đáp án dễ chọn, nhưng nó gần với retesting hơn: nó bỏ qua mọi chỗ khác gọi `formatDate()`. Test mới viết hoặc test chọn ngẫu nhiên thì không liên quan gì đến thay đổi."
+    }
+  },
+  {
+    "key": "hotfix-test-plan",
+    "type": "scenario",
+    "difficulty": "hard",
+    "question": {
+      "en": "It is Friday, 4 pm. On production, password reset links expire immediately, so users who forgot their password cannot get back in. A developer has made a **hotfix**: one change in the auth service, in the code that computes the expiry time of reset tokens (the same code also sets the expiry of email verification links). The hotfix build is on staging and the team wants to release it within two hours.\n\nDescribe what you would test on staging before the release, in what order, and why. Then say what you would check right after it is deployed to production.",
+      "vi": "Thứ Sáu, 4 giờ chiều. Trên production, link đặt lại mật khẩu hết hạn ngay lập tức, nên người dùng quên mật khẩu không thể vào lại được. Developer đã làm một **hotfix**: một thay đổi trong auth service, ở đoạn code tính thời điểm hết hạn của reset token (cùng đoạn code đó cũng đặt thời hạn cho link xác minh email). Build hotfix đã có trên staging và đội muốn release trong vòng hai giờ.\n\nHãy mô tả bạn sẽ test những gì trên staging trước khi release, theo thứ tự nào, và vì sao. Sau đó nói bạn sẽ kiểm tra gì ngay sau khi nó được deploy lên production."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Retest the reported bug",
+          "keywords": ["retest", "confirmation", "confirm", "kiem thu xac nhan", "xac nhan"]
+        },
+        {
+          "concept": "Regression of affected areas found by impact analysis",
+          "keywords": ["regression", "hoi quy", "impact", "anh huong"]
+        },
+        {
+          "concept": "Email verification link shares the changed code",
+          "keywords": ["verification", "verify", "xac minh"]
+        },
+        {
+          "concept": "Critical flows such as login still work",
+          "keywords": ["login", "log in", "sign in", "dang nhap"]
+        },
+        {
+          "concept": "Smoke test on production after deployment",
+          "keywords": ["smoke", "production", "after deploy"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "1. **Retest the bug first** (confirmation testing): request a password reset, open the link at once and check that the reset works. Also check that the link still expires after the configured time (for example, change the token expiry on staging or wait for it) and that a used link cannot be reused. If this fails, there is nothing else to test.\n2. **Targeted regression from impact analysis**: the changed code also sets the expiry of **email verification** links, so register a new account and verify it, and check that an old verification link is refused. Then check the critical auth flows that live in the same service: **login** with a correct and a wrong password, logout, and sign-up.\n3. If time allows, run the automated core regression suite (checkout, profile) to catch anything unexpected.\n4. **After deployment to production**: a quick **smoke test** — the site loads, login works, and one real password reset link (on a test account) opens and works. Watch the error logs and the support channel for the next hour.",
+        "vi": "1. **Retest bug trước tiên** (confirmation testing — kiểm thử xác nhận): yêu cầu đặt lại mật khẩu, mở link ngay và kiểm tra đặt lại thành công. Kiểm tra thêm link vẫn hết hạn sau khoảng thời gian cấu hình (ví dụ đổi thời hạn token trên staging hoặc chờ hết hạn) và một link đã dùng không thể dùng lại. Nếu bước này fail thì không cần test gì thêm.\n2. **Regression có chọn lọc theo impact analysis**: đoạn code bị sửa cũng đặt thời hạn cho link **xác minh email** (verification), nên hãy đăng ký một tài khoản mới và xác minh nó, rồi kiểm tra một link xác minh cũ bị từ chối. Sau đó kiểm tra các luồng auth quan trọng nằm trong cùng service: **login** với mật khẩu đúng và sai, logout, và đăng ký.\n3. Nếu còn thời gian, chạy bộ core regression tự động (checkout, profile) để bắt những gì không lường trước.\n4. **Sau khi deploy lên production**: một lượt **smoke test** nhanh — site tải được, đăng nhập được, và một link đặt lại mật khẩu thật (trên tài khoản test) mở ra và dùng được. Theo dõi error log và kênh hỗ trợ trong một giờ tiếp theo."
+      },
+      "rubric": [
+        {
+          "id": "retest-first",
+          "text": { "en": "I retested the reported bug first, before anything else", "vi": "Tôi retest bug được báo trước tiên, trước mọi thứ khác" }
+        },
+        {
+          "id": "expiry-still-works",
+          "text": { "en": "I checked that links still expire, not only that they work now", "vi": "Tôi kiểm tra link vẫn hết hạn, không chỉ là giờ đã dùng được" }
+        },
+        {
+          "id": "shared-code",
+          "text": { "en": "I used the shared code (verification links) to choose regression tests", "vi": "Tôi dựa vào đoạn code dùng chung (link xác minh) để chọn regression test" }
+        },
+        {
+          "id": "critical-flows",
+          "text": { "en": "I included the critical auth flows such as login", "vi": "Tôi có kiểm tra các luồng auth quan trọng như đăng nhập" }
+        },
+        {
+          "id": "after-release",
+          "text": { "en": "I planned a smoke test and monitoring after the production deployment", "vi": "Tôi có kế hoạch smoke test và theo dõi sau khi deploy production" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Under time pressure, order matters. **Retesting** comes first: if the hotfix does not fix the bug, the release is pointless. Then **impact analysis** picks the regression tests: the changed code also controls verification links, and login lives in the same service, so those are the likeliest regressions. A full regression run would not fit in two hours, and skipping regression entirely is the tempting mistake: hotfixes are written fast and often break neighbours. Finally, a **smoke test on production** confirms the deployment itself worked.",
+      "vi": "Khi bị áp lực thời gian, thứ tự rất quan trọng. **Retesting** làm trước: nếu hotfix không sửa được bug thì release chẳng có ý nghĩa. Sau đó **impact analysis** chọn regression test: đoạn code bị sửa cũng điều khiển link xác minh, và đăng nhập nằm trong cùng service, nên đó là những chỗ dễ có regression nhất. Chạy full regression thì không kịp trong hai giờ, còn bỏ hẳn regression là sai lầm dễ mắc: hotfix được viết vội và hay làm hỏng các phần lân cận. Cuối cùng, một lượt **smoke test trên production** xác nhận bản deploy thực sự thành công."
+    }
+  }
+]

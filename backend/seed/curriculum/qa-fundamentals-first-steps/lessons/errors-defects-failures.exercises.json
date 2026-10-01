@@ -1,0 +1,185 @@
+[
+  {
+    "key": "error-defect-failure",
+    "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000002002",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each situation as an **error**, a **defect** or a **failure**.",
+      "vi": "Xếp mỗi tình huống vào **error**, **defect** hoặc **failure**."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "error",
+          "text": {
+            "en": "Error (human mistake)",
+            "vi": "Error (lỗi của con người)"
+          }
+        },
+        {
+          "id": "defect",
+          "text": {
+            "en": "Defect (flaw in the product)",
+            "vi": "Defect (khiếm khuyết trong sản phẩm)"
+          }
+        },
+        {
+          "id": "failure",
+          "text": {
+            "en": "Failure (wrong behaviour observed)",
+            "vi": "Failure (hành vi sai quan sát được)"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "misread",
+          "text": {
+            "en": "A developer misreads the discount rule in the requirements",
+            "vi": "Developer đọc nhầm quy tắc giảm giá trong requirement"
+          }
+        },
+        {
+          "id": "wrong-rate",
+          "text": {
+            "en": "The code applies a 10 % discount where the rule says 15 %",
+            "vi": "Code áp dụng giảm 10 % trong khi quy tắc là 15 %"
+          }
+        },
+        {
+          "id": "charged",
+          "text": {
+            "en": "A customer is charged the wrong amount at checkout",
+            "vi": "Khách hàng bị tính sai số tiền khi thanh toán"
+          }
+        },
+        {
+          "id": "null-check",
+          "text": {
+            "en": "The price function has no check for an empty basket",
+            "vi": "Hàm tính giá không kiểm tra trường hợp giỏ hàng trống"
+          }
+        },
+        {
+          "id": "crash",
+          "text": {
+            "en": "The checkout page crashes when the basket is empty",
+            "vi": "Trang checkout bị crash khi giỏ hàng trống"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "misread": "error",
+        "wrong-rate": "defect",
+        "charged": "failure",
+        "null-check": "defect",
+        "crash": "failure"
+      }
+    },
+    "explanation": {
+      "en": "The chain is **error → defect → failure**: a person makes a mistake (error), which leaves a flaw in the product (defect), which shows up as wrong behaviour when the code runs (failure). A defect that is never executed causes no failure.",
+      "vi": "Chuỗi là **error → defect → failure**: một người mắc lỗi (error), để lại khiếm khuyết trong sản phẩm (defect), và khiếm khuyết đó lộ ra thành hành vi sai khi code chạy (failure). Một defect không bao giờ được thực thi thì không gây ra failure."
+    }
+  },
+  {
+    "key": "discount-bug-report",
+    "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000002003",
+    "type": "bug_report",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write a bug report for what you observed.\r\n\r\nWhile testing checkout on **staging** (Chrome 128, Windows 11), you add one item priced 20.00 USD to the basket and apply the discount code `SAVE15` (15 % off). The order summary shows a total of **18.00 USD**. The specification says the total must be 17.00 USD.",
+      "vi": "Viết bug report cho điều bạn quan sát được.\r\n\r\nKhi test checkout trên **staging** (Chrome 128, Windows 11), bạn thêm một sản phẩm giá 20.00 USD vào giỏ và áp mã giảm giá `SAVE15` (giảm 15 %). Phần tóm tắt đơn hàng hiển thị tổng **18.00 USD**. Theo đặc tả, tổng phải là 17.00 USD."
+    },
+    "answer": {
+      "requiredFields": [
+        "title",
+        "environment",
+        "stepsToReproduce",
+        "actualResult",
+        "expectedResult",
+        "severity",
+        "priority"
+      ],
+      "expectedSeverity": "major",
+      "expectedPriority": "high",
+      "expectedConcepts": [
+        {
+          "concept": "Discount code",
+          "keywords": [
+            "save15",
+            "discount",
+            "coupon",
+            "giam gia"
+          ]
+        },
+        {
+          "concept": "Actual total",
+          "keywords": [
+            "18"
+          ]
+        },
+        {
+          "concept": "Expected total",
+          "keywords": [
+            "17"
+          ]
+        },
+        {
+          "concept": "Staging environment",
+          "keywords": [
+            "staging",
+            "chrome"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Title:** Checkout total ignores part of the SAVE15 discount (18.00 instead of 17.00 USD)\n\n**Environment:** staging, Chrome 128, Windows 11\n\n**Steps to reproduce:**\n\n1. Add one item priced 20.00 USD to the basket.\n2. Go to checkout.\n3. Apply the discount code SAVE15.\n\n**Actual result:** the order total is 18.00 USD.\n\n**Expected result:** the order total is 17.00 USD (15 % off 20.00).\n\n**Severity:** major (wrong amount charged, but checkout still works). **Priority:** high (customers pay the wrong price).",
+        "vi": "**Title:** Tổng tiền checkout bỏ sót một phần giảm giá SAVE15 (18.00 thay vì 17.00 USD)\r\n\r\n**Environment:** staging, Chrome 128, Windows 11\r\n\r\n**Steps to reproduce:**\r\n\r\n1. Thêm một sản phẩm giá 20.00 USD vào giỏ hàng.\r\n2. Vào checkout.\r\n3. Áp mã giảm giá SAVE15.\r\n\r\n**Actual result:** tổng đơn hàng là 18.00 USD.\r\n\r\n**Expected result:** tổng đơn hàng là 17.00 USD (giảm 15 % của 20.00).\r\n\r\n**Severity:** major (tính sai tiền, nhưng checkout vẫn chạy). **Priority:** high (khách hàng trả sai giá)."
+      },
+      "rubric": [
+        {
+          "id": "title",
+          "text": {
+            "en": "My title says what is wrong and where, without opening the report",
+            "vi": "Title của tôi nói rõ cái gì sai và ở đâu, không cần mở report"
+          }
+        },
+        {
+          "id": "repro",
+          "text": {
+            "en": "Someone else could reproduce it from my steps alone",
+            "vi": "Người khác có thể tái hiện chỉ bằng các bước của tôi"
+          }
+        },
+        {
+          "id": "results",
+          "text": {
+            "en": "I gave the actual and the expected total, with numbers",
+            "vi": "Tôi ghi cả tổng thực tế và tổng mong đợi, có con số"
+          }
+        },
+        {
+          "id": "env",
+          "text": {
+            "en": "I named the environment and browser",
+            "vi": "Tôi ghi rõ môi trường và trình duyệt"
+          }
+        },
+        {
+          "id": "sev-pri",
+          "text": {
+            "en": "I kept severity (impact) and priority (urgency) apart",
+            "vi": "Tôi tách bạch severity (mức ảnh hưởng) và priority (mức khẩn cấp)"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A good bug report lets someone who was not there reproduce the problem. The numbers matter: \"the total is wrong\" is not enough, \"18.00 instead of 17.00\" is. The customer is charged the wrong price, so the impact is **major** (not critical: checkout still works) and fixing it is urgent, so priority is **high**.",
+      "vi": "Một bug report tốt giúp người không có mặt lúc đó tái hiện được vấn đề. Con số rất quan trọng: \"tổng tiền bị sai\" là chưa đủ, \"18.00 thay vì 17.00\" mới đủ. Khách hàng bị tính sai giá nên mức ảnh hưởng là **major** (không phải critical: checkout vẫn hoạt động), và cần sửa gấp nên priority là **high**."
+    }
+  }
+]

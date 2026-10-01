@@ -1,0 +1,160 @@
+[
+  {
+    "key": "review-types",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A bank wants the most formal review of its payment specification: a trained moderator, defined roles, checklists, entry and exit criteria, and defect metrics collected to improve the process. Which review type is this?",
+      "vi": "Một ngân hàng muốn hình thức review chính thức nhất cho đặc tả thanh toán của mình: một moderator đã được đào tạo, vai trò rõ ràng, checklist, entry và exit criteria, và số liệu defect được thu thập để cải tiến quy trình. Đây là loại review nào?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "informal",
+          "text": {
+            "en": "Informal review",
+            "vi": "Informal review"
+          }
+        },
+        {
+          "id": "walkthrough",
+          "text": {
+            "en": "Walkthrough",
+            "vi": "Walkthrough"
+          }
+        },
+        {
+          "id": "technical",
+          "text": {
+            "en": "Technical review",
+            "vi": "Technical review"
+          }
+        },
+        {
+          "id": "inspection",
+          "text": {
+            "en": "Inspection",
+            "vi": "Inspection"
+          }
+        },
+        {
+          "id": "static-analysis",
+          "text": {
+            "en": "Static analysis",
+            "vi": "Static analysis"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["inspection"]
+    },
+    "explanation": {
+      "en": "An **inspection** is the most formal review: a trained moderator leads it, participants have defined roles, checklists and entry and exit criteria are used, and metrics are collected to improve the process. A **walkthrough** is led by the author to explain the work, and a **technical review** seeks consensus among peers with medium formality; neither collects process metrics as a rule. **Static analysis** is done by tools on code, not by people on a specification.",
+      "vi": "**Inspection** là hình thức review chính thức nhất: một moderator đã được đào tạo dẫn dắt, người tham gia có vai trò rõ ràng, có dùng checklist cùng entry và exit criteria, và số liệu được thu thập để cải tiến quy trình. **Walkthrough** do chính tác giả dẫn dắt để giải thích sản phẩm, còn **technical review** hướng đến sự đồng thuận giữa các đồng nghiệp với mức chính thức trung bình; cả hai thường không thu thập số liệu quy trình. **Static analysis** do công cụ thực hiện trên code, không phải do con người thực hiện trên một bản đặc tả."
+    }
+  },
+  {
+    "key": "review-reset-story",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "In backlog refinement you receive this story:\n\n```text\nAs a user, I want to reset my password quickly\nso that I can log in again.\nAcceptance criteria:\n- The reset link is sent fast.\n- The new password must be secure.\n- Show an error if something goes wrong.\n```\n\nReview it for testability. List the defects you find and the questions you would ask the Product Owner before development starts.",
+      "vi": "Trong buổi backlog refinement, bạn nhận được story này:\n\n```text\nAs a user, I want to reset my password quickly\nso that I can log in again.\nAcceptance criteria:\n- The reset link is sent fast.\n- The new password must be secure.\n- Show an error if something goes wrong.\n```\n\nHãy review nó về khả năng test. Liệt kê các defect bạn tìm thấy và những câu hỏi bạn sẽ hỏi Product Owner trước khi bắt đầu phát triển."
+    },
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Ambiguous, unmeasurable wording",
+          "keywords": [
+            "ambigu",
+            "measur",
+            "vague",
+            "how fast",
+            "mo ho",
+            "do duoc"
+          ]
+        },
+        {
+          "concept": "Password rules undefined",
+          "keywords": [
+            "length",
+            "complex",
+            "policy",
+            "characters",
+            "do dai",
+            "ky tu"
+          ]
+        },
+        {
+          "concept": "Link expiry and single use",
+          "keywords": [
+            "expir",
+            "single use",
+            "one-time",
+            "het han",
+            "mot lan"
+          ]
+        },
+        {
+          "concept": "Unknown or unregistered email",
+          "keywords": [
+            "unknown email",
+            "unregistered",
+            "not registered",
+            "chua dang ky",
+            "khong ton tai"
+          ]
+        },
+        {
+          "concept": "Error cases and messages unspecified",
+          "keywords": [
+            "error message",
+            "which error",
+            "message",
+            "thong bao"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "The story cannot be tested as written. Defects and questions:\n\n1. **Ambiguous wording:** \"quickly\" and \"fast\" are not measurable. Within how many seconds must the email arrive?\n2. **Password rules undefined:** \"secure\" says nothing testable. What minimum and maximum length, which characters are required, may the new password equal the old one?\n3. **Link behaviour missing:** when does the reset link expire? Is it single use? What happens when an expired or used link is opened?\n4. **Unknown email:** what does the user see for an unregistered email address? (It should be the same answer as for a known one, so accounts cannot be discovered.)\n5. **Error cases unspecified:** \"if something goes wrong\" names no case. Which error message is shown for a weak password, an expired link, a mail server failure?\n6. **After the reset:** are other sessions signed out? Does the user get a confirmation email?\n\nEach answer becomes a concrete acceptance criterion, then test cases (boundary values for the password length, the expired link, the unknown email).",
+        "vi": "Story này chưa thể test được như đang viết. Các defect và câu hỏi:\n\n1. **Từ ngữ mơ hồ:** \"quickly\" và \"fast\" không đo được. Email phải đến trong bao nhiêu giây?\n2. **Quy tắc mật khẩu chưa định nghĩa:** \"secure\" không nói được điều gì có thể test. Độ dài tối thiểu và tối đa là bao nhiêu, cần những ký tự nào, mật khẩu mới có được trùng mật khẩu cũ không?\n3. **Thiếu hành vi của link:** reset link hết hạn khi nào? Nó chỉ dùng được một lần? Chuyện gì xảy ra khi mở một link đã hết hạn hoặc đã dùng?\n4. **Email không tồn tại:** người dùng thấy gì với một email chưa đăng ký? (Câu trả lời nên giống hệt với email đã đăng ký, để không ai dò ra được tài khoản.)\n5. **Case lỗi chưa được nêu:** \"if something goes wrong\" không chỉ ra case nào. Thông báo lỗi nào hiển thị khi mật khẩu yếu, link hết hạn, mail server bị lỗi?\n6. **Sau khi reset:** các phiên đăng nhập khác có bị đăng xuất không? Người dùng có nhận email xác nhận không?\n\nMỗi câu trả lời trở thành một acceptance criterion cụ thể, rồi thành các test case (boundary value cho độ dài mật khẩu, link hết hạn, email chưa đăng ký)."
+      },
+      "rubric": [
+        {
+          "id": "ambiguous",
+          "text": {
+            "en": "I flagged \"quickly\", \"fast\" and \"secure\" as ambiguous and asked for measurable values",
+            "vi": "Tôi chỉ ra \"quickly\", \"fast\" và \"secure\" là mơ hồ và yêu cầu giá trị đo được"
+          }
+        },
+        {
+          "id": "missing-cases",
+          "text": {
+            "en": "I listed missing cases: expired or used link, unknown email, weak password",
+            "vi": "Tôi liệt kê các case bị thiếu: link hết hạn hoặc đã dùng, email chưa đăng ký, mật khẩu yếu"
+          }
+        },
+        {
+          "id": "errors",
+          "text": {
+            "en": "I asked which error messages are shown in which situations",
+            "vi": "Tôi hỏi thông báo lỗi nào hiển thị trong tình huống nào"
+          }
+        },
+        {
+          "id": "questions",
+          "text": {
+            "en": "I wrote my findings as questions the Product Owner can answer",
+            "vi": "Tôi viết các phát hiện thành câu hỏi mà Product Owner có thể trả lời"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "This is **static testing of a requirement**: no code exists, yet the story already has defects. \"Quickly\", \"fast\" and \"secure\" are **ambiguous** (no test can pass or fail against them), and the story is silent on **missing cases**: link expiry and reuse, an unregistered email, password rules and which error message appears when. Asking these questions in refinement is shift-left in practice; the same gaps found after release would mean rework or a security problem. Rewriting the story yourself is not the goal: the Product Owner decides the answers.",
+      "vi": "Đây là **static testing trên requirement**: chưa có code, nhưng story đã có defect. \"Quickly\", \"fast\" và \"secure\" là **mơ hồ** (không test nào có thể pass hay fail dựa trên chúng), và story bỏ trống các **case bị thiếu**: link hết hạn và dùng lại, email chưa đăng ký, quy tắc mật khẩu, và thông báo lỗi nào xuất hiện khi nào. Đặt những câu hỏi này khi refinement chính là shift-left trong thực tế; nếu cùng những lỗ hổng đó bị phát hiện sau release thì sẽ phải làm lại hoặc gây ra vấn đề bảo mật. Mục tiêu không phải là bạn tự viết lại story: Product Owner mới là người quyết định câu trả lời."
+    }
+  }
+]

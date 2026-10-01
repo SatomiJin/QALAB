@@ -1,0 +1,124 @@
+[
+  {
+    "key": "performance-test-types",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Classify each test plan by its **performance test type**.",
+      "vi": "Xếp mỗi kế hoạch test vào đúng **loại performance test**."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "load", "text": { "en": "Load testing", "vi": "Load testing" } },
+        { "id": "stress", "text": { "en": "Stress testing", "vi": "Stress testing" } },
+        { "id": "spike", "text": { "en": "Spike testing", "vi": "Spike testing" } },
+        { "id": "endurance", "text": { "en": "Endurance (soak) testing", "vi": "Endurance (soak) testing" } }
+      ],
+      "items": [
+        {
+          "id": "black-friday-peak",
+          "text": {
+            "en": "Simulate the 3 000 users expected on Black Friday and check that p95 checkout time stays under 2 seconds",
+            "vi": "Mô phỏng 3 000 người dùng dự kiến vào Black Friday và kiểm tra p95 thời gian checkout vẫn dưới 2 giây"
+          }
+        },
+        {
+          "id": "ticket-sale",
+          "text": {
+            "en": "Concert tickets go on sale at 10:00: jump from 50 to 20 000 users in 30 seconds",
+            "vi": "Vé concert mở bán lúc 10:00: tăng vọt từ 50 lên 20 000 người dùng trong 30 giây"
+          }
+        },
+        {
+          "id": "weekend-run",
+          "text": {
+            "en": "Run normal traffic for 48 hours and watch memory use and response times",
+            "vi": "Chạy lượng truy cập bình thường trong 48 giờ và theo dõi bộ nhớ cũng như response time"
+          }
+        },
+        {
+          "id": "find-limit",
+          "text": {
+            "en": "Keep adding users beyond the expected maximum until errors appear, then check that the system recovers",
+            "vi": "Liên tục thêm người dùng vượt mức tối đa dự kiến cho tới khi xuất hiện lỗi, rồi kiểm tra hệ thống phục hồi"
+          }
+        },
+        {
+          "id": "daily-traffic",
+          "text": {
+            "en": "Check that search meets its response-time target with the usual weekday traffic",
+            "vi": "Kiểm tra tìm kiếm đạt mục tiêu response time với lượng truy cập thường ngày trong tuần"
+          }
+        },
+        {
+          "id": "memory-leak",
+          "text": {
+            "en": "Find out whether the app server slows down after running for a whole night",
+            "vi": "Tìm hiểu xem app server có chậm dần sau khi chạy suốt một đêm hay không"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "black-friday-peak": "load",
+        "ticket-sale": "spike",
+        "weekend-run": "endurance",
+        "find-limit": "stress",
+        "daily-traffic": "load",
+        "memory-leak": "endurance"
+      }
+    },
+    "explanation": {
+      "en": "**Load** tests check targets at the **expected** load, normal or peak: Black Friday is a high load, but an expected one with a target, so it is load testing, not stress. **Stress** tests go **beyond** the expected maximum on purpose to find the breaking point and check recovery. **Spike** tests are about a **sudden** jump. **Endurance** tests hold a normal load for a **long time** to find problems such as memory leaks that only appear after hours.",
+      "vi": "**Load** test kiểm tra mục tiêu ở mức tải **dự kiến**, bình thường hoặc cao điểm: Black Friday là tải cao, nhưng là tải đã dự kiến và có mục tiêu, nên đó là load testing, không phải stress. **Stress** test cố tình đi **vượt** mức tối đa dự kiến để tìm điểm gãy và kiểm tra khả năng phục hồi. **Spike** test là về một cú tăng **đột ngột**. **Endurance** test giữ tải bình thường trong **thời gian dài** để tìm các vấn đề như rò rỉ bộ nhớ, chỉ xuất hiện sau nhiều giờ."
+    }
+  },
+  {
+    "key": "read-percentiles",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "The requirement is: *at 1 000 concurrent users, the p95 response time of search is under 1 second*. The load test report shows: average 450 ms, p50 300 ms, p95 1 800 ms, p99 4 200 ms, error rate 0.2 %. What is the right conclusion?",
+      "vi": "Requirement là: *với 1 000 người dùng đồng thời, p95 response time của tìm kiếm dưới 1 giây*. Báo cáo load test cho thấy: trung bình 450 ms, p50 300 ms, p95 1 800 ms, p99 4 200 ms, error rate 0.2 %. Kết luận đúng là gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "fails-p95",
+          "text": {
+            "en": "The requirement is not met: 5 % of searches take longer than 1.8 seconds",
+            "vi": "Requirement không đạt: 5 % lượt tìm kiếm mất hơn 1.8 giây"
+          }
+        },
+        {
+          "id": "passes-average",
+          "text": {
+            "en": "The requirement is met, because the average of 450 ms is well under 1 second",
+            "vi": "Requirement đạt, vì trung bình 450 ms thấp hơn nhiều so với 1 giây"
+          }
+        },
+        {
+          "id": "passes-median",
+          "text": {
+            "en": "The requirement is met, because most users (p50) get an answer in 300 ms",
+            "vi": "Requirement đạt, vì đa số người dùng (p50) nhận kết quả trong 300 ms"
+          }
+        },
+        {
+          "id": "errors-only",
+          "text": {
+            "en": "No conclusion is possible until the error rate is 0 %",
+            "vi": "Chưa thể kết luận gì cho tới khi error rate bằng 0 %"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["fails-p95"] },
+    "explanation": {
+      "en": "The requirement is stated on **p95**, and p95 is 1 800 ms, above the 1 000 ms limit: 1 search in 20 is slower than 1.8 seconds. The average (450 ms) is the tempting answer, but the requirement does not use it, and a few very slow requests hide behind a good average. The median only describes the faster half. The error rate is low and does not change the verdict.",
+      "vi": "Requirement được đặt trên **p95**, và p95 là 1 800 ms, vượt giới hạn 1 000 ms: cứ 20 lượt tìm kiếm thì có 1 lượt chậm hơn 1.8 giây. Số trung bình (450 ms) là đáp án dễ chọn, nhưng requirement không dùng nó, và vài request rất chậm có thể nấp sau một con số trung bình đẹp. Median chỉ mô tả nửa nhanh hơn. Error rate thấp và không làm thay đổi kết luận."
+    }
+  }
+]

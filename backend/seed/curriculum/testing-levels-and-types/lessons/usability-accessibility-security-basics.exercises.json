@@ -1,0 +1,121 @@
+[
+  {
+    "key": "security-findings",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "While testing an online shop as a normal customer, you observe the following. Which are **security defects** you should report? Select all that apply.",
+      "vi": "Khi test một shop online với vai trò khách hàng bình thường, bạn quan sát thấy những điều sau. Những điều nào là **defect bảo mật** cần báo cáo? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "idor",
+          "text": {
+            "en": "Changing `/orders/1042` to `/orders/1043` in the URL shows another customer's order and address",
+            "vi": "Đổi `/orders/1042` thành `/orders/1043` trên URL thì thấy đơn hàng và địa chỉ của khách khác"
+          }
+        },
+        {
+          "id": "enumeration",
+          "text": {
+            "en": "Login says \"No account with this email\" for unknown emails and \"Wrong password\" for known ones",
+            "vi": "Đăng nhập báo \"Không có tài khoản với email này\" cho email lạ và \"Sai mật khẩu\" cho email đã có"
+          }
+        },
+        {
+          "id": "stack-trace",
+          "text": {
+            "en": "Entering `'` in the search box shows an error page with an SQL query and a stack trace",
+            "vi": "Nhập `'` vào ô tìm kiếm thì hiện trang lỗi kèm câu SQL và stack trace"
+          }
+        },
+        {
+          "id": "generic-error",
+          "text": {
+            "en": "After five wrong passwords, login is blocked for 15 minutes with a generic message",
+            "vi": "Sau năm lần sai mật khẩu, đăng nhập bị chặn 15 phút kèm một thông báo chung chung"
+          }
+        },
+        {
+          "id": "escaped-script",
+          "text": {
+            "en": "A review containing `<script>alert(1)</script>` is displayed as plain text",
+            "vi": "Một bài đánh giá chứa `<script>alert(1)</script>` được hiển thị như văn bản thuần"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["idor", "enumeration", "stack-trace"] },
+    "explanation": {
+      "en": "Seeing another customer's order by changing an id is broken **access control** (IDOR). Different login messages for known and unknown emails let attackers **enumerate accounts**. An SQL query and stack trace in an error page is **data exposure**, and it hints that input reaches the database unsafely. The lockout and the script shown as plain text are the **expected** secure behaviour: they are tempting to report because they look like errors, but they are the protections working.",
+      "vi": "Xem được đơn hàng của khách khác bằng cách đổi id là lỗi **access control** (IDOR). Thông báo đăng nhập khác nhau cho email đã có và email lạ giúp kẻ tấn công **dò ra tài khoản** (account enumeration). Câu SQL và stack trace trên trang lỗi là **lộ dữ liệu**, và còn gợi ý rằng input đi vào database một cách không an toàn. Việc khóa đăng nhập và đoạn script hiển thị như văn bản thuần là hành vi an toàn **đúng như mong đợi**: chúng dễ bị báo nhầm vì trông giống lỗi, nhưng thực ra là các cơ chế bảo vệ đang hoạt động."
+    }
+  },
+  {
+    "key": "keyboard-signup-test-case",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write an **accessibility** test case for the sign-up form (fields: Name, Email, Password; button **Create account**). The test must check that a user who cannot use a mouse can fill in the form, submit it with a mistake, understand the error and fix it, using the keyboard only.",
+      "vi": "Viết một test case **accessibility** cho form đăng ký (các field: Name, Email, Password; nút **Create account**). Test phải kiểm tra rằng một người dùng không dùng được chuột vẫn có thể điền form, gửi form có một lỗi, hiểu lỗi và sửa nó, chỉ bằng bàn phím."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": ["testCaseId", "title", "preconditions", "testData", "steps", "expectedResult", "priority", "testType"],
+      "expectedConcepts": [
+        {
+          "concept": "Keyboard only",
+          "keywords": ["keyboard", "tab", "ban phim", "without mouse", "khong dung chuot"]
+        },
+        {
+          "concept": "Visible focus in a logical order",
+          "keywords": ["focus", "tieu diem", "logical order", "thu tu"]
+        },
+        {
+          "concept": "Fields have labels",
+          "keywords": ["label", "nhan field", "nhan cua field", "ten field"]
+        },
+        {
+          "concept": "Clear error message next to the field",
+          "keywords": ["error", "loi", "message", "thong bao"]
+        },
+        {
+          "concept": "Accessibility test type",
+          "keywords": ["accessib", "wcag", "a11y", "kha nang tiep can"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test case ID | TC-A11Y-SIGNUP-001 |\n| Title | Sign-up form can be completed and corrected with the keyboard only |\n| Preconditions | The sign-up page is open in Chrome; the mouse is not used; no account exists for nam@example.com |\n| Test data | Name: Nam Tran; Email first `nam@example` (invalid), then `nam@example.com`; Password: Strong-Pass-8 |\n| Steps | 1. Press `Tab` from the top of the page until focus reaches Name. 2. Type the name, press `Tab`, type the invalid email, press `Tab`, type the password. 3. Press `Tab` to **Create account** and press `Enter`. 4. Read the error. 5. Move focus back to Email with `Shift+Tab`, correct it and submit with `Enter`. |\n| Expected result | Focus is always visible and moves in a logical order Name → Email → Password → Create account; each field has a visible label; after step 3 an error message next to Email says how to fix it (not only a red border) and focus moves to the field with the error; after step 5 the account is created and the confirmation page is shown. |\n| Priority | High |\n| Test type | Accessibility (WCAG keyboard and error identification), negative input |",
+        "vi": "| Trường | Giá trị |\n|---|---|\n| Test case ID | TC-A11Y-SIGNUP-001 |\n| Title | Form đăng ký có thể điền và sửa lỗi chỉ bằng bàn phím (keyboard) |\n| Preconditions | Trang đăng ký đang mở trên Chrome; không dùng chuột; chưa có tài khoản cho nam@example.com |\n| Test data | Name: Nam Tran; Email lần đầu `nam@example` (không hợp lệ), sau đó `nam@example.com`; Password: Strong-Pass-8 |\n| Steps | 1. Bấm `Tab` từ đầu trang cho tới khi focus tới Name. 2. Gõ tên, bấm `Tab`, gõ email không hợp lệ, bấm `Tab`, gõ mật khẩu. 3. Bấm `Tab` tới **Create account** rồi bấm `Enter`. 4. Đọc thông báo lỗi. 5. Đưa focus về Email bằng `Shift+Tab`, sửa lại và gửi bằng `Enter`. |\n| Expected result | Focus luôn nhìn thấy được và di chuyển theo thứ tự hợp lý Name → Email → Password → Create account; mỗi field có label nhìn thấy được; sau bước 3, một thông báo lỗi cạnh Email nói cách sửa (không chỉ là viền đỏ) và focus chuyển tới field bị lỗi; sau bước 5 tài khoản được tạo và trang xác nhận hiện ra. |\n| Priority | High |\n| Test type | Accessibility (WCAG: bàn phím và nhận diện lỗi), negative input |"
+      },
+      "rubric": [
+        {
+          "id": "no-mouse",
+          "text": { "en": "My steps use only keys (Tab, Shift+Tab, Enter), never a click", "vi": "Các bước của tôi chỉ dùng phím (Tab, Shift+Tab, Enter), không có thao tác click" }
+        },
+        {
+          "id": "focus",
+          "text": { "en": "I check that focus is visible and moves in a logical order", "vi": "Tôi kiểm tra focus nhìn thấy được và di chuyển theo thứ tự hợp lý" }
+        },
+        {
+          "id": "error-check",
+          "text": { "en": "I include a mistake and check that the error is clear, next to the field, and not shown by colour alone", "vi": "Tôi có cố tình nhập sai và kiểm tra lỗi rõ ràng, nằm cạnh field, không chỉ thể hiện bằng màu sắc" }
+        },
+        {
+          "id": "concrete-data",
+          "text": { "en": "I gave concrete test data, including the invalid value", "vi": "Tôi đưa test data cụ thể, kể cả giá trị không hợp lệ" }
+        },
+        {
+          "id": "verdict",
+          "text": { "en": "The expected result can be checked as pass or fail", "vi": "Expected result có thể kiểm tra được là pass hay fail" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A keyboard accessibility test must **forbid the mouse** in the steps and check what a keyboard user depends on: a **visible focus** in a logical order, **labels** on every field, and **errors** that are described in text next to the field (colour alone is not enough). Including an invalid email turns it into a negative test too, which is where accessibility problems often hide: many forms work with the keyboard on the happy path but lose focus or show a red border only when something goes wrong. Sign-up is a core flow, so priority is high.",
+      "vi": "Một test accessibility về bàn phím phải **không dùng chuột** trong các bước và kiểm tra những gì người dùng bàn phím phụ thuộc vào: **focus nhìn thấy được** theo thứ tự hợp lý, **label** cho mọi field, và **lỗi** được mô tả bằng chữ cạnh field (chỉ dùng màu sắc là không đủ). Thêm một email không hợp lệ biến nó thành negative test luôn, và đó là nơi vấn đề accessibility hay ẩn nấp: nhiều form dùng bàn phím được trên happy path nhưng lại mất focus hoặc chỉ hiện viền đỏ khi có lỗi. Đăng ký là luồng cốt lõi nên priority là high."
+    }
+  }
+]

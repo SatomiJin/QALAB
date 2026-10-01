@@ -1,0 +1,105 @@
+[
+  {
+    "key": "spot-fixed-sleep",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "This test fails about once a week on CI and always passes on your laptop. What is wrong, and what is the fix?\n\n```ts\ntest('saves the profile', async ({ page }) => {\n  await page.goto('/profile');\n  await page.getByLabel('Display name').fill('Mai');\n  await page.getByRole('button', { name: 'Save' }).click();\n  await page.waitForTimeout(2000);\n  expect(await page.getByRole('status').textContent()).toBe('Profile saved');\n});\n```",
+      "vi": "Test này fail khoảng mỗi tuần một lần trên CI và luôn pass trên laptop của bạn. Nó sai ở đâu, và sửa thế nào?\n\n```ts\ntest('saves the profile', async ({ page }) => {\n  await page.goto('/profile');\n  await page.getByLabel('Display name').fill('Mai');\n  await page.getByRole('button', { name: 'Save' }).click();\n  await page.waitForTimeout(2000);\n  expect(await page.getByRole('status').textContent()).toBe('Profile saved');\n});\n```"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "web-first",
+          "text": {
+            "en": "The fixed 2-second sleep is sometimes too short on CI; remove it and use await expect(page.getByRole('status')).toHaveText('Profile saved')",
+            "vi": "Chờ cố định 2 giây đôi khi quá ngắn trên CI; bỏ nó đi và dùng await expect(page.getByRole('status')).toHaveText('Profile saved')"
+          }
+        },
+        {
+          "id": "longer-sleep",
+          "text": {
+            "en": "2 seconds is too short; change it to waitForTimeout(10000)",
+            "vi": "2 giây là quá ngắn; đổi thành waitForTimeout(10000)"
+          }
+        },
+        {
+          "id": "locator",
+          "text": {
+            "en": "getByLabel is an unstable locator; use a CSS selector for the input",
+            "vi": "getByLabel là locator không ổn định; hãy dùng CSS selector cho ô input"
+          }
+        },
+        {
+          "id": "ci-broken",
+          "text": {
+            "en": "Nothing is wrong with the test; the CI machine is the problem",
+            "vi": "Test không có gì sai; vấn đề là ở máy CI"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "web-first"
+      ]
+    },
+    "explanation": {
+      "en": "A **fixed sleep** guesses how long saving takes. On a slower CI run it takes more than 2 seconds, `textContent()` reads the status once, too early, and the test fails although the feature works. A **web-first assertion** retries until the text appears (or the timeout ends), so it is fast when the app is fast and patient when it is slow. A 10-second sleep makes every run slower and still only guesses. `getByLabel` is a robust locator, and blaming CI ignores that the test does not wait for the right condition.",
+      "vi": "**Chờ cố định** là đoán việc lưu mất bao lâu. Ở lượt chạy CI chậm hơn, nó mất hơn 2 giây, `textContent()` đọc status một lần, quá sớm, và test fail dù tính năng vẫn chạy. **Web-first assertion** thử lại cho tới khi text xuất hiện (hoặc hết timeout), nên nhanh khi ứng dụng nhanh và kiên nhẫn khi ứng dụng chậm. Chờ 10 giây làm mọi lượt chạy chậm đi mà vẫn chỉ là đoán. `getByLabel` là locator bền vững, còn đổ lỗi cho CI là bỏ qua việc test không chờ đúng điều kiện."
+    }
+  },
+  {
+    "key": "meaningful-assertions",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "A test applies the coupon `SAVE15` to a 20.00 USD basket. Which **two** assertions are meaningful for this behaviour?",
+      "vi": "Một test áp mã giảm giá `SAVE15` cho giỏ hàng 20.00 USD. **Hai** assertion nào có ý nghĩa cho hành vi này?"
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "total",
+          "text": {
+            "en": "The basket total shows 17.00 USD",
+            "vi": "Tổng giỏ hàng hiển thị 17.00 USD"
+          }
+        },
+        {
+          "id": "discount-line",
+          "text": {
+            "en": "A discount line shows -3.00 USD for SAVE15",
+            "vi": "Một dòng giảm giá hiển thị -3.00 USD cho SAVE15"
+          }
+        },
+        {
+          "id": "page-loaded",
+          "text": {
+            "en": "The basket page finished loading",
+            "vi": "Trang giỏ hàng đã tải xong"
+          }
+        },
+        {
+          "id": "no-error",
+          "text": {
+            "en": "No exception was thrown while the test ran",
+            "vi": "Không có exception nào xảy ra khi test chạy"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "total",
+        "discount-line"
+      ]
+    },
+    "explanation": {
+      "en": "A meaningful assertion checks the **specific outcome** of the behaviour: the discounted total and the discount line both fail if the coupon is applied wrongly. \"The page loaded\" and \"no exception\" are also true when the coupon is ignored, so a test that checks only them passes while the feature is broken.",
+      "vi": "Assertion có ý nghĩa kiểm tra **kết quả cụ thể** của hành vi: tổng tiền sau giảm giá và dòng giảm giá đều fail nếu mã giảm giá bị áp sai. \"Trang đã tải xong\" và \"không có exception\" vẫn đúng khi mã giảm giá bị bỏ qua, nên một test chỉ kiểm tra chúng sẽ pass trong khi tính năng đã hỏng."
+    }
+  }
+]

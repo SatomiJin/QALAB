@@ -1,0 +1,146 @@
+[
+  {
+    "key": "automate-or-not",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Decide for each check whether it is a good candidate for automation or should stay manual for now.",
+      "vi": "Với mỗi phép kiểm tra, hãy quyết định nó là ứng viên tốt để tự động hóa hay nên giữ thủ công lúc này."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "automate",
+          "text": {
+            "en": "Automate",
+            "vi": "Tự động hóa"
+          }
+        },
+        {
+          "id": "manual",
+          "text": {
+            "en": "Keep manual for now",
+            "vi": "Giữ thủ công lúc này"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "login-regression",
+          "text": {
+            "en": "Login with valid and invalid passwords, run before every release",
+            "vi": "Login với mật khẩu đúng và sai, chạy trước mỗi release"
+          }
+        },
+        {
+          "id": "explore-new",
+          "text": {
+            "en": "Exploring a brand-new feature to find out how it behaves",
+            "vi": "Khám phá một tính năng hoàn toàn mới để xem nó hoạt động thế nào"
+          }
+        },
+        {
+          "id": "shipping-matrix",
+          "text": {
+            "en": "Shipping cost for 40 country and weight combinations, checked on every pull request",
+            "vi": "Phí vận chuyển cho 40 tổ hợp quốc gia và cân nặng, kiểm tra ở mỗi pull request"
+          }
+        },
+        {
+          "id": "colours-feel",
+          "text": {
+            "en": "Judging whether the new onboarding screens feel clear to first-time users",
+            "vi": "Đánh giá xem các màn hình onboarding mới có dễ hiểu với người dùng lần đầu không"
+          }
+        },
+        {
+          "id": "one-migration",
+          "text": {
+            "en": "Verifying once that last year's orders were copied to the new archive",
+            "vi": "Kiểm tra một lần rằng đơn hàng năm ngoái đã được chép sang kho lưu trữ mới"
+          }
+        },
+        {
+          "id": "payment-amount",
+          "text": {
+            "en": "The amount charged at checkout matches the basket total, on every build",
+            "vi": "Số tiền bị trừ khi checkout khớp với tổng giỏ hàng, ở mỗi bản build"
+          }
+        },
+        {
+          "id": "redesign-weekly",
+          "text": {
+            "en": "Pixel layout of a dashboard the designers are still reworking every sprint",
+            "vi": "Bố cục chi tiết của một dashboard mà designer vẫn đang làm lại mỗi sprint"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "login-regression": "automate",
+        "explore-new": "manual",
+        "shipping-matrix": "automate",
+        "colours-feel": "manual",
+        "one-migration": "manual",
+        "payment-amount": "automate",
+        "redesign-weekly": "manual"
+      }
+    },
+    "explanation": {
+      "en": "Login, the shipping matrix and the payment amount are **repetitive**, **stable** and **high risk**, with a precise expected result: automation pays back on every run. Exploring and judging clarity need human judgement, a one-off migration check runs only once, and a screen redesigned every sprint would break its tests constantly. The tempting mistake is the redesign: it *looks* like regression work, but the maintenance cost is higher than the value until the design settles.",
+      "vi": "Login, bảng phí vận chuyển và số tiền thanh toán đều **lặp lại**, **ổn định** và **rủi ro cao**, với expected result chính xác: automation hoàn vốn ở mỗi lần chạy. Khám phá tính năng và đánh giá độ dễ hiểu cần óc phán đoán của con người, kiểm tra migrate chỉ chạy một lần, còn màn hình bị thiết kế lại mỗi sprint sẽ làm vỡ test liên tục. Chỗ dễ nhầm là màn hình đang thiết kế lại: trông giống việc regression, nhưng chi phí bảo trì cao hơn giá trị cho đến khi thiết kế ổn định."
+    }
+  },
+  {
+    "key": "roi-reason",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Your team runs the checkout regression by hand before each weekly release; it takes a tester two hours and the checkout screens have not changed in months. Why is it a strong automation candidate?",
+      "vi": "Team của bạn chạy regression cho checkout bằng tay trước mỗi bản release hằng tuần; mất của một tester hai giờ, và các màn hình checkout đã không đổi suốt nhiều tháng. Vì sao đây là ứng viên tự động hóa mạnh?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "roi",
+          "text": {
+            "en": "It runs often, rarely changes and protects money, so the cost of writing it is paid back many times",
+            "vi": "Nó chạy thường xuyên, ít thay đổi và bảo vệ tiền, nên chi phí viết test được hoàn lại nhiều lần"
+          }
+        },
+        {
+          "id": "replace-testers",
+          "text": {
+            "en": "Automated tests find more kinds of bugs than a tester, so the tester is no longer needed",
+            "vi": "Automated test tìm được nhiều loại bug hơn tester, nên không cần tester nữa"
+          }
+        },
+        {
+          "id": "free",
+          "text": {
+            "en": "Once written, an automated test never needs to be changed again",
+            "vi": "Một khi đã viết, automated test không bao giờ cần sửa nữa"
+          }
+        },
+        {
+          "id": "hundred",
+          "text": {
+            "en": "Every test should be automated, and checkout is simply next on the list",
+            "vi": "Mọi test đều nên được tự động hóa, và checkout chỉ đơn giản là mục tiếp theo"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "roi"
+      ]
+    },
+    "explanation": {
+      "en": "Automation is an investment: it pays back when a check is **repetitive**, **stable** and **high risk**. Here all three are true. The other options are common myths: automated tests only check what they were told (they do not replace exploratory testing), they need maintenance whenever the product changes, and \"automate everything\" produces fragile tests for things that should stay manual.",
+      "vi": "Automation là một khoản đầu tư: nó hoàn vốn khi phép kiểm tra **lặp lại**, **ổn định** và **rủi ro cao**. Ở đây cả ba đều đúng. Các lựa chọn còn lại là những ngộ nhận phổ biến: automated test chỉ kiểm tra điều nó được bảo (không thay được exploratory testing), nó cần bảo trì mỗi khi sản phẩm thay đổi, và \"tự động hóa tất cả\" sinh ra những test mong manh cho các thứ nên giữ thủ công."
+    }
+  }
+]

@@ -55,6 +55,14 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | URL list params (parse, defaults, round trip) | `frontend/src/features/learning/list-params.test.ts` |
 | E2E: breadcrumb + back buttons, back returns to the same list page, pagination (desktop + mobile size picker), skill filter, invalid URL params, machine translation note + English original toggle, unavailable note | `frontend/tests/e2e/learning.spec.ts` |
 
+## Phase 6 coverage (curriculum)
+
+| Requirement (plant.md) | Test |
+| --- | --- |
+| The seeded curriculum loads without a problem: 7 skills, ≥ 20 modules, ≥ 40 lessons, ≥ 100 exercises, all five types, an exercise on every lesson; every prompt and answer key accepted by the grader's parsers; Vietnamese for every text (same headings and code blocks); every model answer (en and vi) passes its own concepts; sample course keeps its ids; a translation for every stored text | `backend/src/curriculum/curriculum.spec.ts` (also `npm run seed:curriculum -- --dry-run`) |
+| Loader errors (unknown fields, missing `vi`, broken key, structure mismatch, failing model answer, stray files), derived ids, write plan (insert into empty, keep CMS edits by default, `--update`, never move / retype, attempted exercise ids locked), translations only for unchanged English, hash of the stored text | `backend/src/curriculum/plan.spec.ts` |
+| UUID v5 against the RFC 9562 test vector | `curriculum.spec.ts` |
+
 ## Phase 5 coverage (dashboard and progress)
 
 | Requirement (plant.md) | Test |
@@ -86,7 +94,6 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | --- | --- |
 | Grading per type (mandatory): exact match, % classification, required fields, severity/priority, concept coverage, reweighting, pass score, keyword matching (accents, word start, regex characters) | `backend/src/practice/grading.spec.ts` |
 | Prompt, answer key, answer and self-assessment validation per type (ids exist, limits, unknown keys, empty forms) | `backend/src/practice/exercise-schema.spec.ts` |
-| Every seeded exercise has a prompt and answer key the grader accepts | `backend/src/practice/seed-exercises.spec.ts` |
 | Practice endpoints: 401, invalid UUID / query 400, filters (several types), catalogue order, pagination, no answer key in any response, 404 for draft / hidden-lesson / unknown, grading per type, client `score` / `isCorrect` / `userId` rejected, attempt stored for the token's user, history per user newest first, stats, self-assessment once (409), other user's attempt 404, missing key → generic 500, translations incl. review texts only after an attempt | `backend/test/api/practice.e2e-spec.ts` (fakes: `test/support/fake-practice.ts`) |
 | Attempt rate limit per user, not per IP | `backend/test/api/practice-rate-limit.e2e-spec.ts` |
 | RLS: published-only exercises, no answer keys for learners (admins read), no attempt insert / delete / score update by learners, own attempts only, self-assessment once, immutable even for the service role, FK restrict, review-text translations gated by an attempt | `backend/test/integration/practice-rls.int-spec.ts` |

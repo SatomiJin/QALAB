@@ -1,0 +1,73 @@
+{
+  "skill": "fundamentals",
+  "slug": "sdlc-and-the-tester",
+  "order": 2,
+  "title": {
+    "en": "SDLC and the tester's role",
+    "vi": "SDLC và vai trò của tester"
+  },
+  "description": {
+    "en": "How software is built in waterfall, V-model and Agile teams, where testing fits in each, and how a tester protects quality before any code runs.",
+    "vi": "Phần mềm được xây dựng thế nào trong các nhóm waterfall, V-model và Agile, kiểm thử nằm ở đâu trong từng mô hình, và tester bảo vệ chất lượng ra sao ngay cả trước khi có code để chạy."
+  },
+  "modules": [
+    {
+      "key": "development-life-cycles",
+      "title": {
+        "en": "Development life cycles",
+        "vi": "Các vòng đời phát triển"
+      },
+      "description": {
+        "en": "The SDLC models you will meet at work and what each one means for the tester.",
+        "vi": "Những mô hình SDLC bạn sẽ gặp khi đi làm và ý nghĩa của từng mô hình đối với tester."
+      },
+      "lessons": [
+        {
+          "slug": "sdlc-models",
+          "title": {
+            "en": "SDLC models: waterfall, V-model, iterative",
+            "vi": "Các mô hình SDLC: waterfall, V-model, iterative"
+          },
+          "minutes": 9
+        },
+        {
+          "slug": "agile-scrum-for-testers",
+          "title": {
+            "en": "Agile and Scrum for testers",
+            "vi": "Agile và Scrum dành cho tester"
+          },
+          "minutes": 10
+        }
+      ]
+    },
+    {
+      "key": "quality-in-the-team",
+      "title": {
+        "en": "Quality in the team",
+        "vi": "Chất lượng trong nhóm"
+      },
+      "description": {
+        "en": "Preventing defects as well as finding them: QA, QC, testing and reviews.",
+        "vi": "Ngăn ngừa defect chứ không chỉ tìm ra chúng: QA, QC, testing và review."
+      },
+      "lessons": [
+        {
+          "slug": "qa-qc-testing",
+          "title": {
+            "en": "QA vs QC vs testing",
+            "vi": "QA, QC và testing khác nhau thế nào"
+          },
+          "minutes": 7
+        },
+        {
+          "slug": "static-testing-reviews",
+          "title": {
+            "en": "Static testing and reviews",
+            "vi": "Static testing và review"
+          },
+          "minutes": 10
+        }
+      ]
+    }
+  ]
+}

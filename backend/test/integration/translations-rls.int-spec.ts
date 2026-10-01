@@ -128,8 +128,9 @@ describe('content_translations RLS (integration)', () => {
   });
 
   it('seed: manual translations match the backend source hash', async () => {
-    // The seed hashes in SQL, the backend in Node: they must agree, or the
-    // seeded Vietnamese lessons would be treated as stale.
+    // Seeded translations (SQL seed, then `npm run seed:curriculum`) must hash
+    // the stored English exactly as the backend does, or the Vietnamese
+    // lessons would be treated as stale.
     const lessonId = '6f1d2a4e-0c1b-4d7e-9a3f-000000001001';
     const { data: source } = await admin
       .from('lessons')

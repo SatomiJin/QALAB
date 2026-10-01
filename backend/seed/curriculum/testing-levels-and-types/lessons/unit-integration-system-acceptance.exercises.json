@@ -1,0 +1,171 @@
+[
+  {
+    "key": "classify-test-levels",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each test activity by its **test level**.",
+      "vi": "Xếp mỗi hoạt động test vào đúng **cấp độ kiểm thử**."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "unit", "text": { "en": "Unit testing", "vi": "Unit testing" } },
+        { "id": "integration", "text": { "en": "Integration testing", "vi": "Integration testing" } },
+        { "id": "system", "text": { "en": "System testing", "vi": "System testing" } },
+        { "id": "acceptance", "text": { "en": "Acceptance testing", "vi": "Acceptance testing" } }
+      ],
+      "items": [
+        {
+          "id": "discount-function",
+          "text": {
+            "en": "A developer checks that `applyDiscount(100, 15)` returns 85, with the database mocked",
+            "vi": "Developer kiểm tra `applyDiscount(100, 15)` trả về 85, với database được mock"
+          }
+        },
+        {
+          "id": "payment-provider",
+          "text": {
+            "en": "Checking that the checkout service sends amounts to the payment provider in cents, as its API contract requires",
+            "vi": "Kiểm tra service checkout gửi số tiền sang cổng thanh toán theo đơn vị cent, đúng như API contract yêu cầu"
+          }
+        },
+        {
+          "id": "end-to-end-order",
+          "text": {
+            "en": "On staging, a tester registers, logs in, orders two items and checks the confirmation email against the user stories",
+            "vi": "Trên staging, tester đăng ký, đăng nhập, đặt hai sản phẩm và kiểm tra email xác nhận so với các user story"
+          }
+        },
+        {
+          "id": "accountants-uat",
+          "text": {
+            "en": "Accountants from the customer try the new invoicing module with their real month-end process",
+            "vi": "Các kế toán viên của khách hàng dùng thử module hóa đơn mới với quy trình chốt sổ cuối tháng thật của họ"
+          }
+        },
+        {
+          "id": "email-format",
+          "text": {
+            "en": "Checking that the date the order service sends is read correctly by the email service",
+            "vi": "Kiểm tra ngày mà service đơn hàng gửi đi được service email đọc đúng"
+          }
+        },
+        {
+          "id": "beta-app",
+          "text": {
+            "en": "500 volunteers use a pre-release version of the mobile app on their own phones and send feedback",
+            "vi": "500 tình nguyện viên dùng phiên bản trước release của app mobile trên điện thoại của họ và gửi phản hồi"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "discount-function": "unit",
+        "payment-provider": "integration",
+        "end-to-end-order": "system",
+        "accountants-uat": "acceptance",
+        "email-format": "integration",
+        "beta-app": "acceptance"
+      }
+    },
+    "explanation": {
+      "en": "A single function tested in isolation is **unit** testing. Anything about the data passed between two services (amounts in cents, a date format) is **integration** testing, even if it looks like a small detail. A full flow on staging checked against user stories is **system** testing. Real users checking fitness for their work, including **beta** testers on their own devices, is **acceptance** testing. The tempting mistake is to call the end-to-end flow acceptance: it is done by the test team against requirements, so it is system testing.",
+      "vi": "Một hàm được test cô lập là **unit** testing. Mọi thứ liên quan đến dữ liệu truyền giữa hai service (số tiền tính bằng cent, định dạng ngày) là **integration** testing, dù nhìn có vẻ là chi tiết nhỏ. Một luồng đầy đủ trên staging được kiểm tra so với user story là **system** testing. Người dùng thật kiểm tra hệ thống có phù hợp với công việc của họ không, kể cả **beta** tester trên thiết bị riêng, là **acceptance** testing. Nhầm lẫn dễ mắc là gọi luồng end-to-end là acceptance: nó do đội test làm và đối chiếu với requirement, nên đó là system testing."
+    }
+  },
+  {
+    "key": "alpha-vs-beta",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "What is the main difference between **alpha** and **beta** testing?",
+      "vi": "Khác biệt chính giữa **alpha** testing và **beta** testing là gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "place",
+          "text": {
+            "en": "Alpha testing happens at the developer's site; beta testing is done by real users in their own environment",
+            "vi": "Alpha testing diễn ra tại nơi phát triển; beta testing do người dùng thật thực hiện trong môi trường của chính họ"
+          }
+        },
+        {
+          "id": "automation",
+          "text": {
+            "en": "Alpha testing is automated; beta testing is manual",
+            "vi": "Alpha testing được tự động hóa; beta testing là thủ công"
+          }
+        },
+        {
+          "id": "level",
+          "text": {
+            "en": "Alpha testing is unit testing; beta testing is system testing",
+            "vi": "Alpha testing là unit testing; beta testing là system testing"
+          }
+        },
+        {
+          "id": "after-release",
+          "text": {
+            "en": "Alpha testing is done before release; beta testing is done only after the final release",
+            "vi": "Alpha testing làm trước release; beta testing chỉ làm sau bản release chính thức"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["place"] },
+    "explanation": {
+      "en": "Both are forms of **acceptance testing** on a pre-release version. The difference is **where and by whom**: alpha at the developer's site (often by an internal team or invited users), beta by real users in their own environment. Beta is not \"after the final release\": it happens on a pre-release version so feedback can still change the product.",
+      "vi": "Cả hai đều là dạng **acceptance testing** trên phiên bản trước release. Khác biệt nằm ở **ở đâu và ai làm**: alpha tại nơi phát triển (thường là đội nội bộ hoặc người dùng được mời), beta do người dùng thật làm trong môi trường của họ. Beta không phải \"sau bản release chính thức\": nó diễn ra trên phiên bản trước release để phản hồi còn có thể thay đổi sản phẩm."
+    }
+  },
+  {
+    "key": "defect-at-integration",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Which defect is **most typical** of the integration level?",
+      "vi": "Defect nào **điển hình nhất** cho cấp độ integration?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "boundary",
+          "text": {
+            "en": "A function uses `>` instead of `>=` and rejects exactly 18-year-olds",
+            "vi": "Một hàm dùng `>` thay vì `>=` và từ chối người đúng 18 tuổi"
+          }
+        },
+        {
+          "id": "contract",
+          "text": {
+            "en": "The order service sends the price in dollars, but the invoice service expects cents",
+            "vi": "Service đơn hàng gửi giá theo dollar, nhưng service hóa đơn lại chờ đơn vị cent"
+          }
+        },
+        {
+          "id": "workflow",
+          "text": {
+            "en": "Warehouse staff find that the picking screen does not match the order in which they walk the shelves",
+            "vi": "Nhân viên kho thấy màn hình lấy hàng không khớp với thứ tự họ đi qua các kệ"
+          }
+        },
+        {
+          "id": "requirement",
+          "text": {
+            "en": "The full sign-up flow on staging does not send the welcome email required by the user story",
+            "vi": "Luồng đăng ký đầy đủ trên staging không gửi email chào mừng mà user story yêu cầu"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["contract"] },
+    "explanation": {
+      "en": "Integration testing looks at **interfaces**: the data passed between components and whether both sides agree on its format and units. Dollars vs cents is a classic interface defect. The `>` vs `>=` bug lives inside one unit (unit level), the missing welcome email is found against a user story (system level), and the picking-screen problem is about fitness for real work (acceptance level).",
+      "vi": "Integration testing nhìn vào **interface**: dữ liệu truyền giữa các component và việc hai bên có thống nhất định dạng, đơn vị hay không. Dollar và cent là một defect interface kinh điển. Lỗi `>` và `>=` nằm trong một unit (cấp unit), email chào mừng bị thiếu được phát hiện khi đối chiếu user story (cấp system), còn vấn đề màn hình lấy hàng là về sự phù hợp với công việc thật (cấp acceptance)."
+    }
+  }
+]

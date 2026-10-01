@@ -1,0 +1,175 @@
+[
+  {
+    "key": "triage-outcome",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "In the triage meeting, which **outcome** fits each bug?",
+      "vi": "Trong buổi triage, **kết cục** nào phù hợp với mỗi bug?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "rejected",
+          "text": { "en": "Rejected (Not a Bug)", "vi": "Rejected (Not a Bug)" }
+        },
+        {
+          "id": "duplicate",
+          "text": { "en": "Duplicate", "vi": "Duplicate" }
+        },
+        {
+          "id": "cannot-reproduce",
+          "text": { "en": "Cannot Reproduce", "vi": "Cannot Reproduce" }
+        },
+        {
+          "id": "wont-fix",
+          "text": { "en": "Won't Fix", "vi": "Won't Fix" }
+        },
+        {
+          "id": "deferred",
+          "text": { "en": "Deferred", "vi": "Deferred" }
+        }
+      ],
+      "items": [
+        {
+          "id": "spec-says-so",
+          "text": {
+            "en": "\"Password field accepts only 72 characters\": the requirement sets exactly that maximum",
+            "vi": "\"Ô mật khẩu chỉ nhận tối đa 72 ký tự\": requirement đặt đúng giới hạn đó"
+          }
+        },
+        {
+          "id": "same-as-204",
+          "text": {
+            "en": "The same SAVE15 discount failure with the same steps was reported last week as BUG-204",
+            "vi": "Đúng lỗi mã giảm giá SAVE15 với cùng các bước đã được báo tuần trước là BUG-204"
+          }
+        },
+        {
+          "id": "dev-no-repro",
+          "text": {
+            "en": "The developer and the lead followed the steps on two browsers and the error never appeared",
+            "vi": "Developer và lead làm theo các bước trên hai trình duyệt và lỗi không hề xuất hiện"
+          }
+        },
+        {
+          "id": "old-browser",
+          "text": {
+            "en": "A layout glitch only in a browser version the product stopped supporting; fixing it would need a large rewrite",
+            "vi": "Lỗi bố cục chỉ xảy ra trên một phiên bản trình duyệt mà sản phẩm đã ngừng hỗ trợ; muốn sửa phải viết lại nhiều"
+          }
+        },
+        {
+          "id": "next-release",
+          "text": {
+            "en": "A real minor bug in report filters; the release is in two days, so it is planned for the next release",
+            "vi": "Một bug minor thật ở bộ lọc báo cáo; còn hai ngày là release, nên nó được lên kế hoạch cho bản release sau"
+          }
+        },
+        {
+          "id": "wrong-env",
+          "text": {
+            "en": "The tester saw old prices because the test was run against an environment with outdated data",
+            "vi": "Tester thấy giá cũ vì test được chạy trên một môi trường có dữ liệu đã lỗi thời"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "spec-says-so": "rejected",
+        "same-as-204": "duplicate",
+        "dev-no-repro": "cannot-reproduce",
+        "old-browser": "wont-fix",
+        "next-release": "deferred",
+        "wrong-env": "rejected"
+      }
+    },
+    "explanation": {
+      "en": "**Rejected**: the behaviour is correct (it matches the requirement) or the test itself was wrong (outdated environment). **Duplicate**: the same failure already has a report. **Cannot Reproduce**: the failure does not appear when others follow the steps. **Won't Fix** and **Deferred** are both real bugs; the difference is the plan: Won't Fix means never (the cost is higher than the impact), Deferred means later, with a target release. The tempting mix-up is the old browser: it is a real bug, so not Rejected, but nobody plans to fix it, so not Deferred.",
+      "vi": "**Rejected**: hành vi là đúng (khớp requirement) hoặc chính bài test bị sai (môi trường lỗi thời). **Duplicate**: đúng failure đó đã có report. **Cannot Reproduce**: failure không xuất hiện khi người khác làm theo các bước. **Won't Fix** và **Deferred** đều là bug thật; khác nhau ở kế hoạch: Won't Fix là không bao giờ sửa (chi phí cao hơn mức ảnh hưởng), Deferred là sửa sau, có bản release mục tiêu. Chỗ dễ nhầm là trình duyệt cũ: đó là bug thật nên không phải Rejected, nhưng không ai định sửa nên cũng không phải Deferred."
+    }
+  },
+  {
+    "key": "cannot-reproduce-response",
+    "type": "scenario",
+    "difficulty": "hard",
+    "question": {
+      "en": "You reported: *\"Checkout: Pay button does nothing on the second attempt after a declined card\"* (staging, Chrome 128 on Android 14, build 2.14.0). It happened to you 3 times out of 5. Today the developer sets it to **Cannot Reproduce** with the comment *\"Works on my machine (Chrome on macOS, build 2.15.0).\"*\n\nWhat do you do next? Describe your steps.",
+      "vi": "Bạn đã báo: *\"Checkout: nút Pay không phản hồi ở lần thử thứ hai sau khi thẻ bị từ chối\"* (staging, Chrome 128 trên Android 14, build 2.14.0). Bạn gặp lỗi này 3 trên 5 lần. Hôm nay developer chuyển bug sang **Cannot Reproduce** với comment *\"Máy tôi chạy bình thường (Chrome trên macOS, build 2.15.0).\"*\n\nBạn làm gì tiếp theo? Mô tả các bước của bạn."
+    },
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Retest on the latest build",
+          "keywords": ["latest build", "2.15.0", "new build", "build moi", "ban moi"]
+        },
+        {
+          "concept": "Compare environments",
+          "keywords": ["environment", "android", "mobile", "device", "moi truong", "thiet bi"]
+        },
+        {
+          "concept": "Reproduction rate",
+          "keywords": ["3/5", "3 out of 5", "intermittent", "rate", "ty le", "chap chon"]
+        },
+        {
+          "concept": "Evidence: video or logs",
+          "keywords": ["video", "recording", "log", "screenshot", "console"]
+        },
+        {
+          "concept": "Declined card precondition",
+          "keywords": ["declined", "decline", "card", "the bi tu choi", "tu choi"]
+        },
+        {
+          "concept": "Reopen or close based on facts",
+          "keywords": ["reopen", "close", "mo lai", "dong bug"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "I treat \"Cannot Reproduce\" as a request for more facts, not as a dispute.\n\n1. **Same build:** the developer used 2.15.0, I used 2.14.0. I retest on the latest build 2.15.0 first; it may already be fixed.\n2. **Same environment:** I reported it on Android (Chrome 128 on a mobile device), the developer tried macOS. If it still fails, I ask them to try on an Android device or the mobile emulator.\n3. **Same data and steps:** I make sure the report says the card must be declined first (test card number included) and that the bug appears on the second attempt.\n4. **Reproduction rate:** I repeat it and update the rate (it was 3/5, intermittent), with the time of each attempt.\n5. **Evidence:** I attach a screen recording, the browser console log and the failing network request.\n6. **Decision:** if it fails on 2.15.0, I reopen it with all of this. If I cannot reproduce it on 2.15.0 either, I say so honestly and close it, keeping the evidence in case it comes back.",
+        "vi": "Tôi xem \"Cannot Reproduce\" là lời đề nghị bổ sung thêm sự thật, không phải một cuộc tranh cãi.\n\n1. **Cùng build:** developer dùng 2.15.0, tôi dùng 2.14.0. Trước tiên tôi retest trên build mới nhất 2.15.0; có thể lỗi đã được sửa.\n2. **Cùng môi trường:** tôi báo lỗi trên Android (Chrome 128 trên thiết bị mobile), còn developer thử trên macOS. Nếu vẫn lỗi, tôi đề nghị họ thử trên thiết bị Android hoặc trình giả lập mobile.\n3. **Cùng dữ liệu và các bước:** tôi đảm bảo report ghi rõ thẻ phải bị từ chối trước (kèm số thẻ test) và lỗi xuất hiện ở lần thử thứ hai.\n4. **Tỷ lệ tái hiện:** tôi lặp lại và cập nhật tỷ lệ (trước là 3/5, chập chờn), kèm thời điểm mỗi lần thử.\n5. **Bằng chứng:** tôi đính kèm video quay màn hình, log console của trình duyệt và request bị lỗi.\n6. **Quyết định:** nếu vẫn lỗi trên 2.15.0, tôi reopen kèm tất cả những thứ trên. Nếu chính tôi cũng không tái hiện được trên 2.15.0, tôi nói thật và đóng bug, giữ lại bằng chứng phòng khi lỗi quay lại."
+      },
+      "rubric": [
+        {
+          "id": "build",
+          "text": {
+            "en": "I noticed the build difference and retested on the latest build",
+            "vi": "Tôi nhận ra sự khác biệt về build và retest trên build mới nhất"
+          }
+        },
+        {
+          "id": "environment",
+          "text": {
+            "en": "I pointed out the Android vs macOS difference",
+            "vi": "Tôi chỉ ra sự khác biệt giữa Android và macOS"
+          }
+        },
+        {
+          "id": "precondition",
+          "text": {
+            "en": "I made the declined-card precondition and the second attempt explicit",
+            "vi": "Tôi nêu rõ precondition thẻ bị từ chối và việc lỗi xảy ra ở lần thử thứ hai"
+          }
+        },
+        {
+          "id": "evidence",
+          "text": {
+            "en": "I added a reproduction rate and evidence (video, logs)",
+            "vi": "Tôi bổ sung tỷ lệ tái hiện và bằng chứng (video, log)"
+          }
+        },
+        {
+          "id": "tone",
+          "text": {
+            "en": "My answer stays factual: reopen with evidence, or close honestly",
+            "vi": "Câu trả lời của tôi dựa trên sự thật: reopen kèm bằng chứng, hoặc đóng một cách trung thực"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "The developer's comment already contains two differences: **another build** (2.15.0 vs 2.14.0) and **another environment** (macOS vs Android). Start there: retest on the latest build, because it may be fixed, then make the environment, the declined-card precondition and the second attempt explicit. An intermittent bug needs its **rate** and **evidence** (video, console log). The tempting answer is to reopen it immediately with \"it works for me but not for you\": without new facts it will come straight back as Cannot Reproduce. And if you cannot reproduce it on the new build either, closing it honestly is the right outcome.",
+      "vi": "Comment của developer đã chứa sẵn hai điểm khác biệt: **build khác** (2.15.0 so với 2.14.0) và **môi trường khác** (macOS so với Android). Hãy bắt đầu từ đó: retest trên build mới nhất, vì lỗi có thể đã được sửa, rồi nêu rõ môi trường, precondition thẻ bị từ chối và việc lỗi xảy ra ở lần thử thứ hai. Một bug chập chờn cần có **tỷ lệ** và **bằng chứng** (video, log console). Câu trả lời dễ sa vào là reopen ngay với ý \"máy anh chạy nhưng máy tôi thì không\": không có sự thật mới, bug sẽ lại quay về Cannot Reproduce. Và nếu chính bạn cũng không tái hiện được trên build mới, đóng bug một cách trung thực là kết cục đúng."
+    }
+  }
+]

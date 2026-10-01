@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { createHash } from 'node:crypto';
 import type { AuthUser } from '../auth/auth-user.js';
 import { describeError } from '../common/errors/describe-error.js';
+import { sourceHash } from './source-hash.js';
 import {
   PIPELINE_VERSION,
   prepareInline,
@@ -54,13 +54,7 @@ const key = (ref: Pick<TextRef, 'type' | 'id' | 'field'>) =>
 const rowKey = (row: TranslationRow) =>
   `${row.entity_type}:${row.entity_id}:${row.field}`;
 
-/**
- * Ties a translation to the exact English source: sha-256 of its UTF-8 text,
- * hex. The seed computes the same value in SQL for manual translations.
- */
-export function sourceHash(text: string): string {
-  return createHash('sha256').update(text, 'utf8').digest('hex');
-}
+export { sourceHash };
 
 const IDENTITY: Translations = {
   status: 'none',

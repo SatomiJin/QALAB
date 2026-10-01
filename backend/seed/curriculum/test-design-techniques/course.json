@@ -1,0 +1,110 @@
+{
+  "skill": "test_design",
+  "slug": "test-design-techniques",
+  "order": 1,
+  "title": {
+    "en": "Test design techniques",
+    "vi": "Kỹ thuật thiết kế test"
+  },
+  "description": {
+    "en": "Turn a requirement into a small, strong set of tests: equivalence partitioning, boundary values, decision tables, state transitions, use cases, error guessing and exploratory testing.",
+    "vi": "Biến một requirement thành một bộ test nhỏ mà chắc: equivalence partitioning, boundary value, decision table, state transition, use case, error guessing và exploratory testing."
+  },
+  "modules": [
+    {
+      "key": "input-techniques",
+      "title": {
+        "en": "Input techniques",
+        "vi": "Kỹ thuật cho dữ liệu đầu vào"
+      },
+      "description": {
+        "en": "Pick a few input values that stand for all the others, and test the edges where defects hide.",
+        "vi": "Chọn vài giá trị đầu vào đại diện cho tất cả các giá trị còn lại, và test ở các biên, nơi defect hay ẩn nấp."
+      },
+      "lessons": [
+        {
+          "slug": "equivalence-partitioning",
+          "title": {
+            "en": "Equivalence partitioning",
+            "vi": "Equivalence partitioning (phân vùng tương đương)"
+          },
+          "minutes": 8
+        },
+        {
+          "slug": "boundary-value-analysis",
+          "title": {
+            "en": "Boundary value analysis",
+            "vi": "Boundary value analysis (phân tích giá trị biên)"
+          },
+          "minutes": 9
+        }
+      ]
+    },
+    {
+      "key": "logic-and-behaviour",
+      "title": {
+        "en": "Logic and behaviour",
+        "vi": "Logic và hành vi"
+      },
+      "description": {
+        "en": "Test business rules, statuses and user flows systematically instead of by feel.",
+        "vi": "Test quy tắc nghiệp vụ, trạng thái và luồng người dùng một cách có hệ thống thay vì theo cảm tính."
+      },
+      "lessons": [
+        {
+          "slug": "decision-tables",
+          "title": {
+            "en": "Decision tables",
+            "vi": "Decision table (bảng quyết định)"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "state-transition-testing",
+          "title": {
+            "en": "State transition testing",
+            "vi": "State transition testing (kiểm thử chuyển trạng thái)"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "use-case-testing",
+          "title": {
+            "en": "Use case testing",
+            "vi": "Use case testing"
+          },
+          "minutes": 8
+        }
+      ]
+    },
+    {
+      "key": "experience-based-techniques",
+      "title": {
+        "en": "Experience-based techniques",
+        "vi": "Kỹ thuật dựa trên kinh nghiệm"
+      },
+      "description": {
+        "en": "Use what testers know about where software breaks, and decide which technique a feature needs.",
+        "vi": "Tận dụng hiểu biết của tester về chỗ phần mềm hay hỏng, và quyết định một tính năng cần kỹ thuật nào."
+      },
+      "lessons": [
+        {
+          "slug": "error-guessing-exploratory-testing",
+          "title": {
+            "en": "Error guessing and exploratory testing",
+            "vi": "Error guessing và exploratory testing"
+          },
+          "minutes": 9
+        },
+        {
+          "slug": "choosing-a-technique",
+          "title": {
+            "en": "Positive vs negative testing and choosing a technique",
+            "vi": "Positive và negative testing, chọn kỹ thuật phù hợp"
+          },
+          "minutes": 8
+        }
+      ]
+    }
+  ]
+}

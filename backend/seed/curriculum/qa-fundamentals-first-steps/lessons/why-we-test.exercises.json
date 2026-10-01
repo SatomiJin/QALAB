@@ -1,0 +1,53 @@
+[
+  {
+    "key": "static-testing",
+    "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000002001",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which of these activities is testing, even though no code is run?",
+      "vi": "Hoạt động nào dưới đây là kiểm thử, dù không chạy dòng code nào?"
+    },
+    "prompt": {
+      "options": [
+        {
+          "id": "review",
+          "text": {
+            "en": "Reviewing the requirements for gaps and contradictions",
+            "vi": "Review requirement để tìm chỗ thiếu và chỗ mâu thuẫn"
+          }
+        },
+        {
+          "id": "coding",
+          "text": {
+            "en": "Writing the code for the feature",
+            "vi": "Viết code cho tính năng"
+          }
+        },
+        {
+          "id": "deploy",
+          "text": {
+            "en": "Deploying the release to production",
+            "vi": "Deploy bản release lên production"
+          }
+        },
+        {
+          "id": "estimate",
+          "text": {
+            "en": "Estimating the sprint",
+            "vi": "Ước lượng sprint"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "review"
+      ]
+    },
+    "explanation": {
+      "en": "Reviewing requirements is **static testing**: you look for problems without running anything. It finds defects at the cheapest possible moment, before any code is written. Coding, deploying and estimating are not testing activities.",
+      "vi": "Review requirement là **static testing**: bạn tìm vấn đề mà không cần chạy gì cả. Nó tìm ra defect ở thời điểm rẻ nhất, trước khi có dòng code nào. Viết code, deploy và ước lượng không phải là hoạt động kiểm thử."
+    }
+  }
+]

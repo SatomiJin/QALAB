@@ -1,0 +1,63 @@
+[
+  {
+    "key": "pick-method",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "A profile has `displayName`, `bio` and `avatarUrl`. The app must change **only** the `bio` and leave the other fields as they are. Which method fits best?",
+      "vi": "Một profile có `displayName`, `bio` và `avatarUrl`. App cần đổi **chỉ** `bio` và giữ nguyên các field còn lại. Method nào phù hợp nhất?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        { "id": "get", "text": { "en": "GET", "vi": "GET" } },
+        { "id": "post", "text": { "en": "POST", "vi": "POST" } },
+        { "id": "put", "text": { "en": "PUT", "vi": "PUT" } },
+        { "id": "patch", "text": { "en": "PATCH", "vi": "PATCH" } }
+      ]
+    },
+    "answer": { "correct": ["patch"] },
+    "explanation": {
+      "en": "`PATCH` changes some fields of an existing resource and leaves the rest untouched. `PUT` is the tempting answer, but it **replaces** the whole resource: a `PUT` with only `bio` may clear `displayName` and `avatarUrl`. `POST` creates something new and `GET` only reads.",
+      "vi": "`PATCH` sửa một vài field của resource đang có và giữ nguyên phần còn lại. `PUT` là đáp án dễ chọn nhầm, nhưng nó **thay thế** toàn bộ resource: một `PUT` chỉ có `bio` có thể xóa trắng `displayName` và `avatarUrl`. `POST` tạo cái mới, còn `GET` chỉ đọc."
+    }
+  },
+  {
+    "key": "safe-idempotent",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Classify each request by what HTTP promises about it.",
+      "vi": "Xếp mỗi request theo điều mà HTTP hứa hẹn về nó."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "safe", "text": { "en": "Safe and idempotent", "vi": "Safe và idempotent" } },
+        { "id": "idempotent", "text": { "en": "Idempotent, not safe", "vi": "Idempotent, không safe" } },
+        { "id": "neither", "text": { "en": "Not idempotent (not guaranteed)", "vi": "Không idempotent (không đảm bảo)" } }
+      ],
+      "items": [
+        { "id": "get-courses", "text": { "en": "GET /api/v1/courses", "vi": "GET /api/v1/courses" } },
+        { "id": "head-health", "text": { "en": "HEAD /files/report.pdf (headers only)", "vi": "HEAD /files/report.pdf (chỉ lấy header)" } },
+        { "id": "put-note", "text": { "en": "PUT /notes/7 with the full new note", "vi": "PUT /notes/7 với toàn bộ nội dung note mới" } },
+        { "id": "delete-note", "text": { "en": "DELETE /notes/7", "vi": "DELETE /notes/7" } },
+        { "id": "post-order", "text": { "en": "POST /orders to place an order", "vi": "POST /orders để đặt hàng" } },
+        { "id": "patch-stock", "text": { "en": "PATCH /products/3 with {\"stockChange\": 1}", "vi": "PATCH /products/3 với {\"stockChange\": 1}" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "get-courses": "safe",
+        "head-health": "safe",
+        "put-note": "idempotent",
+        "delete-note": "idempotent",
+        "post-order": "neither",
+        "patch-stock": "neither"
+      }
+    },
+    "explanation": {
+      "en": "`GET` and `HEAD` only read, so they are **safe** and therefore idempotent too. `PUT` and `DELETE` change data, but repeating them gives the same final state: the note is the same new note, or still deleted. `POST /orders` creates a new order each time, and a `PATCH` that adds 1 to the stock adds 1 again on every retry. The tempting mistake is to put `DELETE` under \"not idempotent\" because the second call answers `404`: idempotency is about the server state, not the response.",
+      "vi": "`GET` và `HEAD` chỉ đọc nên chúng **safe**, và vì thế cũng idempotent. `PUT` và `DELETE` thay đổi dữ liệu, nhưng lặp lại thì trạng thái cuối vẫn như nhau: note vẫn là note mới đó, hoặc vẫn đã bị xóa. `POST /orders` mỗi lần lại tạo một đơn mới, và một `PATCH` cộng 1 vào tồn kho sẽ cộng thêm 1 sau mỗi lần gửi lại. Lỗi hay gặp là xếp `DELETE` vào \"không idempotent\" vì lần gọi thứ hai trả `404`: idempotent nói về trạng thái server, không phải về response."
+    }
+  }
+]

@@ -1,0 +1,80 @@
+{
+  "skill": "fundamentals",
+  "slug": "qa-fundamentals-first-steps",
+  "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000000001",
+  "order": 1,
+  "title": {
+    "en": "QA fundamentals: first steps",
+    "vi": "Nền tảng QA: những bước đầu tiên"
+  },
+  "description": {
+    "en": "What software testing is, why it matters, and how a tester works through a release.",
+    "vi": "Kiểm thử phần mềm là gì, vì sao nó quan trọng, và tester làm việc thế nào qua một bản release."
+  },
+  "modules": [
+    {
+      "key": "what-testing-is",
+      "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000000101",
+      "title": {
+        "en": "What testing is",
+        "vi": "Kiểm thử là gì"
+      },
+      "description": {
+        "en": "The vocabulary every QA engineer uses from day one.",
+        "vi": "Những từ vựng mọi QA engineer dùng ngay từ ngày đầu."
+      },
+      "lessons": [
+        {
+          "slug": "why-we-test",
+          "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000001001",
+          "title": {
+            "en": "Why we test",
+            "vi": "Vì sao cần kiểm thử"
+          },
+          "minutes": 6
+        },
+        {
+          "slug": "errors-defects-failures",
+          "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000001002",
+          "title": {
+            "en": "Errors, defects and failures",
+            "vi": "Error, defect và failure"
+          },
+          "minutes": 7
+        }
+      ]
+    },
+    {
+      "key": "how-testing-is-done",
+      "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000000102",
+      "title": {
+        "en": "How testing is done",
+        "vi": "Kiểm thử được thực hiện thế nào"
+      },
+      "description": {
+        "en": "Principles and the test process that turn them into a routine.",
+        "vi": "Các nguyên tắc, và quy trình kiểm thử biến chúng thành thói quen."
+      },
+      "lessons": [
+        {
+          "slug": "seven-testing-principles",
+          "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000001003",
+          "title": {
+            "en": "The seven testing principles",
+            "vi": "Bảy nguyên tắc kiểm thử"
+          },
+          "minutes": 8
+        },
+        {
+          "slug": "stlc-test-process",
+          "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000001004",
+          "title": {
+            "en": "STLC: the test process",
+            "vi": "STLC: quy trình kiểm thử"
+          },
+          "minutes": 10
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+[
+  {
+    "key": "login-test-case",
+    "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000002006",
+    "type": "test_case",
+    "difficulty": "easy",
+    "question": {
+      "en": "Write a test case for the login form: a registered user signs in with a valid email and password and lands on the dashboard.",
+      "vi": "Viết một test case cho form đăng nhập: người dùng đã đăng ký đăng nhập bằng email và mật khẩu hợp lệ và vào được dashboard."
+    },
+    "answer": {
+      "requiredFields": [
+        "testCaseId",
+        "title",
+        "preconditions",
+        "testData",
+        "steps",
+        "expectedResult",
+        "priority"
+      ],
+      "expectedConcepts": [
+        {
+          "concept": "Registered user",
+          "keywords": [
+            "registered",
+            "existing",
+            "account",
+            "da dang ky",
+            "tai khoan"
+          ]
+        },
+        {
+          "concept": "Valid credentials",
+          "keywords": [
+            "valid",
+            "correct",
+            "hop le"
+          ]
+        },
+        {
+          "concept": "Email and password",
+          "keywords": [
+            "email",
+            "password",
+            "mat khau"
+          ]
+        },
+        {
+          "concept": "Dashboard shown",
+          "keywords": [
+            "dashboard"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test case ID | TC-LOGIN-001 |\n| Title | Registered user logs in with valid email and password |\n| Preconditions | An account exists for learner@example.com and is verified; the user is logged out |\n| Test data | Email learner@example.com, password Correct-Pass-1 |\n| Steps | 1. Open the login page. 2. Enter the email. 3. Enter the password. 4. Press **Log in**. |\n| Expected result | The dashboard opens and shows the user's name |\n| Priority | High |\n| Test type | Functional |",
+        "vi": "| Trường | Giá trị |\r\n|---|---|\r\n| Test case ID | TC-LOGIN-001 |\r\n| Title | Người dùng đã đăng ký đăng nhập bằng email và mật khẩu hợp lệ |\r\n| Preconditions | Tài khoản learner@example.com đã tồn tại và đã xác minh; người dùng đang đăng xuất |\r\n| Test data | Email learner@example.com, mật khẩu Correct-Pass-1 |\r\n| Steps | 1. Mở trang đăng nhập. 2. Nhập email. 3. Nhập mật khẩu. 4. Bấm **Log in**. |\r\n| Expected result | Dashboard mở ra và hiển thị tên người dùng |\r\n| Priority | High |\r\n| Test type | Functional |"
+      },
+      "rubric": [
+        {
+          "id": "one-thing",
+          "text": {
+            "en": "My test case checks one thing only",
+            "vi": "Test case của tôi chỉ kiểm tra một điều"
+          }
+        },
+        {
+          "id": "preconditions",
+          "text": {
+            "en": "The preconditions say what must be true before step 1",
+            "vi": "Preconditions nói rõ điều gì phải đúng trước bước 1"
+          }
+        },
+        {
+          "id": "data",
+          "text": {
+            "en": "I gave concrete test data, not \"a valid email\"",
+            "vi": "Tôi đưa test data cụ thể, không phải \"một email hợp lệ\""
+          }
+        },
+        {
+          "id": "expected",
+          "text": {
+            "en": "The expected result can be checked as pass or fail",
+            "vi": "Expected result có thể kiểm tra được là pass hay fail"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A test case must be repeatable by someone else: **preconditions** set the starting state, **test data** is concrete, each **step** is one action, and the **expected result** is observable, so the verdict is a clear pass or fail. Login is a core flow, so priority is high.",
+      "vi": "Một test case phải lặp lại được bởi người khác: **preconditions** đặt trạng thái ban đầu, **test data** cụ thể, mỗi **step** là một thao tác, và **expected result** quan sát được, để verdict là pass hoặc fail rõ ràng. Đăng nhập là luồng cốt lõi nên priority là high."
+    }
+  }
+]

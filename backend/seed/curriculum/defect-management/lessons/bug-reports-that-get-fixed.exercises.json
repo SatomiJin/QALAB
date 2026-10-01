@@ -1,0 +1,245 @@
+[
+  {
+    "key": "fact-or-opinion",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Sort these sentences from draft bug reports: which ones are **facts** a developer can act on, and which are **opinions or guesses** that should be rewritten (or moved to a Notes line)?",
+      "vi": "Phân loại các câu sau lấy từ bản nháp bug report: câu nào là **sự thật** mà developer hành động được, câu nào là **ý kiến hoặc phỏng đoán** cần viết lại (hoặc chuyển sang dòng Notes)?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "fact",
+          "text": {
+            "en": "Fact (keep as is)",
+            "vi": "Sự thật (giữ nguyên)"
+          }
+        },
+        {
+          "id": "opinion",
+          "text": {
+            "en": "Opinion or guess (rewrite)",
+            "vi": "Ý kiến hoặc phỏng đoán (viết lại)"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "load-time",
+          "text": {
+            "en": "The dashboard takes 7 s to load with 500 orders; the requirement is 3 s",
+            "vi": "Dashboard mất 7 giây để tải với 500 đơn hàng; requirement là 3 giây"
+          }
+        },
+        {
+          "id": "slow",
+          "text": {
+            "en": "The dashboard is way too slow",
+            "vi": "Dashboard chậm quá mức"
+          }
+        },
+        {
+          "id": "status-code",
+          "text": {
+            "en": "GET /api/profile returns 401 right after a successful login",
+            "vi": "GET /api/profile trả về 401 ngay sau khi đăng nhập thành công"
+          }
+        },
+        {
+          "id": "token-guess",
+          "text": {
+            "en": "The developer probably forgot to save the token",
+            "vi": "Chắc developer quên lưu token"
+          }
+        },
+        {
+          "id": "repro-rate",
+          "text": {
+            "en": "Happened 4 times out of 10 on Wi-Fi, never on a wired connection",
+            "vi": "Xảy ra 4 trên 10 lần khi dùng Wi-Fi, chưa lần nào khi cắm dây mạng"
+          }
+        },
+        {
+          "id": "users-hate",
+          "text": {
+            "en": "Customers will be furious when they see this",
+            "vi": "Khách hàng sẽ nổi giận khi thấy cái này"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "load-time": "fact",
+        "slow": "opinion",
+        "status-code": "fact",
+        "token-guess": "opinion",
+        "repro-rate": "fact",
+        "users-hate": "opinion"
+      }
+    },
+    "explanation": {
+      "en": "A fact is something you observed and can measure or show: a time, a status code, a reproduction rate. \"Way too slow\" is the same observation without the numbers, so it cannot be checked. The token guess is tempting because it sounds technical, but it is a hypothesis about the code: write the observed failure (the `401`) and, if you want, add the guess in a separate Notes line. How customers will feel is an argument for **priority**, not part of the description.",
+      "vi": "Sự thật là điều bạn quan sát được và đo hoặc chỉ ra được: thời gian, status code, tỷ lệ tái hiện. \"Chậm quá mức\" là cùng quan sát đó nhưng không có con số, nên không kiểm tra được. Câu đoán về token dễ gây nhầm vì nghe có vẻ kỹ thuật, nhưng nó là giả thuyết về code: hãy ghi failure quan sát được (`401`) và, nếu muốn, thêm phỏng đoán ở một dòng Notes riêng. Khách hàng sẽ cảm thấy thế nào là lý lẽ cho **priority**, không thuộc phần mô tả."
+    }
+  },
+  {
+    "key": "improve-the-report",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A colleague's draft reads: *\"Checkout broken!! The total is wrong, the Pay button is in the wrong place and sometimes the page crashes. Probably a backend issue.\"* Which changes would make it more likely to get fixed? Select **all** that apply.",
+      "vi": "Bản nháp của một đồng nghiệp viết: *\"Checkout hỏng!! Tổng tiền sai, nút Pay nằm sai chỗ và thỉnh thoảng trang bị crash. Chắc là lỗi backend.\"* Những thay đổi nào giúp report dễ được sửa hơn? Chọn **tất cả** đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "split",
+          "text": {
+            "en": "Split it into three reports (wrong total, button position, crash) and link them",
+            "vi": "Tách thành ba report (tổng tiền sai, vị trí nút, crash) và liên kết chúng"
+          }
+        },
+        {
+          "id": "rate",
+          "text": {
+            "en": "For the crash, give the reproduction rate and attach the console log",
+            "vi": "Với lỗi crash, ghi tỷ lệ tái hiện và đính kèm log console"
+          }
+        },
+        {
+          "id": "numbers",
+          "text": {
+            "en": "Replace \"the total is wrong\" with the actual and the expected total",
+            "vi": "Thay \"tổng tiền sai\" bằng tổng thực tế và tổng mong đợi"
+          }
+        },
+        {
+          "id": "search",
+          "text": {
+            "en": "Search the tracker for existing checkout bugs before creating them",
+            "vi": "Tìm các bug checkout đã có trong công cụ quản lý bug trước khi tạo mới"
+          }
+        },
+        {
+          "id": "all-critical",
+          "text": {
+            "en": "Set severity to critical so the team looks at it first",
+            "vi": "Đặt severity là critical để team xem nó trước"
+          }
+        },
+        {
+          "id": "keep-guess",
+          "text": {
+            "en": "Keep \"Probably a backend issue\" in the title so it goes to the right team",
+            "vi": "Giữ \"Chắc là lỗi backend\" trong title để nó đến đúng team"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["split", "rate", "numbers", "search"]
+    },
+    "explanation": {
+      "en": "One bug per report, concrete actual vs expected results, a reproduction rate with evidence for the intermittent crash, and a duplicate search are exactly the habits of the lesson. Setting everything to critical is tempting, but inflated severity destroys trust and is not true for a misplaced button (trivial). A guess about the cause does not belong in the title: it may be wrong and send the bug to the wrong team; put it in a Notes line if at all.",
+      "vi": "Mỗi report một bug, actual và expected result cụ thể, tỷ lệ tái hiện kèm bằng chứng cho lỗi crash chập chờn, và tìm bug trùng trước khi tạo là đúng những thói quen của bài học. Đặt tất cả là critical nghe hấp dẫn, nhưng thổi phồng severity làm mất lòng tin và không đúng với một nút nằm sai chỗ (trivial). Phỏng đoán về nguyên nhân không thuộc về title: nó có thể sai và đẩy bug sang nhầm team; nếu cần thì ghi vào dòng Notes."
+    }
+  },
+  {
+    "key": "orders-api-bug-report",
+    "type": "bug_report",
+    "difficulty": "hard",
+    "question": {
+      "en": "Write a bug report for this **API** failure.\n\nOn **staging** (API v1, build 4.3.0) you test the orders endpoint with Postman. You log in as user **A** (`buyer.a@example.com`) and use A's access token to call `GET /api/v1/orders/9002`. Order 9002 belongs to user **B**. The API answers **`200 OK`** with B's full order: name, shipping address, phone number and items. You tried 5 different order ids of other users: 5/5 returned the data. The specification says a user may only read their own orders; anything else must answer `404`. The release to production is planned for next week.",
+      "vi": "Viết bug report cho failure này của **API**.\n\nTrên **staging** (API v1, build 4.3.0) bạn test endpoint đơn hàng bằng Postman. Bạn đăng nhập bằng người dùng **A** (`buyer.a@example.com`) và dùng access token của A để gọi `GET /api/v1/orders/9002`. Đơn hàng 9002 thuộc về người dùng **B**. API trả về **`200 OK`** với toàn bộ đơn hàng của B: tên, địa chỉ giao hàng, số điện thoại và các sản phẩm. Bạn đã thử 5 id đơn hàng khác nhau của người khác: 5/5 lần đều trả về dữ liệu. Đặc tả nói người dùng chỉ được đọc đơn hàng của chính mình; mọi trường hợp khác phải trả về `404`. Bản release lên production dự kiến vào tuần sau."
+    },
+    "answer": {
+      "requiredFields": [
+        "title",
+        "environment",
+        "preconditions",
+        "stepsToReproduce",
+        "actualResult",
+        "expectedResult",
+        "severity",
+        "priority",
+        "attachment"
+      ],
+      "expectedSeverity": "critical",
+      "expectedPriority": "high",
+      "expectedConcepts": [
+        {
+          "concept": "Orders endpoint",
+          "keywords": ["/api/v1/orders", "get /api", "orders/9002", "endpoint"]
+        },
+        {
+          "concept": "Another user's order",
+          "keywords": ["another user", "other user", "user b", "nguoi dung khac", "nguoi dung b"]
+        },
+        {
+          "concept": "Actual status 200",
+          "keywords": ["200"]
+        },
+        {
+          "concept": "Expected status 404",
+          "keywords": ["404"]
+        },
+        {
+          "concept": "Personal data exposed",
+          "keywords": ["personal data", "address", "phone", "data leak", "dia chi", "lo du lieu"]
+        },
+        {
+          "concept": "Reproduction rate",
+          "keywords": ["5/5", "always", "every time", "moi lan", "luon"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Title:** Orders API: GET /api/v1/orders/{id} returns another user's order (200 instead of 404)\n\n**Environment:** staging, API v1, build 4.3.0, Postman\n\n**Preconditions:** user A (buyer.a@example.com) is logged in and has an access token; order 9002 belongs to user B\n\n**Steps to reproduce:**\n\n1. Send GET /api/v1/orders/9002 with user A's access token in the Authorization header.\n\n**Actual result:** 200 OK with user B's full order, including name, shipping address and phone number (personal data exposed). Reproduction rate 5/5 with five different orders of other users.\n\n**Expected result:** 404 Not Found: a user may only read their own orders.\n\n**Severity:** critical (security hole: any logged-in user can read other customers' personal data; no workaround).\n\n**Priority:** high (must be fixed before next week's production release).\n\n**Attachment:** request and response from Postman (token removed), curl command, list of the five order ids tried",
+        "vi": "**Title:** Orders API: GET /api/v1/orders/{id} trả về đơn hàng của người dùng khác (200 thay vì 404)\n\n**Environment:** staging, API v1, build 4.3.0, Postman\n\n**Preconditions:** người dùng A (buyer.a@example.com) đã đăng nhập và có access token; đơn hàng 9002 thuộc về người dùng B\n\n**Steps to reproduce:**\n\n1. Gửi GET /api/v1/orders/9002 với access token của người dùng A trong header Authorization.\n\n**Actual result:** 200 OK kèm toàn bộ đơn hàng của người dùng B, gồm tên, địa chỉ giao hàng và số điện thoại (lộ dữ liệu cá nhân). Tỷ lệ tái hiện 5/5 với năm đơn hàng khác nhau của người khác.\n\n**Expected result:** 404 Not Found: người dùng chỉ được đọc đơn hàng của chính mình.\n\n**Severity:** critical (lỗ hổng bảo mật: bất kỳ người dùng đã đăng nhập nào cũng đọc được dữ liệu cá nhân của khách hàng khác; không có workaround).\n\n**Priority:** high (phải sửa trước bản release production tuần sau).\n\n**Attachment:** request và response từ Postman (đã xoá token), lệnh curl, danh sách năm id đơn hàng đã thử"
+      },
+      "rubric": [
+        {
+          "id": "request",
+          "text": {
+            "en": "I gave the exact method, endpoint and which user's token was used",
+            "vi": "Tôi ghi đúng method, endpoint và token của người dùng nào được dùng"
+          }
+        },
+        {
+          "id": "status-codes",
+          "text": {
+            "en": "I gave the actual (200) and the expected (404) status code",
+            "vi": "Tôi ghi status code thực tế (200) và mong đợi (404)"
+          }
+        },
+        {
+          "id": "rate",
+          "text": {
+            "en": "I stated the reproduction rate (5/5 with different orders)",
+            "vi": "Tôi ghi tỷ lệ tái hiện (5/5 với các đơn hàng khác nhau)"
+          }
+        },
+        {
+          "id": "no-secrets",
+          "text": {
+            "en": "My attachments contain no token and no more personal data than needed",
+            "vi": "File đính kèm của tôi không chứa token và không có nhiều dữ liệu cá nhân hơn mức cần thiết"
+          }
+        },
+        {
+          "id": "sev-pri",
+          "text": {
+            "en": "I justified severity by the data exposure and priority by the release date, separately",
+            "vi": "Tôi giải thích severity bằng việc lộ dữ liệu và priority bằng ngày release, một cách riêng biệt"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "For an API bug the request **is** the steps: method, URL and whose token. The status codes (`200` vs `404`) make actual and expected results precise, and 5/5 tells the developer it is not a fluke. **Severity is critical**: any logged-in user can read other customers' names, addresses and phone numbers; it is a security and privacy failure with no workaround. It is not \"only major because it is on staging\": severity describes the impact of the defect, not where you found it. **Priority is high**: the release is next week and this must not reach production. Remove the access token from the attachment.",
+      "vi": "Với bug API, chính request **là** các bước: method, URL và token của ai. Status code (`200` so với `404`) làm actual và expected result trở nên chính xác, và 5/5 cho developer biết đây không phải sự cố ngẫu nhiên. **Severity là critical**: bất kỳ người dùng đã đăng nhập nào cũng đọc được tên, địa chỉ và số điện thoại của khách hàng khác; đây là lỗi bảo mật và quyền riêng tư, không có workaround. Không phải \"chỉ là major vì đang ở staging\": severity mô tả tác động của defect, không phụ thuộc vào nơi bạn tìm ra nó. **Priority là high**: tuần sau là release và lỗi này không được lên production. Nhớ xoá access token khỏi file đính kèm."
+    }
+  }
+]

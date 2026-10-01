@@ -1,0 +1,162 @@
+[
+  {
+    "key": "shared-data-problem",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Two API tests both register the user `qa@example.com` at the start. Run one by one they pass; run in parallel, one of them often fails with `409 Conflict`. What is the best fix?",
+      "vi": "Hai API test cùng đăng ký user `qa@example.com` lúc bắt đầu. Chạy lần lượt thì pass; chạy song song thì một test thường fail với `409 Conflict`. Cách sửa tốt nhất là gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "unique-fixture",
+          "text": {
+            "en": "Give each test its own user with a unique email, created in a fixture and deleted in its teardown",
+            "vi": "Cho mỗi test một user riêng với email duy nhất, tạo trong fixture và xóa ở phần teardown"
+          }
+        },
+        {
+          "id": "serial",
+          "text": {
+            "en": "Disable parallel runs for the whole suite",
+            "vi": "Tắt chạy song song cho toàn bộ bộ test"
+          }
+        },
+        {
+          "id": "retry",
+          "text": {
+            "en": "Retry the failing test up to three times",
+            "vi": "Cho test bị fail chạy lại tối đa ba lần"
+          }
+        },
+        {
+          "id": "accept-409",
+          "text": {
+            "en": "Accept both 201 and 409 as a correct answer to the registration",
+            "vi": "Chấp nhận cả 201 và 409 là kết quả đúng của việc đăng ký"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "unique-fixture"
+      ]
+    },
+    "explanation": {
+      "en": "The tests fail because they **share data**. Unique data per test, created in a fixture's setup and removed in its teardown, makes them independent, so they can run in any order and in parallel. Disabling parallelism or retrying hides the dependency and slows the suite; accepting `409` weakens the test so it no longer proves that registration works.",
+      "vi": "Các test fail vì chúng **dùng chung dữ liệu**. Dữ liệu duy nhất cho mỗi test, tạo trong phần setup của fixture và xóa ở teardown, giúp chúng độc lập, chạy được theo mọi thứ tự và song song. Tắt chạy song song hay cho chạy lại chỉ che giấu sự phụ thuộc và làm bộ test chậm đi; chấp nhận `409` làm test yếu đi, không còn chứng minh được việc đăng ký hoạt động."
+    }
+  },
+  {
+    "key": "api-check-design",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "Design an **automated API test** (as a test case) for this rule: `POST /api/users` with an email that is already registered must answer `409` and must not create a second account. Describe the data the test creates, its steps, what it asserts, and how it cleans up.",
+      "vi": "Thiết kế một **automated API test** (dưới dạng test case) cho quy tắc sau: `POST /api/users` với một email đã được đăng ký phải trả về `409` và không được tạo tài khoản thứ hai. Mô tả dữ liệu test tạo ra, các bước, những gì nó assert, và cách nó dọn dẹp."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": [
+        "testCaseId",
+        "title",
+        "preconditions",
+        "testData",
+        "steps",
+        "expectedResult",
+        "priority",
+        "testType"
+      ],
+      "expectedConcepts": [
+        {
+          "concept": "Unique test data",
+          "keywords": [
+            "unique",
+            "random",
+            "uuid",
+            "duy nhat",
+            "ngau nhien"
+          ]
+        },
+        {
+          "concept": "Setup through the API",
+          "keywords": [
+            "setup",
+            "fixture",
+            "create the user",
+            "tao user",
+            "tao truoc"
+          ]
+        },
+        {
+          "concept": "Status code 409",
+          "keywords": [
+            "409",
+            "conflict"
+          ]
+        },
+        {
+          "concept": "No second account",
+          "keywords": [
+            "only one",
+            "single account",
+            "no second",
+            "chi mot",
+            "khong tao them"
+          ]
+        },
+        {
+          "concept": "Cleanup",
+          "keywords": [
+            "teardown",
+            "clean",
+            "delete",
+            "don dep",
+            "xoa"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test case ID | API-USERS-004 |\n| Title | Registering an already registered email answers 409 and creates no second account |\n| Preconditions | API reachable; a fixture creates the user in setup through `POST /api/users` |\n| Test data | Unique email `qa-<uuid>@example.com` (random per run), password Correct-Pass-1 |\n| Steps | 1. Setup (fixture): create the user with the unique email, expect 201. 2. Send `POST /api/users` again with the same email. 3. Look up users with that email through the admin API. |\n| Expected result | Step 2 answers status code 409 Conflict with an error naming the email field; step 3 finds only one account for the email |\n| Teardown | Delete the created user, whether the test passed or failed |\n| Priority | High |\n| Test type | Functional, API, automated |",
+        "vi": "| Trường | Giá trị |\n|---|---|\n| Test case ID | API-USERS-004 |\n| Title | Đăng ký email đã tồn tại trả về 409 và không tạo tài khoản thứ hai |\n| Preconditions | API truy cập được; một fixture tạo user ở bước setup qua `POST /api/users` |\n| Test data | Email duy nhất `qa-<uuid>@example.com` (ngẫu nhiên mỗi lần chạy), mật khẩu Correct-Pass-1 |\n| Steps | 1. Setup (fixture): tạo user với email duy nhất, mong đợi 201. 2. Gửi lại `POST /api/users` với cùng email. 3. Tìm user theo email đó qua admin API. |\n| Expected result | Bước 2 trả về status code 409 Conflict với lỗi nêu field email; bước 3 chỉ tìm thấy một tài khoản cho email đó, không tạo thêm tài khoản |\n| Teardown | Xóa user đã tạo, dù test pass hay fail |\n| Priority | High |\n| Test type | Functional, API, automated |"
+      },
+      "rubric": [
+        {
+          "id": "own-data",
+          "text": {
+            "en": "My test creates its own user and does not rely on data from another test",
+            "vi": "Test của tôi tự tạo user, không dựa vào dữ liệu của test khác"
+          }
+        },
+        {
+          "id": "unique",
+          "text": {
+            "en": "The email is unique per run, so parallel runs do not collide",
+            "vi": "Email là duy nhất mỗi lần chạy, nên các lượt chạy song song không đụng nhau"
+          }
+        },
+        {
+          "id": "beyond-status",
+          "text": {
+            "en": "I check more than the status code: also that no second account exists",
+            "vi": "Tôi kiểm tra nhiều hơn status code: cả việc không có tài khoản thứ hai"
+          }
+        },
+        {
+          "id": "cleanup",
+          "text": {
+            "en": "The test cleans up what it created, even when it fails",
+            "vi": "Test dọn dẹp những gì nó tạo ra, kể cả khi fail"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A good automated check is **independent**: it creates its own user (unique email, in a fixture's setup) instead of hoping one exists, so it runs in any order and in parallel. It asserts the **status code** and the **side effect** (still only one account), because a `409` alone does not prove nothing was written. It **cleans up** in teardown so no data is left for the next run. Registration is a core flow, so priority is high.",
+      "vi": "Một phép kiểm tra tự động tốt thì **độc lập**: nó tự tạo user (email duy nhất, trong phần setup của fixture) thay vì hy vọng user đã có sẵn, nên chạy được theo mọi thứ tự và song song. Nó assert cả **status code** lẫn **tác động phụ** (vẫn chỉ có một tài khoản), vì riêng `409` không chứng minh được là không có gì bị ghi. Nó **dọn dẹp** ở teardown để không để lại dữ liệu cho lượt chạy sau. Đăng ký là luồng cốt lõi nên priority là high."
+    }
+  }
+]

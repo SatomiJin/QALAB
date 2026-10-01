@@ -1,0 +1,92 @@
+[
+  {
+    "key": "which-flow",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "In the use case *Withdraw cash*, the customer asks for 100 USD but only has 40 USD in the account. The ATM shows \"Insufficient funds\" and dispenses nothing. Which kind of flow is this?",
+      "vi": "Trong use case *Rút tiền mặt*, khách yêu cầu rút 100 USD nhưng tài khoản chỉ còn 40 USD. ATM hiện \"Insufficient funds\" và không nhả tiền. Đây là loại luồng nào?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "exception",
+          "text": { "en": "An exception flow", "vi": "Exception flow (luồng ngoại lệ)" }
+        },
+        {
+          "id": "alternative",
+          "text": { "en": "An alternative flow", "vi": "Alternative flow (luồng thay thế)" }
+        },
+        {
+          "id": "main",
+          "text": { "en": "The main flow", "vi": "Main flow (luồng chính)" }
+        },
+        {
+          "id": "precondition",
+          "text": { "en": "A precondition of the use case", "vi": "Một precondition của use case" }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["exception"]
+    },
+    "explanation": {
+      "en": "The customer's goal, getting cash, is **not reached**, so this is an **exception flow**. An alternative flow takes a different path but still reaches the goal, like choosing a custom amount. It is not the main flow, which ends with cash dispensed, and it is not a precondition: a low balance is test data you set up to trigger the exception.",
+      "vi": "Mục tiêu của khách, nhận được tiền, **không đạt được**, nên đây là **exception flow**. Alternative flow đi đường khác nhưng vẫn đạt mục tiêu, như chọn một số tiền tùy ý. Nó không phải main flow, vốn kết thúc bằng việc nhả tiền, và cũng không phải precondition: số dư thấp là test data bạn chuẩn bị để kích hoạt exception."
+    }
+  },
+  {
+    "key": "card-declined",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write a test case for **exception 4a** of this use case.\n\n**Use case:** Pay for an order. **Actor:** shopper.\n\n**Main flow:**\n\n1. The shopper opens checkout with items in the basket.\n2. The shopper enters card details.\n3. The shopper clicks Pay.\n4. The payment provider charges the card.\n5. The system shows a confirmation with the order number.\n\n**Exception 4a:** the payment provider declines the card. The system shows *\"Payment declined, please try another card\"*, the order stays **unpaid** and the basket is kept.",
+      "vi": "Viết một test case cho **exception 4a** của use case này.\n\n**Use case:** Thanh toán đơn hàng. **Actor:** người mua hàng.\n\n**Main flow:**\n\n1. Người mua mở checkout khi giỏ hàng có sản phẩm.\n2. Người mua nhập thông tin thẻ.\n3. Người mua bấm Pay.\n4. Nhà cung cấp thanh toán trừ tiền thẻ.\n5. Hệ thống hiện xác nhận kèm mã đơn hàng.\n\n**Exception 4a:** nhà cung cấp thanh toán từ chối thẻ. Hệ thống hiện *\"Payment declined, please try another card\"*, đơn hàng vẫn ở trạng thái **chưa thanh toán** và giỏ hàng được giữ nguyên."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": ["title", "preconditions", "testData", "steps", "expectedResult", "priority"],
+      "expectedConcepts": [
+        {
+          "concept": "Declined card",
+          "keywords": ["declin", "tu choi", "test card", "the bi tu choi"]
+        },
+        {
+          "concept": "Message shown",
+          "keywords": ["message", "thong bao", "try another card"]
+        },
+        {
+          "concept": "Order stays unpaid",
+          "keywords": ["unpaid", "not paid", "chua thanh toan", "no confirmation", "khong co xac nhan"]
+        },
+        {
+          "concept": "Basket kept",
+          "keywords": ["basket", "cart", "gio hang"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Test case ID:** TC-PAY-04a\n\n**Title:** Declined card shows a message and keeps the order unpaid\n\n**Preconditions:** shopper is logged in; the basket has 2 items; the payment provider sandbox is configured; a test card that is always declined is available.\n\n**Test data:** declined test card 4000 0000 0000 0002, expiry 12/30, CVC 123.\n\n**Steps:**\n\n1. Open checkout.\n2. Enter the declined test card details.\n3. Click Pay.\n\n**Expected result:** the message \"Payment declined, please try another card\" is shown; no confirmation and no order number are shown; the order status is unpaid; the basket still contains the 2 items; the card is not charged.\n\n**Priority:** high",
+        "vi": "**Test case ID:** TC-PAY-04a\n\n**Title:** Thẻ bị từ chối hiện thông báo và đơn hàng vẫn chưa thanh toán\n\n**Preconditions:** người mua đã đăng nhập; giỏ hàng có 2 sản phẩm; sandbox của nhà cung cấp thanh toán đã được cấu hình; có sẵn một test card luôn bị từ chối.\n\n**Test data:** test card bị từ chối 4000 0000 0000 0002, hết hạn 12/30, CVC 123.\n\n**Steps:**\n\n1. Mở checkout.\n2. Nhập thông tin test card bị từ chối.\n3. Bấm Pay.\n\n**Expected result:** hiện thông báo \"Payment declined, please try another card\"; không có xác nhận và không có mã đơn hàng; đơn hàng ở trạng thái chưa thanh toán; giỏ hàng vẫn còn 2 sản phẩm; thẻ không bị trừ tiền.\n\n**Priority:** high"
+      },
+      "rubric": [
+        {
+          "id": "trigger",
+          "text": { "en": "My preconditions or test data make the decline happen on purpose", "vi": "Precondition hoặc test data của tôi khiến thẻ bị từ chối một cách có chủ đích" }
+        },
+        {
+          "id": "visible",
+          "text": { "en": "My expected result names the exact message", "vi": "Expected result của tôi nêu đúng thông báo" }
+        },
+        {
+          "id": "not-happen",
+          "text": { "en": "I also checked what must not happen: no confirmation, order unpaid, basket kept", "vi": "Tôi cũng kiểm tra những gì không được xảy ra: không có xác nhận, đơn chưa thanh toán, giỏ hàng còn nguyên" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "An exception test must **trigger** the exception deliberately (here, a sandbox test card that is always declined) and check the whole outcome of the flow: the message, the order still **unpaid**, the **basket kept**, no confirmation. Checking only the message misses the expensive defects: an order marked paid without money, or an emptied basket that makes the shopper start again.",
+      "vi": "Test cho exception phải **kích hoạt** exception một cách có chủ đích (ở đây là test card trong sandbox luôn bị từ chối) và kiểm tra toàn bộ kết quả của luồng: thông báo, đơn hàng vẫn **chưa thanh toán**, **giỏ hàng được giữ**, không có xác nhận. Chỉ kiểm tra thông báo sẽ bỏ sót các defect tốn kém: đơn được đánh dấu đã thanh toán mà không có tiền, hoặc giỏ hàng bị xóa khiến người mua phải làm lại từ đầu."
+    }
+  }
+]

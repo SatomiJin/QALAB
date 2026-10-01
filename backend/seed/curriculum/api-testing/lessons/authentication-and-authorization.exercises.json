@@ -1,0 +1,153 @@
+[
+  {
+    "key": "authn-or-authz",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Is each failed request an **authentication** problem or an **authorization** problem?",
+      "vi": "Mỗi request thất bại dưới đây là vấn đề **authentication** hay **authorization**?"
+    },
+    "prompt": {
+      "categories": [
+        { "id": "authn", "text": { "en": "Authentication (who are you?)", "vi": "Authentication (bạn là ai?)" } },
+        { "id": "authz", "text": { "en": "Authorization (may you do this?)", "vi": "Authorization (bạn có được làm việc này không?)" } }
+      ],
+      "items": [
+        { "id": "no-header", "text": { "en": "The request has no Authorization header", "vi": "Request không có header Authorization" } },
+        { "id": "expired", "text": { "en": "The access token expired ten minutes ago", "vi": "Access token đã hết hạn từ mười phút trước" } },
+        { "id": "tampered", "text": { "en": "One character of the token was changed, so the signature is wrong", "vi": "Một ký tự của token bị đổi nên signature bị sai" } },
+        { "id": "learner-admin", "text": { "en": "A learner with a valid token calls an admin endpoint", "vi": "Một learner có token hợp lệ gọi endpoint của admin" } },
+        { "id": "other-order", "text": { "en": "User B, logged in, opens user A's order by its id", "vi": "User B đã đăng nhập mở đơn hàng của user A bằng id của nó" } },
+        { "id": "self-admin", "text": { "en": "A logged-in user sends \"role\": \"admin\" in a profile update", "vi": "Một user đã đăng nhập gửi \"role\": \"admin\" trong lần cập nhật profile" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "no-header": "authn",
+        "expired": "authn",
+        "tampered": "authn",
+        "learner-admin": "authz",
+        "other-order": "authz",
+        "self-admin": "authz"
+      }
+    },
+    "explanation": {
+      "en": "When the server cannot establish **who** is calling (no token, an expired one, a broken signature), it is authentication, answered with `401`. When it knows the user but the user may not act on this data or with this role (admin route, another user's order, promoting themselves), it is authorization, answered with `403` or `404`. The tempting mistake is the expired token: the user did log in once, but the server can no longer trust the token, so it is still authentication.",
+      "vi": "Khi server không xác định được **ai** đang gọi (không có token, token hết hạn, signature sai), đó là authentication, trả về `401`. Khi server biết user là ai nhưng user không được thao tác trên dữ liệu này hay với role này (route admin, đơn hàng của user khác, tự nâng quyền), đó là authorization, trả về `403` hoặc `404`. Chỗ dễ nhầm là token hết hạn: user đã từng đăng nhập, nhưng server không còn tin được token đó, nên vẫn là authentication."
+    }
+  },
+  {
+    "key": "spot-the-leak",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "User B is logged in and calls `GET /api/orders/{id}` with the id of an order that belongs to user A. Which response shows a **security bug**?",
+      "vi": "User B đã đăng nhập và gọi `GET /api/orders/{id}` với id của một đơn hàng thuộc về user A. Response nào cho thấy một **bug bảo mật**?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        { "id": "ok-data", "text": { "en": "200 OK with user A's order, address included", "vi": "200 OK kèm đơn hàng của user A, có cả địa chỉ" } },
+        { "id": "forbidden", "text": { "en": "403 Forbidden", "vi": "403 Forbidden" } },
+        { "id": "not-found", "text": { "en": "404 Not Found", "vi": "404 Not Found" } },
+        { "id": "unauth", "text": { "en": "401 Unauthorized, after B's token expired", "vi": "401 Unauthorized, sau khi token của B hết hạn" } }
+      ]
+    },
+    "answer": { "correct": ["ok-data"] },
+    "explanation": {
+      "en": "Returning another user's order is an **IDOR / BOLA** bug: the API checked that B is logged in (authentication) but not that the order is B's (authorization). `403` and `404` are both correct refusals; `404` hides even the fact that the order exists. `401` is also correct here, because B's token has expired; it is tempting to call it wrong, but it says nothing about A's data.",
+      "vi": "Trả về đơn hàng của user khác là bug **IDOR / BOLA**: API đã kiểm tra B có đăng nhập (authentication) nhưng không kiểm tra đơn hàng có phải của B không (authorization). `403` và `404` đều là cách từ chối đúng; `404` che giấu cả việc đơn hàng đó có tồn tại. `401` ở đây cũng đúng, vì token của B đã hết hạn; dễ tưởng nó sai, nhưng nó không để lộ gì về dữ liệu của A."
+    }
+  },
+  {
+    "key": "idor-bug-report",
+    "type": "bug_report",
+    "difficulty": "hard",
+    "question": {
+      "en": "Write a bug report for what you found.\n\nOn the **staging** shop API (`https://staging-api.shop.example`, build 2.4.1), you log in as **user B** (`buyer-b@example.com`) and call `GET /api/orders/7f3c9a10-2b4d-4e8f-a1c2-5d6e7f8a9b0c`. That order belongs to **user A** (`buyer-a@example.com`). The API answers `200 OK` with A's full order: name, delivery address, phone number and the items bought. You tried it twice with Postman and got the same result.",
+      "vi": "Viết bug report cho điều bạn phát hiện.\n\nTrên shop API **staging** (`https://staging-api.shop.example`, build 2.4.1), bạn đăng nhập bằng **user B** (`buyer-b@example.com`) và gọi `GET /api/orders/7f3c9a10-2b4d-4e8f-a1c2-5d6e7f8a9b0c`. Đơn hàng đó thuộc về **user A** (`buyer-a@example.com`). API trả `200 OK` kèm toàn bộ đơn hàng của A: tên, địa chỉ giao hàng, số điện thoại và các sản phẩm đã mua. Bạn đã thử hai lần bằng Postman và nhận cùng kết quả."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": [
+        "title",
+        "environment",
+        "preconditions",
+        "stepsToReproduce",
+        "actualResult",
+        "expectedResult",
+        "severity",
+        "priority"
+      ],
+      "expectedSeverity": "critical",
+      "expectedPriority": "high",
+      "expectedConcepts": [
+        {
+          "concept": "Another user's order",
+          "keywords": ["another user", "other user", "user a", "nguoi dung khac", "user khac"]
+        },
+        {
+          "concept": "Orders endpoint",
+          "keywords": ["orders", "order", "don hang"]
+        },
+        {
+          "concept": "Expected refusal",
+          "keywords": ["403", "404", "forbidden", "not found"]
+        },
+        {
+          "concept": "Personal data exposed",
+          "keywords": ["address", "phone", "personal", "dia chi", "so dien thoai", "ca nhan"]
+        },
+        {
+          "concept": "Two accounts",
+          "keywords": ["user b", "token", "account", "tai khoan"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Title:** GET /api/orders/{id} returns another user's order (IDOR): user B can read user A's address and phone\n\n**Environment:** staging, https://staging-api.shop.example, build 2.4.1, Postman\n\n**Preconditions:** two accounts exist: user A (buyer-a@example.com) owns order 7f3c9a10-2b4d-4e8f-a1c2-5d6e7f8a9b0c; user B (buyer-b@example.com) has no access to it.\n\n**Steps to reproduce:**\n\n1. Log in as user B and copy B's access token.\n2. Send GET /api/orders/7f3c9a10-2b4d-4e8f-a1c2-5d6e7f8a9b0c with Authorization: Bearer <B's token>.\n\n**Actual result:** 200 OK with user A's full order: name, delivery address, phone number and items. Reproduced 2 times out of 2.\n\n**Expected result:** 404 Not Found (or 403 Forbidden); no data of user A in the response.\n\n**Severity:** critical (personal data of any customer can be read by any logged-in user). **Priority:** high (privacy and security issue, must be fixed before release).",
+        "vi": "**Title:** GET /api/orders/{id} trả về đơn hàng của người dùng khác (IDOR): user B đọc được địa chỉ và số điện thoại của user A\n\n**Environment:** staging, https://staging-api.shop.example, build 2.4.1, Postman\n\n**Preconditions:** có hai tài khoản: user A (buyer-a@example.com) sở hữu đơn hàng 7f3c9a10-2b4d-4e8f-a1c2-5d6e7f8a9b0c; user B (buyer-b@example.com) không có quyền với đơn hàng này.\n\n**Steps to reproduce:**\n\n1. Đăng nhập bằng user B và copy access token của B.\n2. Gửi GET /api/orders/7f3c9a10-2b4d-4e8f-a1c2-5d6e7f8a9b0c với Authorization: Bearer <token của B>.\n\n**Actual result:** 200 OK kèm toàn bộ đơn hàng của user A: tên, địa chỉ giao hàng, số điện thoại và sản phẩm. Tái hiện 2/2 lần.\n\n**Expected result:** 404 Not Found (hoặc 403 Forbidden); response không chứa dữ liệu nào của user A.\n\n**Severity:** critical (bất kỳ user nào đã đăng nhập cũng đọc được dữ liệu cá nhân của mọi khách hàng). **Priority:** high (vấn đề bảo mật và quyền riêng tư, phải sửa trước khi release)."
+      },
+      "rubric": [
+        {
+          "id": "title",
+          "text": {
+            "en": "My title names the endpoint and says that one user can read another user's data",
+            "vi": "Title của tôi nêu endpoint và nói rõ một user đọc được dữ liệu của user khác"
+          }
+        },
+        {
+          "id": "two-users",
+          "text": {
+            "en": "The preconditions name both accounts and who owns the order",
+            "vi": "Preconditions nêu cả hai tài khoản và ai sở hữu đơn hàng"
+          }
+        },
+        {
+          "id": "request",
+          "text": {
+            "en": "The steps give the exact request: method, URL and whose token",
+            "vi": "Các bước ghi chính xác request: method, URL và token của ai"
+          }
+        },
+        {
+          "id": "expected",
+          "text": {
+            "en": "The expected result gives the status code and says no data of user A is returned",
+            "vi": "Expected result ghi status code và nói rõ không trả về dữ liệu nào của user A"
+          }
+        },
+        {
+          "id": "no-secrets",
+          "text": {
+            "en": "I did not paste a real token or the full personal data into the report",
+            "vi": "Tôi không dán token thật hay toàn bộ dữ liệu cá nhân vào report"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "This is an access-control failure (IDOR / BOLA): the API trusts any logged-in user with any order id. Severity is **critical**, not major: the system still runs, but every customer's personal data is exposed to every other customer, which is a security and legal problem. Priority is **high** because it must be fixed before anyone else finds it. A good report names both accounts, the exact request and the expected `404`/`403`, without copying real tokens or personal data.",
+      "vi": "Đây là lỗi kiểm soát truy cập (IDOR / BOLA): API tin mọi user đã đăng nhập với mọi id đơn hàng. Severity là **critical**, không phải major: hệ thống vẫn chạy, nhưng dữ liệu cá nhân của mọi khách hàng bị lộ cho mọi khách hàng khác, đây là vấn đề bảo mật và pháp lý. Priority là **high** vì phải sửa trước khi người khác phát hiện ra. Một report tốt nêu cả hai tài khoản, request chính xác và kết quả mong đợi `404`/`403`, không copy token thật hay dữ liệu cá nhân."
+    }
+  }
+]

@@ -1,0 +1,174 @@
+[
+  {
+    "key": "title-too-long-test-case",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write a negative test case for `POST /api/notes`. The rules: `title` is required, 1–100 characters. A valid request returns `201`; errors use the shape `{ statusCode, error, message, details: [{ field, message }] }`. Test the first invalid length above the limit.",
+      "vi": "Viết một negative test case cho `POST /api/notes`. Quy tắc: `title` bắt buộc, 1–100 ký tự. Request hợp lệ trả `201`; lỗi có dạng `{ statusCode, error, message, details: [{ field, message }] }`. Hãy test độ dài không hợp lệ đầu tiên vượt quá giới hạn."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": [
+        "testCaseId",
+        "title",
+        "preconditions",
+        "testData",
+        "steps",
+        "expectedResult",
+        "priority",
+        "testType"
+      ],
+      "expectedConcepts": [
+        {
+          "concept": "101 characters (just above the limit)",
+          "keywords": ["101", "boundar", "gia tri bien", "too long", "qua dai"]
+        },
+        {
+          "concept": "400 Bad Request",
+          "keywords": ["400", "bad request"]
+        },
+        {
+          "concept": "Error details name the title field",
+          "keywords": ["details", "field", "error message", "thong bao loi"]
+        },
+        {
+          "concept": "Nothing is created",
+          "keywords": ["not created", "not saved", "no note", "khong duoc tao", "khong tao", "khong luu"]
+        },
+        {
+          "concept": "Authenticated request",
+          "keywords": ["token", "bearer", "logged in", "dang nhap"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test case ID | TC-NOTES-NEG-004 |\n| Title | POST /api/notes rejects a title of 101 characters (just above the 100 boundary) |\n| Preconditions | The tester is logged in and has a valid Bearer token; GET /api/notes returns total = N |\n| Test data | Body {\"title\": \"<101 times the letter a>\"}, header Content-Type: application/json |\n| Steps | 1. Send POST /api/notes with the body and Authorization: Bearer <token>. 2. Read the status and the body. 3. Send GET /api/notes. |\n| Expected result | Status 400 Bad Request; body has statusCode 400, error, message and details with field \"title\" and a message about the maximum length; GET /api/notes still returns total = N, so the note is not created |\n| Priority | High |\n| Test type | Negative, boundary value |",
+        "vi": "| Trường | Giá trị |\n|---|---|\n| Test case ID | TC-NOTES-NEG-004 |\n| Title | POST /api/notes từ chối title dài 101 ký tự (vừa vượt giá trị biên 100) |\n| Preconditions | Tester đã đăng nhập và có Bearer token hợp lệ; GET /api/notes trả total = N |\n| Test data | Body {\"title\": \"<101 lần chữ a>\"}, header Content-Type: application/json |\n| Steps | 1. Gửi POST /api/notes với body trên và Authorization: Bearer <token>. 2. Đọc status và body. 3. Gửi GET /api/notes. |\n| Expected result | Status 400 Bad Request; body có statusCode 400, error, message và details với field \"title\" kèm thông báo lỗi về độ dài tối đa; GET /api/notes vẫn trả total = N, tức là note không được tạo |\n| Priority | High |\n| Test type | Negative, boundary value |"
+      },
+      "rubric": [
+        {
+          "id": "boundary",
+          "text": {
+            "en": "I used exactly 101 characters, the first invalid value, not a random long text",
+            "vi": "Tôi dùng đúng 101 ký tự, giá trị không hợp lệ đầu tiên, không phải một chuỗi dài bất kỳ"
+          }
+        },
+        {
+          "id": "status",
+          "text": {
+            "en": "My expected result gives the exact status code, not just \"an error\"",
+            "vi": "Expected result của tôi ghi status code chính xác, không chỉ \"báo lỗi\""
+          }
+        },
+        {
+          "id": "shape",
+          "text": {
+            "en": "I check the error shape and that details names the title field",
+            "vi": "Tôi kiểm tra cấu trúc lỗi và việc details nêu field title"
+          }
+        },
+        {
+          "id": "no-side-effect",
+          "text": {
+            "en": "I verify that no note was created",
+            "vi": "Tôi xác minh rằng không có note nào được tạo"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "The first invalid length above a 1–100 limit is **101**: boundary value analysis tests right next to the edge, where off-by-one bugs (`<=` instead of `<`) live. A good negative API test checks three things: the exact status (`400`), the error shape with `details` pointing at `title`, and that **nothing was saved**, by reading the list again. A test that only checks \"an error came back\" misses an API that returns `400` but still stores the note.",
+      "vi": "Độ dài không hợp lệ đầu tiên vượt giới hạn 1–100 là **101**: boundary value analysis test ngay sát mép, nơi các bug lệch một đơn vị (`<=` thay vì `<`) ẩn nấp. Một negative test API tốt kiểm tra ba điều: status chính xác (`400`), cấu trúc lỗi với `details` chỉ vào `title`, và **không có gì được lưu**, bằng cách đọc lại danh sách. Một test chỉ kiểm tra \"có trả lỗi\" sẽ bỏ sót một API trả `400` nhưng vẫn lưu note."
+    }
+  },
+  {
+    "key": "invalid-id-500-bug",
+    "type": "bug_report",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write a bug report for what you observed.\n\nOn the **staging** notes API (`https://staging-api.notes.example`, build 1.8.0), logged in with a valid token, you call `GET /api/notes/abc`. The API answers `500 Internal Server Error` with the body `{\"message\": \"invalid input syntax for type uuid: \\\"abc\\\"\", \"stack\": \"at NotesRepository.findOne (/app/src/notes/notes.repository.ts:42)...\"}`. The API documentation says an invalid id returns `400` with the standard error shape. A valid but unknown UUID correctly returns `404`.",
+      "vi": "Viết bug report cho điều bạn quan sát được.\n\nTrên notes API **staging** (`https://staging-api.notes.example`, build 1.8.0), đã đăng nhập với token hợp lệ, bạn gọi `GET /api/notes/abc`. API trả `500 Internal Server Error` với body `{\"message\": \"invalid input syntax for type uuid: \\\"abc\\\"\", \"stack\": \"at NotesRepository.findOne (/app/src/notes/notes.repository.ts:42)...\"}`. Tài liệu API ghi rằng id không hợp lệ phải trả `400` với cấu trúc lỗi chuẩn. Một UUID hợp lệ nhưng không tồn tại thì trả `404` đúng như mong đợi."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": [
+        "title",
+        "environment",
+        "stepsToReproduce",
+        "actualResult",
+        "expectedResult",
+        "severity",
+        "priority"
+      ],
+      "expectedSeverity": "major",
+      "expectedPriority": "medium",
+      "expectedConcepts": [
+        {
+          "concept": "500 for client input",
+          "keywords": ["500", "internal server error"]
+        },
+        {
+          "concept": "Expected 400",
+          "keywords": ["400", "bad request"]
+        },
+        {
+          "concept": "Invalid UUID",
+          "keywords": ["uuid", "invalid id", "abc", "khong hop le"]
+        },
+        {
+          "concept": "Internal details leaked",
+          "keywords": ["stack", "sql", "internal", "leak", "lo thong tin", "noi bo"]
+        },
+        {
+          "concept": "Staging environment",
+          "keywords": ["staging", "1.8.0"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Title:** GET /api/notes/{id} returns 500 and a stack trace for an invalid UUID instead of 400\n\n**Environment:** staging, https://staging-api.notes.example, build 1.8.0\n\n**Steps to reproduce:**\n\n1. Log in and copy a valid Bearer token.\n2. Send GET /api/notes/abc with Authorization: Bearer <token>.\n\n**Actual result:** 500 Internal Server Error. The body contains the database message \"invalid input syntax for type uuid\" and a stack trace with internal file paths (notes.repository.ts:42).\n\n**Expected result:** 400 Bad Request with the standard error shape (statusCode, error, message, details naming the id), and no SQL or stack trace in the response. A valid unknown UUID already returns 404 correctly.\n\n**Severity:** major (wrong status for client input and internal details leaked; no data loss). **Priority:** medium (only malformed requests are affected, but the leak should be fixed in the next release).",
+        "vi": "**Title:** GET /api/notes/{id} trả 500 kèm stack trace khi id là UUID không hợp lệ, thay vì 400\n\n**Environment:** staging, https://staging-api.notes.example, build 1.8.0\n\n**Steps to reproduce:**\n\n1. Đăng nhập và copy một Bearer token hợp lệ.\n2. Gửi GET /api/notes/abc với Authorization: Bearer <token>.\n\n**Actual result:** 500 Internal Server Error. Body chứa thông báo của database \"invalid input syntax for type uuid\" và một stack trace có đường dẫn file nội bộ (notes.repository.ts:42).\n\n**Expected result:** 400 Bad Request với cấu trúc lỗi chuẩn (statusCode, error, message, details nêu id), và response không chứa SQL hay stack trace. Một UUID hợp lệ nhưng không tồn tại đã trả 404 đúng.\n\n**Severity:** major (sai status với dữ liệu của client và lộ thông tin nội bộ; không mất dữ liệu). **Priority:** medium (chỉ ảnh hưởng request sai định dạng, nhưng việc lộ thông tin nên được sửa trong bản release tới)."
+      },
+      "rubric": [
+        {
+          "id": "title",
+          "text": {
+            "en": "My title names the endpoint, the input and the wrong status",
+            "vi": "Title của tôi nêu endpoint, dữ liệu đầu vào và status sai"
+          }
+        },
+        {
+          "id": "request",
+          "text": {
+            "en": "The steps give the exact request someone can send again",
+            "vi": "Các bước ghi request chính xác để người khác gửi lại được"
+          }
+        },
+        {
+          "id": "leak",
+          "text": {
+            "en": "I pointed out the leaked SQL message and stack trace, not only the 500",
+            "vi": "Tôi chỉ ra việc lộ thông báo SQL và stack trace, không chỉ mỗi lỗi 500"
+          }
+        },
+        {
+          "id": "contrast",
+          "text": {
+            "en": "I noted that a valid unknown UUID works (404), which narrows the cause",
+            "vi": "Tôi ghi lại rằng UUID hợp lệ nhưng không tồn tại vẫn chạy đúng (404), giúp khoanh vùng nguyên nhân"
+          }
+        },
+        {
+          "id": "sev-pri",
+          "text": {
+            "en": "I kept severity (impact) and priority (urgency) apart",
+            "vi": "Tôi tách bạch severity (mức ảnh hưởng) và priority (mức khẩn cấp)"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Input the client can get wrong must produce a `4xx`, never a `5xx`: the API did not validate the id before sending it to the database. The response also leaks a database message and file paths, which help an attacker. Severity is **major**: no data is lost and valid requests work, so it is not critical, but it is more than cosmetic. Priority is **medium**: normal users with valid ids are not blocked, yet the leak should not wait long. Mentioning that an unknown valid UUID returns `404` tells the developer the problem is only the format check.",
+      "vi": "Dữ liệu mà client có thể gửi sai phải dẫn đến `4xx`, không bao giờ là `5xx`: API đã không validate id trước khi đưa xuống database. Response còn làm lộ thông báo của database và đường dẫn file, những thứ giúp ích cho kẻ tấn công. Severity là **major**: không mất dữ liệu và request hợp lệ vẫn chạy nên không phải critical, nhưng cũng không chỉ là lỗi hiển thị. Priority là **medium**: người dùng bình thường với id hợp lệ không bị chặn, nhưng việc lộ thông tin không nên để lâu. Ghi lại rằng UUID hợp lệ không tồn tại trả `404` giúp developer biết vấn đề chỉ nằm ở bước kiểm tra định dạng."
+    }
+  }
+]

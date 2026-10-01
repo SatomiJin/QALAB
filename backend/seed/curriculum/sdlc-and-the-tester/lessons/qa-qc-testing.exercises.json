@@ -1,0 +1,144 @@
+[
+  {
+    "key": "qa-or-qc",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each activity as **quality assurance** (improving the process to prevent defects) or **quality control** (checking a product to detect defects).",
+      "vi": "Xếp mỗi hoạt động vào **quality assurance** (cải tiến quy trình để ngăn ngừa defect) hoặc **quality control** (kiểm tra sản phẩm để phát hiện defect)."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "qa",
+          "text": {
+            "en": "Quality assurance (process, prevention)",
+            "vi": "Quality assurance (quy trình, ngăn ngừa)"
+          }
+        },
+        {
+          "id": "qc",
+          "text": {
+            "en": "Quality control (product, detection)",
+            "vi": "Quality control (sản phẩm, phát hiện)"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "coding-standard",
+          "text": {
+            "en": "Writing a coding standard the whole team will follow",
+            "vi": "Viết coding standard mà cả nhóm sẽ tuân theo"
+          }
+        },
+        {
+          "id": "run-regression",
+          "text": {
+            "en": "Running the regression suite on build 2.4.1",
+            "vi": "Chạy regression suite trên build 2.4.1"
+          }
+        },
+        {
+          "id": "root-cause",
+          "text": {
+            "en": "Analysing why date bugs keep escaping and adding date cases to the story checklist",
+            "vi": "Phân tích vì sao bug ngày tháng cứ lọt ra ngoài và thêm các case ngày tháng vào checklist của story"
+          }
+        },
+        {
+          "id": "exit-criteria",
+          "text": {
+            "en": "Checking the release candidate against its exit criteria",
+            "vi": "Kiểm tra release candidate theo exit criteria của nó"
+          }
+        },
+        {
+          "id": "training",
+          "text": {
+            "en": "Training developers to write Given / When / Then acceptance criteria",
+            "vi": "Đào tạo developer viết acceptance criteria dạng Given / When / Then"
+          }
+        },
+        {
+          "id": "explore-checkout",
+          "text": {
+            "en": "Exploring the new checkout page and reporting two bugs",
+            "vi": "Khám phá trang checkout mới và báo hai bug"
+          }
+        },
+        {
+          "id": "audit",
+          "text": {
+            "en": "Auditing whether every merged pull request was actually reviewed",
+            "vi": "Audit xem mọi pull request đã merge có thực sự được review không"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "coding-standard": "qa",
+        "run-regression": "qc",
+        "root-cause": "qa",
+        "exit-criteria": "qc",
+        "training": "qa",
+        "explore-checkout": "qc",
+        "audit": "qa"
+      }
+    },
+    "explanation": {
+      "en": "**QA** shapes how the team works so fewer defects are made: a coding standard, root-cause analysis that changes the checklist, training, and process audits. **QC** examines a concrete product to find defects in it: running the regression suite on a build, checking a release candidate against exit criteria, and exploratory testing of the checkout page. The audit is the tempting one: it checks something, but it checks that the **process** is followed, not that the product works, so it belongs to QA.",
+      "vi": "**QA** định hình cách nhóm làm việc để ít defect được tạo ra hơn: coding standard, phân tích nguyên nhân gốc dẫn đến thay đổi checklist, đào tạo, và audit quy trình. **QC** xem xét một sản phẩm cụ thể để tìm defect trong đó: chạy regression suite trên một build, kiểm tra release candidate theo exit criteria, và exploratory testing trang checkout. Mục audit là mục dễ nhầm: nó có kiểm tra, nhưng kiểm tra việc **quy trình** được tuân theo, không phải sản phẩm có chạy đúng không, nên nó thuộc QA."
+    }
+  },
+  {
+    "key": "testing-place",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Which statement describes the relationship between QA, QC and testing correctly?",
+      "vi": "Phát biểu nào mô tả đúng mối quan hệ giữa QA, QC và testing?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "same-thing",
+          "text": {
+            "en": "They are three names for the same activity: running tests",
+            "vi": "Đó là ba cái tên cho cùng một hoạt động: chạy test"
+          }
+        },
+        {
+          "id": "nested",
+          "text": {
+            "en": "Testing is a QC activity that detects defects in the product, while QA improves the process to prevent them",
+            "vi": "Testing là một hoạt động QC nhằm phát hiện defect trong sản phẩm, còn QA cải tiến quy trình để ngăn ngừa chúng"
+          }
+        },
+        {
+          "id": "qa-detects",
+          "text": {
+            "en": "QA finds defects in the product, and QC sets the standards the team follows",
+            "vi": "QA tìm defect trong sản phẩm, còn QC đặt ra các chuẩn mà nhóm tuân theo"
+          }
+        },
+        {
+          "id": "tester-owns",
+          "text": {
+            "en": "QA is the tester's job alone, so developers do not need to think about quality",
+            "vi": "QA là việc riêng của tester, nên developer không cần nghĩ đến chất lượng"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["nested"]
+    },
+    "explanation": {
+      "en": "**QA** is process-oriented and preventive; **QC** is product-oriented and detects defects; **testing** is the main QC activity. The tempting wrong answer swaps the two: it is QC that examines the product and QA that sets standards. Treating the terms as synonyms hides the prevention side of the job, and quality is the whole team's responsibility, not the tester's alone.",
+      "vi": "**QA** hướng về quy trình và mang tính ngăn ngừa; **QC** hướng về sản phẩm và phát hiện defect; **testing** là hoạt động QC chính. Đáp án sai dễ chọn đã đảo ngược hai khái niệm: chính QC mới xem xét sản phẩm và QA mới đặt ra chuẩn. Coi các thuật ngữ là đồng nghĩa sẽ che mất phần ngăn ngừa của công việc, và chất lượng là trách nhiệm của cả nhóm, không riêng tester."
+    }
+  }
+]

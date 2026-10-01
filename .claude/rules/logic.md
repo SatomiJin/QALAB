@@ -33,11 +33,11 @@ Business and security rules that both sides must follow. They come from `plant.m
 
 ## Content language (Phase 2)
 
-* Content is authored in English. `?lang=vi` serves, per text: a **manual** translation (written by a person; seed now, Admin CMS later) → a cached machine translation → a new machine translation (only if a provider key is configured; it costs money) → English. QA terms, code, code blocks and URLs stay English; Markdown structure is kept.
-* Manual translations are the default way to add Vietnamese (free, controlled wording). When writing curriculum (Phase 6) or seed content, write the `vi` rows too. Status `manual` only when every text on the response is human-translated.
+* Content is authored in English. `?lang=vi` serves, per text: a **manual** translation (written by a person; curriculum files now, Admin CMS later) → a cached machine translation → a new machine translation (only if a provider key is configured; it costs money) → English. QA terms, code, code blocks and URLs stay English; Markdown structure is kept.
+* Manual translations are the default way to add Vietnamese (free, controlled wording). Curriculum files (`backend/seed/curriculum/`) are bilingual: every text has its `vi` version. Status `manual` only when every text on the response is human-translated.
 * Translation never fails a request: no key, provider error or unreadable cache → English with `translation: "unavailable"`. Every content response states `language` and `translation`.
 * Every translation stores the sha-256 of its English source; an edited source makes it stale (machine ones are redone, manual ones wait for a person). Machine rows also store the pipeline version.
-* Only the service role writes translations (seed, backend, later the Admin CMS through the backend). A learner-written translation would be shown to every learner.
+* Only the service role writes translations (curriculum importer, backend, later the Admin CMS through the backend). A learner-written translation would be shown to every learner.
 * A translation must not reveal content that is no longer published (read policy checks the content's visibility).
 
 ## Lists
@@ -79,6 +79,14 @@ Business and security rules that both sides must follow. They come from `plant.m
 * **Streak** days: lesson started / completed / last visited or an exercise answered, counted in the learner's time zone (`?tz=`, IANA, ≤ 64, default UTC; the frontend sends the browser's). The streak is still current when nothing is done yet today but yesterday was; it breaks after a whole day without study. Study on content unpublished since still counts. `lesson_progress` keeps only the last visit, so a day on which a learner only re-read a lesson they visited again later is lost (accepted: no event table).
 * **Weak areas**: skills with answers whose average best score is below `PASS_SCORE` (70), lowest first, at most 3, each with the not-passed exercise with the lowest best score to retry; concepts missed in the best free-text answers, grouped case-insensitively, most often missed first, at most 5. A skill without answers is not weak.
 * Recent activity: the latest 10 events on content that is still published (titles of unpublished content are never shown).
+
+## Curriculum (Phase 6)
+
+* The curriculum is versioned content in `backend/seed/curriculum/` (JSON + Markdown, English and Vietnamese side by side), never in React components or SQL. `npm run seed:curriculum` imports it; after that the Admin CMS edits it like any other content.
+* Identity: courses by slug; modules, lessons and exercises by a UUID v5 of their keys (`module:<course>/<key>`, `lesson:<course>/<slug>`, `exercise:<course>/<lesson>/<key>`), or an explicit `id` for content that existed before (the sample course keeps its Phase 2 ids, so learner progress stays attached). Renaming a slug or key is new content.
+* The import is idempotent and never deletes. By default it only inserts what is missing, so CMS edits survive; `--update` makes the files win, except for changes the CMS forbids too (another parent, another exercise type, new option / item / category ids on an attempted exercise), which are skipped with a warning.
+* A file's Vietnamese is written as a `manual` translation only while the stored English (trimmed) equals the file's English; `source_hash` is of the stored text.
+* Content is validated before anything is written: unknown fields, limits (same as the DB checks), the grader's prompt / answer-key parsers, a Vietnamese version for every text with the same headings and code blocks, and every model answer (en **and** vi) matching at least `PASS_SCORE` % of its own concepts. One invalid file stops the whole import.
 
 ## Keep in sync
 

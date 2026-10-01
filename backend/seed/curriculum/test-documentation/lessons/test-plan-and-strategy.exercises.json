@@ -1,0 +1,157 @@
+[
+  {
+    "key": "plan-sections",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "You are writing the test plan for **release 2.4: discount codes at web checkout**. Put each line into the section of the plan where it belongs.",
+      "vi": "Bạn đang viết test plan cho **release 2.4: mã giảm giá ở checkout trên web**. Xếp mỗi dòng vào đúng mục của test plan."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "scope", "text": { "en": "Scope", "vi": "Scope (phạm vi)" } },
+        { "id": "out-of-scope", "text": { "en": "Out of scope", "vi": "Out of scope (ngoài phạm vi)" } },
+        { "id": "entry", "text": { "en": "Entry criteria", "vi": "Entry criteria" } },
+        { "id": "exit", "text": { "en": "Exit criteria", "vi": "Exit criteria" } },
+        { "id": "risk", "text": { "en": "Risks", "vi": "Risks (rủi ro)" } }
+      ],
+      "items": [
+        {
+          "id": "apply-code",
+          "text": {
+            "en": "Applying and removing discount codes at web checkout",
+            "vi": "Áp và gỡ mã giảm giá ở checkout trên web"
+          }
+        },
+        {
+          "id": "gift-card",
+          "text": {
+            "en": "Combining a discount code with a gift card",
+            "vi": "Kết hợp mã giảm giá với gift card"
+          }
+        },
+        {
+          "id": "mobile",
+          "text": {
+            "en": "Mobile app checkout (the mobile release is next quarter)",
+            "vi": "Checkout trên mobile app (bản mobile quý sau mới phát hành)"
+          }
+        },
+        {
+          "id": "provider-perf",
+          "text": {
+            "en": "Performance of the external payment provider (covered by the provider's SLA)",
+            "vi": "Hiệu năng của payment provider bên ngoài (đã có SLA của provider)"
+          }
+        },
+        {
+          "id": "smoke",
+          "text": {
+            "en": "Build 2.4.0 is deployed to staging and the smoke suite passes",
+            "vi": "Build 2.4.0 đã được deploy lên staging và bộ smoke test pass"
+          }
+        },
+        {
+          "id": "rules-approved",
+          "text": {
+            "en": "The discount rules are approved by the product owner",
+            "vi": "Quy tắc giảm giá đã được product owner duyệt"
+          }
+        },
+        {
+          "id": "high-run",
+          "text": {
+            "en": "All high-priority test cases have been executed",
+            "vi": "Mọi test case ưu tiên cao đã được thực thi"
+          }
+        },
+        {
+          "id": "no-critical",
+          "text": {
+            "en": "No critical or major defects are open",
+            "vi": "Không còn defect critical hoặc major nào đang mở"
+          }
+        },
+        {
+          "id": "sandbox",
+          "text": {
+            "en": "The payment sandbox may be down during the test window",
+            "vi": "Sandbox thanh toán có thể ngừng hoạt động trong thời gian test"
+          }
+        },
+        {
+          "id": "one-tester",
+          "text": {
+            "en": "Only one tester has worked on checkout before",
+            "vi": "Chỉ có một tester từng làm việc với checkout"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "apply-code": "scope",
+        "gift-card": "scope",
+        "mobile": "out-of-scope",
+        "provider-perf": "out-of-scope",
+        "smoke": "entry",
+        "rules-approved": "entry",
+        "high-run": "exit",
+        "no-critical": "exit",
+        "sandbox": "risk",
+        "one-tester": "risk"
+      }
+    },
+    "explanation": {
+      "en": "**Scope** lists what the release changes and will be tested (codes, combining with a gift card). **Out of scope** lists what is deliberately not tested, with a reason (mobile is not released, the provider owns its performance). **Entry criteria** must be true *before* execution starts (build on staging, rules approved: you cannot test rules nobody agreed on). **Exit criteria** must be true to *finish*. A tempting mistake is to put \"no critical defects open\" under entry: it describes the end state, so it is exit. The sandbox and the single tester are **risks**: things that may go wrong and need a plan B.",
+      "vi": "**Scope** liệt kê những gì release thay đổi và sẽ được test (mã giảm giá, kết hợp với gift card). **Out of scope** liệt kê những gì cố ý không test, kèm lý do (mobile chưa phát hành, hiệu năng là trách nhiệm của provider). **Entry criteria** phải đúng *trước khi* bắt đầu thực thi (build đã lên staging, quy tắc đã duyệt: không thể test những quy tắc chưa ai thống nhất). **Exit criteria** phải đúng để *kết thúc*. Một lỗi dễ mắc là xếp \"không còn defect critical nào mở\" vào entry: nó mô tả trạng thái lúc kết thúc nên thuộc exit. Sandbox và việc chỉ có một tester là **risks**: những điều có thể xảy ra sự cố và cần phương án dự phòng."
+    }
+  },
+  {
+    "key": "strategy-or-plan",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Which of these statements belongs in the **test strategy** rather than in the test plan of release 2.4?",
+      "vi": "Câu nào dưới đây thuộc về **test strategy** chứ không phải test plan của release 2.4?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "automate-api",
+          "text": {
+            "en": "For every product, regression tests are automated at API level wherever possible, and every release gets a smoke test",
+            "vi": "Với mọi sản phẩm, regression test được tự động hóa ở mức API khi có thể, và release nào cũng có smoke test"
+          }
+        },
+        {
+          "id": "dates",
+          "text": {
+            "en": "Execution for release 2.4 runs from 6 to 12 March",
+            "vi": "Việc thực thi test cho release 2.4 diễn ra từ 6 đến 12/3"
+          }
+        },
+        {
+          "id": "people",
+          "text": {
+            "en": "Anna tests discount codes and Ben tests the payment step",
+            "vi": "Anna test mã giảm giá, Ben test bước thanh toán"
+          }
+        },
+        {
+          "id": "mobile-out",
+          "text": {
+            "en": "The mobile app is out of scope for release 2.4",
+            "vi": "Mobile app nằm ngoài phạm vi của release 2.4"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["automate-api"] },
+    "explanation": {
+      "en": "The **strategy** describes how the team tests in general and stays valid across releases: \"automate regression at API level, smoke test every release\" applies to every product. Dates, people and the scope of release 2.4 are specific to one piece of work, so they belong in its **test plan**. The out-of-scope line is tempting because it sounds like a policy, but it names one release.",
+      "vi": "**Strategy** mô tả cách team test nói chung và vẫn đúng qua nhiều release: \"tự động hóa regression ở mức API, release nào cũng smoke test\" áp dụng cho mọi sản phẩm. Lịch, người phụ trách và phạm vi của release 2.4 chỉ dành cho một phần việc cụ thể, nên thuộc về **test plan** của nó. Dòng out of scope dễ gây nhầm vì nghe giống một chính sách, nhưng nó chỉ nói về một release."
+    }
+  }
+]

@@ -1,0 +1,245 @@
+[
+  {
+    "key": "classify-severity",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Classify each failure by its **severity** (impact on the system). Ignore deadlines and business plans: that is priority.",
+      "vi": "Xếp mỗi failure theo **severity** (mức ảnh hưởng lên hệ thống). Bỏ qua deadline và kế hoạch kinh doanh: đó là priority."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "critical",
+          "text": { "en": "Critical", "vi": "Critical" }
+        },
+        {
+          "id": "major",
+          "text": { "en": "Major", "vi": "Major" }
+        },
+        {
+          "id": "minor",
+          "text": { "en": "Minor", "vi": "Minor" }
+        },
+        {
+          "id": "trivial",
+          "text": { "en": "Trivial", "vi": "Trivial" }
+        }
+      ],
+      "items": [
+        {
+          "id": "login-crash",
+          "text": {
+            "en": "The mobile app crashes on the login screen for every user; nobody can sign in",
+            "vi": "App mobile crash ở màn hình đăng nhập với mọi người dùng; không ai đăng nhập được"
+          }
+        },
+        {
+          "id": "orders-deleted",
+          "text": {
+            "en": "Saving an edited order deletes the other orders of the same customer",
+            "vi": "Lưu một đơn hàng đã sửa làm xoá các đơn hàng khác của cùng khách hàng"
+          }
+        },
+        {
+          "id": "wrong-shipping",
+          "text": {
+            "en": "Express shipping is charged at the standard rate; the order still goes through",
+            "vi": "Giao hàng nhanh bị tính theo giá giao hàng thường; đơn hàng vẫn đặt được"
+          }
+        },
+        {
+          "id": "filter-ignored",
+          "text": {
+            "en": "The product search ignores the price filter; users must scroll through all results",
+            "vi": "Tìm kiếm sản phẩm bỏ qua bộ lọc giá; người dùng phải cuộn qua tất cả kết quả"
+          }
+        },
+        {
+          "id": "remember-me",
+          "text": {
+            "en": "\"Remember me\" keeps the user signed in for 7 days instead of 30",
+            "vi": "\"Remember me\" giữ người dùng đăng nhập 7 ngày thay vì 30 ngày"
+          }
+        },
+        {
+          "id": "csv-header",
+          "text": {
+            "en": "The exported CSV has the columns in a different order than the screen; all data is there",
+            "vi": "File CSV xuất ra có thứ tự cột khác với màn hình; dữ liệu vẫn đầy đủ"
+          }
+        },
+        {
+          "id": "typo-label",
+          "text": {
+            "en": "The button label reads \"Sumbit\" instead of \"Submit\"",
+            "vi": "Nhãn nút ghi \"Sumbit\" thay vì \"Submit\""
+          }
+        },
+        {
+          "id": "icon-offset",
+          "text": {
+            "en": "The help icon is 3 pixels lower than the text next to it",
+            "vi": "Icon trợ giúp thấp hơn dòng chữ bên cạnh 3 pixel"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "login-crash": "critical",
+        "orders-deleted": "critical",
+        "wrong-shipping": "major",
+        "filter-ignored": "major",
+        "remember-me": "minor",
+        "csv-header": "minor",
+        "typo-label": "trivial",
+        "icon-offset": "trivial"
+      }
+    },
+    "explanation": {
+      "en": "**Critical**: nobody can log in, or data is destroyed, with no workaround. **Major**: an important function gives wrong results (wrong amount charged, filter ignored) but the system still works. **Minor**: a small deviation with little impact and an easy workaround (sign in again after 7 days, reorder the columns). **Trivial**: cosmetic only. The tempting mistake is to call the wrong shipping price critical because it is about money: the order still works and only part of the orders are affected, so it is major (its *priority* may well be high).",
+      "vi": "**Critical**: không ai đăng nhập được, hoặc dữ liệu bị phá huỷ, không có workaround. **Major**: một chức năng quan trọng cho kết quả sai (tính sai tiền, bỏ qua bộ lọc) nhưng hệ thống vẫn chạy. **Minor**: sai lệch nhỏ, ít ảnh hưởng và có workaround dễ (đăng nhập lại sau 7 ngày, sắp xếp lại cột). **Trivial**: chỉ là lỗi thẩm mỹ. Lỗi dễ mắc là coi việc tính sai phí giao hàng là critical vì liên quan đến tiền: đơn hàng vẫn đặt được và chỉ một phần đơn hàng bị ảnh hưởng, nên nó là major (còn *priority* của nó hoàn toàn có thể là high)."
+    }
+  },
+  {
+    "key": "low-severity-high-priority",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Which bug is the clearest example of **low severity but high priority**?",
+      "vi": "Bug nào là ví dụ rõ nhất cho **severity thấp nhưng priority cao**?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "brand-typo",
+          "text": {
+            "en": "The client's brand name is misspelled in the header of the home page, and the public launch is tomorrow",
+            "vi": "Tên thương hiệu của khách hàng bị viết sai ở header trang chủ, và ngày mai là buổi ra mắt công khai"
+          }
+        },
+        {
+          "id": "payment-crash",
+          "text": {
+            "en": "The payment page crashes for every user in production",
+            "vi": "Trang thanh toán crash với mọi người dùng trên production"
+          }
+        },
+        {
+          "id": "legacy-export",
+          "text": {
+            "en": "The app crashes when exporting to a legacy format that one internal user needs once a year",
+            "vi": "App crash khi xuất ra một định dạng cũ mà một người dùng nội bộ cần mỗi năm một lần"
+          }
+        },
+        {
+          "id": "admin-tooltip",
+          "text": {
+            "en": "A tooltip on a rarely used admin settings page has a typo",
+            "vi": "Tooltip trên một trang cài đặt admin hiếm khi dùng có lỗi chính tả"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["brand-typo"]
+    },
+    "explanation": {
+      "en": "A misspelled brand name breaks nothing (severity **trivial**), but on the home page the day before launch it hurts the client's image, so the business wants it fixed **now**. The admin tooltip is also trivial, but nobody sees it: low severity, **low** priority. The payment crash is high severity and high priority; the legacy export crash is the opposite diagonal: high severity, low priority.",
+      "vi": "Tên thương hiệu viết sai không làm hỏng gì (severity **trivial**), nhưng nằm trên trang chủ ngay trước ngày ra mắt thì nó làm xấu hình ảnh của khách hàng, nên phía kinh doanh muốn sửa **ngay**. Tooltip của trang admin cũng là trivial, nhưng gần như không ai thấy: severity thấp, priority **thấp**. Trang thanh toán crash là severity cao và priority cao; app crash khi xuất định dạng cũ là đường chéo ngược lại: severity cao, priority thấp."
+    }
+  },
+  {
+    "key": "welcome-typo-bug-report",
+    "type": "bug_report",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write a bug report, and rate severity and priority **separately**.\n\nYou are testing the **iOS app** (build 5.0.0 RC1, iPhone 15, iOS 18) on the **staging** backend. After login, the home screen greets the user with **\"Welcom back, Anna\"** instead of \"Welcome back, Anna\". Everything else on the screen works. This build is the release candidate: it goes to the App Store **tomorrow**, together with a marketing campaign that uses screenshots of this exact screen.",
+      "vi": "Viết một bug report, và đánh giá severity và priority **riêng biệt**.\n\nBạn đang test **app iOS** (build 5.0.0 RC1, iPhone 15, iOS 18) với backend **staging**. Sau khi đăng nhập, màn hình home chào người dùng bằng **\"Welcom back, Anna\"** thay vì \"Welcome back, Anna\". Mọi thứ khác trên màn hình đều hoạt động. Build này là release candidate: nó được đưa lên App Store vào **ngày mai**, cùng với một chiến dịch marketing dùng ảnh chụp đúng màn hình này."
+    },
+    "answer": {
+      "requiredFields": [
+        "title",
+        "environment",
+        "preconditions",
+        "stepsToReproduce",
+        "actualResult",
+        "expectedResult",
+        "severity",
+        "priority",
+        "attachment"
+      ],
+      "expectedSeverity": "trivial",
+      "expectedPriority": "high",
+      "expectedConcepts": [
+        {
+          "concept": "Typo in the greeting",
+          "keywords": ["welcom back", "typo", "spelling", "misspel", "chinh ta", "viet sai"]
+        },
+        {
+          "concept": "Home screen",
+          "keywords": ["home screen", "home", "man hinh chinh", "trang chu"]
+        },
+        {
+          "concept": "iOS device and build",
+          "keywords": ["ios", "iphone", "5.0.0", "rc1"]
+        },
+        {
+          "concept": "Correct text expected",
+          "keywords": ["welcome back"]
+        },
+        {
+          "concept": "Release tomorrow",
+          "keywords": ["release", "app store", "launch", "tomorrow", "ngay mai", "phat hanh"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Title:** iOS home screen: greeting misspelled \"Welcom back\" instead of \"Welcome back\"\n\n**Environment:** iOS app build 5.0.0 RC1, iPhone 15, iOS 18, staging backend\n\n**Preconditions:** a registered user (Anna) is logged out\n\n**Steps to reproduce:**\n\n1. Open the app.\n2. Log in as Anna.\n\n**Actual result:** the home screen shows \"Welcom back, Anna\" (typo).\n\n**Expected result:** the home screen shows \"Welcome back, Anna\".\n\n**Severity:** trivial (cosmetic spelling mistake, every function works).\n\n**Priority:** high (the release candidate goes to the App Store tomorrow and the marketing screenshots show this screen).\n\n**Attachment:** screenshot of the home screen with the typo marked",
+        "vi": "**Title:** Màn hình home iOS: lời chào viết sai chính tả \"Welcom back\" thay vì \"Welcome back\"\n\n**Environment:** app iOS build 5.0.0 RC1, iPhone 15, iOS 18, backend staging\n\n**Preconditions:** một người dùng đã đăng ký (Anna) đang đăng xuất\n\n**Steps to reproduce:**\n\n1. Mở app.\n2. Đăng nhập bằng tài khoản Anna.\n\n**Actual result:** màn hình home hiển thị \"Welcom back, Anna\" (lỗi chính tả).\n\n**Expected result:** màn hình home hiển thị \"Welcome back, Anna\".\n\n**Severity:** trivial (lỗi chính tả thuần thẩm mỹ, mọi chức năng đều chạy).\n\n**Priority:** high (release candidate được đưa lên App Store vào ngày mai và ảnh marketing chụp đúng màn hình này).\n\n**Attachment:** ảnh chụp màn hình home có đánh dấu chỗ sai chính tả"
+      },
+      "rubric": [
+        {
+          "id": "title",
+          "text": {
+            "en": "My title quotes the wrong text and says where it appears",
+            "vi": "Title của tôi trích dẫn đoạn chữ sai và nói rõ nó xuất hiện ở đâu"
+          }
+        },
+        {
+          "id": "build",
+          "text": {
+            "en": "I named the exact build (5.0.0 RC1), device and iOS version",
+            "vi": "Tôi ghi đúng build (5.0.0 RC1), thiết bị và phiên bản iOS"
+          }
+        },
+        {
+          "id": "severity",
+          "text": {
+            "en": "I rated severity by impact (cosmetic) and did not raise it because of the deadline",
+            "vi": "Tôi đánh giá severity theo mức ảnh hưởng (thẩm mỹ) và không nâng nó lên vì deadline"
+          }
+        },
+        {
+          "id": "priority",
+          "text": {
+            "en": "I justified the priority with the release and the marketing campaign",
+            "vi": "Tôi giải thích priority bằng việc release và chiến dịch marketing"
+          }
+        },
+        {
+          "id": "screenshot",
+          "text": {
+            "en": "I attached a screenshot with the typo marked",
+            "vi": "Tôi đính kèm ảnh chụp màn hình có đánh dấu chỗ sai"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "This is the classic **low severity, high priority** bug. **Severity is trivial**: a spelling mistake changes no behaviour, every function still works. Raising it to major because \"it is important\" mixes the two scales. **Priority is high**: the build ships tomorrow and the marketing campaign shows this exact screen to every future customer, so a one-word fix must happen before release. A screenshot is the best evidence for a visual bug.",
+      "vi": "Đây là bug kinh điển kiểu **severity thấp, priority cao**. **Severity là trivial**: lỗi chính tả không làm thay đổi hành vi nào, mọi chức năng vẫn chạy. Nâng nó lên major vì \"nó quan trọng\" là trộn lẫn hai thang đo. **Priority là high**: build được phát hành ngày mai và chiến dịch marketing cho mọi khách hàng tương lai thấy đúng màn hình này, nên việc sửa một chữ phải xong trước khi release. Ảnh chụp màn hình là bằng chứng tốt nhất cho một bug giao diện."
+    }
+  }
+]

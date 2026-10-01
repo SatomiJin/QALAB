@@ -1,0 +1,198 @@
+[
+  {
+    "key": "observable-expected-result",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "You are writing a test case: a logged-in user changes their display name to **Nina Tran** on the profile page and presses **Save**. Which expected result is the best one?",
+      "vi": "Bạn đang viết một test case: người dùng đã đăng nhập đổi tên hiển thị thành **Nina Tran** ở trang hồ sơ và bấm **Save**. Expected result nào là tốt nhất?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "observable",
+          "text": {
+            "en": "The message \"Profile saved\" appears, and after reloading the page the Name field shows \"Nina Tran\"",
+            "vi": "Thông báo \"Profile saved\" xuất hiện, và sau khi tải lại trang, ô Name hiển thị \"Nina Tran\""
+          }
+        },
+        {
+          "id": "updated",
+          "text": {
+            "en": "The profile is updated successfully",
+            "vi": "Hồ sơ được cập nhật thành công"
+          }
+        },
+        {
+          "id": "no-error",
+          "text": {
+            "en": "No error occurs",
+            "vi": "Không có lỗi nào xảy ra"
+          }
+        },
+        {
+          "id": "user-expects",
+          "text": {
+            "en": "The system behaves as the user expects",
+            "vi": "Hệ thống hoạt động như người dùng mong đợi"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["observable"] },
+    "explanation": {
+      "en": "An expected result must be **observable**: a message you can read and a value you can check after a reload (which proves it was really saved, not only shown). \"Updated successfully\" and \"as the user expects\" leave the verdict to opinion. \"No error occurs\" is the tempting one: it sounds checkable, but a save that silently does nothing also shows no error.",
+      "vi": "Expected result phải **quan sát được**: một thông báo đọc được và một giá trị kiểm tra được sau khi tải lại trang (chứng minh dữ liệu thật sự được lưu, không chỉ được hiển thị). \"Cập nhật thành công\" và \"như người dùng mong đợi\" khiến verdict phụ thuộc vào ý kiến. \"Không có lỗi nào xảy ra\" là đáp án dễ chọn: nghe có vẻ kiểm tra được, nhưng một lần lưu âm thầm không làm gì cũng không hiện lỗi."
+    }
+  },
+  {
+    "key": "which-field",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "A colleague wrote everything in one paragraph. Put each piece into the test case field where it belongs.",
+      "vi": "Một đồng nghiệp viết mọi thứ trong một đoạn văn. Xếp mỗi phần vào đúng trường của test case."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "preconditions", "text": { "en": "Preconditions", "vi": "Preconditions" } },
+        { "id": "test-data", "text": { "en": "Test Data", "vi": "Test Data" } },
+        { "id": "steps", "text": { "en": "Steps", "vi": "Steps" } },
+        { "id": "expected", "text": { "en": "Expected Result", "vi": "Expected Result" } }
+      ],
+      "items": [
+        {
+          "id": "logged-out",
+          "text": { "en": "The user is logged out", "vi": "Người dùng đang đăng xuất" }
+        },
+        {
+          "id": "account-exists",
+          "text": {
+            "en": "A verified account exists for anna@example.com",
+            "vi": "Đã có tài khoản đã xác minh cho anna@example.com"
+          }
+        },
+        {
+          "id": "credentials",
+          "text": {
+            "en": "Email anna@example.com, password Correct-Pass-1",
+            "vi": "Email anna@example.com, mật khẩu Correct-Pass-1"
+          }
+        },
+        {
+          "id": "code",
+          "text": { "en": "Discount code SAVE10", "vi": "Mã giảm giá SAVE10" }
+        },
+        {
+          "id": "enter-email",
+          "text": { "en": "Enter the email in the Email field", "vi": "Nhập email vào ô Email" }
+        },
+        {
+          "id": "press-login",
+          "text": { "en": "Press Log in", "vi": "Bấm Log in" }
+        },
+        {
+          "id": "welcome",
+          "text": {
+            "en": "The dashboard shows \"Welcome, Anna\"",
+            "vi": "Dashboard hiển thị \"Welcome, Anna\""
+          }
+        },
+        {
+          "id": "total",
+          "text": { "en": "The order total shows 45.00 USD", "vi": "Tổng đơn hàng hiển thị 45.00 USD" }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "logged-out": "preconditions",
+        "account-exists": "preconditions",
+        "credentials": "test-data",
+        "code": "test-data",
+        "enter-email": "steps",
+        "press-login": "steps",
+        "welcome": "expected",
+        "total": "expected"
+      }
+    },
+    "explanation": {
+      "en": "**Preconditions** are states that must already be true (logged out, account exists): you set them up, you do not test them. **Test data** is the concrete values (credentials, the code). **Steps** are single actions (enter, press). The **expected result** is what you must observe at the end. A common mix-up is to put \"a verified account exists\" in the steps (\"create an account\"): that hides setup inside the actions under test.",
+      "vi": "**Preconditions** là các trạng thái phải đúng sẵn (đang đăng xuất, tài khoản đã tồn tại): bạn chuẩn bị chúng, không test chúng. **Test data** là các giá trị cụ thể (thông tin đăng nhập, mã giảm giá). **Steps** là các thao tác đơn lẻ (nhập, bấm). **Expected result** là điều bạn phải quan sát được ở cuối. Một nhầm lẫn hay gặp là đưa \"đã có tài khoản đã xác minh\" vào steps (\"tạo tài khoản\"): như vậy là giấu phần chuẩn bị vào trong các thao tác đang được test."
+    }
+  },
+  {
+    "key": "invalid-email-test-case",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "Write a test case for the sign-up form: an email address **without the @ sign** (for example `nina.example.com`) must be rejected with an error message, and no account may be created. Fill in every field.",
+      "vi": "Viết một test case cho form đăng ký: địa chỉ email **không có ký tự @** (ví dụ `nina.example.com`) phải bị từ chối kèm thông báo lỗi, và không được tạo tài khoản nào. Điền đầy đủ mọi trường."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": [
+        "testCaseId",
+        "title",
+        "preconditions",
+        "testData",
+        "steps",
+        "expectedResult",
+        "priority",
+        "testType"
+      ],
+      "expectedConcepts": [
+        { "concept": "Sign-up form", "keywords": ["sign-up", "sign up", "register", "dang ky"] },
+        { "concept": "Logged out", "keywords": ["logged out", "signed out", "dang xuat"] },
+        {
+          "concept": "Invalid email without @",
+          "keywords": ["invalid", "without the @", "missing @", "khong hop le", "sai dinh dang", "khong co @"]
+        },
+        { "concept": "Error message shown", "keywords": ["error", "message", "thong bao", "bao loi"] },
+        {
+          "concept": "No account created",
+          "keywords": ["not created", "no account", "khong tao", "khong duoc tao", "khong co tai khoan"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test Case ID | TC-SIGNUP-011 |\n| Title | Sign-up rejects an invalid email without the @ sign |\n| Preconditions | User is logged out; the sign-up page is available |\n| Test Data | Email nina.example.com, password Valid-Pass-1 |\n| Steps | 1. Open /register. 2. Enter the email. 3. Enter the password. 4. Press **Create account**. |\n| Expected Result | The error message \"Enter a valid email address\" appears under the email field; the user stays on the sign-up page and no account is created (logging in with nina.example.com fails) |\n| Priority | Medium |\n| Test Type | Functional, negative |",
+        "vi": "| Trường | Giá trị |\n|---|---|\n| Test Case ID | TC-SIGNUP-011 |\n| Title | Đăng ký từ chối email không hợp lệ, không có ký tự @ |\n| Preconditions | Người dùng đang đăng xuất; trang đăng ký hoạt động |\n| Test Data | Email nina.example.com, mật khẩu Valid-Pass-1 |\n| Steps | 1. Mở /register. 2. Nhập email. 3. Nhập mật khẩu. 4. Bấm **Create account**. |\n| Expected Result | Thông báo lỗi \"Enter a valid email address\" xuất hiện dưới ô email; người dùng vẫn ở trang đăng ký và không có tài khoản nào được tạo (đăng nhập bằng nina.example.com thất bại) |\n| Priority | Medium |\n| Test Type | Functional, negative |"
+      },
+      "rubric": [
+        {
+          "id": "one-check",
+          "text": {
+            "en": "My case checks only the missing @, not other invalid emails or passwords at the same time",
+            "vi": "Case của tôi chỉ kiểm tra việc thiếu @, không kiểm tra thêm email hay mật khẩu sai khác cùng lúc"
+          }
+        },
+        {
+          "id": "valid-rest",
+          "text": {
+            "en": "Every other input is valid, so only the email can cause the rejection",
+            "vi": "Mọi dữ liệu khác đều hợp lệ, nên chỉ email mới có thể gây ra việc bị từ chối"
+          }
+        },
+        {
+          "id": "two-observations",
+          "text": {
+            "en": "The expected result says both what is shown (error) and what must not happen (no account)",
+            "vi": "Expected result nói cả điều được hiển thị (lỗi) và điều không được xảy ra (không tạo tài khoản)"
+          }
+        },
+        {
+          "id": "concrete",
+          "text": {
+            "en": "I used a concrete email value, not \"an invalid email\"",
+            "vi": "Tôi dùng giá trị email cụ thể, không phải \"một email không hợp lệ\""
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "This is a **negative** test: it checks that bad input is refused. Keep every other input valid (a correct password) so that only the email can explain the result, and give the exact value in **test data**. The **expected result** has two observations of one behaviour: the error message is shown, and no account exists afterwards. Checking only the message would miss a form that shows the error but still creates the account.",
+      "vi": "Đây là **negative** test: nó kiểm tra rằng dữ liệu sai bị từ chối. Giữ mọi dữ liệu khác hợp lệ (mật khẩu đúng) để chỉ có email giải thích được kết quả, và ghi giá trị chính xác trong **test data**. **Expected result** có hai điểm quan sát của cùng một hành vi: thông báo lỗi hiển thị, và sau đó không có tài khoản nào tồn tại. Nếu chỉ kiểm tra thông báo, bạn sẽ bỏ sót trường hợp form hiện lỗi nhưng vẫn tạo tài khoản."
+    }
+  }
+]

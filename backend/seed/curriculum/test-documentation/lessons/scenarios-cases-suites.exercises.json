@@ -1,0 +1,199 @@
+[
+  {
+    "key": "scenario-case-suite",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each piece of test documentation as a **test scenario**, a **test case** or a **test suite**.",
+      "vi": "Xếp mỗi tài liệu kiểm thử dưới đây vào **test scenario**, **test case** hoặc **test suite**."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "scenario", "text": { "en": "Test scenario", "vi": "Test scenario" } },
+        { "id": "case", "text": { "en": "Test case", "vi": "Test case" } },
+        { "id": "suite", "text": { "en": "Test suite", "vi": "Test suite" } }
+      ],
+      "items": [
+        {
+          "id": "check-login",
+          "text": {
+            "en": "Check that a registered user can log in",
+            "vi": "Kiểm tra người dùng đã đăng ký có thể đăng nhập"
+          }
+        },
+        {
+          "id": "provider-timeout",
+          "text": {
+            "en": "Check what happens when the payment provider times out",
+            "vi": "Kiểm tra điều gì xảy ra khi payment provider bị timeout"
+          }
+        },
+        {
+          "id": "locked-account",
+          "text": {
+            "en": "Check login with a locked account",
+            "vi": "Kiểm tra đăng nhập với tài khoản bị khóa"
+          }
+        },
+        {
+          "id": "tc-wrong-pass",
+          "text": {
+            "en": "TC-LOGIN-004: user logged out; enter learner@example.com and Wrong-Pass-1, press Log in → message \"Invalid email or password\", user stays on the login page",
+            "vi": "TC-LOGIN-004: người dùng đang đăng xuất; nhập learner@example.com và Wrong-Pass-1, bấm Log in → thông báo \"Invalid email or password\", vẫn ở trang đăng nhập"
+          }
+        },
+        {
+          "id": "tc-coupon",
+          "text": {
+            "en": "TC-CHK-010: basket with one item at 50.00 USD; apply code SAVE10 → total 45.00 USD",
+            "vi": "TC-CHK-010: giỏ hàng có một sản phẩm giá 50.00 USD; áp mã SAVE10 → tổng 45.00 USD"
+          }
+        },
+        {
+          "id": "smoke",
+          "text": {
+            "en": "Smoke: the 15 cases run on every new build",
+            "vi": "Smoke: 15 case được chạy trên mỗi build mới"
+          }
+        },
+        {
+          "id": "checkout-regression",
+          "text": {
+            "en": "Checkout regression: every case for basket, discount and payment",
+            "vi": "Checkout regression: mọi case về giỏ hàng, giảm giá và thanh toán"
+          }
+        },
+        {
+          "id": "tc-qty",
+          "text": {
+            "en": "TC-CART-002: add 2 units of SKU-100 (20.00 USD each) → basket shows quantity 2 and subtotal 40.00 USD",
+            "vi": "TC-CART-002: thêm 2 đơn vị SKU-100 (20.00 USD mỗi cái) → giỏ hàng hiện số lượng 2 và tạm tính 40.00 USD"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "check-login": "scenario",
+        "provider-timeout": "scenario",
+        "locked-account": "scenario",
+        "tc-wrong-pass": "case",
+        "tc-coupon": "case",
+        "smoke": "suite",
+        "checkout-regression": "suite",
+        "tc-qty": "case"
+      }
+    },
+    "explanation": {
+      "en": "A **scenario** is a one-line \"check that / check what happens\" with no data and no expected result. A **test case** has an ID, concrete data, an action and an observable expected result, so anyone gets the same verdict. A **suite** is a named group of cases run for a purpose (every build, before a release). \"Check login with a locked account\" is tempting as a test case because it is specific, but it has no data, steps or expected result yet: it is still a scenario.",
+      "vi": "**Scenario** là một dòng \"kiểm tra rằng / kiểm tra điều gì xảy ra\", không có dữ liệu và không có kết quả mong đợi. **Test case** có ID, dữ liệu cụ thể, thao tác và kết quả mong đợi quan sát được, nên ai chạy cũng ra cùng verdict. **Suite** là một nhóm case có tên, được chạy vì một mục đích (mỗi build, trước release). \"Kiểm tra đăng nhập với tài khoản bị khóa\" dễ bị xem là test case vì nó cụ thể, nhưng chưa có dữ liệu, các bước hay kết quả mong đợi: nó vẫn là scenario."
+    }
+  },
+  {
+    "key": "when-scenarios-are-enough",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "In which situation is a list of **test scenarios**, without detailed test cases, usually enough?",
+      "vi": "Trong tình huống nào, một danh sách **test scenario** không kèm test case chi tiết thường là đủ?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "explore",
+          "text": {
+            "en": "Two experienced testers explore a brand-new feature in its first sprint and use the list as a checklist",
+            "vi": "Hai tester có kinh nghiệm khám phá một tính năng hoàn toàn mới trong sprint đầu tiên và dùng danh sách làm checklist"
+          }
+        },
+        {
+          "id": "regression",
+          "text": {
+            "en": "A regression check that a new team member must run exactly the same way every release",
+            "vi": "Một bài regression mà thành viên mới của team phải chạy giống hệt nhau ở mỗi release"
+          }
+        },
+        {
+          "id": "audit",
+          "text": {
+            "en": "An audit that requires evidence that each requirement was verified with given data",
+            "vi": "Một cuộc audit yêu cầu bằng chứng rằng mỗi requirement đã được kiểm chứng với dữ liệu cụ thể"
+          }
+        },
+        {
+          "id": "automation",
+          "text": {
+            "en": "Cases that an automation engineer will turn into scripts next sprint",
+            "vi": "Các case mà automation engineer sẽ chuyển thành script ở sprint sau"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["explore"] },
+    "explanation": {
+      "en": "Scenarios give breadth quickly and leave the *how* to the tester, which works when experienced people explore something new that is still changing. Regression run by a newcomer, audit evidence and automation all need the precision of **detailed test cases**: exact data, steps and expected results that give the same verdict whoever runs them. Automation is the tempting wrong answer: a script cannot guess the data or the check.",
+      "vi": "Scenario cho độ rộng nhanh và để *cách làm* cho tester, phù hợp khi người có kinh nghiệm khám phá một thứ mới và còn đang thay đổi. Regression do người mới chạy, bằng chứng cho audit và tự động hóa đều cần độ chính xác của **test case chi tiết**: dữ liệu, các bước và kết quả mong đợi chính xác để ai chạy cũng ra cùng verdict. Tự động hóa là đáp án sai dễ chọn: script không thể tự đoán dữ liệu hay điểm cần kiểm tra."
+    }
+  },
+  {
+    "key": "discount-test-case",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "Turn the scenario **\"Apply a valid discount code at checkout\"** into one detailed test case.\n\nRequirement: the code `SAVE10` gives 10 % off the basket total and the order summary shows the discount as its own line. Use a basket with one item priced 50.00 USD.",
+      "vi": "Chuyển scenario **\"Áp một mã giảm giá hợp lệ ở checkout\"** thành một test case chi tiết.\n\nRequirement: mã `SAVE10` giảm 10 % tổng giỏ hàng và phần tóm tắt đơn hàng hiển thị khoản giảm giá thành một dòng riêng. Dùng giỏ hàng có một sản phẩm giá 50.00 USD."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": [
+        "testCaseId",
+        "title",
+        "preconditions",
+        "testData",
+        "steps",
+        "expectedResult",
+        "priority",
+        "testType"
+      ],
+      "expectedConcepts": [
+        { "concept": "Logged-in user", "keywords": ["logged in", "signed in", "log in", "dang nhap"] },
+        { "concept": "Basket with the item", "keywords": ["basket", "cart", "gio hang"] },
+        { "concept": "Discount code SAVE10", "keywords": ["save10", "discount code", "coupon", "ma giam gia"] },
+        { "concept": "Discount line of 5.00 USD", "keywords": ["5.00", "discount line", "dong giam gia"] },
+        { "concept": "Total of 45.00 USD", "keywords": ["45.00", "45 usd"] }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test case ID | TC-CHK-010 |\n| Title | Valid code SAVE10 takes 10 % off the basket total |\n| Preconditions | User learner@example.com is logged in; the basket contains one item SKU-200 priced 50.00 USD; no code is applied |\n| Test data | Discount code SAVE10 |\n| Steps | 1. Open the checkout page. 2. Enter SAVE10 in the discount code field. 3. Press **Apply**. |\n| Expected result | The order summary shows a discount line of −5.00 USD and the total is 45.00 USD; the message \"Code applied\" appears |\n| Priority | High |\n| Test type | Functional |",
+        "vi": "| Trường | Giá trị |\n|---|---|\n| Test case ID | TC-CHK-010 |\n| Title | Mã hợp lệ SAVE10 giảm 10 % tổng giỏ hàng |\n| Preconditions | Người dùng learner@example.com đã đăng nhập; giỏ hàng có một sản phẩm SKU-200 giá 50.00 USD; chưa áp mã nào |\n| Test data | Mã giảm giá SAVE10 |\n| Steps | 1. Mở trang checkout. 2. Nhập SAVE10 vào ô mã giảm giá. 3. Bấm **Apply**. |\n| Expected result | Phần tóm tắt đơn hàng hiện dòng giảm giá −5.00 USD và tổng là 45.00 USD; xuất hiện thông báo \"Code applied\" |\n| Priority | High |\n| Test type | Functional |"
+      },
+      "rubric": [
+        {
+          "id": "one-scenario",
+          "text": {
+            "en": "My test case checks only the valid-code scenario, not invalid or expired codes too",
+            "vi": "Test case của tôi chỉ kiểm tra scenario mã hợp lệ, không kiểm tra luôn mã sai hay mã hết hạn"
+          }
+        },
+        {
+          "id": "state",
+          "text": {
+            "en": "The preconditions set up the basket and the logged-in user before step 1",
+            "vi": "Preconditions chuẩn bị giỏ hàng và người dùng đã đăng nhập trước bước 1"
+          }
+        },
+        {
+          "id": "numbers",
+          "text": {
+            "en": "The expected result gives exact amounts (discount and total), not \"the discount is applied\"",
+            "vi": "Expected result ghi số tiền chính xác (khoản giảm và tổng), không phải \"giảm giá được áp dụng\""
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "The scenario only said *what*; the test case adds the starting state (**preconditions**: logged-in user, known basket, no code yet), the exact **test data** (`SAVE10`), single-action **steps**, and an **expected result** with numbers you can compare: 10 % of 50.00 is a −5.00 USD line and a 45.00 USD total. \"The discount is applied correctly\" would leave the verdict to opinion. Discounts affect money on every order, so priority is high.",
+      "vi": "Scenario chỉ nói *cái gì*; test case bổ sung trạng thái ban đầu (**preconditions**: người dùng đã đăng nhập, giỏ hàng xác định, chưa áp mã), **test data** chính xác (`SAVE10`), các **step** mỗi bước một thao tác, và **expected result** có con số để so sánh: 10 % của 50.00 là dòng −5.00 USD và tổng 45.00 USD. Viết \"giảm giá được áp dụng đúng\" sẽ khiến verdict tùy vào cảm nhận. Giảm giá ảnh hưởng đến tiền trên mọi đơn hàng, nên priority là high."
+    }
+  }
+]

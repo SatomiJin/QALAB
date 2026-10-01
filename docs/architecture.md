@@ -49,6 +49,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 3 — Practice | Done | Done |
 | 4 — Admin CMS | Done | Done |
 | 5 — Dashboard & Progress | Done | Done |
+| 6 — Curriculum | Done (content + importer) | No change (content comes from the API) |
 
 ## Authentication
 
@@ -87,6 +88,11 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 * Backend module `src/admin/`: `AdminCoursesController` (courses, modules) and `AdminLessonsController` (lessons, exercises), both `@Roles('admin')`. `AdminService` / `AdminExercisesService` load the course tree, apply the rules and map to DTOs; the pure rules are in `content-rules.ts` (in use, can publish, complete reorder, locked prompt ids) and unit-tested. `AdminContentRepository` reads and writes every status **as the admin** (`forUser`), so RLS `is_admin()` checks every write a second time; reorders and usage go through the SQL functions `reorder_content` and `content_usage`. Exercise prompt data and answer keys are validated with the grader's own parsers (`practice/exercise-schema.ts`).
 * Unique-slug (`23505`) and restrict-FK (`23503`) errors become `409` (`common/errors/pg-error.ts`).
 * Frontend `features/admin/`: `admin-api.ts`, `queries.ts` (`adminKeys`, `useAdminMutation`: returned details go into their cache, then every admin / learning / practice query is refreshed), pages `AdminCoursesPage` (filters in the URL, New course dialog, course reorder when one skill is shown), `AdminCoursePage` (details, publish / unpublish / archive / delete, outline with modules and lessons), `AdminLessonPage` (fields, `MarkdownEditor` with live preview, exercises), `AdminExercisePage` (per-type answer-key form; `exercise-form.ts` converts form and API shapes), `AdminLessonPreviewPage` (preview as learner). Reordering is `SortableList` (dnd-kit: pointer, touch, keyboard; plus up / down buttons), shown at once and put back if saving fails.
+
+## Curriculum (Phase 6)
+
+* The curriculum is data, not code: `backend/seed/curriculum/<course>/` holds `course.json` (modules and lessons in order) and `lessons/<slug>.{en,vi}.md` + `<slug>.exercises.json`, English and Vietnamese side by side. Outline: [curriculum.md](curriculum.md); format: `backend/seed/README.md`.
+* `backend/src/curriculum/`: `curriculum.ts` reads and validates the files (reusing `parsePrompt` / `parseAnswerKey` and the grader's concept matching), `rows.ts` maps them to rows and decides which translations to write, `plan.ts` decides inserts / updates / skips against the database (reusing the CMS rule `lockedPromptErrors`), `import-curriculum.ts` is the CLI (`npm run seed:curriculum`, service role). After the import, the Admin CMS edits the content; nothing in the frontend knows the curriculum.
 
 ## Dashboard and progress (Phase 5)
 

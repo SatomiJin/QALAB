@@ -1,0 +1,66 @@
+[
+  {
+    "key": "where-does-it-go",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Where in the request does each value usually go?",
+      "vi": "Mỗi giá trị dưới đây thường nằm ở đâu trong request?"
+    },
+    "prompt": {
+      "categories": [
+        { "id": "path", "text": { "en": "Path parameter", "vi": "Path parameter" } },
+        { "id": "query", "text": { "en": "Query parameter", "vi": "Query parameter" } },
+        { "id": "header", "text": { "en": "Header", "vi": "Header" } },
+        { "id": "body", "text": { "en": "Request body", "vi": "Request body" } }
+      ],
+      "items": [
+        { "id": "course-id", "text": { "en": "The id of the one course you want to read", "vi": "Id của course cụ thể bạn muốn đọc" } },
+        { "id": "page-number", "text": { "en": "Which page of the course list you want", "vi": "Bạn muốn trang nào của danh sách course" } },
+        { "id": "language", "text": { "en": "The content language, en or vi", "vi": "Ngôn ngữ nội dung, en hoặc vi" } },
+        { "id": "token", "text": { "en": "The Bearer token that proves who you are", "vi": "Bearer token chứng minh bạn là ai" } },
+        { "id": "new-title", "text": { "en": "The title of a note you are creating", "vi": "Title của note bạn đang tạo" } },
+        { "id": "json-format", "text": { "en": "The statement that the body you send is JSON", "vi": "Thông tin rằng body bạn gửi là JSON" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "course-id": "path",
+        "page-number": "query",
+        "language": "query",
+        "token": "header",
+        "new-title": "body",
+        "json-format": "header"
+      }
+    },
+    "explanation": {
+      "en": "The **path** identifies one resource (`/courses/{id}`); the **query** changes how it is returned (`?page=2&lang=vi`); **headers** carry metadata such as `Authorization: Bearer …` and `Content-Type: application/json`; the **body** carries the data you create or change. A token in the query string is the tempting mistake: URLs end up in logs and browser history, so credentials belong in a header.",
+      "vi": "**Path** xác định một resource (`/courses/{id}`); **query** thay đổi cách nó được trả về (`?page=2&lang=vi`); **header** mang metadata như `Authorization: Bearer …` và `Content-Type: application/json`; **body** mang dữ liệu bạn tạo hoặc sửa. Đặt token trong query string là lỗi dễ mắc: URL bị ghi lại trong log và lịch sử trình duyệt, nên thông tin xác thực phải nằm trong header."
+    }
+  },
+  {
+    "key": "response-checks",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "You test `GET /api/v1/courses?page=2&pageSize=20`. Which assertions belong in a good test? Select all that apply.",
+      "vi": "Bạn test `GET /api/v1/courses?page=2&pageSize=20`. Những assertion nào nên có trong một test tốt? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        { "id": "status", "text": { "en": "The status code is exactly 200", "vi": "Status code chính xác là 200" } },
+        { "id": "shape", "text": { "en": "items is an array and total, page, pageSize are numbers", "vi": "items là mảng và total, page, pageSize là số" } },
+        { "id": "page-size", "text": { "en": "items holds at most 20 entries and page is 2", "vi": "items có tối đa 20 phần tử và page là 2" } },
+        { "id": "key-order", "text": { "en": "The keys appear in the order items, total, page, pageSize", "vi": "Các key xuất hiện theo thứ tự items, total, page, pageSize" } },
+        { "id": "same-bytes", "text": { "en": "The body is byte-for-byte identical to the previous run", "vi": "Body giống hệt từng byte so với lần chạy trước" } },
+        { "id": "content-type", "text": { "en": "Content-Type is application/json", "vi": "Content-Type là application/json" } }
+      ]
+    },
+    "answer": { "correct": ["status", "shape", "page-size", "content-type"] },
+    "explanation": {
+      "en": "A good test checks the exact status, the `Content-Type`, the shape and types of the body, and the values that follow from the request (page 2, at most 20 items). Key order is tempting but meaningless in JSON: `{\"a\": 1, \"b\": 2}` equals `{\"b\": 2, \"a\": 1}`. A byte-for-byte comparison breaks as soon as the data changes (a course is added, a title is edited), so the test fails without a bug.",
+      "vi": "Một test tốt kiểm tra status chính xác, `Content-Type`, cấu trúc và kiểu dữ liệu của body, và các giá trị suy ra từ request (trang 2, tối đa 20 item). Thứ tự key nghe có vẻ hợp lý nhưng không có ý nghĩa trong JSON: `{\"a\": 1, \"b\": 2}` bằng `{\"b\": 2, \"a\": 1}`. So sánh từng byte sẽ hỏng ngay khi dữ liệu thay đổi (thêm một course, sửa một title), nên test fail dù không có bug."
+    }
+  }
+]

@@ -1,6 +1,6 @@
 # Deployment (Vercel)
 
-Two Vercel projects from the same GitHub repository: the frontend (static Vite build) and the backend (NestJS as a Vercel Function, detected with zero configuration from `src/main.ts`). Supabase stays the cloud project; migrations are applied with `npx supabase db push` as usual, not by Vercel.
+Two Vercel projects from the same GitHub repository: the frontend (static Vite build) and the backend (NestJS as a Vercel Function, detected with zero configuration from `src/main.ts`). Supabase stays the cloud project; migrations are applied with `npx supabase db push` as usual, and the curriculum with `npm run seed:curriculum` (from `backend/`), not by Vercel.
 
 ```text
 Browser ──► qalab-web (frontend/, static)      https://<frontend-domain>

@@ -1,0 +1,189 @@
+[
+  {
+    "key": "locator-stability",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each Playwright locator as **robust** (survives layout and styling changes) or **fragile**.",
+      "vi": "Xếp mỗi locator Playwright vào loại **bền vững** (vẫn chạy khi bố cục và style thay đổi) hoặc **mong manh**."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "robust",
+          "text": {
+            "en": "Robust",
+            "vi": "Bền vững"
+          }
+        },
+        {
+          "id": "fragile",
+          "text": {
+            "en": "Fragile",
+            "vi": "Mong manh"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "role-button",
+          "text": {
+            "en": "page.getByRole('button', { name: 'Place order' })",
+            "vi": "page.getByRole('button', { name: 'Place order' })"
+          }
+        },
+        {
+          "id": "label-email",
+          "text": {
+            "en": "page.getByLabel('Email')",
+            "vi": "page.getByLabel('Email')"
+          }
+        },
+        {
+          "id": "test-id",
+          "text": {
+            "en": "page.getByTestId('basket-total')",
+            "vi": "page.getByTestId('basket-total')"
+          }
+        },
+        {
+          "id": "nth-child",
+          "text": {
+            "en": "page.locator('div.card:nth-child(3) > span')",
+            "vi": "page.locator('div.card:nth-child(3) > span')"
+          }
+        },
+        {
+          "id": "xpath",
+          "text": {
+            "en": "page.locator('/html/body/div[1]/main/div[2]/form/button')",
+            "vi": "page.locator('/html/body/div[1]/main/div[2]/form/button')"
+          }
+        },
+        {
+          "id": "generated-class",
+          "text": {
+            "en": "page.locator('.css-1x9k2ab')",
+            "vi": "page.locator('.css-1x9k2ab')"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "role-button": "robust",
+        "label-email": "robust",
+        "test-id": "robust",
+        "nth-child": "fragile",
+        "xpath": "fragile",
+        "generated-class": "fragile"
+      }
+    },
+    "explanation": {
+      "en": "Role, label and test id locators describe **what** the element is, so they keep working when the page is restyled or rearranged. Positions (`nth-child`), absolute XPaths and generated class names describe **where** it happens to be today: moving a card, adding a wrapper `div` or rebuilding the CSS breaks them even though the feature still works.",
+      "vi": "Locator theo role, label và test id mô tả phần tử **là gì**, nên vẫn chạy khi trang đổi style hay sắp xếp lại. Vị trí (`nth-child`), XPath tuyệt đối và tên class tự sinh mô tả phần tử **đang nằm ở đâu** hôm nay: dời một card, thêm một `div` bọc ngoài hay build lại CSS là chúng vỡ, dù tính năng vẫn chạy đúng."
+    }
+  },
+  {
+    "key": "spot-bad-locator",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "This test passes today. What is the main problem with it?\n\n```ts\ntest('adds a product to the basket', async ({ page }) => {\n  await page.goto('/products/blue-mug');\n  await page.locator('#root > div > div:nth-child(2) > button.MuiButton-root').click();\n  await expect(page.locator('header span.badge')).toHaveText('1');\n});\n```",
+      "vi": "Test này hôm nay vẫn pass. Vấn đề chính của nó là gì?\n\n```ts\ntest('adds a product to the basket', async ({ page }) => {\n  await page.goto('/products/blue-mug');\n  await page.locator('#root > div > div:nth-child(2) > button.MuiButton-root').click();\n  await expect(page.locator('header span.badge')).toHaveText('1');\n});\n```"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "structural",
+          "text": {
+            "en": "The locators depend on page structure and CSS classes, so a layout or styling change breaks the test although the feature works",
+            "vi": "Locator phụ thuộc cấu trúc trang và class CSS, nên một thay đổi bố cục hay style sẽ làm vỡ test dù tính năng vẫn chạy"
+          }
+        },
+        {
+          "id": "no-wait",
+          "text": {
+            "en": "It needs a waitForTimeout(3000) before the click so the button has time to load",
+            "vi": "Cần thêm waitForTimeout(3000) trước khi click để nút có thời gian tải"
+          }
+        },
+        {
+          "id": "no-pom",
+          "text": {
+            "en": "It does not use a page object, so it will not run",
+            "vi": "Nó không dùng page object, nên sẽ không chạy được"
+          }
+        },
+        {
+          "id": "assert-text",
+          "text": {
+            "en": "Checking the badge text is not a meaningful assertion",
+            "vi": "Kiểm tra chữ trên badge không phải là một assertion có ý nghĩa"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "structural"
+      ]
+    },
+    "explanation": {
+      "en": "Both locators describe *where* elements sit in today's HTML (`nth-child(2)`, a component library class). Wrapping the button in another `div` or switching the UI library breaks the test with no bug in the product. Better: `getByRole('button', { name: 'Add to basket' })` and `getByTestId('basket-count')`. A fixed wait would make things worse (Playwright already waits for the element), a page object is good practice but not required to run, and checking the count is a meaningful assertion.",
+      "vi": "Cả hai locator đều mô tả phần tử *nằm ở đâu* trong HTML hôm nay (`nth-child(2)`, class của thư viện component). Chỉ cần bọc nút trong một `div` khác hay đổi thư viện UI là test vỡ, dù sản phẩm không có bug. Tốt hơn: `getByRole('button', { name: 'Add to basket' })` và `getByTestId('basket-count')`. Thêm thời gian chờ cố định chỉ làm tệ hơn (Playwright đã tự chờ phần tử), page object là thói quen tốt nhưng không bắt buộc để chạy, và kiểm tra số lượng là một assertion có ý nghĩa."
+    }
+  },
+  {
+    "key": "page-object-benefit",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Twenty tests sign in through the login page. The designers rename the **Sign in** button to **Log in**. With the Page Object Model, what has to change?",
+      "vi": "Hai mươi test đăng nhập qua trang login. Designer đổi tên nút **Sign in** thành **Log in**. Với Page Object Model, cần sửa những gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "one-place",
+          "text": {
+            "en": "Only the button locator inside the LoginPage class",
+            "vi": "Chỉ locator của nút trong class LoginPage"
+          }
+        },
+        {
+          "id": "every-test",
+          "text": {
+            "en": "Every one of the twenty tests",
+            "vi": "Tất cả hai mươi test"
+          }
+        },
+        {
+          "id": "nothing",
+          "text": {
+            "en": "Nothing: page objects detect renamed buttons automatically",
+            "vi": "Không gì cả: page object tự phát hiện nút bị đổi tên"
+          }
+        },
+        {
+          "id": "assertions",
+          "text": {
+            "en": "The assertions inside the LoginPage class",
+            "vi": "Các assertion bên trong class LoginPage"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "one-place"
+      ]
+    },
+    "explanation": {
+      "en": "A page object keeps the page's locators and actions in **one place**; tests call `login.signIn(...)` and never mention the button. So the rename is a one-line fix in `LoginPage`. Without page objects, all twenty tests would need the change. Page objects do not detect changes by themselves, and assertions belong in the tests, not in the page object.",
+      "vi": "Page object giữ locator và thao tác của trang ở **một chỗ**; test gọi `login.signIn(...)` và không bao giờ nhắc tới cái nút. Nên việc đổi tên chỉ là sửa một dòng trong `LoginPage`. Không có page object, cả hai mươi test đều phải sửa. Page object không tự phát hiện thay đổi, và assertion thuộc về test, không thuộc về page object."
+    }
+  }
+]

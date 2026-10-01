@@ -1,0 +1,94 @@
+{
+  "skill": "test_docs",
+  "slug": "test-documentation",
+  "order": 1,
+  "title": {
+    "en": "Test documentation",
+    "vi": "Tài liệu kiểm thử"
+  },
+  "description": {
+    "en": "Plan the testing, write test cases others can run, trace them to requirements and report the results so the team can decide whether to release.",
+    "vi": "Lập kế hoạch test, viết test case mà người khác chạy lại được, trace chúng về requirement và báo cáo kết quả để cả team quyết định có release hay không."
+  },
+  "modules": [
+    {
+      "key": "planning-the-testing",
+      "title": {
+        "en": "Planning the testing",
+        "vi": "Lập kế hoạch kiểm thử"
+      },
+      "description": {
+        "en": "Decide what to test, how and when, and choose the right level of detail.",
+        "vi": "Quyết định test cái gì, test thế nào, khi nào, và chọn mức độ chi tiết phù hợp."
+      },
+      "lessons": [
+        {
+          "slug": "test-plan-and-strategy",
+          "title": {
+            "en": "Test plan and test strategy",
+            "vi": "Test plan và test strategy"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "scenarios-cases-suites",
+          "title": {
+            "en": "Test scenarios, test cases and test suites",
+            "vi": "Test scenario, test case và test suite"
+          },
+          "minutes": 8
+        }
+      ]
+    },
+    {
+      "key": "writing-test-cases",
+      "title": {
+        "en": "Writing test cases",
+        "vi": "Viết test case"
+      },
+      "description": {
+        "en": "Write test cases anyone can run and link them to the requirements they prove.",
+        "vi": "Viết test case ai cũng chạy được và liên kết chúng với requirement mà chúng chứng minh."
+      },
+      "lessons": [
+        {
+          "slug": "anatomy-of-a-test-case",
+          "title": {
+            "en": "Anatomy of a good test case",
+            "vi": "Cấu trúc của một test case tốt"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "requirements-traceability",
+          "title": {
+            "en": "Traceability and the RTM",
+            "vi": "Traceability và RTM"
+          },
+          "minutes": 8
+        }
+      ]
+    },
+    {
+      "key": "reporting",
+      "title": {
+        "en": "Reporting",
+        "vi": "Báo cáo"
+      },
+      "description": {
+        "en": "Record what was run, measure it honestly and give a clear release recommendation.",
+        "vi": "Ghi lại những gì đã chạy, đo lường trung thực và đưa ra khuyến nghị release rõ ràng."
+      },
+      "lessons": [
+        {
+          "slug": "test-execution-and-summary-report",
+          "title": {
+            "en": "Test execution and the test summary report",
+            "vi": "Thực thi test và test summary report"
+          },
+          "minutes": 10
+        }
+      ]
+    }
+  ]
+}

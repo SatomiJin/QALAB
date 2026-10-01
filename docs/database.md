@@ -1,6 +1,6 @@
 # Database
 
-Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a migration in `backend/supabase/migrations`, applied with `npx supabase db push` (`--include-seed` also applies `supabase/seed.sql`, but only the first time; after the seed changes, re-run it with `npx supabase db query --linked -f supabase/seed.sql`).
+Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a migration in `backend/supabase/migrations`, applied with `npx supabase db push`. Content is not in SQL: `npm run seed:curriculum` imports the curriculum from `backend/seed/curriculum/` (see below).
 
 ## Migrations
 
@@ -14,7 +14,7 @@ Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a m
 | `20260930090356_admin_cms.sql` | 4 | Admin writes: `set_content_audit()` trigger on content; insert/update/delete policies (`is_admin()`) and column grants on `courses`, `modules`, `lessons`, `exercises`, insert/update on `exercise_answers`; `reorder_content()`, `content_usage()` |
 | `20260930144044_dashboard.sql` | 5 | Views `v_user_exercise_results`, `v_user_skill_progress`, `v_user_activity` (security invoker); `activity_days(tz)`; select for `authenticated` only |
 
-Seed (`supabase/seed.sql`): one published sample course, *QA fundamentals: first steps* (2 modules, 4 lessons), and 6 exercises on its lessons covering all five types (with answer keys and Vietnamese manual translations), with fixed ids. Idempotent. `backend/src/practice/seed-exercises.spec.ts` checks every seeded prompt and answer key against the grader.
+Curriculum (`backend/seed/curriculum/`, imported by `npm run seed:curriculum`, `backend/src/curriculum/`): the V1 curriculum for all 7 skills (outline in [curriculum.md](curriculum.md)), with answer keys and Vietnamese `manual` translations. Written with the service role (audit columns stay `null`). Courses are matched by slug; modules, lessons and exercises by UUID v5 ids derived from their keys; the Phase 2–3 sample course *QA fundamentals: first steps* keeps its original fixed ids (`6f1d2a4e-…`). Idempotent, never deletes, inserts only what is missing unless `--update`. `curriculum/curriculum.spec.ts` checks every file. `supabase/seed.sql` is a stub.
 
 ## Enums
 
@@ -79,7 +79,7 @@ Indexes: `(skill_id, order_index)`, `(course_id, order_index)`, `(module_id, ord
 
 ## `content_translations`
 
-Translations of content, one row per (entity, field, language, provider). `manual` rows are written by a person (the seed has the sample course in Vietnamese; editing them in the Admin CMS is a later step); `google` rows are machine translations cached by the backend. Reads prefer `manual`.
+Translations of content, one row per (entity, field, language, provider). `manual` rows are written by a person (the curriculum importer writes them; editing them in the Admin CMS is a later step); `google` rows are machine translations cached by the backend. Reads prefer `manual`.
 
 | Column | Type | Notes |
 | --- | --- | --- |
@@ -87,13 +87,13 @@ Translations of content, one row per (entity, field, language, provider). `manua
 | `entity_id` | uuid | polymorphic, no FK; rows are removed by `after delete` triggers on `courses`, `modules`, `lessons`, `exercises` (`delete_content_translations()`) |
 | `field` | text | `title` | `description` | `content_md`; exercises: `question`, `option.<id>`, `item.<id>`, `category.<id>` (public) and `explanation`, `model_answer`, `rubric.<id>` (review texts) |
 | `language` | text | `vi` |
-| `source_hash` | text | sha-256 (hex) of the English source text; the seed computes it in SQL (`encode(sha256(convert_to(text, 'UTF8')), 'hex')`), the backend in Node. A changed source makes the row stale |
+| `source_hash` | text | sha-256 (hex) of the English source text; the curriculum importer and the backend compute it in Node (`translation/source-hash.ts`), of the stored English. A changed source makes the row stale |
 | `text` | text | ≤ 200 000 characters |
 | `provider` | text | `manual` | `google` |
 | `pipeline_version` | int | required for `google` rows (check), null for `manual`; a pipeline change redoes machine rows only |
 
 * `unique (entity_type, entity_id, field, language, provider)`: a manual and a machine translation can coexist. Index `(entity_id, language)`.
-* Written only with the service role: the seed (`manual`) and the backend (`google`). No API role may insert or update (a learner-written row would be shown to everyone).
+* Written only with the service role: the curriculum importer (`manual`) and the backend (`google`). No API role may insert or update (a learner-written row would be shown to everyone).
 
 ## Views (derived, Phase 5)
 
@@ -112,7 +112,7 @@ All `security_invoker = true`: the caller's RLS applies to every table they read
 * `is_content_published(type, id)` — `stable`, invoker: a course, module, lesson or exercise and all its parents are `published`. Used by the `content_translations` read policy.
 * `is_exercise_published(exercise_id)` — `stable`, invoker: the exercise is `published` and `is_lesson_published(lesson_id)`. Used by the attempt update policy.
 * `set_updated_at()` — shared `before update` trigger function for every table.
-* `set_content_audit()` — `before insert or update` on `courses`, `modules`, `lessons`, `exercises`: `created_by` / `updated_by` = `auth.uid()` (kept as given when there is no user, e.g. the seed); `created_by` never changes on update.
+* `set_content_audit()` — `before insert or update` on `courses`, `modules`, `lessons`, `exercises`: `created_by` / `updated_by` = `auth.uid()` (kept as given when there is no user, e.g. the curriculum importer); `created_by` never changes on update.
 * `reorder_content(kind, parent_id, ids[])` — invoker (RLS decides): sets `order_index` = position for the children of one parent (course → skill, module → course, lesson → module, exercise → lesson) in one statement; raises `22023` for duplicates, an unknown kind, or when not every id was updated (a child of another parent, or a caller who may not update — so learners get an error, not a silent no-op).
 * `activity_days(time_zone)` — invoker, stable: the distinct local dates of the caller's (`auth.uid()`) activity, newest first, for the streak (one row per day, so the API row limit is not hit). An unknown zone raises `22023`. Executable by `authenticated` only.
 * `content_usage(lesson_ids[], exercise_ids[])` — invoker, stable: `(kind, id)` of the given lessons with progress and exercises with attempts. Admins see everyone's rows; anyone else only their own. The backend uses it for `inUse`.

@@ -1,0 +1,198 @@
+[
+  {
+    "key": "good-charter",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which of these is the best **charter** for a 90-minute exploratory session?",
+      "vi": "Đâu là **charter** tốt nhất cho một session exploratory testing dài 90 phút?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "focused",
+          "text": {
+            "en": "Explore the checkout coupon field with expired, reused and very long codes to discover how invalid coupons are handled",
+            "vi": "Khám phá field coupon ở checkout với mã hết hạn, mã đã dùng và mã rất dài để phát hiện cách hệ thống xử lý coupon không hợp lệ"
+          }
+        },
+        {
+          "id": "too-broad",
+          "text": {
+            "en": "Test the whole website",
+            "vi": "Test toàn bộ website"
+          }
+        },
+        {
+          "id": "scripted",
+          "text": {
+            "en": "Run steps 1 to 40 of the checkout test case and mark each step pass or fail",
+            "vi": "Chạy bước 1 đến 40 của test case checkout và đánh dấu pass hoặc fail cho từng bước"
+          }
+        },
+        {
+          "id": "all-bugs",
+          "text": {
+            "en": "Find every bug in checkout",
+            "vi": "Tìm mọi bug trong checkout"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["focused"]
+    },
+    "explanation": {
+      "en": "A charter names a **target** (the coupon field), **resources** (expired, reused, long codes) and the **information** to discover, and is small enough for one session. \"Test the whole website\" cannot be finished or debriefed. Running steps 1 to 40 is scripted testing, not exploration. \"Find every bug\" sounds ambitious, but it is impossible (exhaustive testing) and gives no focus.",
+      "vi": "Một charter nêu **đối tượng** (field coupon), **nguồn lực** (mã hết hạn, mã đã dùng, mã dài) và **thông tin** cần phát hiện, đồng thời đủ nhỏ cho một session. \"Test toàn bộ website\" không thể làm xong hay debrief được. Chạy bước 1 đến 40 là scripted testing, không phải khám phá. \"Tìm mọi bug\" nghe tham vọng nhưng bất khả thi (exhaustive testing) và không cho ta trọng tâm nào."
+    }
+  },
+  {
+    "key": "which-approach",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Classify each activity as **scripted testing**, **exploratory testing** or **error guessing** (a targeted attack based on known failure patterns). Pick the best fit.",
+      "vi": "Phân loại mỗi hoạt động là **scripted testing**, **exploratory testing** hay **error guessing** (một attack có chủ đích dựa trên các kiểu hỏng hóc đã biết). Chọn đáp án phù hợp nhất."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "scripted",
+          "text": { "en": "Scripted testing", "vi": "Scripted testing" }
+        },
+        {
+          "id": "exploratory",
+          "text": { "en": "Exploratory testing", "vi": "Exploratory testing" }
+        },
+        {
+          "id": "error-guessing",
+          "text": { "en": "Error guessing", "vi": "Error guessing" }
+        }
+      ],
+      "items": [
+        {
+          "id": "run-tc",
+          "text": {
+            "en": "Run test case TC-12 step by step and compare each result with the expected result",
+            "vi": "Chạy test case TC-12 từng bước và so sánh mỗi kết quả với expected result"
+          }
+        },
+        {
+          "id": "regression-suite",
+          "text": {
+            "en": "Execute the approved regression suite and record pass or fail for each test",
+            "vi": "Thực thi bộ regression đã duyệt và ghi pass hoặc fail cho từng test"
+          }
+        },
+        {
+          "id": "long-name",
+          "text": {
+            "en": "Paste a 5,000-character name into the sign-up form, because long inputs often break layouts",
+            "vi": "Dán một cái tên 5,000 ký tự vào form đăng ký, vì đầu vào dài thường làm vỡ giao diện"
+          }
+        },
+        {
+          "id": "double-click",
+          "text": {
+            "en": "Double-click Pay, because double submits have caused duplicate charges before",
+            "vi": "Bấm Pay hai lần liền, vì việc gửi hai lần từng gây trừ tiền trùng"
+          }
+        },
+        {
+          "id": "learn-report",
+          "text": {
+            "en": "Spend a 60-minute session learning the new report screen, choosing each next test from what you just saw",
+            "vi": "Dành một session 60 phút tìm hiểu màn hình báo cáo mới, chọn mỗi test tiếp theo dựa trên điều vừa thấy"
+          }
+        },
+        {
+          "id": "debrief",
+          "text": {
+            "en": "Write session notes and debrief with the lead at the end of a time-boxed session",
+            "vi": "Viết ghi chú session và debrief với lead khi kết thúc một session có time box"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "run-tc": "scripted",
+        "regression-suite": "scripted",
+        "long-name": "error-guessing",
+        "double-click": "error-guessing",
+        "learn-report": "exploratory",
+        "debrief": "exploratory"
+      }
+    },
+    "explanation": {
+      "en": "Scripted testing follows tests designed **before** execution (TC-12, the regression suite). Error guessing is a targeted **attack** justified by a known failure pattern: long inputs, double submits. Exploratory testing designs the next test **while** testing, organised in time-boxed sessions with notes and a debrief. The long name and the double-click could happen inside an exploratory session, but each is an attack chosen from experience, which is what error guessing means.",
+      "vi": "Scripted testing làm theo các test được thiết kế **trước** khi thực thi (TC-12, bộ regression). Error guessing là một **attack** có chủ đích, dựa trên một kiểu hỏng hóc đã biết: đầu vào dài, gửi hai lần. Exploratory testing thiết kế test tiếp theo **trong lúc** test, được tổ chức thành các session có time box với ghi chú và debrief. Cái tên dài và cú bấm hai lần có thể diễn ra trong một session khám phá, nhưng mỗi cái là một attack được chọn từ kinh nghiệm, đó chính là error guessing."
+    }
+  },
+  {
+    "key": "photo-upload-charter",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "Your team has just built **Upload profile photo** (JPG or PNG, up to 5 MB). There are no detailed test cases yet. Plan one exploratory session: write the **charter**, the **time box**, at least four error-guessing **attacks** you will try, and what you will produce at the end of the session.",
+      "vi": "Nhóm bạn vừa làm xong tính năng **Upload ảnh đại diện** (JPG hoặc PNG, tối đa 5 MB). Chưa có test case chi tiết nào. Hãy lên kế hoạch cho một session exploratory: viết **charter**, **time box**, ít nhất bốn **attack** kiểu error guessing bạn sẽ thử, và những gì bạn sẽ tạo ra khi kết thúc session."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Explore the photo upload",
+          "keywords": ["explor", "kham pha", "profile photo", "anh dai dien"]
+        },
+        {
+          "concept": "Time box",
+          "keywords": ["time box", "timebox", "time-box", "minute", "phut"]
+        },
+        {
+          "concept": "Wrong file types",
+          "keywords": ["file type", "format", "dinh dang", "png", "jpg", "exe", "gif"]
+        },
+        {
+          "concept": "File size limit",
+          "keywords": ["size", "kich thuoc", "dung luong", "mb"]
+        },
+        {
+          "concept": "Information to discover",
+          "keywords": ["discover", "phat hien", "tim ra", "risk", "rui ro"]
+        },
+        {
+          "concept": "Notes and debrief",
+          "keywords": ["note", "ghi chu", "debrief"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Charter:** Explore the profile photo upload with unusual files and interrupted uploads to discover how invalid images and errors are handled.\n\n**Time box:** 90 minutes, no interruptions.\n\n**Attacks (error guessing):**\n\n* Exactly 5 MB, then 5.1 MB, then a 50 MB image (size limit).\n* A GIF, a PDF and a file.exe renamed to photo.jpg (file type checks).\n* An empty 0-byte .png file.\n* A very tall image (100 x 8000 px) and a tiny 1 x 1 px one.\n* A file name with spaces, emoji and quotes.\n* Lose the network halfway through the upload, and double-click Upload.\n\n**Output:** session notes (what I covered, what I did not), defects raised with steps, open questions for the product owner, and a 10-minute debrief with the QA lead to choose the next charter.",
+        "vi": "**Charter:** Khám phá tính năng upload ảnh đại diện với các file bất thường và các lần upload bị gián đoạn để phát hiện cách hệ thống xử lý ảnh không hợp lệ và lỗi.\n\n**Time box:** 90 phút, không bị gián đoạn.\n\n**Các attack (error guessing):**\n\n* Đúng 5 MB, rồi 5.1 MB, rồi một ảnh 50 MB (giới hạn dung lượng).\n* Một file GIF, một file PDF và một file.exe đổi tên thành photo.jpg (kiểm tra định dạng file).\n* Một file .png rỗng 0 byte.\n* Một ảnh rất cao (100 x 8000 px) và một ảnh nhỏ xíu 1 x 1 px.\n* Tên file có dấu cách, emoji và dấu nháy.\n* Ngắt mạng giữa lúc đang upload, và bấm Upload hai lần liền.\n\n**Đầu ra:** ghi chú session (đã phủ gì, chưa phủ gì), các defect đã báo kèm các bước, câu hỏi còn mở cho product owner, và một buổi debrief 10 phút với QA lead để chọn charter tiếp theo."
+      },
+      "rubric": [
+        {
+          "id": "charter-shape",
+          "text": { "en": "My charter has a target, resources and the information to discover", "vi": "Charter của tôi có đối tượng, nguồn lực và thông tin cần phát hiện" }
+        },
+        {
+          "id": "time-box",
+          "text": { "en": "I set a time box for one uninterrupted session", "vi": "Tôi đặt time box cho một session không bị gián đoạn" }
+        },
+        {
+          "id": "attacks",
+          "text": { "en": "My attacks include the 5 MB boundary and wrong file types", "vi": "Các attack của tôi có biên 5 MB và các định dạng file sai" }
+        },
+        {
+          "id": "output",
+          "text": { "en": "I said what I will produce: notes, defects and a debrief", "vi": "Tôi nêu những gì sẽ tạo ra: ghi chú, defect và debrief" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A good plan is focused (one feature), time-boxed (60 to 120 minutes) and armed with attacks that target known weak spots: the **5 MB** limit and its boundary, **wrong or disguised file types**, empty files, odd names, network loss. It ends with evidence: **notes**, defects and a **debrief**, so the team knows what was covered. Without the charter and the notes, the same 90 minutes would be unaccountable clicking.",
+      "vi": "Một kế hoạch tốt có trọng tâm (một tính năng), có time box (60 đến 120 phút) và được trang bị các attack nhắm vào điểm yếu đã biết: giới hạn **5 MB** và biên của nó, **định dạng file sai hoặc giả mạo**, file rỗng, tên file lạ, mất mạng. Nó kết thúc bằng bằng chứng: **ghi chú**, defect và **debrief**, để cả nhóm biết đã phủ được gì. Không có charter và ghi chú, 90 phút đó chỉ là bấm lung tung không ai kiểm chứng được."
+    }
+  }
+]

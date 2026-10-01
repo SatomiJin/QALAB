@@ -1,0 +1,102 @@
+{
+  "skill": "testing_types",
+  "slug": "testing-levels-and-types",
+  "order": 1,
+  "title": {
+    "en": "Testing levels and types",
+    "vi": "Các cấp độ và loại kiểm thử"
+  },
+  "description": {
+    "en": "Where testing happens (unit to acceptance), what it checks (functional and non-functional), and which tests to run when the code changes.",
+    "vi": "Kiểm thử diễn ra ở đâu (từ unit đến acceptance), kiểm tra điều gì (functional và non-functional), và nên chạy test nào khi code thay đổi."
+  },
+  "modules": [
+    {
+      "key": "test-levels",
+      "title": {
+        "en": "Test levels",
+        "vi": "Các cấp độ kiểm thử"
+      },
+      "description": {
+        "en": "The four test levels and the main ways to classify a test.",
+        "vi": "Bốn cấp độ kiểm thử và những cách phân loại test chính."
+      },
+      "lessons": [
+        {
+          "slug": "unit-integration-system-acceptance",
+          "title": {
+            "en": "Unit, integration, system and acceptance testing",
+            "vi": "Unit, integration, system và acceptance testing"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "functional-non-functional-black-white-box",
+          "title": {
+            "en": "Functional vs non-functional, black-box vs white-box",
+            "vi": "Functional và non-functional, black-box và white-box"
+          },
+          "minutes": 9
+        }
+      ]
+    },
+    {
+      "key": "change-related-testing",
+      "title": {
+        "en": "Change-related testing",
+        "vi": "Kiểm thử liên quan đến thay đổi"
+      },
+      "description": {
+        "en": "What to test again after a fix, a new feature or a new build.",
+        "vi": "Cần test lại những gì sau một bản fix, một tính năng mới hay một build mới."
+      },
+      "lessons": [
+        {
+          "slug": "regression-vs-retesting",
+          "title": {
+            "en": "Regression testing vs retesting",
+            "vi": "Regression testing và retesting"
+          },
+          "minutes": 9
+        },
+        {
+          "slug": "smoke-vs-sanity-testing",
+          "title": {
+            "en": "Smoke vs sanity testing",
+            "vi": "Smoke testing và sanity testing"
+          },
+          "minutes": 8
+        }
+      ]
+    },
+    {
+      "key": "non-functional-testing",
+      "title": {
+        "en": "Non-functional testing",
+        "vi": "Kiểm thử non-functional"
+      },
+      "description": {
+        "en": "How well the system works: speed, usability, accessibility and security.",
+        "vi": "Hệ thống hoạt động tốt đến mức nào: tốc độ, khả năng sử dụng, accessibility và bảo mật."
+      },
+      "lessons": [
+        {
+          "slug": "performance-testing-basics",
+          "title": {
+            "en": "Performance testing basics",
+            "vi": "Cơ bản về performance testing"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "usability-accessibility-security-basics",
+          "title": {
+            "en": "Usability, accessibility and security basics",
+            "vi": "Cơ bản về usability, accessibility và security"
+          },
+          "minutes": 11
+        }
+      ]
+    }
+  ]
+}

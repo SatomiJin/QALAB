@@ -26,17 +26,25 @@ Other variables (`CORS_ORIGIN_PATTERN`, `AUTH_RATE_LIMIT`, `ATTEMPT_RATE_LIMIT`,
 
 Deploying to Vercel (environment values, region, CORS for previews, cold starts): [docs/deployment.md](../docs/deployment.md).
 
-Vietnamese content comes first from manual translations in `content_translations` (the seed has the sample course; no key needed). `GOOGLE_TRANSLATE_API_KEY` (optional, paid) adds machine translation for everything else. Create it in Google Cloud (Cloud Translation API enabled, billing on), restrict it to that API. Without it, texts that have no manual translation stay English (`translation: "unavailable"`). Translations are cached in `content_translations`, so each text version is billed once.
+Vietnamese content comes first from manual translations in `content_translations` (the curriculum is imported with its Vietnamese; no key needed). `GOOGLE_TRANSLATE_API_KEY` (optional, paid) adds machine translation for everything else. Create it in Google Cloud (Cloud Translation API enabled, billing on), restrict it to that API. Without it, texts that have no manual translation stay English (`translation: "unavailable"`). Translations are cached in `content_translations`, so each text version is billed once.
 
 ### Database
 
 ```bash
 npx supabase db push                  # apply supabase/migrations to the linked project
-npx supabase db push --include-seed   # … and supabase/seed.sql (sample course), first time only
-npx supabase db query --linked -f supabase/seed.sql   # re-run the (idempotent) seed after editing it
 ```
 
-Skills are reference data inside a migration. `seed.sql` holds sample content only; it uses fixed ids and `on conflict do nothing`, so re-running it is safe. Run `npm run test:int` after pushing: it checks RLS against the real database.
+Skills are reference data inside a migration. Run `npm run test:int` after pushing: it checks RLS against the real database.
+
+### Curriculum
+
+```bash
+npm run seed:curriculum -- --dry-run   # validate seed/curriculum (no network)
+npm run seed:curriculum                # import into the linked project: insert what is missing
+npm run seed:curriculum -- --update    # also overwrite existing content with the files
+```
+
+The curriculum (7 skills, courses, modules, lessons, exercises with answer keys, Vietnamese translations) is versioned in `seed/curriculum/` and imported with the service role from `.env`. Idempotent, never deletes, keeps Admin CMS edits unless `--update`. Format and writing rules: [seed/README.md](seed/README.md). `supabase/seed.sql` no longer holds content.
 
 ### Supabase Auth settings (cloud dashboard)
 
@@ -92,12 +100,16 @@ src/
 ├── supabase/               # SupabaseService: forUser(), anon(), service()
 ├── auth/                   # /auth/*, JwtAuthGuard (global), RolesGuard, @Public, @Roles, @CurrentUser
 ├── profile/                # GET/PATCH /me, ProfilesRepository
-└── health/                 # GET /api/v1/health
+├── health/                 # GET /api/v1/health
+└── curriculum/             # Curriculum importer (loader, row mapping, write plan, CLI)
+seed/
+├── README.md               # Curriculum format and writing rules
+└── curriculum/             # One folder per course: course.json + lessons/*.md, *.exercises.json
 supabase/
 ├── config.toml             # Supabase config (auth section mirrors the cloud project)
 ├── templates/              # Auth email templates
 ├── migrations/             # All DB changes
-└── seed.sql
+└── seed.sql                # Stub: content comes from seed/curriculum
 test/
 ├── setup-env.ts            # Deterministic env for API tests
 ├── support/                # Fake Supabase Auth (real ES256 JWTs) + test app factory

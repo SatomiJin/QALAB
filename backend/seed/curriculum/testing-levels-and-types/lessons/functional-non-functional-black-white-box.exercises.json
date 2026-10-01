@@ -1,0 +1,122 @@
+[
+  {
+    "key": "functional-or-non-functional",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each check on an online shop as **functional** or **non-functional**.",
+      "vi": "Xếp mỗi kiểm tra trên một shop online vào **functional** hoặc **non-functional**."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "functional", "text": { "en": "Functional (what it does)", "vi": "Functional (nó làm gì)" } },
+        { "id": "non-functional", "text": { "en": "Non-functional (how well it does it)", "vi": "Non-functional (nó làm tốt đến đâu)" } }
+      ],
+      "items": [
+        {
+          "id": "discount",
+          "text": {
+            "en": "The code `SAVE15` takes 15 % off the basket total",
+            "vi": "Mã `SAVE15` giảm 15 % tổng giỏ hàng"
+          }
+        },
+        {
+          "id": "response-time",
+          "text": {
+            "en": "The search page answers within 2 seconds with 300 users online",
+            "vi": "Trang tìm kiếm phản hồi trong 2 giây khi có 300 người dùng online"
+          }
+        },
+        {
+          "id": "lockout",
+          "text": {
+            "en": "An account is locked after five wrong passwords",
+            "vi": "Tài khoản bị khóa sau năm lần nhập sai mật khẩu"
+          }
+        },
+        {
+          "id": "keyboard",
+          "text": {
+            "en": "Checkout can be completed with the keyboard only",
+            "vi": "Có thể hoàn tất checkout chỉ bằng bàn phím"
+          }
+        },
+        {
+          "id": "safari",
+          "text": {
+            "en": "The product page displays correctly on Safari and Firefox",
+            "vi": "Trang sản phẩm hiển thị đúng trên Safari và Firefox"
+          }
+        },
+        {
+          "id": "confirmation-email",
+          "text": {
+            "en": "A confirmation email with the order number is sent after payment",
+            "vi": "Email xác nhận kèm mã đơn hàng được gửi sau khi thanh toán"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "discount": "functional",
+        "response-time": "non-functional",
+        "lockout": "functional",
+        "keyboard": "non-functional",
+        "safari": "non-functional",
+        "confirmation-email": "functional"
+      }
+    },
+    "explanation": {
+      "en": "Functional checks are about **behaviour and business rules**: the discount, the lockout and the confirmation email. Non-functional checks are about **quality**: speed under load (performance), keyboard use (accessibility) and browsers (compatibility). The account lockout is tempting to call security, and it is a security rule, but the test checks a defined behaviour (five tries, then locked), so it is a functional test of that rule.",
+      "vi": "Kiểm tra functional là về **hành vi và quy tắc nghiệp vụ**: giảm giá, khóa tài khoản và email xác nhận. Kiểm tra non-functional là về **chất lượng**: tốc độ khi tải cao (performance), dùng bằng bàn phím (accessibility) và trình duyệt (compatibility). Việc khóa tài khoản dễ bị xếp vào security, và đúng là một quy tắc bảo mật, nhưng test kiểm tra một hành vi được định nghĩa rõ (năm lần thử, rồi bị khóa), nên đây là functional test của quy tắc đó."
+    }
+  },
+  {
+    "key": "negative-test-pass",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A tester enters `anna@example` (no domain ending) in the sign-up email field and presses **Sign up**. Which outcomes mean this **negative test passed**? Select all that apply.",
+      "vi": "Tester nhập `anna@example` (thiếu phần đuôi domain) vào ô email đăng ký và bấm **Sign up**. Những kết quả nào nghĩa là **negative test này pass**? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "clear-error",
+          "text": {
+            "en": "A clear message under the field says the email is not valid",
+            "vi": "Một thông báo rõ ràng dưới ô nhập nói email không hợp lệ"
+          }
+        },
+        {
+          "id": "no-account",
+          "text": {
+            "en": "No account is created",
+            "vi": "Không có tài khoản nào được tạo"
+          }
+        },
+        {
+          "id": "account-created",
+          "text": {
+            "en": "The account is created and a welcome email is sent",
+            "vi": "Tài khoản được tạo và email chào mừng được gửi đi"
+          }
+        },
+        {
+          "id": "stack-trace",
+          "text": {
+            "en": "The page shows a server error with a stack trace, so the input was rejected",
+            "vi": "Trang hiện lỗi server kèm stack trace, nghĩa là input đã bị từ chối"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["clear-error", "no-account"] },
+    "explanation": {
+      "en": "A negative test **passes when bad input is handled gracefully**: a clear error and no data saved. Creating the account is a failure (the validation is missing). The stack trace is the tempting wrong answer: the input was indeed rejected, but by a crash that exposes internal details, which is a defect in itself.",
+      "vi": "Negative test **pass khi input xấu được xử lý đàng hoàng**: có lỗi rõ ràng và không lưu dữ liệu. Tạo được tài khoản là failure (thiếu validation). Stack trace là đáp án sai dễ chọn: đúng là input bị từ chối, nhưng bằng một lần crash làm lộ chi tiết bên trong, bản thân điều đó đã là một defect."
+    }
+  }
+]

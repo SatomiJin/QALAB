@@ -1,0 +1,81 @@
+{
+  "skill": "defect_mgmt",
+  "slug": "defect-management",
+  "order": 1,
+  "title": {
+    "en": "Defect management",
+    "vi": "Quản lý defect"
+  },
+  "description": {
+    "en": "Write bug reports that get fixed, rate severity and priority correctly, and follow a bug from New to Closed.",
+    "vi": "Viết bug report được sửa thật, đánh giá đúng severity và priority, và theo dõi một bug từ New đến Closed."
+  },
+  "modules": [
+    {
+      "key": "bug-reports",
+      "title": {
+        "en": "Bug reports",
+        "vi": "Bug report"
+      },
+      "description": {
+        "en": "The fields of a bug report, how to rate a bug, and how to write one a developer can act on.",
+        "vi": "Các trường của một bug report, cách đánh giá một bug, và cách viết để developer xử lý được ngay."
+      },
+      "lessons": [
+        {
+          "slug": "anatomy-of-a-bug-report",
+          "title": {
+            "en": "Anatomy of a bug report",
+            "vi": "Cấu trúc của một bug report"
+          },
+          "minutes": 9
+        },
+        {
+          "slug": "severity-vs-priority",
+          "title": {
+            "en": "Severity vs priority",
+            "vi": "Severity và priority"
+          },
+          "minutes": 9
+        },
+        {
+          "slug": "bug-reports-that-get-fixed",
+          "title": {
+            "en": "Writing bug reports that get fixed",
+            "vi": "Viết bug report để bug được sửa"
+          },
+          "minutes": 8
+        }
+      ]
+    },
+    {
+      "key": "bug-lifecycle",
+      "title": {
+        "en": "The bug lifecycle",
+        "vi": "Vòng đời của bug"
+      },
+      "description": {
+        "en": "The states a bug moves through, who moves it, and what happens when it is not simply fixed.",
+        "vi": "Các trạng thái một bug đi qua, ai chuyển trạng thái, và chuyện gì xảy ra khi bug không đơn giản là được sửa."
+      },
+      "lessons": [
+        {
+          "slug": "bug-lifecycle-states",
+          "title": {
+            "en": "Bug lifecycle states",
+            "vi": "Các trạng thái trong vòng đời bug"
+          },
+          "minutes": 8
+        },
+        {
+          "slug": "triage-and-other-outcomes",
+          "title": {
+            "en": "Triage and the other outcomes",
+            "vi": "Triage và các kết cục khác"
+          },
+          "minutes": 10
+        }
+      ]
+    }
+  ]
+}

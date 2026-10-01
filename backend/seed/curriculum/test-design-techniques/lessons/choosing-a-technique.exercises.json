@@ -1,0 +1,109 @@
+[
+  {
+    "key": "positive-or-negative",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "A profile page lets users upload a photo up to **5 MB** and change their phone number (digits only). Classify each test as **positive** or **negative**.",
+      "vi": "Trang hồ sơ cho phép người dùng upload ảnh tối đa **5 MB** và đổi số điện thoại (chỉ gồm chữ số). Phân loại mỗi test là **positive** hay **negative**."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "positive",
+          "text": { "en": "Positive test", "vi": "Positive test" }
+        },
+        {
+          "id": "negative",
+          "text": { "en": "Negative test", "vi": "Negative test" }
+        }
+      ],
+      "items": [
+        {
+          "id": "photo-2mb",
+          "text": { "en": "Upload a 2 MB JPG photo", "vi": "Upload ảnh JPG 2 MB" }
+        },
+        {
+          "id": "photo-5mb",
+          "text": { "en": "Upload a photo of exactly 5 MB", "vi": "Upload ảnh đúng 5 MB" }
+        },
+        {
+          "id": "photo-6mb",
+          "text": { "en": "Upload a 6 MB photo", "vi": "Upload ảnh 6 MB" }
+        },
+        {
+          "id": "phone-digits",
+          "text": { "en": "Save the phone number 0912345678", "vi": "Lưu số điện thoại 0912345678" }
+        },
+        {
+          "id": "phone-letters",
+          "text": { "en": "Save the phone number 09ABC45678", "vi": "Lưu số điện thoại 09ABC45678" }
+        },
+        {
+          "id": "phone-empty",
+          "text": { "en": "Save with the phone number field empty", "vi": "Lưu khi để trống field số điện thoại" }
+        },
+        {
+          "id": "pdf-as-photo",
+          "text": { "en": "Upload a PDF as the profile photo", "vi": "Upload một file PDF làm ảnh đại diện" }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "photo-2mb": "positive",
+        "photo-5mb": "positive",
+        "photo-6mb": "negative",
+        "phone-digits": "positive",
+        "phone-letters": "negative",
+        "phone-empty": "negative",
+        "pdf-as-photo": "negative"
+      }
+    },
+    "explanation": {
+      "en": "A positive test uses valid input and expects success; a negative test uses invalid input and expects a safe refusal. The tempting one is **exactly 5 MB**: it is a boundary value, but it is inside the limit, so it must be accepted, which makes it a positive test. 6 MB, letters in the phone number, an empty field and a PDF are all invalid, so they are negative tests.",
+      "vi": "Positive test dùng đầu vào hợp lệ và mong đợi thành công; negative test dùng đầu vào không hợp lệ và mong đợi bị từ chối một cách an toàn. Mục dễ nhầm là **đúng 5 MB**: đó là giá trị biên, nhưng nằm trong giới hạn nên phải được chấp nhận, vì vậy nó là positive test. 6 MB, số điện thoại có chữ, field để trống và file PDF đều không hợp lệ, nên là negative test."
+    }
+  },
+  {
+    "key": "pick-techniques",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Requirement: *\"The order total field accepts 0.01 to 10,000.00 USD. Shipping is free for orders of 50 USD or more; members get free shipping for any amount.\"* Which techniques fit this requirement best? Select all that apply.",
+      "vi": "Requirement: *\"Field tổng đơn hàng nhận từ 0.01 đến 10,000.00 USD. Đơn từ 50 USD trở lên được miễn phí giao hàng; thành viên được miễn phí giao hàng với mọi giá trị đơn.\"* Những kỹ thuật nào phù hợp nhất với requirement này? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "ep",
+          "text": { "en": "Equivalence partitioning", "vi": "Equivalence partitioning" }
+        },
+        {
+          "id": "bva",
+          "text": { "en": "Boundary value analysis", "vi": "Boundary value analysis" }
+        },
+        {
+          "id": "decision-table",
+          "text": { "en": "Decision table", "vi": "Decision table" }
+        },
+        {
+          "id": "state-transition",
+          "text": { "en": "State transition testing", "vi": "State transition testing" }
+        },
+        {
+          "id": "exploratory-only",
+          "text": { "en": "Only exploratory testing, because the rules are simple", "vi": "Chỉ exploratory testing, vì các quy tắc đơn giản" }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["ep", "bva", "decision-table"]
+    },
+    "explanation": {
+      "en": "The total is a range, so **EP** finds its partitions and **BVA** its edges (0.00 | 0.01, 49.99 | 50.00, 10,000.00 | 10,000.01, with a step of 0.01). Two conditions (member, total ≥ 50) combine into one action, so a **decision table** makes sure the member-with-a-small-order rule is tested. There is no status or history that changes behaviour, so state transition testing does not fit. Exploratory testing can add value, but \"only exploratory\" would leave the precise boundary rules without systematic tests.",
+      "vi": "Tổng đơn là một khoảng giá trị, nên **EP** tìm ra các partition và **BVA** tìm ra các biên của nó (0.00 | 0.01, 49.99 | 50.00, 10,000.00 | 10,000.01, với bước 0.01). Hai điều kiện (thành viên, tổng ≥ 50) kết hợp thành một action, nên **decision table** đảm bảo rule thành viên có đơn nhỏ được test. Không có trạng thái hay lịch sử nào làm thay đổi hành vi, nên state transition testing không phù hợp. Exploratory testing có thể bổ sung giá trị, nhưng \"chỉ exploratory\" sẽ bỏ các quy tắc biên chính xác lại mà không có test bài bản nào."
+    }
+  }
+]

@@ -1,0 +1,89 @@
+{
+  "skill": "api_testing",
+  "slug": "api-testing",
+  "order": 1,
+  "title": {
+    "en": "API testing",
+    "vi": "API testing"
+  },
+  "description": {
+    "en": "How HTTP works from a tester's point of view, and how to test an API: authentication, negative and boundary cases, schemas and contracts. Practise on the QA Learning Lab API itself.",
+    "vi": "HTTP hoạt động thế nào dưới góc nhìn của tester, và cách test một API: authentication, negative test và boundary value, schema và contract. Thực hành ngay trên API của QA Learning Lab."
+  },
+  "modules": [
+    {
+      "key": "http-for-testers",
+      "title": {
+        "en": "HTTP for testers",
+        "vi": "HTTP cho tester"
+      },
+      "description": {
+        "en": "Requests, methods, status codes, headers, parameters and bodies: the vocabulary you need before testing any API.",
+        "vi": "Request, method, status code, header, parameter và body: vốn từ cần có trước khi test bất kỳ API nào."
+      },
+      "lessons": [
+        {
+          "slug": "requests-and-methods",
+          "title": {
+            "en": "Requests and HTTP methods",
+            "vi": "Request và các HTTP method"
+          },
+          "minutes": 9
+        },
+        {
+          "slug": "status-codes-and-headers",
+          "title": {
+            "en": "Status codes and headers",
+            "vi": "Status code và header"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "parameters-and-bodies",
+          "title": {
+            "en": "Parameters, request and response bodies",
+            "vi": "Parameter, request body và response body"
+          },
+          "minutes": 9
+        }
+      ]
+    },
+    {
+      "key": "testing-an-api",
+      "title": {
+        "en": "Testing an API",
+        "vi": "Test một API"
+      },
+      "description": {
+        "en": "Access control, negative and boundary tests, and the schemas and contracts that keep clients working.",
+        "vi": "Kiểm soát truy cập, negative test và boundary test, cùng schema và contract giúp các client không bị hỏng."
+      },
+      "lessons": [
+        {
+          "slug": "authentication-and-authorization",
+          "title": {
+            "en": "Authentication and authorization",
+            "vi": "Authentication và authorization"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "negative-and-boundary-testing",
+          "title": {
+            "en": "Negative and boundary testing of an API",
+            "vi": "Negative test và boundary test cho API"
+          },
+          "minutes": 11
+        },
+        {
+          "slug": "schema-and-contract-testing",
+          "title": {
+            "en": "Schema validation and contract testing",
+            "vi": "Schema validation và contract testing"
+          },
+          "minutes": 10
+        }
+      ]
+    }
+  ]
+}

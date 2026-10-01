@@ -1,0 +1,154 @@
+[
+  {
+    "key": "which-state-now",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "For each situation, choose the **state** the bug should be in **after** what just happened.",
+      "vi": "Với mỗi tình huống, chọn **trạng thái** mà bug nên ở **sau khi** sự việc vừa xảy ra."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "assigned",
+          "text": { "en": "Assigned", "vi": "Assigned" }
+        },
+        {
+          "id": "in-progress",
+          "text": { "en": "In Progress", "vi": "In Progress" }
+        },
+        {
+          "id": "retest",
+          "text": { "en": "Retest", "vi": "Retest" }
+        },
+        {
+          "id": "verified",
+          "text": { "en": "Verified", "vi": "Verified" }
+        },
+        {
+          "id": "closed",
+          "text": { "en": "Closed", "vi": "Closed" }
+        },
+        {
+          "id": "reopened",
+          "text": { "en": "Reopened", "vi": "Reopened" }
+        }
+      ],
+      "items": [
+        {
+          "id": "triage-owner",
+          "text": {
+            "en": "In triage the lead accepts a New bug and gives it to Minh, a developer",
+            "vi": "Trong buổi triage, lead chấp nhận một bug New và giao cho Minh, một developer"
+          }
+        },
+        {
+          "id": "dev-starts",
+          "text": {
+            "en": "Minh opens the code and starts working on the fix",
+            "vi": "Minh mở code và bắt đầu sửa"
+          }
+        },
+        {
+          "id": "deployed",
+          "text": {
+            "en": "The fix is merged and deployed to the test environment in build 3.4.1",
+            "vi": "Bản sửa đã được merge và deploy lên môi trường test trong build 3.4.1"
+          }
+        },
+        {
+          "id": "retest-pass",
+          "text": {
+            "en": "On build 3.4.1 the original steps pass and the checks around the change pass too",
+            "vi": "Trên build 3.4.1 các bước ban đầu pass và các kiểm tra quanh chỗ thay đổi cũng pass"
+          }
+        },
+        {
+          "id": "retest-fail",
+          "text": {
+            "en": "On build 3.4.1 the same error still appears with the original steps",
+            "vi": "Trên build 3.4.1 đúng lỗi đó vẫn xuất hiện với các bước ban đầu"
+          }
+        },
+        {
+          "id": "released",
+          "text": {
+            "en": "A verified fix has been released to production and nothing more is needed",
+            "vi": "Một bản sửa đã verify được release lên production và không cần làm gì thêm"
+          }
+        },
+        {
+          "id": "came-back",
+          "text": {
+            "en": "Two releases later, a closed bug fails again with exactly the same steps",
+            "vi": "Hai bản release sau, một bug đã đóng lại lỗi y hệt với đúng các bước cũ"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "triage-owner": "assigned",
+        "dev-starts": "in-progress",
+        "deployed": "retest",
+        "retest-pass": "verified",
+        "retest-fail": "reopened",
+        "released": "closed",
+        "came-back": "reopened"
+      }
+    },
+    "explanation": {
+      "en": "The happy path is **New → Assigned → In Progress → Fixed → Retest → Verified → Closed**. A fix that is deployed where the tester can use it is in **Retest**, not Verified: only the tester's check makes it Verified. When the same failure is still there after the fix, or returns later, the bug is **Reopened**, so it goes back to a developer with its full history.",
+      "vi": "Luồng suôn sẻ là **New → Assigned → In Progress → Fixed → Retest → Verified → Closed**. Một bản sửa đã deploy lên nơi tester dùng được thì ở **Retest**, chưa phải Verified: chỉ khi tester kiểm tra xong thì mới thành Verified. Khi đúng failure đó vẫn còn sau bản sửa, hoặc quay lại về sau, bug được **Reopened**, để nó quay về developer cùng toàn bộ lịch sử."
+    }
+  },
+  {
+    "key": "reopen-or-new",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "You retest BUG-311 (*\"Discount SAVE15 gives 10 % instead of 15 %\"*) on the build with the fix. The discount is now correct, but the order total no longer includes the shipping cost. What do you do?",
+      "vi": "Bạn retest BUG-311 (*\"Mã SAVE15 chỉ giảm 10 % thay vì 15 %\"*) trên build có bản sửa. Giảm giá giờ đã đúng, nhưng tổng đơn hàng không còn cộng phí giao hàng. Bạn làm gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "verify-and-new",
+          "text": {
+            "en": "Verify BUG-311 and report the shipping problem as a new bug linked to it",
+            "vi": "Verify BUG-311 và báo vấn đề phí giao hàng thành một bug mới, liên kết với nó"
+          }
+        },
+        {
+          "id": "reopen",
+          "text": {
+            "en": "Reopen BUG-311 and add a comment about the shipping cost",
+            "vi": "Reopen BUG-311 và thêm comment về phí giao hàng"
+          }
+        },
+        {
+          "id": "close-only",
+          "text": {
+            "en": "Close BUG-311 and tell the developer about shipping in a chat message",
+            "vi": "Đóng BUG-311 và nhắn cho developer về phí giao hàng qua chat"
+          }
+        },
+        {
+          "id": "wait",
+          "text": {
+            "en": "Leave BUG-311 in Retest until the shipping problem is fixed too",
+            "vi": "Để BUG-311 ở Retest cho tới khi vấn đề phí giao hàng cũng được sửa"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["verify-and-new"]
+    },
+    "explanation": {
+      "en": "The failure described in BUG-311 is gone, so it is **Verified**. The missing shipping cost is a **different failure** (probably a regression caused by the fix): it gets its own report, linked to BUG-311, with its own severity and priority. Reopening is tempting because the area is the same, but it would hide a new problem inside the history of an old one and make the original fix look broken. A chat message leaves no trace, and keeping the bug in Retest blocks a fix that works.",
+      "vi": "Failure mô tả trong BUG-311 đã hết, nên nó được **Verified**. Việc thiếu phí giao hàng là một **failure khác** (có lẽ là regression do bản sửa gây ra): nó cần report riêng, liên kết với BUG-311, có severity và priority riêng. Reopen nghe hợp lý vì cùng khu vực, nhưng nó sẽ giấu một vấn đề mới trong lịch sử của bug cũ và khiến bản sửa ban đầu trông như bị hỏng. Tin nhắn chat thì không để lại dấu vết, còn giữ bug ở Retest là chặn một bản sửa đang đúng."
+    }
+  }
+]

@@ -1,0 +1,206 @@
+[
+  {
+    "key": "v-model-levels",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "In the V-model, every test level mirrors a development phase. Classify each test by the **test level** it belongs to.",
+      "vi": "Trong V-model, mỗi test level tương ứng với một giai đoạn phát triển. Xếp mỗi test vào **test level** mà nó thuộc về."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "component",
+          "text": {
+            "en": "Component (unit) testing",
+            "vi": "Component (unit) testing"
+          }
+        },
+        {
+          "id": "integration",
+          "text": {
+            "en": "Integration testing",
+            "vi": "Integration testing"
+          }
+        },
+        {
+          "id": "system",
+          "text": {
+            "en": "System testing",
+            "vi": "System testing"
+          }
+        },
+        {
+          "id": "acceptance",
+          "text": {
+            "en": "Acceptance testing",
+            "vi": "Acceptance testing"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "discount-function",
+          "text": {
+            "en": "A test that calls the calculateDiscount function directly with a basket of 100.00",
+            "vi": "Một test gọi trực tiếp hàm calculateDiscount với giỏ hàng 100.00"
+          }
+        },
+        {
+          "id": "order-payment",
+          "text": {
+            "en": "Checking that the order service sends the right amount to the payment service",
+            "vi": "Kiểm tra order service gửi đúng số tiền sang payment service"
+          }
+        },
+        {
+          "id": "end-to-end",
+          "text": {
+            "en": "Running the whole shop from sign-up to order confirmation against the system specification",
+            "vi": "Chạy toàn bộ cửa hàng từ đăng ký đến xác nhận đơn hàng, đối chiếu với đặc tả hệ thống"
+          }
+        },
+        {
+          "id": "business-signoff",
+          "text": {
+            "en": "The shop owner tries the new loyalty points feature to decide whether it can go live",
+            "vi": "Chủ cửa hàng dùng thử tính năng điểm thưởng mới để quyết định có cho go live hay không"
+          }
+        },
+        {
+          "id": "validator-class",
+          "text": {
+            "en": "Testing the EmailValidator class on its own, with no database",
+            "vi": "Test riêng class EmailValidator, không cần database"
+          }
+        },
+        {
+          "id": "api-database",
+          "text": {
+            "en": "Checking that a user saved through the API is stored correctly in the database",
+            "vi": "Kiểm tra một user được lưu qua API có được ghi đúng vào database"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "discount-function": "component",
+        "order-payment": "integration",
+        "end-to-end": "system",
+        "business-signoff": "acceptance",
+        "validator-class": "component",
+        "api-database": "integration"
+      }
+    },
+    "explanation": {
+      "en": "**Component testing** checks one function or class on its own (calculateDiscount, EmailValidator); it mirrors detailed design. **Integration testing** checks the interfaces between parts (order service to payment service, API to database); it mirrors architecture design. **System testing** checks the whole product end to end against the specification. **Acceptance testing** asks whether the users' needs are met and the product can be accepted, so it is done by or for the business (the shop owner). A common mistake is to call the API-to-database check a system test: it tests one interface, not the whole system.",
+      "vi": "**Component testing** kiểm tra riêng một hàm hoặc class (calculateDiscount, EmailValidator); nó tương ứng với thiết kế chi tiết. **Integration testing** kiểm tra interface giữa các phần (order service sang payment service, API sang database); nó tương ứng với thiết kế kiến trúc. **System testing** kiểm tra toàn bộ sản phẩm từ đầu đến cuối theo đặc tả. **Acceptance testing** trả lời câu hỏi nhu cầu người dùng có được đáp ứng và sản phẩm có thể được chấp nhận không, nên do phía business (chủ cửa hàng) thực hiện hoặc thực hiện cho họ. Lỗi thường gặp là gọi việc kiểm tra API sang database là system test: nó chỉ kiểm tra một interface, không phải toàn bộ hệ thống."
+    }
+  },
+  {
+    "key": "v-model-early-design",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A team follows the V-model. The business requirements for a new booking system have just been approved; no code exists yet. What should the tester do **now**?",
+      "vi": "Một nhóm làm theo V-model. Business requirement cho hệ thống đặt chỗ mới vừa được duyệt; chưa có dòng code nào. Tester nên làm gì **ngay bây giờ**?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "wait",
+          "text": {
+            "en": "Wait until coding is finished, because there is nothing to test yet",
+            "vi": "Chờ đến khi code xong, vì chưa có gì để test"
+          }
+        },
+        {
+          "id": "design-acceptance",
+          "text": {
+            "en": "Review the requirements and start designing the acceptance tests from them",
+            "vi": "Review requirement và bắt đầu thiết kế acceptance test dựa trên chúng"
+          }
+        },
+        {
+          "id": "write-unit",
+          "text": {
+            "en": "Write the unit tests for each function",
+            "vi": "Viết unit test cho từng hàm"
+          }
+        },
+        {
+          "id": "execute-system",
+          "text": {
+            "en": "Execute the system tests on the requirements document",
+            "vi": "Thực thi system test trên tài liệu requirement"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["design-acceptance"]
+    },
+    "explanation": {
+      "en": "In the V-model, the tests for a level are **designed** as soon as the matching development document exists. Business requirements are mirrored by **acceptance testing**, so the tester reviews them (finding unclear or untestable requirements early) and designs acceptance tests now; they are executed later, on the right side of the V. Waiting until coding is finished is the waterfall habit the V-model is meant to fix. Unit tests come from the detailed design, which does not exist yet, and nothing can be *executed* before there is software.",
+      "vi": "Trong V-model, test của mỗi cấp độ được **thiết kế** ngay khi tài liệu phát triển tương ứng có. Business requirement tương ứng với **acceptance testing**, nên tester review chúng (phát hiện sớm requirement mơ hồ hoặc không test được) và thiết kế acceptance test ngay lúc này; chúng sẽ được thực thi sau, ở nhánh phải của chữ V. Chờ code xong là thói quen của waterfall mà V-model muốn khắc phục. Unit test xuất phát từ thiết kế chi tiết, thứ chưa có, và chưa thể *thực thi* gì khi chưa có phần mềm."
+    }
+  },
+  {
+    "key": "iterative-regression",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A team delivers a new working increment every two weeks: sign-up first, then checkout, then discount codes. Which statements about testing in this iterative model are true? Select all that apply.",
+      "vi": "Một nhóm giao một phần sản phẩm chạy được mỗi hai tuần: đăng ký trước, rồi checkout, rồi mã giảm giá. Những phát biểu nào về kiểm thử trong mô hình iterative này là đúng? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "every-iteration",
+          "text": {
+            "en": "Testing happens in every iteration, not only before the final release",
+            "vi": "Kiểm thử diễn ra trong mọi vòng lặp, không chỉ trước bản release cuối"
+          }
+        },
+        {
+          "id": "regression-grows",
+          "text": {
+            "en": "The amount of regression testing grows with each increment, so automating it pays off",
+            "vi": "Khối lượng regression test tăng dần theo mỗi phần mới, nên tự động hoá nó rất đáng công"
+          }
+        },
+        {
+          "id": "old-safe",
+          "text": {
+            "en": "Features delivered in earlier iterations no longer need testing",
+            "vi": "Các tính năng đã giao ở vòng lặp trước không cần test nữa"
+          }
+        },
+        {
+          "id": "full-docs",
+          "text": {
+            "en": "All test cases for the whole product must be written in the first iteration",
+            "vi": "Mọi test case cho toàn bộ sản phẩm phải được viết ngay ở vòng lặp đầu tiên"
+          }
+        },
+        {
+          "id": "feedback",
+          "text": {
+            "en": "Users can give feedback on working software after each iteration",
+            "vi": "Người dùng có thể phản hồi trên phần mềm chạy được sau mỗi vòng lặp"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["every-iteration", "regression-grows", "feedback"]
+    },
+    "explanation": {
+      "en": "Iterative models plan, build and **test in every iteration**, and each iteration ends with working software users can react to. Because adding discount codes can break checkout, earlier features must be retested: **regression testing grows** with every increment, which is why teams automate it. Writing every test case up front would fail because requirements change between iterations; tests are kept light and updated as the product grows.",
+      "vi": "Các mô hình iterative lên kế hoạch, xây dựng và **test trong mọi vòng lặp**, và mỗi vòng kết thúc bằng phần mềm chạy được để người dùng phản hồi. Vì thêm mã giảm giá có thể làm hỏng checkout, các tính năng cũ phải được test lại: **regression testing lớn dần** theo mỗi phần mới, đó là lý do các nhóm tự động hoá nó. Viết mọi test case ngay từ đầu sẽ không ổn vì requirement thay đổi giữa các vòng lặp; test được giữ gọn và cập nhật khi sản phẩm lớn lên."
+    }
+  }
+]

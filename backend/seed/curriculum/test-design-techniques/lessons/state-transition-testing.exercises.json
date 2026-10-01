@@ -1,0 +1,113 @@
+[
+  {
+    "key": "order-transitions",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "An online shop defines these order transitions and **no others**:\n\n* Created → Paid (payment succeeds)\n* Created → Cancelled (customer cancels)\n* Paid → Shipped (warehouse ships)\n* Paid → Cancelled (customer cancels, refund)\n* Shipped → Delivered (courier confirms)\n\nClassify each attempted transition as **valid** or **invalid**.",
+      "vi": "Một cửa hàng online định nghĩa các transition của đơn hàng như sau và **không có transition nào khác**:\n\n* Created → Paid (thanh toán thành công)\n* Created → Cancelled (khách hủy)\n* Paid → Shipped (kho giao hàng đi)\n* Paid → Cancelled (khách hủy, hoàn tiền)\n* Shipped → Delivered (đơn vị vận chuyển xác nhận)\n\nPhân loại mỗi transition được thử là **hợp lệ** hay **không hợp lệ**."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "valid",
+          "text": { "en": "Valid transition", "vi": "Transition hợp lệ" }
+        },
+        {
+          "id": "invalid",
+          "text": { "en": "Invalid transition (must be refused)", "vi": "Transition không hợp lệ (phải bị từ chối)" }
+        }
+      ],
+      "items": [
+        { "id": "created-paid", "text": { "en": "Created → Paid", "vi": "Created → Paid" } },
+        { "id": "paid-shipped", "text": { "en": "Paid → Shipped", "vi": "Paid → Shipped" } },
+        { "id": "paid-cancelled", "text": { "en": "Paid → Cancelled", "vi": "Paid → Cancelled" } },
+        { "id": "shipped-delivered", "text": { "en": "Shipped → Delivered", "vi": "Shipped → Delivered" } },
+        { "id": "shipped-cancelled", "text": { "en": "Shipped → Cancelled", "vi": "Shipped → Cancelled" } },
+        { "id": "created-shipped", "text": { "en": "Created → Shipped", "vi": "Created → Shipped" } },
+        { "id": "delivered-paid", "text": { "en": "Delivered → Paid", "vi": "Delivered → Paid" } },
+        { "id": "cancelled-paid", "text": { "en": "Cancelled → Paid", "vi": "Cancelled → Paid" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "created-paid": "valid",
+        "paid-shipped": "valid",
+        "paid-cancelled": "valid",
+        "shipped-delivered": "valid",
+        "shipped-cancelled": "invalid",
+        "created-shipped": "invalid",
+        "delivered-paid": "invalid",
+        "cancelled-paid": "invalid"
+      }
+    },
+    "explanation": {
+      "en": "Only the five listed transitions are valid. **Shipped → Cancelled** is the tempting one: cancelling sounds always possible, but the model allows it only from Created and Paid, so once the parcel has left it must be refused. Created → Shipped skips payment, and Delivered and Cancelled are end states: paying a cancelled order is a classic defect (money taken for an order that will never ship). Each invalid transition deserves a negative test.",
+      "vi": "Chỉ năm transition được liệt kê là hợp lệ. **Shipped → Cancelled** là đáp án dễ nhầm: hủy đơn nghe như lúc nào cũng được, nhưng mô hình chỉ cho hủy từ Created và Paid, nên khi hàng đã rời kho thì phải bị từ chối. Created → Shipped bỏ qua bước thanh toán, còn Delivered và Cancelled là state kết thúc: thanh toán cho một đơn đã hủy là defect kinh điển (thu tiền cho một đơn sẽ không bao giờ được giao). Mỗi transition không hợp lệ đáng có một negative test."
+    }
+  },
+  {
+    "key": "article-workflow",
+    "type": "scenario",
+    "difficulty": "hard",
+    "question": {
+      "en": "A news site's CMS has this article workflow:\n\n* A writer creates an article in **Draft**.\n* The writer **submits** it: Draft → In review.\n* An editor **approves** it: In review → Published, or **rejects** it: In review → Draft.\n* An editor **archives** a published article: Published → Archived.\n\nNothing else is allowed. List the states and the valid transitions with their events, say how many tests you need at least to cover every valid transition once, and name at least two **invalid** transitions you would test, with the expected result.",
+      "vi": "CMS của một trang tin tức có workflow bài viết như sau:\n\n* Người viết tạo bài ở trạng thái **Draft**.\n* Người viết **submit** bài: Draft → In review.\n* Biên tập viên **approve**: In review → Published, hoặc **reject**: In review → Draft.\n* Biên tập viên **archive** một bài đã đăng: Published → Archived.\n\nNgoài ra không có gì khác được phép. Liệt kê các state và các transition hợp lệ kèm event của chúng, cho biết cần tối thiểu bao nhiêu test để phủ mỗi transition hợp lệ một lần, và nêu ít nhất hai transition **không hợp lệ** mà bạn sẽ test, kèm expected result."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "States",
+          "keywords": ["state", "trang thai", "draft", "archived"]
+        },
+        {
+          "concept": "Submit for review",
+          "keywords": ["submit", "gui duyet", "in review"]
+        },
+        {
+          "concept": "Approve to publish",
+          "keywords": ["approv", "phe duyet", "published"]
+        },
+        {
+          "concept": "Reject back to draft",
+          "keywords": ["reject", "tu choi"]
+        },
+        {
+          "concept": "Archive",
+          "keywords": ["archiv", "luu tru"]
+        },
+        {
+          "concept": "Invalid transition refused",
+          "keywords": ["invalid", "khong hop le", "not allowed", "khong duoc phep", "refus", "bi chan"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**States:** Draft, In review, Published, Archived.\n\n**Valid transitions:**\n\n1. Draft → In review (writer submits)\n2. In review → Published (editor approves)\n3. In review → Draft (editor rejects)\n4. Published → Archived (editor archives)\n\nThere are 4 valid transitions. One long test can cover them all: create, submit, reject (back to Draft), submit again, approve, archive. To cover each transition with its own short test, 4 tests.\n\n**Invalid transitions to test:**\n\n* Draft → Published directly (approve without review): the action is not allowed, the article stays in Draft and is not visible on the site.\n* Archived → Published: refused, the article stays Archived.\n* Published → Draft: refused, the published article does not disappear from the site.\n\nFor each test I check the new state, not only the message.",
+        "vi": "**State:** Draft, In review, Published, Archived.\n\n**Các transition hợp lệ:**\n\n1. Draft → In review (người viết submit)\n2. In review → Published (biên tập viên approve, phê duyệt)\n3. In review → Draft (biên tập viên reject, từ chối)\n4. Published → Archived (biên tập viên archive, lưu trữ)\n\nCó 4 transition hợp lệ. Một test dài có thể phủ tất cả: tạo bài, submit, reject (quay về Draft), submit lại, approve, archive. Nếu mỗi transition có một test ngắn riêng thì cần 4 test.\n\n**Các transition không hợp lệ cần test:**\n\n* Draft → Published trực tiếp (approve khi chưa review): thao tác không được phép, bài vẫn ở Draft và không hiện trên trang.\n* Archived → Published: bị từ chối, bài vẫn ở trạng thái Archived.\n* Published → Draft: bị từ chối, bài đã đăng không biến mất khỏi trang.\n\nVới mỗi test, tôi kiểm tra state mới chứ không chỉ thông báo."
+      },
+      "rubric": [
+        {
+          "id": "states",
+          "text": { "en": "I listed all four states", "vi": "Tôi liệt kê đủ bốn state" }
+        },
+        {
+          "id": "transitions",
+          "text": { "en": "Each valid transition has its event (submit, approve, reject, archive)", "vi": "Mỗi transition hợp lệ có event của nó (submit, approve, reject, archive)" }
+        },
+        {
+          "id": "count",
+          "text": { "en": "I said there are 4 valid transitions to cover", "vi": "Tôi nêu có 4 transition hợp lệ cần phủ" }
+        },
+        {
+          "id": "invalid",
+          "text": { "en": "I named at least two invalid transitions with the state that must not change", "vi": "Tôi nêu ít nhất hai transition không hợp lệ kèm state không được thay đổi" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "The model has 4 states and **4** valid transitions, so covering each one once takes 4 short tests or one long chained test. The valuable part is the invalid transitions: publishing a draft without review or re-publishing an archived article would bypass the editor completely. Their expected result is that the state does **not** change, which you verify, not just the error message.",
+      "vi": "Mô hình có 4 state và **4** transition hợp lệ, nên phủ mỗi transition một lần cần 4 test ngắn hoặc một test dài nối tiếp. Phần giá trị là các transition không hợp lệ: đăng một bản nháp mà không qua review, hay đăng lại một bài đã archive, sẽ qua mặt biên tập viên hoàn toàn. Expected result của chúng là state **không** thay đổi, điều bạn phải kiểm tra, chứ không chỉ xem thông báo lỗi."
+    }
+  }
+]

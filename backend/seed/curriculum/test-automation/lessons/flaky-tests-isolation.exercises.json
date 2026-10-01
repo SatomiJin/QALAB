@@ -1,0 +1,237 @@
+[
+  {
+    "key": "flaky-causes",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Each test below is flaky. Classify the **most likely cause**.",
+      "vi": "Mỗi test dưới đây đều flaky. Hãy xếp nó vào **nguyên nhân có khả năng nhất**."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "timing",
+          "text": {
+            "en": "Timing",
+            "vi": "Thời gian (timing)"
+          }
+        },
+        {
+          "id": "shared-state",
+          "text": {
+            "en": "Shared state",
+            "vi": "Trạng thái dùng chung (shared state)"
+          }
+        },
+        {
+          "id": "order",
+          "text": {
+            "en": "Order dependence",
+            "vi": "Phụ thuộc thứ tự (order dependence)"
+          }
+        },
+        {
+          "id": "external",
+          "text": {
+            "en": "External service",
+            "vi": "Dịch vụ bên ngoài"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "sleep-short",
+          "text": {
+            "en": "Waits a fixed 1 second after clicking Search, fails when CI is busy",
+            "vi": "Chờ cố định 1 giây sau khi bấm Search, fail khi CI đang bận"
+          }
+        },
+        {
+          "id": "toast-early",
+          "text": {
+            "en": "Reads the confirmation text once, right after the click, before the response arrives",
+            "vi": "Đọc text xác nhận một lần ngay sau cú click, trước khi response tới"
+          }
+        },
+        {
+          "id": "same-account",
+          "text": {
+            "en": "Two tests change the password of the same test account and run in parallel",
+            "vi": "Hai test cùng đổi mật khẩu của một tài khoản test và chạy song song"
+          }
+        },
+        {
+          "id": "cart-count",
+          "text": {
+            "en": "Expects an empty basket, but another parallel test adds items to the same user's basket",
+            "vi": "Mong đợi giỏ hàng trống, nhưng một test song song khác thêm sản phẩm vào giỏ của cùng user"
+          }
+        },
+        {
+          "id": "needs-a",
+          "text": {
+            "en": "Edits the product that an earlier test in the file creates; fails when run alone",
+            "vi": "Sửa sản phẩm mà một test trước đó trong file tạo ra; fail khi chạy một mình"
+          }
+        },
+        {
+          "id": "after-delete",
+          "text": {
+            "en": "Passes alone, fails whenever the \"delete all categories\" test runs before it",
+            "vi": "Pass khi chạy một mình, fail mỗi khi test \"xóa mọi category\" chạy trước nó"
+          }
+        },
+        {
+          "id": "payment-sandbox",
+          "text": {
+            "en": "Calls the payment provider's sandbox, which sometimes answers 503",
+            "vi": "Gọi sandbox của nhà cung cấp thanh toán, đôi khi trả về 503"
+          }
+        },
+        {
+          "id": "real-email",
+          "text": {
+            "en": "Waits for a real verification email from a third-party mail service",
+            "vi": "Chờ một email xác minh thật từ dịch vụ email bên thứ ba"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "sleep-short": "timing",
+        "toast-early": "timing",
+        "same-account": "shared-state",
+        "cart-count": "shared-state",
+        "needs-a": "order",
+        "after-delete": "order",
+        "payment-sandbox": "external",
+        "real-email": "external"
+      }
+    },
+    "explanation": {
+      "en": "**Timing**: the test guesses or checks too early (fixed sleeps, reading text once); fix with web-first assertions. **Shared state**: parallel tests touch the same data; fix with unique data per test. **Order dependence**: the result changes with which tests ran before; fix by letting each test create what it needs. **External service**: something you do not control is slow or down; stub it in most tests. The tempting confusion is between shared state and order dependence: shared state collides *at the same time* (parallel), order dependence depends on *what ran before*.",
+      "vi": "**Timing**: test đoán thời gian hoặc kiểm tra quá sớm (chờ cố định, đọc text một lần); sửa bằng web-first assertion. **Shared state**: các test song song đụng vào cùng dữ liệu; sửa bằng dữ liệu riêng cho mỗi test. **Order dependence**: kết quả thay đổi theo những test đã chạy trước; sửa bằng cách để mỗi test tự tạo thứ nó cần. **Dịch vụ bên ngoài**: thứ bạn không kiểm soát bị chậm hoặc sập; stub nó trong hầu hết các test. Chỗ dễ nhầm là giữa shared state và order dependence: shared state va chạm *cùng lúc* (song song), còn order dependence phụ thuộc vào *thứ đã chạy trước*."
+    }
+  },
+  {
+    "key": "investigate-flaky",
+    "type": "scenario",
+    "difficulty": "hard",
+    "question": {
+      "en": "The checkout UI test fails about **1 in 10 runs** on CI, with the error \"expected 'Order confirmed', received ''\". It has never failed on a developer laptop. The team's first idea is to add `waitForTimeout(5000)` and a retry. Describe how you would investigate, what causes you would look for, and how you would fix it properly.",
+      "vi": "UI test checkout fail khoảng **1 trên 10 lượt chạy** trên CI, với lỗi \"expected 'Order confirmed', received ''\". Nó chưa từng fail trên laptop của developer. Ý tưởng đầu tiên của team là thêm `waitForTimeout(5000)` và một lần retry. Hãy mô tả bạn sẽ điều tra thế nào, tìm những nguyên nhân nào, và sửa đúng cách ra sao."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Reproduce with repeated runs",
+          "keywords": [
+            "repeat",
+            "reproduce",
+            "many times",
+            "chay lap",
+            "tai hien",
+            "nhieu lan"
+          ]
+        },
+        {
+          "concept": "Traces and evidence",
+          "keywords": [
+            "trace",
+            "screenshot",
+            "video",
+            "network log",
+            "bang chung"
+          ]
+        },
+        {
+          "concept": "Timing / waiting",
+          "keywords": [
+            "timing",
+            "too early",
+            "fixed sleep",
+            "web-first",
+            "qua som",
+            "cho co dinh"
+          ]
+        },
+        {
+          "concept": "Shared data or order dependence",
+          "keywords": [
+            "shared",
+            "parallel",
+            "order dependen",
+            "dung chung",
+            "song song",
+            "thu tu"
+          ]
+        },
+        {
+          "concept": "Root cause instead of sleep or retry",
+          "keywords": [
+            "root cause",
+            "nguyen nhan goc"
+          ]
+        },
+        {
+          "concept": "Possible product bug",
+          "keywords": [
+            "product bug",
+            "race condition",
+            "real bug",
+            "bug in the product",
+            "bug that su",
+            "bug cua san pham"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Do not add the sleep and retry yet**: they hide the problem and slow every run. Find the root cause first.\n\n1. **Reproduce**: run the test many times with `--repeat-each=20`, alone and with the full suite, in parallel and with `--workers=1`. If it fails only in parallel or only after certain tests, suspect shared data or order dependence.\n2. **Collect evidence**: open the trace, screenshot, video and network log of a failing run and compare it with a passing one. Did the order request return slowly, return an error, or never get sent?\n3. **Check timing**: the error means the confirmation text was read while still empty. If the test reads `textContent()` once or uses a fixed sleep, it checks too early on a slow CI machine. Fix: a web-first assertion such as `await expect(page.getByTestId('order-status')).toHaveText('Order confirmed')`, or wait for the order response.\n4. **Check shared data**: does the test use a fixed account or product that other parallel tests also change (stock running out, basket emptied)? Fix: unique data per test created in a fixture.\n5. **Check external services**: does checkout call a payment sandbox that is sometimes slow? Stub it for this test.\n6. **Consider a real product bug**: if the trace shows the app itself failing (an error from the API, a race condition when the confirmation loads), report it as a bug with the trace attached.\n\nAfter the fix, run it 50 times again to confirm it is stable. Only if it cannot be fixed at once, quarantine it with a ticket and an owner.",
+        "vi": "**Chưa thêm lệnh chờ và retry vội**: chúng che giấu vấn đề và làm mọi lượt chạy chậm đi. Hãy tìm nguyên nhân gốc (root cause) trước.\n\n1. **Tái hiện**: chạy test nhiều lần với `--repeat-each=20`, một mình và cùng cả bộ, song song và với `--workers=1`. Nếu nó chỉ fail khi chạy song song hoặc chỉ sau một số test nhất định, hãy nghi ngờ dữ liệu dùng chung hoặc phụ thuộc thứ tự.\n2. **Thu thập bằng chứng**: mở trace, screenshot, video và network log của một lượt fail và so sánh với một lượt pass. Request đặt hàng trả về chậm, trả về lỗi, hay chưa bao giờ được gửi?\n3. **Kiểm tra timing**: lỗi cho thấy text xác nhận được đọc khi vẫn còn rỗng. Nếu test đọc `textContent()` một lần hoặc dùng chờ cố định, nó kiểm tra quá sớm trên máy CI chậm. Cách sửa: web-first assertion như `await expect(page.getByTestId('order-status')).toHaveText('Order confirmed')`, hoặc chờ response của đơn hàng.\n4. **Kiểm tra dữ liệu dùng chung**: test có dùng một tài khoản hay sản phẩm cố định mà các test song song khác cũng thay đổi không (hết hàng, giỏ bị xóa)? Cách sửa: dữ liệu riêng cho mỗi test, tạo trong fixture.\n5. **Kiểm tra dịch vụ bên ngoài**: checkout có gọi sandbox thanh toán đôi khi chậm không? Stub nó cho test này.\n6. **Cân nhắc bug thật sự của sản phẩm**: nếu trace cho thấy chính ứng dụng bị lỗi (API trả lỗi, race condition khi trang xác nhận tải), hãy báo cáo nó là bug, đính kèm trace.\n\nSau khi sửa, chạy lại 50 lần để xác nhận đã ổn định. Chỉ khi không sửa ngay được mới quarantine nó, kèm ticket và người phụ trách."
+      },
+      "rubric": [
+        {
+          "id": "no-sleep",
+          "text": {
+            "en": "I explained why a fixed sleep and a retry are not a real fix",
+            "vi": "Tôi giải thích vì sao chờ cố định và retry không phải cách sửa thật"
+          }
+        },
+        {
+          "id": "reproduce",
+          "text": {
+            "en": "I reproduce the failure with repeated runs, alone and in parallel",
+            "vi": "Tôi tái hiện lỗi bằng cách chạy lặp lại, một mình và song song"
+          }
+        },
+        {
+          "id": "evidence",
+          "text": {
+            "en": "I use traces, screenshots or logs to compare a failing and a passing run",
+            "vi": "Tôi dùng trace, screenshot hoặc log để so sánh lượt fail và lượt pass"
+          }
+        },
+        {
+          "id": "causes",
+          "text": {
+            "en": "I named at least two possible causes (timing, shared data, order, external service)",
+            "vi": "Tôi nêu ít nhất hai nguyên nhân có thể (timing, dữ liệu dùng chung, thứ tự, dịch vụ bên ngoài)"
+          }
+        },
+        {
+          "id": "product",
+          "text": {
+            "en": "I considered that the flakiness might be a real bug in the product",
+            "vi": "Tôi cân nhắc khả năng sự flaky là một bug thật trong sản phẩm"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A flaky test is investigated like a bug: **reproduce** it (repeated runs, parallel vs serial), collect **evidence** (traces, screenshots, logs), find the pattern, and fix the **root cause**. An empty text on a slow CI machine points first to **timing** (checking too early), then to **shared data**, **order dependence** or an **external service**. A longer sleep and a retry would make the test slower and hide the cause, and could hide a real race condition in the product.",
+      "vi": "Flaky test được điều tra như một bug: **tái hiện** nó (chạy lặp lại, song song và tuần tự), thu thập **bằng chứng** (trace, screenshot, log), tìm quy luật, rồi sửa **root cause**. Text rỗng trên máy CI chậm trước hết chỉ tới **timing** (kiểm tra quá sớm), sau đó tới **dữ liệu dùng chung**, **phụ thuộc thứ tự** hoặc **dịch vụ bên ngoài**. Chờ lâu hơn và retry sẽ làm test chậm hơn và che giấu nguyên nhân, thậm chí che mất một race condition thật trong sản phẩm."
+    }
+  }
+]

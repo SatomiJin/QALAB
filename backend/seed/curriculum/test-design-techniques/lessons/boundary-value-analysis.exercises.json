@@ -1,0 +1,147 @@
+[
+  {
+    "key": "two-value-age",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "An insurance form accepts an age from **18 to 65** (whole numbers, both ends included). Which values does **2-value** boundary value analysis give?",
+      "vi": "Một form bảo hiểm nhận tuổi từ **18 đến 65** (số nguyên, bao gồm hai đầu). BVA **2 giá trị** cho ra những giá trị nào?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "two-value",
+          "text": { "en": "17, 18, 65, 66", "vi": "17, 18, 65, 66" }
+        },
+        {
+          "id": "limits-only",
+          "text": { "en": "18, 65", "vi": "18, 65" }
+        },
+        {
+          "id": "three-value",
+          "text": { "en": "17, 18, 19, 64, 65, 66", "vi": "17, 18, 19, 64, 65, 66" }
+        },
+        {
+          "id": "far-values",
+          "text": { "en": "0, 18, 65, 100", "vi": "0, 18, 65, 100" }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["two-value"]
+    },
+    "explanation": {
+      "en": "2-value BVA tests each boundary and its closest neighbour across it: **17 | 18** at the bottom and **65 | 66** at the top. Testing only 18 and 65 never checks that 17 and 66 are rejected. 17, 18, 19, 64, 65, 66 is the **3-value** set. 0 and 100 are invalid values, but far from the edge, so an off-by-one defect at 17 or 66 would go unnoticed.",
+      "vi": "BVA 2 giá trị test mỗi biên và giá trị liền kề ở phía bên kia: **17 | 18** ở biên dưới và **65 | 66** ở biên trên. Chỉ test 18 và 65 thì không bao giờ kiểm tra được 17 và 66 có bị từ chối hay không. 17, 18, 19, 64, 65, 66 là bộ **BVA 3 giá trị**. 0 và 100 là giá trị không hợp lệ nhưng ở xa biên, nên một defect off-by-one ở 17 hoặc 66 sẽ bị bỏ sót."
+    }
+  },
+  {
+    "key": "two-or-three-value",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "A field accepts whole numbers from **1 to 100**. Classify each test value: is it in the **2-value** BVA set, added **only by 3-value** BVA, or **not a boundary value** at all?",
+      "vi": "Một field nhận số nguyên từ **1 đến 100**. Phân loại mỗi giá trị test: nó thuộc bộ BVA **2 giá trị**, **chỉ có trong BVA 3 giá trị**, hay **không phải giá trị biên**?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "two-value",
+          "text": { "en": "In the 2-value BVA set", "vi": "Thuộc bộ BVA 2 giá trị" }
+        },
+        {
+          "id": "three-only",
+          "text": { "en": "Added only by 3-value BVA", "vi": "Chỉ có thêm ở BVA 3 giá trị" }
+        },
+        {
+          "id": "not-boundary",
+          "text": { "en": "Not a boundary value", "vi": "Không phải giá trị biên" }
+        }
+      ],
+      "items": [
+        { "id": "v0", "text": { "en": "0", "vi": "0" } },
+        { "id": "v1", "text": { "en": "1", "vi": "1" } },
+        { "id": "v2", "text": { "en": "2", "vi": "2" } },
+        { "id": "v50", "text": { "en": "50", "vi": "50" } },
+        { "id": "v99", "text": { "en": "99", "vi": "99" } },
+        { "id": "v100", "text": { "en": "100", "vi": "100" } },
+        { "id": "v101", "text": { "en": "101", "vi": "101" } },
+        { "id": "v-20", "text": { "en": "-20", "vi": "-20" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "v0": "two-value",
+        "v1": "two-value",
+        "v2": "three-only",
+        "v50": "not-boundary",
+        "v99": "three-only",
+        "v100": "two-value",
+        "v101": "two-value",
+        "v-20": "not-boundary"
+      }
+    },
+    "explanation": {
+      "en": "2-value BVA: **0, 1, 100, 101** (each boundary plus its neighbour on the other side). 3-value BVA adds the neighbours on the inside: **2 and 99**. 50 and -20 are good EP values (valid and invalid partitions), but they are far from any edge, so they are not boundary values. A common mistake is to put 2 and 99 in the 2-value set: they are inside neighbours, which only 3-value BVA tests.",
+      "vi": "BVA 2 giá trị: **0, 1, 100, 101** (mỗi biên cộng giá trị liền kề phía bên kia). BVA 3 giá trị thêm các giá trị liền kề phía bên trong: **2 và 99**. 50 và -20 là giá trị EP tốt (partition hợp lệ và không hợp lệ), nhưng ở xa mọi biên nên không phải giá trị biên. Lỗi hay gặp là xếp 2 và 99 vào bộ 2 giá trị: chúng là giá trị liền kề phía trong, chỉ BVA 3 giá trị mới test."
+    }
+  },
+  {
+    "key": "username-upper-boundary",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "A sign-up form requires a username of **3 to 15 characters**. Write one test case for the **upper boundary** with 2-value BVA: check the value on the boundary and the value just above it. Too long a username must show *\"Username must be 3 to 15 characters\"*.",
+      "vi": "Một form đăng ký yêu cầu username dài **3 đến 15 ký tự**. Viết một test case cho **biên trên** bằng BVA 2 giá trị: kiểm tra giá trị nằm trên biên và giá trị vừa vượt qua biên. Username quá dài phải hiện thông báo *\"Username must be 3 to 15 characters\"*."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": ["title", "preconditions", "testData", "steps", "expectedResult", "priority", "testType"],
+      "expectedConcepts": [
+        {
+          "concept": "Boundary value",
+          "keywords": ["boundar", "BVA", "bien", "gia tri bien", "edge"]
+        },
+        {
+          "concept": "15 characters (on the boundary)",
+          "keywords": ["15"]
+        },
+        {
+          "concept": "16 characters (just above)",
+          "keywords": ["16"]
+        },
+        {
+          "concept": "15 is accepted",
+          "keywords": ["accept", "chap nhan", "success", "thanh cong", "hop le", "valid"]
+        },
+        {
+          "concept": "16 is rejected with the message",
+          "keywords": ["reject", "tu choi", "error", "message", "thong bao", "bao loi"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Test case ID:** TC-SIGNUP-07\n\n**Title:** Username length upper boundary: 15 characters accepted, 16 rejected\n\n**Preconditions:** the sign-up page is open; the usernames below are not taken.\n\n**Test data (boundary values, 2-value BVA):**\n\n* 15 characters: `abcdefghijklmno`\n* 16 characters: `abcdefghijklmnop`\n\n**Steps:**\n\n1. Fill in a valid email and password.\n2. Enter the 15-character username and submit.\n3. Repeat with a new email and the 16-character username.\n\n**Expected result:** with 15 characters the account is created successfully; with 16 characters the form is rejected with the error message \"Username must be 3 to 15 characters\" and no account is created.\n\n**Priority:** medium\n\n**Test type:** functional, boundary value",
+        "vi": "**Test case ID:** TC-SIGNUP-07\n\n**Title:** Biên trên độ dài username: 15 ký tự được chấp nhận, 16 ký tự bị từ chối\n\n**Preconditions:** trang đăng ký đang mở; các username dưới đây chưa ai dùng.\n\n**Test data (giá trị biên, BVA 2 giá trị):**\n\n* 15 ký tự: `abcdefghijklmno`\n* 16 ký tự: `abcdefghijklmnop`\n\n**Steps:**\n\n1. Nhập email và mật khẩu hợp lệ.\n2. Nhập username 15 ký tự và gửi form.\n3. Lặp lại với một email mới và username 16 ký tự.\n\n**Expected result:** với 15 ký tự, tài khoản được tạo thành công; với 16 ký tự, form bị từ chối kèm thông báo lỗi \"Username must be 3 to 15 characters\" và không có tài khoản nào được tạo.\n\n**Priority:** medium\n\n**Test type:** functional, boundary value"
+      },
+      "rubric": [
+        {
+          "id": "both-sides",
+          "text": { "en": "I tested both 15 (on the boundary) and 16 (just above)", "vi": "Tôi test cả 15 (trên biên) và 16 (vừa vượt biên)" }
+        },
+        {
+          "id": "exact-data",
+          "text": { "en": "My test data gives exact strings or exact lengths, not \"a long name\"", "vi": "Test data của tôi ghi chuỗi hoặc độ dài cụ thể, không phải \"một tên dài\"" }
+        },
+        {
+          "id": "two-results",
+          "text": { "en": "I gave a separate expected result for each value", "vi": "Tôi ghi expected result riêng cho từng giá trị" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "The upper boundary is 15, its closest neighbour across it is 16 (the step for text length is one character). A test with 20 characters is a valid negative test but not a boundary test: it would pass even if the code wrongly accepted 16. Each value needs its own expected result: **accepted** for 15, **rejected with the message** for 16.",
+      "vi": "Biên trên là 15, giá trị liền kề phía bên kia là 16 (bước của độ dài chuỗi là một ký tự). Một test với 20 ký tự là negative test hợp lệ nhưng không phải test biên: nó vẫn pass ngay cả khi code chấp nhận nhầm 16. Mỗi giá trị cần expected result riêng: **được chấp nhận** với 15, **bị từ chối kèm thông báo** với 16."
+    }
+  }
+]

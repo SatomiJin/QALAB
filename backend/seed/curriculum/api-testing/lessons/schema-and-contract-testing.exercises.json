@@ -1,0 +1,122 @@
+[
+  {
+    "key": "breaking-or-not",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "The mobile app uses `GET /courses` and `POST /notes`. Which API changes break the contract with it?",
+      "vi": "App mobile dùng `GET /courses` và `POST /notes`. Những thay đổi nào của API phá vỡ contract với app?"
+    },
+    "prompt": {
+      "categories": [
+        { "id": "breaking", "text": { "en": "Breaking change", "vi": "Breaking change" } },
+        { "id": "safe", "text": { "en": "Non-breaking change", "vi": "Thay đổi không breaking" } }
+      ],
+      "items": [
+        { "id": "rename", "text": { "en": "Rename items[].title to items[].name", "vi": "Đổi tên items[].title thành items[].name" } },
+        { "id": "retype", "text": { "en": "Return total as a string (\"45\") instead of a number", "vi": "Trả total dưới dạng chuỗi (\"45\") thay vì số" } },
+        { "id": "required", "text": { "en": "Make the optional dueDate of POST /notes required", "vi": "Biến dueDate tùy chọn của POST /notes thành bắt buộc" } },
+        { "id": "status", "text": { "en": "POST /notes returns 200 instead of the documented 201", "vi": "POST /notes trả 200 thay vì 201 như tài liệu" } },
+        { "id": "new-field", "text": { "en": "Add an optional minutes field to each course", "vi": "Thêm field tùy chọn minutes vào mỗi course" } },
+        { "id": "new-endpoint", "text": { "en": "Add a new endpoint GET /tags", "vi": "Thêm endpoint mới GET /tags" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "rename": "breaking",
+        "retype": "breaking",
+        "required": "breaking",
+        "status": "breaking",
+        "new-field": "safe",
+        "new-endpoint": "safe"
+      }
+    },
+    "explanation": {
+      "en": "A change is **breaking** when an existing client that does not change stops working: it reads a field that is gone (`title`), gets a type it does not expect (`\"45\"`), sends a request that is now rejected (missing `dueDate` → `400`) or checks a status that no longer comes (`201`). Adding an optional field or a new endpoint is safe, because old clients never read or call it. The status change is the tempting one to call harmless (\"200 is still success\"), but a client that checks for exactly `201` breaks.",
+      "vi": "Một thay đổi là **breaking** khi một client hiện có, không sửa gì, bỗng ngừng hoạt động: nó đọc một field đã mất (`title`), nhận một kiểu không mong đợi (`\"45\"`), gửi một request giờ bị từ chối (thiếu `dueDate` → `400`) hoặc kiểm tra một status không còn trả về (`201`). Thêm field tùy chọn hay endpoint mới thì an toàn, vì client cũ không bao giờ đọc hay gọi tới. Việc đổi status là chỗ dễ tưởng vô hại (\"200 vẫn là thành công\"), nhưng client kiểm tra đúng `201` sẽ bị hỏng."
+    }
+  },
+  {
+    "key": "plan-courses-endpoint",
+    "type": "scenario",
+    "difficulty": "hard",
+    "question": {
+      "en": "List the tests you would run for `GET /api/v1/courses` of the QA Learning Lab API. What you know: it needs a Bearer token; it accepts `page` (≥ 1, default 1), `pageSize` (20, 50 or 100, default 20) and `lang` (`en` or `vi`); unknown query parameters are `400`; the response is `{ items, total, page, pageSize }`; errors are `{ statusCode, error, message, details? }`. Cover access, valid and invalid parameters, and the response contract.",
+      "vi": "Liệt kê các test bạn sẽ chạy cho `GET /api/v1/courses` của API QA Learning Lab. Những gì bạn biết: endpoint cần Bearer token; nhận `page` (≥ 1, mặc định 1), `pageSize` (20, 50 hoặc 100, mặc định 20) và `lang` (`en` hoặc `vi`); query parameter lạ trả `400`; response có dạng `{ items, total, page, pageSize }`; lỗi có dạng `{ statusCode, error, message, details? }`. Bao phủ phần truy cập, parameter hợp lệ và không hợp lệ, và contract của response."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Missing or invalid token gives 401",
+          "keywords": ["401", "without token", "no token", "khong co token", "unauthor"]
+        },
+        {
+          "concept": "Pagination and defaults",
+          "keywords": ["pagination", "default", "phan trang", "mac dinh"]
+        },
+        {
+          "concept": "Invalid values give 400",
+          "keywords": ["400", "invalid", "khong hop le"]
+        },
+        {
+          "concept": "Page past the end",
+          "keywords": ["past the end", "empty items", "page=99", "items rong", "vuot qua"]
+        },
+        {
+          "concept": "Schema / response shape",
+          "keywords": ["schema", "shape", "cau truc", "kieu du lieu"]
+        },
+        {
+          "concept": "Language parameter",
+          "keywords": ["lang", "ngon ngu", "vietnamese", "tieng viet"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Access**\n\n1. No Authorization header → 401 with the error shape.\n2. Malformed or expired token → 401.\n3. Valid learner token → 200.\n\n**Pagination**\n\n4. No parameters → defaults: page 1, pageSize 20, at most 20 items.\n5. pageSize 20, 50 and 100 → 200, items never more than pageSize.\n6. Walk every page → no course twice, none missing, total the same on every page.\n7. Page past the end (page=99) → 200 with empty items and the real total.\n\n**Invalid input → 400 with details**\n\n8. page=0, page=-1, page=abc, page=1.5.\n9. pageSize=19, 21, 0, 1000, abc.\n10. lang=fr.\n11. Unknown query parameter (?sort=title).\n\n**Language**\n\n12. lang=vi → Vietnamese titles where translated, response says language and translation; lang=en → English.\n\n**Contract**\n\n13. Validate the body against the OpenAPI schema: items array, total, page, pageSize integers, no extra fields, Content-Type application/json.\n14. Only published courses are listed, in catalogue order.",
+        "vi": "**Truy cập**\n\n1. Không có header Authorization → 401 với cấu trúc lỗi chuẩn.\n2. Token sai định dạng hoặc hết hạn → 401.\n3. Token learner hợp lệ → 200.\n\n**Pagination (phân trang)**\n\n4. Không có parameter → giá trị mặc định: page 1, pageSize 20, tối đa 20 item.\n5. pageSize 20, 50 và 100 → 200, số item không bao giờ vượt pageSize.\n6. Đi qua mọi trang → không course nào lặp lại, không thiếu course nào, total giống nhau ở mọi trang.\n7. Trang vượt quá cuối (page=99) → 200 với items rỗng và total thật.\n\n**Dữ liệu không hợp lệ → 400 kèm details**\n\n8. page=0, page=-1, page=abc, page=1.5.\n9. pageSize=19, 21, 0, 1000, abc.\n10. lang=fr.\n11. Query parameter lạ (?sort=title).\n\n**Ngôn ngữ**\n\n12. lang=vi → title tiếng Việt ở chỗ đã được dịch, response ghi rõ language và translation; lang=en → tiếng Anh.\n\n**Contract**\n\n13. Validate body theo schema OpenAPI: items là mảng, total, page, pageSize là số nguyên, không có field thừa, Content-Type là application/json (kiểm tra cấu trúc và kiểu dữ liệu).\n14. Chỉ liệt kê course đã publish, theo đúng thứ tự catalogue."
+      },
+      "rubric": [
+        {
+          "id": "access",
+          "text": {
+            "en": "I tested without a token and with an invalid token, not only the happy path",
+            "vi": "Tôi test cả khi không có token và khi token sai, không chỉ happy path"
+          }
+        },
+        {
+          "id": "boundaries",
+          "text": {
+            "en": "I tested the boundaries of page and pageSize, not just one bad value",
+            "vi": "Tôi test các giá trị biên của page và pageSize, không chỉ một giá trị sai"
+          }
+        },
+        {
+          "id": "pages",
+          "text": {
+            "en": "I checked that paging through the list gives every course exactly once",
+            "vi": "Tôi kiểm tra rằng đi qua các trang thì mỗi course xuất hiện đúng một lần"
+          }
+        },
+        {
+          "id": "contract",
+          "text": {
+            "en": "I validated the response against the schema, including types and extra fields",
+            "vi": "Tôi validate response theo schema, gồm cả kiểu dữ liệu và field thừa"
+          }
+        },
+        {
+          "id": "expected",
+          "text": {
+            "en": "Every test has an exact expected status code",
+            "vi": "Mỗi test đều có status code mong đợi chính xác"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A complete plan for one endpoint covers four areas: **access** (`401` without or with a bad token), **valid parameters** (defaults, every allowed value, the last page and a page past the end), **invalid parameters** (`400` with `details` for boundaries such as `page=0` and `pageSize=21`, wrong types, unknown parameters) and the **contract** (schema, types, no extra fields, `Content-Type`). Checking only that a list comes back is the common gap: most real bugs hide in the edges and in the shape of the response.",
+      "vi": "Một kế hoạch đầy đủ cho một endpoint bao phủ bốn mảng: **truy cập** (`401` khi không có token hoặc token sai), **parameter hợp lệ** (giá trị mặc định, mọi giá trị được phép, trang cuối và trang vượt quá cuối), **parameter không hợp lệ** (`400` kèm `details` cho các giá trị biên như `page=0` và `pageSize=21`, sai kiểu, parameter lạ) và **contract** (schema, kiểu dữ liệu, không có field thừa, `Content-Type`). Chỉ kiểm tra rằng có danh sách trả về là lỗ hổng hay gặp: phần lớn bug thật ẩn ở các mép và ở cấu trúc của response."
+    }
+  }
+]

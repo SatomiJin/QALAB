@@ -1,0 +1,145 @@
+[
+  {
+    "key": "where-tests-run",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Decide where each suite fits best in the pipeline.",
+      "vi": "Quyết định mỗi bộ test phù hợp nhất ở đâu trong pipeline."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "every-pr",
+          "text": {
+            "en": "On every pull request (blocks the merge)",
+            "vi": "Ở mọi pull request (chặn merge)"
+          }
+        },
+        {
+          "id": "nightly",
+          "text": {
+            "en": "Nightly",
+            "vi": "Hằng đêm"
+          }
+        },
+        {
+          "id": "after-deploy",
+          "text": {
+            "en": "After each deploy, against the deployed environment",
+            "vi": "Sau mỗi lần deploy, trên môi trường vừa deploy"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "unit",
+          "text": {
+            "en": "1,200 unit tests that finish in 40 seconds",
+            "vi": "1.200 unit test chạy xong trong 40 giây"
+          }
+        },
+        {
+          "id": "api-core",
+          "text": {
+            "en": "API tests for orders and payments, about 2 minutes",
+            "vi": "API test cho đơn hàng và thanh toán, khoảng 2 phút"
+          }
+        },
+        {
+          "id": "ui-key",
+          "text": {
+            "en": "UI tests for sign-in and checkout, run in parallel in 6 minutes",
+            "vi": "UI test cho đăng nhập và checkout, chạy song song trong 6 phút"
+          }
+        },
+        {
+          "id": "cross-browser",
+          "text": {
+            "en": "The full UI regression on four browsers and two screen sizes, 90 minutes",
+            "vi": "Toàn bộ UI regression trên bốn trình duyệt và hai kích thước màn hình, 90 phút"
+          }
+        },
+        {
+          "id": "smoke-login",
+          "text": {
+            "en": "Home page loads, a test account can sign in, the health endpoint answers",
+            "vi": "Trang chủ tải được, một tài khoản test đăng nhập được, endpoint health trả lời"
+          }
+        },
+        {
+          "id": "smoke-config",
+          "text": {
+            "en": "The deployed app reaches its database and uses the production settings",
+            "vi": "Ứng dụng vừa deploy kết nối được database và dùng đúng cấu hình production"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "unit": "every-pr",
+        "api-core": "every-pr",
+        "ui-key": "every-pr",
+        "cross-browser": "nightly",
+        "smoke-login": "after-deploy",
+        "smoke-config": "after-deploy"
+      }
+    },
+    "explanation": {
+      "en": "Fast, reliable suites (unit, core API, the key UI journeys in parallel) run **on every pull request** and block the merge: that is where feedback is cheapest. A 90-minute cross-browser pack is too slow to wait for on each change, so it runs **nightly**. Short **smoke tests after deploy** check what pre-merge tests cannot: configuration, database connection and the real environment. The tempting mistake is to run the slow regression on every PR: people then stop waiting for it, and it protects less, not more.",
+      "vi": "Các bộ test nhanh, đáng tin (unit, API cốt lõi, các hành trình UI chính chạy song song) chạy **ở mọi pull request** và chặn merge: đó là nơi phản hồi rẻ nhất. Gói cross-browser 90 phút quá chậm để chờ ở mỗi thay đổi, nên chạy **hằng đêm**. **Smoke test sau deploy** ngắn kiểm tra những gì test trước merge không kiểm tra được: cấu hình, kết nối database và môi trường thật. Chỗ dễ nhầm là chạy regression chậm ở mọi PR: khi đó mọi người thôi chờ nó, và nó bảo vệ ít hơn chứ không nhiều hơn."
+    }
+  },
+  {
+    "key": "red-but-merged",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "In your team's pipeline, UI tests run on every pull request, but the test job is not a required check: pull requests can be merged while tests are red, and this happens several times a week. What is the most important change?",
+      "vi": "Trong pipeline của team bạn, UI test chạy ở mọi pull request, nhưng job test không phải required check: pull request vẫn merge được khi test đỏ, và chuyện này xảy ra vài lần mỗi tuần. Thay đổi quan trọng nhất là gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "required",
+          "text": {
+            "en": "Make the test job a required check so a failing test blocks the merge, and fix or quarantine flaky tests so red really means broken",
+            "vi": "Đặt job test làm required check để test fail sẽ chặn merge, và sửa hoặc quarantine flaky test để màu đỏ thực sự nghĩa là hỏng"
+          }
+        },
+        {
+          "id": "nightly",
+          "text": {
+            "en": "Move the UI tests to a nightly run so they stop showing red on pull requests",
+            "vi": "Chuyển UI test sang chạy hằng đêm để chúng thôi hiện đỏ trên pull request"
+          }
+        },
+        {
+          "id": "more-retries",
+          "text": {
+            "en": "Raise retries to five so that the tests turn green more often",
+            "vi": "Tăng retry lên năm lần để test chuyển xanh thường xuyên hơn"
+          }
+        },
+        {
+          "id": "email",
+          "text": {
+            "en": "Email the test report to the whole team after every run",
+            "vi": "Gửi email report test cho cả team sau mỗi lượt chạy"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "required"
+      ]
+    },
+    "explanation": {
+      "en": "Tests protect the main branch only if a failure **fails the build** and blocks the merge. For people to accept that, red must mean a real problem, so flaky tests are fixed or quarantined at the same time. Moving tests to nightly gives feedback later, after the bad change is merged; five retries hide failures and slow the pipeline; emailing reports adds noise nobody is required to act on.",
+      "vi": "Test chỉ bảo vệ được nhánh main nếu một lần fail **làm build fail** và chặn merge. Để mọi người chấp nhận điều đó, màu đỏ phải nghĩa là vấn đề thật, nên flaky test được sửa hoặc quarantine cùng lúc. Chuyển test sang chạy hằng đêm thì phản hồi tới muộn, sau khi thay đổi lỗi đã được merge; retry năm lần che giấu lỗi và làm pipeline chậm; gửi email report chỉ thêm nhiễu mà không ai bắt buộc phải xử lý."
+    }
+  }
+]

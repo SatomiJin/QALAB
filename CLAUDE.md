@@ -67,6 +67,7 @@ npm run test:e2e         # API tests (test/api/*.e2e-spec.ts), Supabase Auth fak
 npm run test:int         # integration against the linked cloud project (RLS, real auth)
 npx supabase migration new <name>
 npx supabase db push     # apply migrations to the linked cloud project
+npm run seed:curriculum -- --dry-run   # validate backend/seed/curriculum; without the flag: import (cloud DB)
 ```
 
 Frontend (`cd frontend`):

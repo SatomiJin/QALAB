@@ -1,0 +1,91 @@
+[
+  {
+    "key": "status-after-create",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "`POST /api/notes` with a valid body creates a new note and returns it in the body. Which status code should the test expect?",
+      "vi": "`POST /api/notes` với body hợp lệ tạo một note mới và trả note đó trong body. Test nên mong đợi status code nào?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        { "id": "s200", "text": { "en": "200 OK", "vi": "200 OK" } },
+        { "id": "s201", "text": { "en": "201 Created", "vi": "201 Created" } },
+        { "id": "s204", "text": { "en": "204 No Content", "vi": "204 No Content" } },
+        { "id": "s302", "text": { "en": "302 Found", "vi": "302 Found" } }
+      ]
+    },
+    "answer": { "correct": ["s201"] },
+    "explanation": {
+      "en": "`201 Created` says a new resource was created; it is the standard answer to a successful create. `200 OK` is the tempting answer: it also means success, but it does not say that something new exists, and an API documented with `201` that returns `200` breaks its contract. `204` would mean no body, yet the note is returned. `302` is a redirect.",
+      "vi": "`201 Created` cho biết một resource mới đã được tạo; đó là câu trả lời chuẩn cho thao tác tạo thành công. `200 OK` là đáp án dễ chọn nhầm: nó cũng là thành công, nhưng không nói rằng có thứ mới được tạo, và một API đã ghi trong tài liệu là `201` mà trả `200` thì đã phá contract. `204` nghĩa là không có body, trong khi note được trả về. `302` là chuyển hướng."
+    }
+  },
+  {
+    "key": "which-error-code",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Match each situation to the status code a well-designed API returns.",
+      "vi": "Ghép mỗi tình huống với status code mà một API được thiết kế tốt sẽ trả về."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "c400", "text": { "en": "400 Bad Request", "vi": "400 Bad Request" } },
+        { "id": "c401", "text": { "en": "401 Unauthorized", "vi": "401 Unauthorized" } },
+        { "id": "c403", "text": { "en": "403 Forbidden", "vi": "403 Forbidden" } },
+        { "id": "c404", "text": { "en": "404 Not Found", "vi": "404 Not Found" } },
+        { "id": "c409", "text": { "en": "409 Conflict", "vi": "409 Conflict" } },
+        { "id": "c429", "text": { "en": "429 Too Many Requests", "vi": "429 Too Many Requests" } }
+      ],
+      "items": [
+        { "id": "bad-type", "text": { "en": "pageSize=abc is sent where a number is expected", "vi": "Gửi pageSize=abc ở chỗ cần một con số" } },
+        { "id": "no-token", "text": { "en": "The request has no Authorization header", "vi": "Request không có header Authorization" } },
+        { "id": "expired", "text": { "en": "The Bearer token expired an hour ago", "vi": "Bearer token đã hết hạn từ một giờ trước" } },
+        { "id": "learner-admin", "text": { "en": "A learner with a valid token calls an admin-only endpoint", "vi": "Một learner có token hợp lệ gọi endpoint chỉ dành cho admin" } },
+        { "id": "unknown-id", "text": { "en": "A valid UUID that matches no lesson", "vi": "Một UUID hợp lệ nhưng không khớp với lesson nào" } },
+        { "id": "dup-slug", "text": { "en": "Creating a course with a slug another course already uses", "vi": "Tạo course với slug mà course khác đã dùng" } },
+        { "id": "too-many", "text": { "en": "The 21st answer submitted within one minute (limit 20)", "vi": "Lần nộp bài thứ 21 trong vòng một phút (giới hạn 20)" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "bad-type": "c400",
+        "no-token": "c401",
+        "expired": "c401",
+        "learner-admin": "c403",
+        "unknown-id": "c404",
+        "dup-slug": "c409",
+        "too-many": "c429"
+      }
+    },
+    "explanation": {
+      "en": "`401` means the server does not know who you are (no token or an invalid or expired one); `403` means it knows you and still says no. An expired token is therefore `401`, not `403`: that is the most common mix-up. A wrong type is invalid input (`400`), a well-formed id with no match is `404`, a duplicate is a clash with existing data (`409`), and a rate limit is `429`.",
+      "vi": "`401` nghĩa là server không biết bạn là ai (không có token, hoặc token sai hay đã hết hạn); `403` nghĩa là server biết bạn nhưng vẫn từ chối. Vì vậy token hết hạn là `401`, không phải `403`: đây là chỗ hay nhầm nhất. Sai kiểu dữ liệu là input không hợp lệ (`400`), id đúng định dạng nhưng không khớp là `404`, trùng lặp là xung đột với dữ liệu đang có (`409`), còn chạm rate limit là `429`."
+    }
+  },
+  {
+    "key": "content-type-header",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "You send a JSON body to `POST /api/notes`, but the server answers that the body is missing. Which request header did you most likely forget?",
+      "vi": "Bạn gửi một body JSON tới `POST /api/notes`, nhưng server trả lời là thiếu body. Nhiều khả năng bạn đã quên header nào trong request?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        { "id": "accept", "text": { "en": "Accept: application/json", "vi": "Accept: application/json" } },
+        { "id": "content-type", "text": { "en": "Content-Type: application/json", "vi": "Content-Type: application/json" } },
+        { "id": "cache-control", "text": { "en": "Cache-Control: no-cache", "vi": "Cache-Control: no-cache" } },
+        { "id": "retry-after", "text": { "en": "Retry-After: 60", "vi": "Retry-After: 60" } }
+      ]
+    },
+    "answer": { "correct": ["content-type"] },
+    "explanation": {
+      "en": "`Content-Type` describes the body **you send**; without `application/json` the server may not parse it as JSON and sees no fields. `Accept` is the tempting answer, but it only says which format you want **back**. `Cache-Control` is about caching, and `Retry-After` is a response header sent with `429`.",
+      "vi": "`Content-Type` mô tả body **bạn gửi đi**; thiếu `application/json` thì server có thể không đọc body như JSON và không thấy field nào. `Accept` là đáp án dễ chọn nhầm, nhưng nó chỉ nói bạn muốn **nhận về** định dạng nào. `Cache-Control` liên quan đến cache, còn `Retry-After` là header của response đi kèm `429`."
+    }
+  }
+]

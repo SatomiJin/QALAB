@@ -1,0 +1,156 @@
+[
+  {
+    "key": "principles",
+    "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000002004",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which of these are among the seven testing principles? Select all that apply.",
+      "vi": "Những điều nào dưới đây thuộc bảy nguyên tắc kiểm thử? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "exhaustive",
+          "text": {
+            "en": "Exhaustive testing is impossible",
+            "vi": "Không thể kiểm thử toàn bộ (exhaustive testing)"
+          }
+        },
+        {
+          "id": "clustering",
+          "text": {
+            "en": "Defects cluster together",
+            "vi": "Defect thường tập trung thành cụm"
+          }
+        },
+        {
+          "id": "no-defects",
+          "text": {
+            "en": "Testing proves that there are no defects",
+            "vi": "Kiểm thử chứng minh rằng không có defect"
+          }
+        },
+        {
+          "id": "early",
+          "text": {
+            "en": "Early testing saves time and money",
+            "vi": "Kiểm thử sớm tiết kiệm thời gian và chi phí"
+          }
+        },
+        {
+          "id": "automate",
+          "text": {
+            "en": "Everything should be automated",
+            "vi": "Mọi thứ đều nên được tự động hoá"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "exhaustive",
+        "clustering",
+        "early"
+      ]
+    },
+    "explanation": {
+      "en": "Exhaustive testing is impossible, defects cluster together, and early testing saves time and money are three of the seven principles. Testing shows the **presence** of defects, never their absence, and \"automate everything\" is not a principle at all.",
+      "vi": "Không thể kiểm thử toàn bộ, defect tập trung thành cụm, và kiểm thử sớm tiết kiệm thời gian và chi phí là ba trong bảy nguyên tắc. Kiểm thử cho thấy defect **có mặt**, không bao giờ chứng minh được chúng không tồn tại; còn \"tự động hoá mọi thứ\" hoàn toàn không phải là một nguyên tắc."
+    }
+  },
+  {
+    "key": "exhaustive-testing",
+    "id": "6f1d2a4e-0c1b-4d7e-9a3f-000000002005",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "Your manager says: *\"Run every possible value through the new age field (valid ages are 18 to 65) so we can be sure it has no bugs.\"*\r\n\r\nHow do you answer, and what would you test instead?",
+      "vi": "Quản lý của bạn nói: *\"Hãy chạy mọi giá trị có thể qua ô nhập tuổi mới (tuổi hợp lệ từ 18 đến 65) để chắc chắn nó không có bug.\"*\r\n\r\nBạn trả lời thế nào, và bạn sẽ test những gì thay vào đó?"
+    },
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Exhaustive testing is impossible",
+          "keywords": [
+            "exhaustive",
+            "impossible",
+            "every possible",
+            "all values",
+            "khong the"
+          ]
+        },
+        {
+          "concept": "Boundary values",
+          "keywords": [
+            "boundar",
+            "edge",
+            "17",
+            "66",
+            "bien"
+          ]
+        },
+        {
+          "concept": "Equivalence partitions",
+          "keywords": [
+            "partition",
+            "equivalence",
+            "class",
+            "group",
+            "phan vung",
+            "nhom"
+          ]
+        },
+        {
+          "concept": "Invalid values",
+          "keywords": [
+            "invalid",
+            "negative",
+            "letters",
+            "empty",
+            "khong hop le"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "Testing every value is impossible (and would still not prove there are no bugs), so I choose the values most likely to find them:\n\n* **Equivalence partitions:** below 18, 18–65, above 65: one value from each is enough, e.g. 10, 40, 80.\n* **Boundary values:** 17, 18, 65 and 66, where off-by-one mistakes hide.\n* **Invalid input:** empty, negative, letters, decimals.\n\nThat is about ten tests instead of millions, and they target the risky places.",
+        "vi": "Không thể test mọi giá trị (và dù có làm được thì cũng không chứng minh được là không có bug), nên tôi chọn những giá trị dễ tìm ra bug nhất:\r\n\r\n* **Equivalence partitions:** dưới 18, 18–65, trên 65: mỗi nhóm một giá trị là đủ, ví dụ 10, 40, 80.\r\n* **Boundary values:** 17, 18, 65 và 66, nơi các lỗi lệch một đơn vị hay ẩn nấp.\r\n* **Invalid input:** để trống, số âm, chữ cái, số thập phân.\r\n\r\nKhoảng mười test thay vì hàng triệu, và chúng nhắm đúng vào chỗ rủi ro."
+      },
+      "rubric": [
+        {
+          "id": "impossible",
+          "text": {
+            "en": "I explained why testing every value is not possible",
+            "vi": "Tôi giải thích được vì sao không thể test mọi giá trị"
+          }
+        },
+        {
+          "id": "partitions",
+          "text": {
+            "en": "I split the input into valid and invalid groups",
+            "vi": "Tôi chia input thành các nhóm hợp lệ và không hợp lệ"
+          }
+        },
+        {
+          "id": "boundaries",
+          "text": {
+            "en": "I tested on and just outside both boundaries (17, 18, 65, 66)",
+            "vi": "Tôi test trên và sát ngoài cả hai biên (17, 18, 65, 66)"
+          }
+        },
+        {
+          "id": "invalid",
+          "text": {
+            "en": "I included input that is not a number at all",
+            "vi": "Tôi có thử input hoàn toàn không phải là số"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "This is the principle **exhaustive testing is impossible**: even a simple field has more inputs than you can run. Test design techniques pick a small set of values that find most defects: **equivalence partitioning** (one value per group) and **boundary value analysis** (values on and next to each edge).",
+      "vi": "Đây là nguyên tắc **không thể kiểm thử toàn bộ**: ngay cả một ô nhập đơn giản cũng có nhiều giá trị hơn mức bạn chạy được. Các kỹ thuật test design chọn ra một tập nhỏ giá trị tìm được phần lớn defect: **equivalence partitioning** (một giá trị cho mỗi nhóm) và **boundary value analysis** (giá trị nằm trên và sát mỗi biên)."
+    }
+  }
+]

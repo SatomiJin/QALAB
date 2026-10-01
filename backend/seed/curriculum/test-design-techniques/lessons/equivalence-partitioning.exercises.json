@@ -1,0 +1,149 @@
+[
+  {
+    "key": "age-partitions",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "A sign-up form says: *\"Age must be a whole number from 18 to 60.\"* Put each entered value into its **partition**.",
+      "vi": "Một form đăng ký ghi: *\"Tuổi phải là số nguyên từ 18 đến 60.\"* Xếp mỗi giá trị được nhập vào đúng **partition** của nó."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "below",
+          "text": { "en": "Invalid: below 18", "vi": "Không hợp lệ: dưới 18" }
+        },
+        {
+          "id": "valid",
+          "text": { "en": "Valid: 18 to 60", "vi": "Hợp lệ: từ 18 đến 60" }
+        },
+        {
+          "id": "above",
+          "text": { "en": "Invalid: above 60", "vi": "Không hợp lệ: trên 60" }
+        },
+        {
+          "id": "not-whole",
+          "text": { "en": "Invalid: not a whole number", "vi": "Không hợp lệ: không phải số nguyên" }
+        }
+      ],
+      "items": [
+        { "id": "v17", "text": { "en": "17", "vi": "17" } },
+        { "id": "v0", "text": { "en": "0", "vi": "0" } },
+        { "id": "v18", "text": { "en": "18", "vi": "18" } },
+        { "id": "v42", "text": { "en": "42", "vi": "42" } },
+        { "id": "v60", "text": { "en": "60", "vi": "60" } },
+        { "id": "v61", "text": { "en": "61", "vi": "61" } },
+        { "id": "v120", "text": { "en": "120", "vi": "120" } },
+        { "id": "abc", "text": { "en": "abc", "vi": "abc" } },
+        { "id": "decimal", "text": { "en": "25.5", "vi": "25.5" } }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "v17": "below",
+        "v0": "below",
+        "v18": "valid",
+        "v42": "valid",
+        "v60": "valid",
+        "v61": "above",
+        "v120": "above",
+        "abc": "not-whole",
+        "decimal": "not-whole"
+      }
+    },
+    "explanation": {
+      "en": "The range 18 to 60 is **inclusive**, so 18 and 60 are valid: they belong to the valid partition, not to the invalid ones next to it. 17 and 0 are below the range, 61 and 120 above it. 25.5 is between 18 and 60 but it is not a whole number, so it falls into a separate invalid partition, just like the text abc.",
+      "vi": "Khoảng 18 đến 60 là **bao gồm hai đầu**, nên 18 và 60 hợp lệ: chúng thuộc partition hợp lệ, không thuộc các partition không hợp lệ bên cạnh. 17 và 0 nằm dưới khoảng, 61 và 120 nằm trên khoảng. 25.5 nằm giữa 18 và 60 nhưng không phải số nguyên, nên nó thuộc một partition không hợp lệ riêng, giống như chuỗi abc."
+    }
+  },
+  {
+    "key": "minimal-ep-set",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "A quantity field accepts whole numbers from **1 to 10**. Which set of test values is the **smallest** set that covers the below-range, in-range and above-range partitions?",
+      "vi": "Một field số lượng nhận số nguyên từ **1 đến 10**. Bộ giá trị test nào là bộ **nhỏ nhất** phủ được các partition dưới khoảng, trong khoảng và trên khoảng?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "zero-five-eleven",
+          "text": { "en": "0, 5, 11", "vi": "0, 5, 11" }
+        },
+        {
+          "id": "one-five-ten",
+          "text": { "en": "1, 5, 10", "vi": "1, 5, 10" }
+        },
+        {
+          "id": "zero-eleven",
+          "text": { "en": "0, 11", "vi": "0, 11" }
+        },
+        {
+          "id": "all-valid",
+          "text": { "en": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10", "vi": "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["zero-five-eleven"]
+    },
+    "explanation": {
+      "en": "There are three partitions, so three values are enough: one below (0), one inside (5) and one above (11). **1, 5, 10** looks thorough but all three values are in the same valid partition, so no invalid input is tested. **0, 11** skips the valid partition. Testing every valid value adds nine tests that the partition already represents.",
+      "vi": "Có ba partition nên ba giá trị là đủ: một dưới khoảng (0), một trong khoảng (5) và một trên khoảng (11). **1, 5, 10** trông kỹ, nhưng cả ba đều nằm trong cùng partition hợp lệ, nên không test đầu vào không hợp lệ nào. **0, 11** bỏ sót partition hợp lệ. Test mọi giá trị hợp lệ thì thêm chín test mà partition đã đại diện sẵn."
+    }
+  },
+  {
+    "key": "tickets-above-max",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "A cinema website lets a customer book **1 to 6 tickets** per order. Write one test case for the invalid partition **above the maximum**. Expected behaviour from the spec: the order is not created and the message *\"You can book up to 6 tickets\"* is shown.",
+      "vi": "Một website rạp chiếu phim cho khách đặt **1 đến 6 vé** mỗi đơn. Viết một test case cho partition không hợp lệ **trên mức tối đa**. Hành vi mong đợi theo đặc tả: đơn hàng không được tạo và hiển thị thông báo *\"You can book up to 6 tickets\"*."
+    },
+    "prompt": {},
+    "answer": {
+      "requiredFields": ["title", "preconditions", "testData", "steps", "expectedResult", "priority", "testType"],
+      "expectedConcepts": [
+        {
+          "concept": "Invalid partition",
+          "keywords": ["invalid", "partition", "khong hop le", "phan vung", "above the maximum", "tren muc toi da"]
+        },
+        {
+          "concept": "A value above 6",
+          "keywords": ["7", "8", "9", "10", "12", "20"]
+        },
+        {
+          "concept": "Error message shown",
+          "keywords": ["message", "error", "thong bao", "bao loi", "up to 6"]
+        },
+        {
+          "concept": "Order not created",
+          "keywords": ["not created", "no order", "khong duoc tao", "khong tao", "is not booked", "khong dat duoc"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Test case ID:** TC-TICKETS-03\n\n**Title:** Booking 9 tickets (above the maximum of 6) is rejected\n\n**Preconditions:** a showing with free seats is open for booking; the customer is on the seat selection page.\n\n**Test data:** number of tickets = 9 (invalid partition: above the maximum).\n\n**Steps:**\n\n1. Enter 9 in the number of tickets field.\n2. Click Continue.\n\n**Expected result:** the error message \"You can book up to 6 tickets\" is shown, the order is not created and no seats are reserved.\n\n**Priority:** high\n\n**Test type:** functional, negative",
+        "vi": "**Test case ID:** TC-TICKETS-03\n\n**Title:** Đặt 9 vé (trên mức tối đa 6) bị từ chối\n\n**Preconditions:** có một suất chiếu còn ghế đang mở bán; khách đang ở trang chọn ghế.\n\n**Test data:** số vé = 9 (partition không hợp lệ: trên mức tối đa).\n\n**Steps:**\n\n1. Nhập 9 vào field số vé.\n2. Bấm Continue.\n\n**Expected result:** hiển thị thông báo lỗi \"You can book up to 6 tickets\", đơn hàng không được tạo và không ghế nào bị giữ.\n\n**Priority:** high\n\n**Test type:** functional, negative"
+      },
+      "rubric": [
+        {
+          "id": "one-partition",
+          "text": { "en": "My test data uses one value above 6 and nothing else invalid", "vi": "Test data của tôi dùng một giá trị trên 6 và không có gì khác sai" }
+        },
+        {
+          "id": "expected",
+          "text": { "en": "My expected result names the message and says the order is not created", "vi": "Expected result của tôi nêu thông báo và nói rõ đơn hàng không được tạo" }
+        },
+        {
+          "id": "repeatable",
+          "text": { "en": "Someone else could run my steps without asking me anything", "vi": "Người khác có thể chạy các bước của tôi mà không cần hỏi lại" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Any whole number above 6 represents the partition; 7 is also a boundary value, 9 is a typical middle value. The test changes **one** thing only (the number of tickets), so if it fails you know why. A weak expected result says \"error\"; a strong one names the message **and** checks that no order was created, because a system can show the message and still save the order.",
+      "vi": "Mọi số nguyên lớn hơn 6 đều đại diện cho partition này; 7 còn là giá trị biên, 9 là một giá trị ở giữa. Test chỉ thay đổi **một** thứ (số vé), nên nếu fail bạn biết ngay lý do. Expected result yếu chỉ ghi \"báo lỗi\"; expected result tốt nêu đúng thông báo **và** kiểm tra không có đơn nào được tạo, vì hệ thống có thể hiện thông báo mà vẫn lưu đơn."
+    }
+  }
+]

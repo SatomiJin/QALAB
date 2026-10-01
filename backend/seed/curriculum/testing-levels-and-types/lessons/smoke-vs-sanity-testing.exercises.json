@@ -1,0 +1,114 @@
+[
+  {
+    "key": "smoke-or-sanity",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each check as **smoke testing** or **sanity testing**.",
+      "vi": "Xếp mỗi kiểm tra vào **smoke testing** hoặc **sanity testing**."
+    },
+    "prompt": {
+      "categories": [
+        { "id": "smoke", "text": { "en": "Smoke testing (wide and shallow)", "vi": "Smoke testing (rộng và nông)" } },
+        { "id": "sanity", "text": { "en": "Sanity testing (narrow and deep)", "vi": "Sanity testing (hẹp và sâu)" } }
+      ],
+      "items": [
+        {
+          "id": "bvt",
+          "text": {
+            "en": "The CI pipeline opens the home page, logs in and adds a product to the basket on every new build",
+            "vi": "CI pipeline mở trang chủ, đăng nhập và thêm một sản phẩm vào giỏ ở mỗi build mới"
+          }
+        },
+        {
+          "id": "vat-fix",
+          "text": {
+            "en": "After a fix to VAT rounding, a tester tries several prices and countries on the invoice to see if the totals look right",
+            "vi": "Sau bản fix làm tròn VAT, tester thử nhiều mức giá và quốc gia trên hóa đơn để xem tổng tiền có hợp lý không"
+          }
+        },
+        {
+          "id": "new-env",
+          "text": {
+            "en": "On a freshly deployed staging environment, check that every main menu page opens",
+            "vi": "Trên môi trường staging vừa deploy, kiểm tra mọi trang trong menu chính đều mở được"
+          }
+        },
+        {
+          "id": "filter-change",
+          "text": {
+            "en": "A developer changed the price filter; you check min, max, an empty range and sorting with the filter on",
+            "vi": "Developer đã sửa bộ lọc giá; bạn kiểm tra giá trị min, max, khoảng rỗng và sắp xếp khi bật bộ lọc"
+          }
+        },
+        {
+          "id": "after-prod-deploy",
+          "text": {
+            "en": "Right after the production deployment, check that login, search and checkout respond",
+            "vi": "Ngay sau khi deploy production, kiểm tra đăng nhập, tìm kiếm và checkout có phản hồi"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "bvt": "smoke",
+        "vat-fix": "sanity",
+        "new-env": "smoke",
+        "filter-change": "sanity",
+        "after-prod-deploy": "smoke"
+      }
+    },
+    "explanation": {
+      "en": "**Smoke testing** touches many areas quickly to decide if a build or an environment is usable: the CI build check, the fresh staging environment and the post-deployment check. **Sanity testing** goes deeper into one changed area: the VAT rounding and the price filter. The price filter check looks like a lot of tests, which tempts you to call it something bigger, but it stays inside one feature, so it is narrow and deep.",
+      "vi": "**Smoke testing** chạm nhanh vào nhiều vùng để quyết định một build hoặc một môi trường có dùng được không: kiểm tra build trong CI, môi trường staging vừa deploy và kiểm tra sau khi deploy. **Sanity testing** đi sâu vào một vùng bị thay đổi: làm tròn VAT và bộ lọc giá. Kiểm tra bộ lọc giá trông có vẻ nhiều test, dễ khiến bạn gọi nó bằng tên to tát hơn, nhưng nó chỉ nằm trong một tính năng, nên nó hẹp và sâu."
+    }
+  },
+  {
+    "key": "smoke-fails",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Build 5.1 arrives for a two-day test cycle. During the smoke test, login returns a 500 error for every user. What should the tester do?",
+      "vi": "Build 5.1 được giao cho một vòng test hai ngày. Trong lúc smoke test, đăng nhập trả về lỗi 500 với mọi người dùng. Tester nên làm gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "reject",
+          "text": {
+            "en": "Stop, report the failure as a blocker and reject the build until a fixed one arrives",
+            "vi": "Dừng lại, báo failure là blocker và từ chối build cho tới khi có build đã sửa"
+          }
+        },
+        {
+          "id": "continue-other",
+          "text": {
+            "en": "Log a bug and continue with the full test plan on the screens that do not need login",
+            "vi": "Log một bug và tiếp tục toàn bộ test plan trên các màn hình không cần đăng nhập"
+          }
+        },
+        {
+          "id": "sanity",
+          "text": {
+            "en": "Switch to a sanity test of the login page and then run the full regression",
+            "vi": "Chuyển sang sanity test trang đăng nhập rồi chạy full regression"
+          }
+        },
+        {
+          "id": "mark-passed",
+          "text": {
+            "en": "Mark the smoke test as passed, because the other smoke checks worked",
+            "vi": "Đánh dấu smoke test là pass, vì các kiểm tra smoke khác vẫn chạy được"
+          }
+        }
+      ]
+    },
+    "answer": { "correct": ["reject"] },
+    "explanation": {
+      "en": "A smoke test is a **gate**: if a critical function such as login fails, the build is not stable enough to test, and testing it anyway wastes time and produces results that will have to be repeated on the next build. Continuing on the screens without login is the tempting answer, but most flows depend on login, and those results would not be reliable either. Sanity testing is for checking a specific change, not for working around a broken build.",
+      "vi": "Smoke test là một **cửa kiểm soát**: nếu một chức năng quan trọng như đăng nhập fail, build chưa đủ ổn định để test, và cố test tiếp chỉ tốn thời gian và cho ra kết quả phải làm lại trên build sau. Tiếp tục với các màn hình không cần đăng nhập là đáp án dễ chọn, nhưng hầu hết các luồng đều phụ thuộc vào đăng nhập, và những kết quả đó cũng không đáng tin. Sanity testing dùng để kiểm tra một thay đổi cụ thể, không phải để đi vòng qua một build hỏng."
+    }
+  }
+]

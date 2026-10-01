@@ -1,0 +1,84 @@
+[
+  {
+    "key": "pass-rate",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A test cycle had **120** planned test cases. Results: **86 Pass, 10 Fail, 4 Blocked, 20 Not run**. Using the definitions of the lesson, what is the **pass rate**?",
+      "vi": "Một vòng test có **120** test case trong kế hoạch. Kết quả: **86 Pass, 10 Fail, 4 Blocked, 20 Not run**. Theo định nghĩa trong bài học, **pass rate** là bao nhiêu?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        { "id": "rate-89", "text": { "en": "About 89.6 % (86 ÷ 96)", "vi": "Khoảng 89.6 % (86 ÷ 96)" } },
+        { "id": "rate-86", "text": { "en": "86 % (86 ÷ 100)", "vi": "86 % (86 ÷ 100)" } },
+        { "id": "rate-80", "text": { "en": "80 % (96 ÷ 120)", "vi": "80 % (96 ÷ 120)" } },
+        { "id": "rate-72", "text": { "en": "About 71.7 % (86 ÷ 120)", "vi": "Khoảng 71.7 % (86 ÷ 120)" } }
+      ]
+    },
+    "answer": { "correct": ["rate-89"] },
+    "explanation": {
+      "en": "Pass rate = Pass ÷ executed, and only Pass and Fail count as executed: 86 ÷ (86 + 10) = 86 ÷ 96 ≈ 89.6 %. Dividing by 100 wrongly counts the 4 Blocked cases as executed, although they never reached their check. 96 ÷ 120 = 80 % is the **execution progress**, a different metric. 86 ÷ 120 mixes the two and hides the 24 cases that were not run; report those separately.",
+      "vi": "Pass rate = Pass ÷ số đã thực thi, và chỉ Pass với Fail được tính là đã thực thi: 86 ÷ (86 + 10) = 86 ÷ 96 ≈ 89.6 %. Chia cho 100 là tính nhầm 4 case Blocked vào số đã thực thi, dù chúng chưa hề đi tới điểm kiểm tra. 96 ÷ 120 = 80 % là **execution progress**, một chỉ số khác. 86 ÷ 120 trộn lẫn hai chỉ số và che mất 24 case chưa chạy; hãy báo cáo chúng riêng."
+    }
+  },
+  {
+    "key": "go-no-go",
+    "type": "scenario",
+    "difficulty": "hard",
+    "question": {
+      "en": "Write the **results, exit criteria and recommendation** part of the test summary report for release 3.1.\n\n* Planned: 120 test cases. Results: 96 Pass, 12 Fail, 7 Blocked, 5 Not run.\n* Open defects: 1 critical (**BUG-230**: card payment fails for Amex cards), 2 major, 5 minor.\n* 3 of the blocked cases are high-priority payment cases (the payment sandbox was down).\n* Exit criteria from the test plan: all high-priority cases executed; pass rate ≥ 95 %; no open critical or major defects.\n\nGive the numbers, say which exit criteria are met, name the risks and give a clear recommendation with what would change it.",
+      "vi": "Viết phần **kết quả, exit criteria và khuyến nghị** của test summary report cho release 3.1.\n\n* Kế hoạch: 120 test case. Kết quả: 96 Pass, 12 Fail, 7 Blocked, 5 Not run.\n* Defect đang mở: 1 critical (**BUG-230**: thanh toán bằng thẻ Amex bị lỗi), 2 major, 5 minor.\n* 3 trong số các case bị blocked là case thanh toán ưu tiên cao (sandbox thanh toán ngừng hoạt động).\n* Exit criteria trong test plan: mọi case ưu tiên cao đã được thực thi; pass rate ≥ 95 %; không còn defect critical hoặc major nào mở.\n\nĐưa ra các con số, nói exit criteria nào đạt, nêu các rủi ro và đưa ra khuyến nghị rõ ràng cùng với điều gì sẽ làm thay đổi nó."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        { "concept": "Pass rate 88.9 %", "keywords": ["88.9", "88,9", "89 %", "ty le pass"] },
+        { "concept": "Execution progress 90 %", "keywords": ["execution progress", "108", "90 %", "tien do thuc thi"] },
+        { "concept": "Open critical defect BUG-230", "keywords": ["bug-230", "critical", "amex"] },
+        { "concept": "Exit criteria not met", "keywords": ["not met", "chua dat", "khong dat"] },
+        { "concept": "Risk of blocked and not-run cases", "keywords": ["blocked", "not run", "chua chay", "rui ro"] },
+        { "concept": "No-go recommendation", "keywords": ["no-go", "no go", "khong phat hanh", "hoan release"] },
+        { "concept": "Retest and regression before release", "keywords": ["retest", "regression", "chay lai", "kiem tra lai"] }
+      ],
+      "modelAnswer": {
+        "en": "**Results (build 3.1.0-rc1):** 120 planned, 108 executed (execution progress 90 %): 96 Pass, 12 Fail. 7 Blocked, 5 Not run. Pass rate 96 ÷ 108 = 88.9 %.\n\n**Defects open:** 1 critical (BUG-230, card payment fails for Amex cards), 2 major, 5 minor.\n\n**Exit criteria:**\n* All high-priority cases executed: **not met** (3 high-priority payment cases blocked by the sandbox).\n* Pass rate ≥ 95 %: **not met** (88.9 %).\n* No open critical or major defects: **not met** (1 critical, 2 major).\n\n**Risks:** customers paying with Amex cannot complete an order; the payment flow is partly untested because 7 cases are blocked and 5 not run.\n\n**Recommendation: no-go.** It becomes go when BUG-230 and the 2 major defects are fixed and retested, the payment sandbox is back and the 3 blocked high-priority cases pass, and a payment regression run is green. The 5 minor defects can be planned for 3.1.1.",
+        "vi": "**Kết quả (build 3.1.0-rc1):** 120 trong kế hoạch, 108 đã thực thi (execution progress 90 %): 96 Pass, 12 Fail. 7 Blocked, 5 Not run. Pass rate 96 ÷ 108 = 88.9 %.\n\n**Defect đang mở:** 1 critical (BUG-230, thanh toán bằng thẻ Amex bị lỗi), 2 major, 5 minor.\n\n**Exit criteria:**\n* Mọi case ưu tiên cao đã thực thi: **chưa đạt** (3 case thanh toán ưu tiên cao bị blocked do sandbox).\n* Pass rate ≥ 95 %: **chưa đạt** (88.9 %).\n* Không còn defect critical hoặc major mở: **chưa đạt** (1 critical, 2 major).\n\n**Rủi ro:** khách hàng thanh toán bằng thẻ Amex không thể hoàn tất đơn hàng; luồng thanh toán chưa được test đầy đủ vì 7 case bị blocked và 5 case chưa chạy.\n\n**Khuyến nghị: no-go.** Chuyển thành go khi BUG-230 và 2 defect major được sửa và retest, sandbox thanh toán hoạt động lại và 3 case ưu tiên cao bị blocked đều pass, và một lượt regression cho phần thanh toán đều xanh. 5 defect minor có thể đưa vào kế hoạch của 3.1.1."
+      },
+      "rubric": [
+        {
+          "id": "numbers",
+          "text": {
+            "en": "I reported execution progress and pass rate separately, with Blocked and Not run not counted as executed",
+            "vi": "Tôi báo cáo execution progress và pass rate riêng, không tính Blocked và Not run là đã thực thi"
+          }
+        },
+        {
+          "id": "criteria",
+          "text": {
+            "en": "I checked each exit criterion from the test plan and said met or not met",
+            "vi": "Tôi đối chiếu từng exit criteria trong test plan và nói rõ đạt hay chưa đạt"
+          }
+        },
+        {
+          "id": "named-defect",
+          "text": {
+            "en": "I named the critical defect and its impact, not only a count",
+            "vi": "Tôi nêu tên defect critical và ảnh hưởng của nó, không chỉ đưa ra một con số"
+          }
+        },
+        {
+          "id": "clear-call",
+          "text": {
+            "en": "My recommendation is a clear no-go, with the conditions that would turn it into a go",
+            "vi": "Khuyến nghị của tôi là no-go rõ ràng, kèm các điều kiện để chuyển thành go"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Executed = Pass + Fail = 108, so execution progress is 108 ÷ 120 = 90 % and the pass rate is 96 ÷ 108 ≈ 88.9 %. Against the plan, **all three exit criteria are not met**: high-priority payment cases are blocked, the pass rate is below 95 %, and a critical defect is open. The open critical bug alone justifies a **no-go**: it stops real customers from paying. A good recommendation does not stop at \"no\": it lists what must happen (fix and retest BUG-230 and the majors, run the blocked cases, a payment regression) to make it a go. The product owner takes the final decision with this evidence.",
+      "vi": "Số đã thực thi = Pass + Fail = 108, nên execution progress là 108 ÷ 120 = 90 % và pass rate là 96 ÷ 108 ≈ 88.9 %. So với test plan, **cả ba exit criteria đều chưa đạt**: các case thanh toán ưu tiên cao bị blocked, pass rate dưới 95 %, và còn một defect critical đang mở. Riêng bug critical đang mở đã đủ lý do cho **no-go**: nó ngăn khách hàng thật thanh toán. Một khuyến nghị tốt không dừng ở chữ \"không\": nó liệt kê những gì phải làm (sửa và retest BUG-230 cùng các bug major, chạy các case bị blocked, một lượt regression cho thanh toán) để chuyển thành go. Product owner đưa ra quyết định cuối cùng dựa trên bằng chứng này."
+    }
+  }
+]

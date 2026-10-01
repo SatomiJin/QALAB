@@ -1,0 +1,247 @@
+[
+  {
+    "key": "story-criteria-dod",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "A Scrum team is working on saved cards for checkout. Classify each line as part of the **user story**, an **acceptance criterion** of that story, or an item of the team's **Definition of Done**.",
+      "vi": "Một nhóm Scrum đang làm tính năng lưu thẻ khi checkout. Xếp mỗi dòng vào **user story**, một **acceptance criterion** của story đó, hoặc một mục trong **Definition of Done** của nhóm."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "story",
+          "text": {
+            "en": "User story",
+            "vi": "User story"
+          }
+        },
+        {
+          "id": "criterion",
+          "text": {
+            "en": "Acceptance criterion (this story only)",
+            "vi": "Acceptance criterion (chỉ cho story này)"
+          }
+        },
+        {
+          "id": "dod",
+          "text": {
+            "en": "Definition of Done (every story)",
+            "vi": "Definition of Done (mọi story)"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "as-a",
+          "text": {
+            "en": "As a returning customer, I want to save my card so that I can pay faster next time",
+            "vi": "As a returning customer, I want to save my card so that I can pay faster next time"
+          }
+        },
+        {
+          "id": "last-four",
+          "text": {
+            "en": "Only the last 4 digits of a saved card are shown on the payment page",
+            "vi": "Trang thanh toán chỉ hiển thị 4 số cuối của thẻ đã lưu"
+          }
+        },
+        {
+          "id": "default-card",
+          "text": {
+            "en": "Given I have a saved card, when I open the payment page, then it is selected by default",
+            "vi": "Given I have a saved card, when I open the payment page, then it is selected by default"
+          }
+        },
+        {
+          "id": "code-review",
+          "text": {
+            "en": "Code has been reviewed by another developer and merged",
+            "vi": "Code đã được một developer khác review và merge"
+          }
+        },
+        {
+          "id": "no-critical",
+          "text": {
+            "en": "No critical or major bugs are open",
+            "vi": "Không còn bug critical hay major nào đang mở"
+          }
+        },
+        {
+          "id": "regression-green",
+          "text": {
+            "en": "The automated regression suite passes",
+            "vi": "Bộ regression test tự động pass"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "as-a": "story",
+        "last-four": "criterion",
+        "default-card": "criterion",
+        "code-review": "dod",
+        "no-critical": "dod",
+        "regression-green": "dod"
+      }
+    },
+    "explanation": {
+      "en": "The **user story** states who wants what and why (\"As a..., I want..., so that...\"). **Acceptance criteria** are specific to this story: showing only the last 4 digits and selecting the saved card by default make sense only for saved cards. The **Definition of Done** applies to every story the team delivers: code review, no open critical or major bugs and a green regression suite are quality standards, not features. The tempting mistake is to put \"no critical bugs\" under acceptance criteria, but it does not describe what this story does; it is a team-wide rule.",
+      "vi": "**User story** nói ai muốn gì và vì sao (\"As a..., I want..., so that...\"). **Acceptance criteria** là riêng cho story này: chỉ hiển thị 4 số cuối và tự chọn thẻ đã lưu chỉ có ý nghĩa với tính năng lưu thẻ. **Definition of Done** áp dụng cho mọi story nhóm giao: code review, không còn bug critical hay major đang mở và regression suite xanh là chuẩn chất lượng, không phải tính năng. Lỗi dễ mắc là xếp \"không còn bug critical\" vào acceptance criteria, nhưng nó không mô tả story này làm gì; đó là quy tắc chung của cả nhóm."
+    }
+  },
+  {
+    "key": "shift-left",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which of these are examples of **shift-left** testing in a Scrum team? Select all that apply.",
+      "vi": "Những việc nào dưới đây là ví dụ của kiểm thử **shift-left** trong một nhóm Scrum? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "refinement-questions",
+          "text": {
+            "en": "The tester asks \"what if the card has expired?\" during backlog refinement",
+            "vi": "Tester hỏi \"nếu thẻ đã hết hạn thì sao?\" trong buổi backlog refinement"
+          }
+        },
+        {
+          "id": "examples-before-code",
+          "text": {
+            "en": "The team agrees on Given / When / Then examples before coding starts",
+            "vi": "Nhóm thống nhất các ví dụ Given / When / Then trước khi bắt đầu code"
+          }
+        },
+        {
+          "id": "last-day",
+          "text": {
+            "en": "All stories are tested together on the last day of the sprint",
+            "vi": "Mọi story được test cùng lúc vào ngày cuối của sprint"
+          }
+        },
+        {
+          "id": "unit-tests",
+          "text": {
+            "en": "Developers write unit tests while they write the code",
+            "vi": "Developer viết unit test ngay trong lúc viết code"
+          }
+        },
+        {
+          "id": "after-release",
+          "text": {
+            "en": "A separate QA team tests the product after the release candidate is built",
+            "vi": "Một đội QA riêng test sản phẩm sau khi bản release candidate được build"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": ["refinement-questions", "examples-before-code", "unit-tests"]
+    },
+    "explanation": {
+      "en": "**Shift-left** moves testing activities earlier on the timeline: questions in refinement, examples agreed before coding, and unit tests written with the code all find problems when they are cheapest to fix. Testing everything on the last day of the sprint, or handing the product to a separate team after the build, is the opposite: testing is pushed to the right, where defects cost more and there is no time left to fix them.",
+      "vi": "**Shift-left** đưa các hoạt động kiểm thử lên sớm hơn trên trục thời gian: đặt câu hỏi khi refinement, thống nhất ví dụ trước khi code, và viết unit test cùng lúc với code đều giúp tìm ra vấn đề khi việc sửa còn rẻ nhất. Test mọi thứ vào ngày cuối sprint, hoặc giao sản phẩm cho một đội riêng sau khi build, là ngược lại: việc test bị đẩy sang phải, nơi defect tốn kém hơn và không còn thời gian để sửa."
+    }
+  },
+  {
+    "key": "expired-code-test-case",
+    "type": "test_case",
+    "difficulty": "medium",
+    "question": {
+      "en": "User story: *As a shopper, I want to apply a discount code at checkout, so that I pay less.*\n\nAcceptance criterion 2:\n\n```text\nGiven my basket total is 50.00\nAnd the discount code SPRING10 has expired\nWhen I apply SPRING10 at checkout\nThen I see the message \"This code has expired\"\nAnd the total stays 50.00\n```\n\nWrite one test case for this acceptance criterion.",
+      "vi": "User story: *As a shopper, I want to apply a discount code at checkout, so that I pay less.*\n\nAcceptance criterion 2:\n\n```text\nGiven my basket total is 50.00\nAnd the discount code SPRING10 has expired\nWhen I apply SPRING10 at checkout\nThen I see the message \"This code has expired\"\nAnd the total stays 50.00\n```\n\nViết một test case cho acceptance criterion này."
+    },
+    "answer": {
+      "requiredFields": [
+        "testCaseId",
+        "title",
+        "preconditions",
+        "testData",
+        "steps",
+        "expectedResult",
+        "priority"
+      ],
+      "expectedConcepts": [
+        {
+          "concept": "Expired discount code",
+          "keywords": [
+            "expir",
+            "het han",
+            "outdated"
+          ]
+        },
+        {
+          "concept": "Discount code at checkout",
+          "keywords": [
+            "discount",
+            "coupon",
+            "promo",
+            "spring10",
+            "ma giam gia"
+          ]
+        },
+        {
+          "concept": "Error message shown",
+          "keywords": [
+            "message",
+            "error",
+            "thong bao"
+          ]
+        },
+        {
+          "concept": "Total unchanged",
+          "keywords": [
+            "unchanged",
+            "stays",
+            "remains",
+            "50.00",
+            "khong doi",
+            "giu nguyen"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "| Field | Value |\n|---|---|\n| Test case ID | TC-DISCOUNT-002 |\n| Title | Expired discount code is rejected and the total is unchanged |\n| Preconditions | Shopper is logged in; basket contains items worth 50.00; discount code SPRING10 exists and expired yesterday |\n| Test data | Code SPRING10, basket total 50.00 |\n| Steps | 1. Open checkout. 2. Enter SPRING10 in the discount code field. 3. Press **Apply**. |\n| Expected result | The message \"This code has expired\" is shown; no discount line is added; the total stays 50.00 |\n| Priority | High |\n| Test type | Functional, negative |",
+        "vi": "| Trường | Giá trị |\n|---|---|\n| Test case ID | TC-DISCOUNT-002 |\n| Title | Mã giảm giá đã hết hạn bị từ chối và tổng tiền không đổi |\n| Preconditions | Người mua đã đăng nhập; giỏ hàng có sản phẩm trị giá 50.00; mã giảm giá SPRING10 tồn tại và đã hết hạn từ hôm qua |\n| Test data | Mã SPRING10, tổng giỏ hàng 50.00 |\n| Steps | 1. Mở checkout. 2. Nhập SPRING10 vào ô mã giảm giá. 3. Bấm **Apply**. |\n| Expected result | Hiển thị thông báo \"This code has expired\"; không có dòng giảm giá nào được thêm; tổng tiền giữ nguyên 50.00 |\n| Priority | High |\n| Test type | Functional, negative |"
+      },
+      "rubric": [
+        {
+          "id": "traceable",
+          "text": {
+            "en": "My test case checks exactly what acceptance criterion 2 describes",
+            "vi": "Test case của tôi kiểm tra đúng điều acceptance criterion 2 mô tả"
+          }
+        },
+        {
+          "id": "setup",
+          "text": {
+            "en": "The preconditions set up the expired code and the 50.00 basket before step 1",
+            "vi": "Preconditions chuẩn bị sẵn mã đã hết hạn và giỏ hàng 50.00 trước bước 1"
+          }
+        },
+        {
+          "id": "both-thens",
+          "text": {
+            "en": "The expected result checks both the message and the unchanged total",
+            "vi": "Expected result kiểm tra cả thông báo lẫn tổng tiền không đổi"
+          }
+        },
+        {
+          "id": "exact-message",
+          "text": {
+            "en": "I used the exact message text from the criterion",
+            "vi": "Tôi dùng đúng nguyên văn thông báo trong tiêu chí"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Each **Given** becomes a **precondition** or test data (an expired SPRING10, a 50.00 basket), the **When** becomes the steps, and every **Then** becomes part of the **expected result**. Checking only the message is a common miss: the criterion also says the total stays 50.00, and a bug that shows the message but still applies 10 % would slip through. This is a negative test on money at checkout, so priority is high.",
+      "vi": "Mỗi **Given** trở thành một **precondition** hoặc test data (mã SPRING10 đã hết hạn, giỏ hàng 50.00), **When** trở thành các bước, và mỗi **Then** trở thành một phần của **expected result**. Chỉ kiểm tra thông báo là thiếu sót hay gặp: tiêu chí còn nói tổng tiền giữ nguyên 50.00, và một bug hiển thị thông báo nhưng vẫn giảm 10 % sẽ lọt qua. Đây là negative test liên quan đến tiền khi checkout, nên priority là high."
+    }
+  }
+]

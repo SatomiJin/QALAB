@@ -1,0 +1,99 @@
+[
+  {
+    "key": "count-rules",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "A shipping rule depends on **three** yes/no conditions: the customer is a member, the order is 100 USD or more, the address is in the same country. How many rules does the **full** (not collapsed) decision table have?",
+      "vi": "Một quy tắc giao hàng phụ thuộc vào **ba** điều kiện có/không: khách là thành viên, đơn từ 100 USD trở lên, địa chỉ ở cùng quốc gia. Decision table **đầy đủ** (chưa rút gọn) có bao nhiêu rule?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        { "id": "eight", "text": { "en": "8", "vi": "8" } },
+        { "id": "six", "text": { "en": "6", "vi": "6" } },
+        { "id": "three", "text": { "en": "3", "vi": "3" } },
+        { "id": "nine", "text": { "en": "9", "vi": "9" } }
+      ]
+    },
+    "answer": {
+      "correct": ["eight"]
+    },
+    "explanation": {
+      "en": "Each yes/no condition doubles the number of combinations: 2 × 2 × 2 = **8** rules. **6** is the tempting mistake of adding the values (3 conditions × 2 values) instead of multiplying them. **3** is one rule per condition, which tests no combination at all. **9** would be 3 × 3, as if each condition had three values.",
+      "vi": "Mỗi điều kiện có/không nhân đôi số tổ hợp: 2 × 2 × 2 = **8** rule. **6** là lỗi dễ mắc khi lấy 3 điều kiện × 2 giá trị thay vì nhân lũy thừa. **3** là mỗi điều kiện một rule, không test tổ hợp nào cả. **9** là 3 × 3, như thể mỗi điều kiện có ba giá trị."
+    }
+  },
+  {
+    "key": "loan-decision-table",
+    "type": "scenario",
+    "difficulty": "hard",
+    "question": {
+      "en": "Build a decision table, in words, for this loan rule:\n\n*\"An application is rejected if the applicant is under 18. Applicants who are 18 or older are rejected if their monthly income is below 1,000 USD. If they are 18 or older with an income of 1,000 USD or more, the loan is approved, unless they already have an unpaid loan: then the application goes to manual review.\"*\n\nName the conditions and the actions, say how many rules the full table has, show the collapsed rules (use \"-\" for don't care) and give one test per collapsed rule.",
+      "vi": "Xây dựng một decision table, bằng lời, cho quy tắc cho vay này:\n\n*\"Hồ sơ bị từ chối nếu người nộp dưới 18 tuổi. Người từ 18 tuổi trở lên bị từ chối nếu thu nhập hằng tháng dưới 1,000 USD. Nếu họ từ 18 tuổi trở lên và thu nhập từ 1,000 USD trở lên, khoản vay được phê duyệt, trừ khi họ đang có một khoản vay chưa trả: khi đó hồ sơ được chuyển sang xem xét thủ công (manual review).\"*\n\nNêu các condition và action, cho biết bảng đầy đủ có bao nhiêu rule, trình bày các rule sau khi rút gọn (dùng \"-\" cho don't care) và đưa ra một test cho mỗi rule đã rút gọn."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Conditions",
+          "keywords": ["condition", "dieu kien"]
+        },
+        {
+          "concept": "Actions",
+          "keywords": ["action", "hanh dong"]
+        },
+        {
+          "concept": "8 rules in the full table",
+          "keywords": ["8 rule", "8 combination", "eight", "8 to hop", "2^3", "2 x 2 x 2"]
+        },
+        {
+          "concept": "Collapsing with don't care",
+          "keywords": ["collaps", "don't care", "dont care", "merge", "gop", "rut gon"]
+        },
+        {
+          "concept": "Under 18 is rejected",
+          "keywords": ["under 18", "duoi 18", "17", "younger than 18", "chua du 18"]
+        },
+        {
+          "concept": "Approve",
+          "keywords": ["approv", "phe duyet", "chap thuan"]
+        },
+        {
+          "concept": "Reject",
+          "keywords": ["reject", "tu choi"]
+        },
+        {
+          "concept": "Manual review",
+          "keywords": ["manual review", "xem xet thu cong", "duyet thu cong", "review"]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Conditions:** C1 applicant is 18 or older; C2 monthly income is 1,000 USD or more; C3 has an unpaid loan.\n\n**Actions:** reject, approve, send to manual review.\n\n**Full table:** 3 yes/no conditions → 2 x 2 x 2 = 8 rules.\n\n**Collapsed rules** (\"-\" = don't care):\n\n| | R1 | R2 | R3 | R4 |\n|---|---|---|---|---|\n| C1 18 or older | N | Y | Y | Y |\n| C2 income ≥ 1,000 | - | N | Y | Y |\n| C3 unpaid loan | - | - | N | Y |\n| Action | reject | reject | approve | manual review |\n\nR1 merges 4 rules (under 18, the rest does not matter), R2 merges 2, so 8 rules collapse to 4.\n\n**Tests:**\n\n1. R1: age 17, income 3,000, no unpaid loan → rejected.\n2. R2: age 30, income 999, no unpaid loan → rejected.\n3. R3: age 30, income 1,000, no unpaid loan → approved.\n4. R4: age 30, income 2,500, unpaid loan → manual review.",
+        "vi": "**Condition:** C1 người nộp từ 18 tuổi trở lên; C2 thu nhập hằng tháng từ 1,000 USD trở lên; C3 đang có khoản vay chưa trả.\n\n**Action:** từ chối (reject), phê duyệt (approve), chuyển xem xét thủ công (manual review).\n\n**Bảng đầy đủ:** 3 điều kiện có/không → 2 x 2 x 2 = 8 rule.\n\n**Các rule sau khi rút gọn** (\"-\" = don't care):\n\n| | R1 | R2 | R3 | R4 |\n|---|---|---|---|---|\n| C1 từ 18 tuổi | N | Y | Y | Y |\n| C2 thu nhập ≥ 1,000 | - | N | Y | Y |\n| C3 có khoản vay chưa trả | - | - | N | Y |\n| Action | từ chối | từ chối | phê duyệt | manual review |\n\nR1 gộp 4 rule (dưới 18 tuổi thì các điều kiện còn lại không quan trọng), R2 gộp 2 rule, nên 8 rule rút gọn còn 4.\n\n**Test:**\n\n1. R1: 17 tuổi, thu nhập 3,000, không có khoản vay chưa trả → bị từ chối.\n2. R2: 30 tuổi, thu nhập 999, không có khoản vay chưa trả → bị từ chối.\n3. R3: 30 tuổi, thu nhập 1,000, không có khoản vay chưa trả → được phê duyệt.\n4. R4: 30 tuổi, thu nhập 2,500, có khoản vay chưa trả → chuyển manual review."
+      },
+      "rubric": [
+        {
+          "id": "parts",
+          "text": { "en": "I separated conditions from actions", "vi": "Tôi tách riêng condition và action" }
+        },
+        {
+          "id": "full-count",
+          "text": { "en": "I said the full table has 8 rules and why", "vi": "Tôi nêu bảng đầy đủ có 8 rule và giải thích vì sao" }
+        },
+        {
+          "id": "collapse",
+          "text": { "en": "My collapsed rules use don't care only where the condition really does not matter", "vi": "Các rule rút gọn của tôi chỉ dùng don't care ở chỗ điều kiện thật sự không quan trọng" }
+        },
+        {
+          "id": "tests",
+          "text": { "en": "Each collapsed rule has a test with concrete data and an expected action", "vi": "Mỗi rule rút gọn có một test với dữ liệu cụ thể và action mong đợi" }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Three yes/no conditions give **8** rules. Being under 18 decides the result alone, so income and unpaid loan are don't care there (4 rules → 1); with a low income the unpaid loan no longer matters (2 rules → 1). That leaves **4** rules and 4 tests. The rule most often forgotten is R4: approval conditions met **and** an unpaid loan → manual review, not approval. Good test data also sits on the boundaries: 17 for age, 999 and 1,000 for income.",
+      "vi": "Ba điều kiện có/không cho **8** rule. Dưới 18 tuổi tự nó quyết định kết quả, nên thu nhập và khoản vay chưa trả là don't care (4 rule → 1); khi thu nhập thấp thì khoản vay chưa trả cũng không còn quan trọng (2 rule → 1). Còn lại **4** rule và 4 test. Rule hay bị quên nhất là R4: đủ điều kiện phê duyệt **và** có khoản vay chưa trả → manual review, không phải phê duyệt. Test data tốt còn nằm ngay trên biên: 17 cho tuổi, 999 và 1,000 cho thu nhập."
+    }
+  }
+]
