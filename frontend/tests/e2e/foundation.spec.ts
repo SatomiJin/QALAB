@@ -11,7 +11,7 @@ test.describe('Foundation', () => {
       page.getByRole('heading', { name: 'Dashboard' }),
     ).toBeVisible();
     await expect(page).toHaveTitle('Dashboard · QA Learning Lab');
-    await expect(page.getByTestId('placeholder')).toContainText('Phase 5');
+    await expect(page.getByTestId('summary')).toBeVisible();
   });
 
   test('shows API online when the backend is reachable', async ({ page }) => {

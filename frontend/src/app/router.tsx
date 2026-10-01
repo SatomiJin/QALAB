@@ -17,6 +17,8 @@ import { CourseDetailPage } from '../features/learning/pages/CourseDetailPage';
 import { LearningPage } from '../features/learning/pages/LearningPage';
 import { LessonPage } from '../features/learning/pages/LessonPage';
 import { ExercisePage } from '../features/practice/pages/ExercisePage';
+import { DashboardPage } from '../features/dashboard/pages/DashboardPage';
+import { ProgressPage } from '../features/dashboard/pages/ProgressPage';
 import { PracticeListPage } from '../features/practice/pages/PracticeListPage';
 import { ProfilePage } from '../features/profile/ProfilePage';
 import { AdminLayout } from '../layouts/AdminLayout';
@@ -25,7 +27,6 @@ import { MainLayout } from '../layouts/MainLayout';
 import { PRACTICE_LINKS } from '../layouts/navigation';
 import { PracticeLayout } from '../layouts/PracticeLayout';
 import { NotFoundPage } from '../pages/NotFoundPage';
-import { PlaceholderPage } from '../pages/PlaceholderPage';
 import { RouteErrorPage } from '../pages/RouteErrorPage';
 
 export const routes: RouteObject[] = [
@@ -41,7 +42,7 @@ export const routes: RouteObject[] = [
               { index: true, element: <Navigate to="/dashboard" replace /> },
               {
                 path: 'dashboard',
-                element: <PlaceholderPage page="dashboard" phase={5} />,
+                element: <DashboardPage />,
               },
               {
                 path: 'learning',
@@ -74,7 +75,7 @@ export const routes: RouteObject[] = [
               },
               {
                 path: 'progress',
-                element: <PlaceholderPage page="progress" phase={5} />,
+                element: <ProgressPage />,
               },
               { path: 'profile', element: <ProfilePage /> },
               { path: '*', element: <NotFoundPage /> },

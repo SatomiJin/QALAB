@@ -12,6 +12,7 @@ Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a m
 | `20260930064552_content_translations_manual.sql` | 2 | `provider` `manual` \| `google`, `pipeline_version` (machine rows only), unique key per provider. Upgrades the table as first pushed; idempotent |
 | `20260930070812_practice.sql` | 3 | Enums `exercise_type`, `difficulty`; `exercises`, `exercise_answers`, `exercise_attempts`; `is_exercise_published()`; immutable-attempt trigger; RLS and grants; `content_translations` accepts exercises (fields, review-text read rule, delete trigger) |
 | `20260930090356_admin_cms.sql` | 4 | Admin writes: `set_content_audit()` trigger on content; insert/update/delete policies (`is_admin()`) and column grants on `courses`, `modules`, `lessons`, `exercises`, insert/update on `exercise_answers`; `reorder_content()`, `content_usage()` |
+| `20260930144044_dashboard.sql` | 5 | Views `v_user_exercise_results`, `v_user_skill_progress`, `v_user_activity` (security invoker); `activity_days(tz)`; select for `authenticated` only |
 
 Seed (`supabase/seed.sql`): one published sample course, *QA fundamentals: first steps* (2 modules, 4 lessons), and 6 exercises on its lessons covering all five types (with answer keys and Vietnamese manual translations), with fixed ids. Idempotent. `backend/src/practice/seed-exercises.spec.ts` checks every seeded prompt and answer key against the grader.
 
@@ -94,6 +95,16 @@ Translations of content, one row per (entity, field, language, provider). `manua
 * `unique (entity_type, entity_id, field, language, provider)`: a manual and a machine translation can coexist. Index `(entity_id, language)`.
 * Written only with the service role: the seed (`manual`) and the backend (`google`). No API role may insert or update (a learner-written row would be shown to everyone).
 
+## Views (derived, Phase 5)
+
+All `security_invoker = true`: the caller's RLS applies to every table they read, so a learner sees only their own rows and an admin everyone's (the backend always filters `user_id`). Content counts only when it and every parent are `published` (checked explicitly). `select` for `authenticated` only; nothing for `anon`.
+
+| View | One row per | Columns |
+| --- | --- | --- |
+| `v_user_exercise_results` | user × attempted exercise | `attempt_count`, `best_score` (highest, then latest), `last_score`, `last_attempted_at`, `passed` (any attempt), `best_feedback` |
+| `v_user_skill_progress` | user (visible profile) × every skill | `skill_code`, `skill_name`, `skill_order`, `total_lessons` / `completed_lessons` / `started_lessons` (published), `total_exercises` / `attempted_exercises` / `passed_exercises` (published), `average_score` (mean of best scores, rounded; null without attempts) |
+| `v_user_activity` | event | `kind` (`lesson_started`, `lesson_completed`, `lesson_visited` = last visit only, `exercise_attempted`), `occurred_at`, `lesson_id`, `exercise_id`, `attempt_id`, `score`, `is_correct`, `visible` (content still published) |
+
 ## Helpers
 
 * `is_admin()` — `security definer`, `stable`: true when `auth.uid()` has `role = 'admin'`. Security definer lets policies on `profiles` call it without recursing into RLS. Executable by `authenticated` only.
@@ -103,6 +114,7 @@ Translations of content, one row per (entity, field, language, provider). `manua
 * `set_updated_at()` — shared `before update` trigger function for every table.
 * `set_content_audit()` — `before insert or update` on `courses`, `modules`, `lessons`, `exercises`: `created_by` / `updated_by` = `auth.uid()` (kept as given when there is no user, e.g. the seed); `created_by` never changes on update.
 * `reorder_content(kind, parent_id, ids[])` — invoker (RLS decides): sets `order_index` = position for the children of one parent (course → skill, module → course, lesson → module, exercise → lesson) in one statement; raises `22023` for duplicates, an unknown kind, or when not every id was updated (a child of another parent, or a caller who may not update — so learners get an error, not a silent no-op).
+* `activity_days(time_zone)` — invoker, stable: the distinct local dates of the caller's (`auth.uid()`) activity, newest first, for the streak (one row per day, so the API row limit is not hit). An unknown zone raises `22023`. Executable by `authenticated` only.
 * `content_usage(lesson_ids[], exercise_ids[])` — invoker, stable: `(kind, id)` of the given lessons with progress and exercises with attempts. Admins see everyone's rows; anyone else only their own. The backend uses it for `inUse`.
 
 ## RLS and privileges
@@ -117,6 +129,7 @@ Translations of content, one row per (entity, field, language, provider). `manua
 | `exercises` | select when it and its lesson chain are `published` | select all; insert / update / delete | none |
 | `exercise_answers` | **none** | select all; insert / update (removed only with the exercise) | none |
 | `exercise_attempts` | select own; update own `self_assessment` only (on published exercises); **no insert, no delete** | select all | none |
+| `v_user_*` views | own rows (RLS of the underlying tables) | all rows | none |
 | `content_translations` | select when the content is published (`is_content_published`); exercise review texts only after an own attempt at that exercise | select all | none |
 
 * Content writes (Phase 4): the grants are to `authenticated`, the policies allow admins only (`is_admin()`). A learner's insert is `42501`; a learner's update / delete matches no row (RLS) and changes nothing. Column grants: nobody writes `id`, `created_by`, `updated_by` or timestamps; nobody updates a module's `course_id`, a lesson's `module_id`, an exercise's `lesson_id` or `type` (content does not move, types do not change). Hard deletes of content with progress or attempts fail on the `restrict` foreign keys (`23503`); cascaded children and translations go with an allowed delete.
@@ -126,4 +139,4 @@ Translations of content, one row per (entity, field, language, provider). `manua
 
 * Answer keys are read by the backend with the service role only, to grade and to build the review of the user's own attempt.
 
-Verified by `backend/test/integration/profiles-rls.int-spec.ts`, `learning-rls.int-spec.ts`, `translations-rls.int-spec.ts`, `practice-rls.int-spec.ts` and `admin-rls.int-spec.ts`.
+Verified by `backend/test/integration/profiles-rls.int-spec.ts`, `learning-rls.int-spec.ts`, `translations-rls.int-spec.ts`, `practice-rls.int-spec.ts`, `admin-rls.int-spec.ts` and `dashboard-rls.int-spec.ts`.

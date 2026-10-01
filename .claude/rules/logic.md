@@ -72,6 +72,14 @@ Business and security rules that both sides must follow. They come from `plant.m
 * Grading is deterministic (no AI in V1). Free-text answers also show the model answer + self-assessment checklist; both results are stored in `exercise_attempts` (see Grading).
 * Visible exercise = the exercise **and** its lesson, module and course are `published`; anything else is `404`.
 
+## Dashboard and progress (Phase 5)
+
+* Every dashboard value is derived on read (views over `lesson_progress` and `exercise_attempts`); nothing derived is stored. Only published content (item and every parent) counts, and only the caller's own rows (views are security invoker; the backend still filters on the user id because an admin's RLS shows everyone).
+* **The best attempt counts** for scores, averages and weak concepts: highest score, then the latest; passed = any attempt passed. Average score = rounded mean of the best scores of the attempted exercises, `null` without attempts. Overall progress % is lessons only.
+* **Streak** days: lesson started / completed / last visited or an exercise answered, counted in the learner's time zone (`?tz=`, IANA, ≤ 64, default UTC; the frontend sends the browser's). The streak is still current when nothing is done yet today but yesterday was; it breaks after a whole day without study. Study on content unpublished since still counts. `lesson_progress` keeps only the last visit, so a day on which a learner only re-read a lesson they visited again later is lost (accepted: no event table).
+* **Weak areas**: skills with answers whose average best score is below `PASS_SCORE` (70), lowest first, at most 3, each with the not-passed exercise with the lowest best score to retry; concepts missed in the best free-text answers, grouped case-insensitively, most often missed first, at most 5. A skill without answers is not weak.
+* Recent activity: the latest 10 events on content that is still published (titles of unpublished content are never shown).
+
 ## Keep in sync
 
 When any of these rules changes, update this file, `docs/api.md`, and the tests that prove the rule.

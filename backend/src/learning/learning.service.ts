@@ -4,13 +4,11 @@ import {
   type ContentLanguage,
   ContentTranslationService,
   type TextRef,
-  type Translations,
 } from '../translation/content-translation.service.js';
 import {
   ContentRepository,
   type CourseRow,
   type LessonRow,
-  type LessonSummaryRow,
   type ModuleRow,
   type SkillRow,
 } from './content.repository.js';
@@ -18,17 +16,25 @@ import {
   ContinueDto,
   CourseDetailDto,
   CoursePageDto,
-  CourseSummaryDto,
   LessonDto,
   LessonProgressDto,
   type PageSize,
   SkillDto,
   UpdateLessonProgressDto,
 } from './dto/learning.dto.js';
+import { LessonProgressRepository } from './lesson-progress.repository.js';
 import {
-  LessonProgressRepository,
-  type LessonProgressRow,
-} from './lesson-progress.repository.js';
+  continueRefs,
+  courseRef,
+  courseText,
+  lessonRef,
+  lessonTitle,
+  moduleText,
+  outlineRefs,
+  toContinueItem,
+  toCourseSummary,
+  toProgressDto,
+} from './mapping.js';
 import {
   buildOutlines,
   chooseContinue,
@@ -40,7 +46,6 @@ import {
   type ProgressByLesson,
   sortByCatalogueOrder,
   sortCoursesByCatalogue,
-  summarizeProgress,
 } from './outline.js';
 
 function toSkillDto(row: SkillRow): SkillDto {
@@ -50,86 +55,6 @@ function toSkillDto(row: SkillRow): SkillDto {
     name: row.name,
     description: row.description,
     orderIndex: row.order_index,
-  };
-}
-
-function toProgressDto(row: LessonProgressRow | undefined): LessonProgressDto {
-  return {
-    status: row?.status ?? 'not_started',
-    progressPercent: row?.progress_percent ?? 0,
-    startedAt: row?.started_at ?? null,
-    completedAt: row?.completed_at ?? null,
-    lastAccessedAt: row?.last_accessed_at ?? null,
-  };
-}
-
-// Text refs: every content string a response shows, so it can be translated.
-
-const courseText = (course: CourseRow, field: 'title' | 'description') => ({
-  type: 'course' as const,
-  id: course.id,
-  field,
-  text: course[field],
-});
-
-const moduleText = (module: ModuleRow, field: 'title' | 'description') => ({
-  type: 'module' as const,
-  id: module.id,
-  field,
-  text: module[field],
-});
-
-const lessonTitle = (lesson: LessonSummaryRow) => ({
-  type: 'lesson' as const,
-  id: lesson.id,
-  field: 'title' as const,
-  text: lesson.title,
-});
-
-function outlineRefs(outline: CourseOutline, withLessons: boolean): TextRef[] {
-  const refs: TextRef[] = [
-    courseText(outline.course, 'title'),
-    courseText(outline.course, 'description'),
-  ];
-  if (withLessons) {
-    for (const { module, lessons } of outline.modules) {
-      refs.push(moduleText(module, 'title'), moduleText(module, 'description'));
-      refs.push(...lessons.map(lessonTitle));
-    }
-  }
-  return refs;
-}
-
-function toCourseSummary(
-  outline: CourseOutline,
-  progress: ProgressByLesson,
-  tr: Translations,
-): CourseSummaryDto {
-  const { course, skill } = outline;
-  return {
-    id: course.id,
-    slug: course.slug,
-    title: tr.get(courseText(course, 'title')),
-    description: tr.get(courseText(course, 'description')),
-    skill: { code: skill?.code ?? '', name: skill?.name ?? '' },
-    orderIndex: course.order_index,
-    estimatedMinutes: outline.lessons.reduce(
-      (sum, lesson) => sum + lesson.estimated_minutes,
-      0,
-    ),
-    progress: summarizeProgress(outline, progress),
-  };
-}
-
-function lessonRef(lesson: LessonSummaryRow | null, tr: Translations) {
-  return lesson ? { id: lesson.id, title: tr.get(lessonTitle(lesson)) } : null;
-}
-
-function courseRef(course: CourseRow, tr: Translations) {
-  return {
-    id: course.id,
-    slug: course.slug,
-    title: tr.get(courseText(course, 'title')),
   };
 }
 
@@ -162,25 +87,11 @@ export class LearningService {
     user: AuthUser,
     { skill, page, pageSize, lang }: ListCoursesOptions,
   ): Promise<CoursePageDto> {
-    const skills = await this.content.listSkills(user.accessToken);
-    const skillId = skill
-      ? skills.find((entry) => entry.code === skill)?.id
-      : undefined;
-    const courses =
-      skill && !skillId
-        ? []
-        : await this.content.listCourses(user.accessToken, { skillId });
-
-    // Order and slice the bare rows; load modules, lessons and progress only
-    // for the courses on this page.
-    const ordered = sortCoursesByCatalogue(courses, skills);
-    const outlines = sortByCatalogueOrder(
-      await this.loadOutlines(
-        user,
-        pageOf(ordered, { page, pageSize }),
-        skills,
-      ),
-    );
+    const { outlines, total } = await this.loadCoursePage(user, {
+      skill,
+      page,
+      pageSize,
+    });
     const [progress, tr] = await Promise.all([
       this.progressFor(user, outlines),
       this.translations.translate(
@@ -191,7 +102,7 @@ export class LearningService {
     ]);
     return {
       items: outlines.map((outline) => toCourseSummary(outline, progress, tr)),
-      total: ordered.length,
+      total,
       page,
       pageSize,
       language: lang,
@@ -309,42 +220,62 @@ export class LearningService {
     user: AuthUser,
     lang: ContentLanguage,
   ): Promise<ContinueDto> {
-    const courses = await this.content.listCourses(user.accessToken);
-    const outlines = sortByCatalogueOrder(
-      await this.loadOutlines(user, courses),
-    );
+    const outlines = await this.loadCatalogue(user);
     const recent = await this.progress.listForUser(user.accessToken, user.id);
     const choice = chooseContinue(outlines, recent);
     if (!choice) return { item: null, language: lang, translation: 'none' };
 
-    const { outline, lesson, reason } = choice;
-    const module = outline.modules.find(
-      (entry) => entry.module.id === lesson.module_id,
-    )!.module;
     const tr = await this.translations.translate(
       user,
-      [
-        lessonTitle(lesson),
-        courseText(outline.course, 'title'),
-        moduleText(module, 'title'),
-      ],
+      continueRefs(choice),
       lang,
     );
     return {
-      item: {
-        reason,
-        lessonId: lesson.id,
-        lessonTitle: tr.get(lessonTitle(lesson)),
-        estimatedMinutes: lesson.estimated_minutes,
-        course: courseRef(outline.course, tr),
-        module: { id: module.id, title: tr.get(moduleText(module, 'title')) },
-        progress: toProgressDto(
-          recent.find((row) => row.lesson_id === lesson.id),
-        ),
-      },
+      item: toContinueItem(choice, recent, tr),
       language: lang,
       translation: tr.status,
     };
+  }
+
+  /**
+   * One page of published courses in catalogue order, with their modules and
+   * lessons, and the number of courses matching the filter. An unknown skill
+   * code gives an empty page.
+   */
+  async loadCoursePage(
+    user: AuthUser,
+    {
+      skill,
+      page,
+      pageSize,
+    }: { skill?: string; page: number; pageSize: number },
+  ): Promise<{ outlines: CourseOutline[]; total: number }> {
+    const skills = await this.content.listSkills(user.accessToken);
+    const skillId = skill
+      ? skills.find((entry) => entry.code === skill)?.id
+      : undefined;
+    const courses =
+      skill && !skillId
+        ? []
+        : await this.content.listCourses(user.accessToken, { skillId });
+
+    // Order and slice the bare rows; load modules and lessons only for the
+    // courses on this page.
+    const ordered = sortCoursesByCatalogue(courses, skills);
+    const outlines = sortByCatalogueOrder(
+      await this.loadOutlines(
+        user,
+        pageOf(ordered, { page, pageSize }),
+        skills,
+      ),
+    );
+    return { outlines, total: ordered.length };
+  }
+
+  /** Every published course with its modules and lessons, in catalogue order. */
+  async loadCatalogue(user: AuthUser): Promise<CourseOutline[]> {
+    const courses = await this.content.listCourses(user.accessToken);
+    return sortByCatalogueOrder(await this.loadOutlines(user, courses));
   }
 
   /**

@@ -55,6 +55,17 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | URL list params (parse, defaults, round trip) | `frontend/src/features/learning/list-params.test.ts` |
 | E2E: breadcrumb + back buttons, back returns to the same list page, pagination (desktop + mobile size picker), skill filter, invalid URL params, machine translation note + English original toggle, unavailable note | `frontend/tests/e2e/learning.spec.ts` |
 
+## Phase 5 coverage (dashboard and progress)
+
+| Requirement (plant.md) | Test |
+| --- | --- |
+| Pure rules: percent, average, skill status, local date in a time zone, streak (today / yesterday / broken, longest, duplicates), weak skills (pass mark, order, retry never passed or hidden), weak concepts (grouping, order, limit) | `backend/src/dashboard/stats.spec.ts` |
+| `GET /dashboard`: 401 / expired, 400 (`tz`, `lang`, unknown params), new learner all zero with 7 skills, derived overall / skills / best-score average / streak / continue / weak areas / activity, unpublished content ignored (streak still counts), streak alive until a day is missed, days in the asked time zone, own data only, translated titles | `backend/test/api/dashboard.e2e-spec.ts` (fake: `test/support/fake-dashboard.ts`, computes the views from the other fakes' stores) |
+| `GET /progress`: lessons and exercises per course with stats, drafts hidden, skill filter, unknown skill, page past the end, 400 | `dashboard.e2e-spec.ts` |
+| Views and `activity_days`: own rows only, admin sees all (so the backend filters), published-only counts, best / last score, `visible` flag on activity, anon denied, unknown time zone `22023` | `backend/test/integration/dashboard-rls.int-spec.ts` |
+| Time zone fallback, activity verdict and link, local day parsing | `frontend/src/features/dashboard/dashboard.test.ts` |
+| E2E: new learner, populated summary / streak / skills / retest / activity, skill link to Progress, continue button, error + retry, empty, Vietnamese; Progress matrix, exercise link, skill filter in the URL, error and empty | `frontend/tests/e2e/dashboard.spec.ts` (mock: `tests/e2e/support/mock-dashboard.ts`, derived from the learning and practice mocks) |
+
 ## Phase 4 coverage (Admin CMS)
 
 | Requirement (plant.md) | Test |

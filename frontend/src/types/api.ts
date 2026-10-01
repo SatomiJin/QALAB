@@ -434,6 +434,114 @@ export interface SaveSelfAssessmentRequest {
   checked: string[];
 }
 
+// Dashboard and progress (Phase 5) -------------------------------------------
+
+/** Days in `DashboardStreak.days` (mirrors backend `STREAK_WINDOW`). */
+export const STREAK_WINDOW = 14;
+export const TIME_ZONE_MAX_LENGTH = 64;
+
+/** Mirrors backend `ExerciseTotalsDto`. */
+export interface ExerciseTotals {
+  total: number;
+  attempted: number;
+  passed: number;
+  /** Mean of the best score per attempted exercise. */
+  averageScore: number | null;
+}
+
+export interface OverallProgress {
+  totalLessons: number;
+  completedLessons: number;
+  percent: number;
+  exercises: ExerciseTotals;
+}
+
+export interface DashboardStreak {
+  current: number;
+  longest: number;
+  activeToday: boolean;
+  /** The last 14 local days, oldest first, ending today. */
+  days: { date: string; active: boolean }[];
+}
+
+export interface SkillProgress {
+  code: string;
+  name: string;
+  totalLessons: number;
+  completedLessons: number;
+  percent: number;
+  status: LessonStatus;
+  exercises: ExerciseTotals;
+}
+
+export interface WeakSkill {
+  code: string;
+  name: string;
+  averageScore: number;
+  attemptedExercises: number;
+  passedExercises: number;
+  retry: { id: string; type: ExerciseType; bestScore: number } | null;
+}
+
+export interface WeakConcept {
+  concept: string;
+  missed: number;
+  checked: number;
+}
+
+export type ActivityKind =
+  'lesson_started' | 'lesson_completed' | 'exercise_attempted';
+
+export interface Activity {
+  kind: ActivityKind;
+  occurredAt: string;
+  lesson: LessonRef;
+  course: { id: string; slug: string; title: string };
+  exercise: { id: string; type: ExerciseType } | null;
+  score: number | null;
+  isCorrect: boolean | null;
+}
+
+/** Mirrors backend `DashboardDto` (`GET /dashboard`). */
+export interface Dashboard extends Localized {
+  overall: OverallProgress;
+  streak: DashboardStreak;
+  continue: ContinueItem | null;
+  skills: SkillProgress[];
+  weakAreas: { skills: WeakSkill[]; concepts: WeakConcept[] };
+  recentActivity: Activity[];
+  timeZone: string;
+}
+
+export interface ExerciseResult {
+  id: string;
+  type: ExerciseType;
+  difficulty: Difficulty;
+  question: string;
+  stats: ExerciseStats;
+}
+
+export interface LessonResult {
+  id: string;
+  title: string;
+  estimatedMinutes: number;
+  progress: LessonProgress;
+  exercises: ExerciseResult[];
+}
+
+export interface CourseResult extends CourseSummary {
+  exercises: ExerciseTotals;
+  modules: { id: string; title: string; lessons: LessonResult[] }[];
+}
+
+/** Mirrors backend `ProgressPageDto` (`GET /progress`). */
+export interface ProgressPage extends Localized {
+  items: CourseResult[];
+  total: number;
+  page: number;
+  pageSize: PageSize;
+}
+
 // Admin CMS (Phase 4) --------------------------------------------------------
 
 export const CONTENT_STATUSES = ['draft', 'published', 'archived'] as const;

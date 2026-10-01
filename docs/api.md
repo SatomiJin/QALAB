@@ -252,6 +252,50 @@ Rules:
 * Audit columns (`created_by`, `updated_by`) come from the token, set by a DB trigger; the client cannot send them.
 * Editing English text makes its Vietnamese translations stale (they fall back to English until retranslated); editing translations in the CMS is not built yet.
 
+## Dashboard and progress (Phase 5)
+
+All routes need a JWT. Every value is derived on read from your lesson progress and attempts (views `v_user_skill_progress`, `v_user_exercise_results`, `v_user_activity`); nothing is stored. Only published content counts (the item and every parent), and only your own data.
+
+| Method | Path | Query | Success | Errors |
+|---|---|---|---|---|
+| GET | `/dashboard` | `?lang=&tz=` (both optional) | `200 Dashboard` | `400` invalid `lang`, `tz` not an IANA time zone (≤ 64), unknown query parameter |
+| GET | `/progress` | `?skill=&page=&pageSize=&lang=` | `200 ProgressPage`, courses in catalogue order | `400` as `/courses`; unknown skill → empty page |
+
+```json
+// Dashboard
+{
+  "overall": { "totalLessons": 12, "completedLessons": 4, "percent": 33,
+               "exercises": { "total": 18, "attempted": 5, "passed": 3, "averageScore": 74 } },
+  "streak": { "current": 3, "longest": 5, "activeToday": true,
+              "days": [{ "date": "2026-09-17", "active": false }, … 14 days, oldest first, ending today] },
+  "continue": ContinueItem | null,
+  "skills": [{ "code": "fundamentals", "name": "QA Fundamentals", "totalLessons": 4, "completedLessons": 1,
+               "percent": 25, "status": "in_progress", "exercises": { … as overall } }],
+  "weakAreas": {
+    "skills": [{ "code": "test_design", "name": "…", "averageScore": 55, "attemptedExercises": 3, "passedExercises": 1,
+                 "retry": { "id": "uuid", "type": "scenario", "bestScore": 40 } | null }],
+    "concepts": [{ "concept": "Boundary values", "missed": 2, "checked": 3 }]
+  },
+  "recentActivity": [{ "kind": "exercise_attempted", "occurredAt": "…", "lesson": { "id", "title" },
+                       "course": { "id", "slug", "title" }, "exercise": { "id", "type" } | null,
+                       "score": 40 | null, "isCorrect": false | null }],
+  "timeZone": "Asia/Ho_Chi_Minh", "language": "en", "translation": "none"
+}
+// ProgressPage: { items: [CourseResult], total, page, pageSize, language, translation }
+// CourseResult: CourseSummary + exercises (totals as above) + modules:
+//   [{ id, title, lessons: [{ id, title, estimatedMinutes, progress: LessonProgress,
+//                             exercises: [{ id, type, difficulty, question, stats: ExerciseStats }] }] }]
+```
+
+Rules:
+
+* **The best attempt counts.** Per exercise: best score (then the latest attempt on a tie), passed = any attempt passed. `averageScore` is the rounded mean of the best scores of the attempted exercises; `null` without attempts.
+* **Overall progress** is lessons: `percent` = completed / published lessons. Skills are always all 7, in order; a skill's `status` follows the course rule (completed when every lesson is, in progress once one is opened).
+* **Streak.** A day counts when you started, completed or opened a lesson (the last visit of each lesson is kept) or answered an exercise, in the time zone `tz` (default UTC; the frontend sends the browser's). `current` counts back from today, or from yesterday when nothing is done yet today: a streak breaks only after a whole day without study. Study on content that is unpublished since still counts.
+* **Weak areas.** Skills with at least one answer whose average best score is below 70 (the pass mark), lowest first, at most 3; `retry` is the not-passed exercise with the lowest best score. Concepts: the free-text concept checks missed in the best answers, grouped by name (case-insensitive), most often missed first (share, then count), at most 5.
+* **Recent activity**: the latest 10 of lesson started / completed and exercise answered, newest first, on content that is still published.
+* **Continue** is the same choice as `GET /continue`. Titles follow `?lang=` like the learning routes.
+
 ## Health
 
 `GET /health` (public) → `200 { status: "ok", timestamp, uptimeSeconds }`.

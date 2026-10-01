@@ -1,14 +1,15 @@
-import { Button } from 'antd';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
+import { ContinueBlock } from '../ContinueBlock';
+import { SkillFilter } from '../SkillFilter';
 import { EmptyState } from '../../../components/feedback/EmptyState';
 import { ErrorState } from '../../../components/feedback/ErrorState';
 import { PageLoader } from '../../../components/feedback/PageLoader';
 import { PageHeader } from '../../../components/PageHeader';
 import { VerdictTag } from '../../../components/VerdictTag';
 import { ListPager } from '../../../components/ListPager';
-import type { ContinueItem, CourseSummary, Skill } from '../../../types/api';
+import type { CourseSummary } from '../../../types/api';
 import {
   lastPage,
   type ListParams,
@@ -116,7 +117,7 @@ export function LearningPage() {
       <TranslationNote status={page.translation} />
       <ContinueBlock item={next.data.item} />
 
-      <SkillFilter skills={skills.data} params={params} />
+      <SkillFilter pathname="/learning" skills={skills.data} params={params} />
 
       {page.items.length === 0 ? (
         <p className={styles.muted} data-testid="courses-empty">
@@ -151,54 +152,6 @@ export function LearningPage() {
   );
 }
 
-function SkillFilter({
-  skills,
-  params,
-}: {
-  skills: Skill[];
-  params: ListParams;
-}) {
-  const { t } = useTranslation();
-  const skillText = useSkillText();
-  const tabs = [
-    { code: undefined, label: t('learning.list.all') },
-    ...skills.map((skill) => ({
-      code: skill.code,
-      label: skillText(skill).name,
-    })),
-  ];
-
-  return (
-    <nav
-      aria-label={t('learning.list.filterLabel')}
-      className={styles.filter}
-      data-testid="skill-filter"
-    >
-      {tabs.map((tab) => {
-        const active = tab.code === params.skill;
-        return (
-          <Link
-            key={tab.code ?? 'all'}
-            to={{
-              pathname: '/learning',
-              search: listSearch({ ...params, skill: tab.code, page: 1 }),
-            }}
-            className={
-              active
-                ? `${styles.filterTab} ${styles.filterActive}`
-                : styles.filterTab
-            }
-            aria-current={active ? 'page' : undefined}
-            data-skill={tab.code ?? 'all'}
-          >
-            {tab.label}
-          </Link>
-        );
-      })}
-    </nav>
-  );
-}
-
 function CourseItem({ course }: { course: CourseSummary }) {
   const { t } = useTranslation();
   const skillText = useSkillText();
@@ -227,62 +180,5 @@ function CourseItem({ course }: { course: CourseSummary }) {
         <span>{skillText(course.skill).name}</span>
       </div>
     </li>
-  );
-}
-
-/** The one "do this next" on the page (highlighter, primary button). */
-function ContinueBlock({ item }: { item: ContinueItem | null }) {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  if (!item) {
-    return (
-      <p className={styles.allDone} data-testid="continue" data-state="done">
-        <VerdictTag verdict="pass" />
-        <span>{t('learning.continue.allDone')}</span>
-      </p>
-    );
-  }
-
-  const percent = item.progress.progressPercent;
-  return (
-    <section
-      className={styles.continue}
-      aria-label={t('learning.continue.label')}
-      data-testid="continue"
-      data-state={item.reason}
-    >
-      <div className={styles.continueText}>
-        <p className={styles.continueReason}>
-          {t(`learning.continue.${item.reason}`)}
-        </p>
-        <p className={styles.continueTitle}>
-          <Link to={`/learning/lessons/${item.lessonId}`}>
-            <mark className={styles.mark}>{item.lessonTitle}</mark>
-          </Link>
-        </p>
-        <p className={styles.trail}>
-          <span>{item.course.title}</span>
-          <span>{item.module.title}</span>
-        </p>
-        <div className={styles.meta}>
-          <span>{t('learning.minutes', { count: item.estimatedMinutes })}</span>
-          {item.reason === 'resume' && percent > 0 && (
-            <span className={styles.count}>
-              {t('learning.continue.read', { percent })}
-            </span>
-          )}
-        </div>
-      </div>
-      <Button
-        type="primary"
-        size="large"
-        onClick={() => navigate(`/learning/lessons/${item.lessonId}`)}
-      >
-        {item.reason === 'resume'
-          ? t('learning.continue.resumeAction')
-          : t('learning.continue.startAction')}
-      </Button>
-    </section>
   );
 }

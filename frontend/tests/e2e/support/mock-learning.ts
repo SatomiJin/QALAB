@@ -162,7 +162,17 @@ export class MockLearning {
     }
   }
 
-  private get(userId: string, lessonId: string): Progress {
+  /** The user's progress on every sample lesson (for the dashboard mock). */
+  progressOf(userId: string): ({ lessonId: string } & Progress)[] {
+    return LESSONS.map((l) => ({ lessonId: l.id, ...this.get(userId, l.id) }));
+  }
+
+  /** Lesson-less courses added with `addCourses`. */
+  get extras(): readonly CourseInfo[] {
+    return this.extraCourses;
+  }
+
+  get(userId: string, lessonId: string): Progress {
     return (
       this.progress.get(`${userId}:${lessonId}`) ?? {
         status: 'not_started',
@@ -186,20 +196,20 @@ export class MockLearning {
   }
 
   /** Content text in the requested language (mock translation: a prefix). */
-  private text(value: string, lang: Lang): string {
+  text(value: string, lang: Lang): string {
     return lang === 'vi' && this.translation !== 'unavailable' && value
       ? `(VI) ${value}`
       : value;
   }
 
-  private localized(lang: Lang) {
+  localized(lang: Lang) {
     return {
       language: lang,
       translation: lang === 'en' ? 'none' : this.translation,
     };
   }
 
-  private summary(userId: string, lang: Lang) {
+  summary(userId: string, lang: Lang) {
     const statuses = LESSONS.map((l) => this.get(userId, l.id).status);
     const completed = statuses.filter((s) => s === 'completed').length;
     return {
@@ -220,7 +230,7 @@ export class MockLearning {
     };
   }
 
-  private extraSummary(course: CourseInfo, lang: Lang) {
+  extraSummary(course: CourseInfo, lang: Lang) {
     return {
       ...course,
       title: this.text(course.title, lang),
@@ -236,7 +246,7 @@ export class MockLearning {
     );
   }
 
-  private continueItem(userId: string, lang: Lang) {
+  continueItem(userId: string, lang: Lang) {
     const touched = LESSONS.map((l) => ({ l, p: this.get(userId, l.id) }))
       .filter(({ p }) => p.lastAccessedAt)
       .sort((a, b) => b.p.lastAccessedAt!.localeCompare(a.p.lastAccessedAt!));
@@ -432,4 +442,6 @@ export class MockLearning {
 export const SAMPLE = {
   course: COURSE,
   lessons: LESSONS.map(({ id, title }) => ({ id, title })),
+  modules: MODULES,
+  skills: SKILLS,
 };

@@ -1,0 +1,420 @@
+@use '../../styles/tokens' as *;
+
+// Dashboard: a test summary report. No cards; structure from type and Rules.
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.muted {
+  margin: 0;
+  color: $color-ink-muted;
+}
+
+.count {
+  @include type-id;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $space-1 $space-4;
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+// "Lesson | Course", separated by a rule, not a dot.
+.trail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1 0;
+  @include type-small;
+  color: $color-ink-muted;
+
+  > * + * {
+    margin-left: $space-2;
+    padding-left: $space-2;
+    border-left: 1px solid $color-rule;
+  }
+}
+
+.section {
+  margin-top: $space-7;
+}
+
+.sectionTitle {
+  @include type-section-title;
+  margin: 0 0 $space-3;
+}
+
+.sectionDescription {
+  max-width: $measure;
+  margin: 0 0 $space-4;
+  color: $color-ink-muted;
+}
+
+.subTitle {
+  margin: 0 0 $space-2;
+  font-size: $font-size-body;
+  line-height: $line-height-body;
+  font-weight: 600;
+}
+
+.rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid $color-rule;
+
+  > li {
+    border-bottom: 1px solid $color-rule;
+  }
+}
+
+// Summary: four figures in one ruled row -----------------------------------
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  border-top: 1px solid $color-rule;
+  border-bottom: 1px solid $color-rule;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.figure {
+  display: grid;
+  align-content: start;
+  gap: $space-1;
+  min-width: 0;
+  padding: $space-4 $space-5;
+
+  & + & {
+    border-left: 1px solid $color-rule;
+  }
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: $space-4 $space-3;
+
+    // 2 × 2: rules between the columns and between the rows only.
+    &:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    &:nth-child(n + 3) {
+      border-top: 1px solid $color-rule;
+    }
+  }
+}
+
+.figureLabel {
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.figureBody {
+  display: grid;
+  gap: $space-1;
+  margin: 0;
+}
+
+.figureValue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 $space-2;
+  margin: 0;
+  @include type-page-title;
+  @include type-id;
+}
+
+.figureUnit {
+  @include type-small;
+  font-stretch: 100%;
+  color: $color-ink-muted;
+}
+
+.figureNote {
+  margin: 0;
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+// Streak days: a run of 14 cells, like a test run strip. Filled = studied,
+// outlined = not; the highlighter under today says "you are here".
+.days {
+  display: grid;
+  grid-template-columns: repeat(14, minmax(0, 12px));
+  gap: 3px;
+  margin: $space-2 0 0;
+  padding: 0 0 $space-2;
+  list-style: none;
+}
+
+.day {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid $color-rule;
+  border-radius: $radius-tag;
+
+  &[data-active='true'] {
+    border-color: $color-ink;
+    background: $color-ink;
+  }
+
+  &[data-today='true']::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    bottom: -6px;
+    left: -1px;
+    height: 3px;
+    background: $color-highlighter;
+  }
+}
+
+// Skills table -------------------------------------------------------------
+
+.skills {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: $space-3 $space-3 $space-3 0;
+    border-bottom: 1px solid $color-rule;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 400;
+  }
+
+  thead th {
+    @include type-small;
+    color: $color-ink-muted;
+    border-top: 1px solid $color-rule;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 0;
+    text-align: right;
+  }
+
+  // Fixed columns, so rows line up.
+  thead th:nth-child(1) {
+    width: 30%;
+  }
+
+  thead th:nth-child(2) {
+    width: 28%;
+  }
+
+  thead th:nth-child(4) {
+    width: 80px;
+  }
+
+  thead th:nth-child(5) {
+    width: 112px;
+  }
+
+  .skillName {
+    font-weight: 600;
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .numeric {
+    @include type-id;
+    text-align: right;
+  }
+
+  // The bar and its count side by side (flex on an inner box, not the cell).
+  .skillLessons > span {
+    vertical-align: middle;
+  }
+
+  .bar {
+    display: inline-block;
+    width: 96px;
+    margin-right: $space-3;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    thead {
+      display: none;
+    }
+
+    tbody tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: $space-1 $space-3;
+      padding: $space-3 0;
+      border-bottom: 1px solid $color-rule;
+
+      &:first-child {
+        border-top: 1px solid $color-rule;
+      }
+    }
+
+    tbody th,
+    tbody td {
+      padding: 0;
+      border: 0;
+    }
+
+    .skillLessons,
+    .skillExercises,
+    .skillAverage {
+      grid-column: 1 / -1;
+      text-align: left;
+      @include type-small;
+    }
+
+    .skillStatus {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .numeric {
+      text-align: left;
+    }
+
+    // No average yet: nothing to say on a phone.
+    .skillAverage[data-empty='true'] {
+      display: none;
+    }
+  }
+}
+
+// "Average" before the number where there is no column header (mobile).
+.cellLabel {
+  display: none;
+  margin-right: $space-2;
+  color: $color-ink-muted;
+
+  @media (max-width: $breakpoint-md) {
+    display: inline;
+  }
+}
+
+// Progress bar: Ink on a Rule track, thin. Not a ring, not a colour.
+.bar {
+  height: 4px;
+  overflow: hidden;
+  border-radius: $radius-tag;
+  background: $color-rule;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  background: $color-ink;
+}
+
+// Needs retest -------------------------------------------------------------
+
+.retest {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-5 $space-6;
+
+  @media (max-width: $breakpoint-lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.weakSkill {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-3 0;
+}
+
+.weakMain {
+  display: grid;
+  gap: $space-1;
+  min-width: 0;
+}
+
+.weakName {
+  font-weight: 600;
+}
+
+.concept {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-1 $space-3;
+  padding: $space-3 0;
+}
+
+// Recent activity: a test log ---------------------------------------------
+
+.activity {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: $space-1 $space-4;
+  padding: $space-3 0;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+.activityTime {
+  @include type-small;
+  @include type-id;
+  color: $color-ink-muted;
+  padding-top: 2px;
+
+  @media (max-width: $breakpoint-md) {
+    grid-column: 1 / -1;
+  }
+}
+
+.activityMain {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.activityKind {
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.activityTitle {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.activityResult {
+  display: flex;
+  align-items: baseline;
+  gap: $space-3;
+  white-space: nowrap;
+  @include type-small;
+}

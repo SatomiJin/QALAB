@@ -48,6 +48,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 2 — Learning (learner side) | Done | Done |
 | 3 — Practice | Done | Done |
 | 4 — Admin CMS | Done | Done |
+| 5 — Dashboard & Progress | Done | Done |
 
 ## Authentication
 
@@ -86,3 +87,9 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 * Backend module `src/admin/`: `AdminCoursesController` (courses, modules) and `AdminLessonsController` (lessons, exercises), both `@Roles('admin')`. `AdminService` / `AdminExercisesService` load the course tree, apply the rules and map to DTOs; the pure rules are in `content-rules.ts` (in use, can publish, complete reorder, locked prompt ids) and unit-tested. `AdminContentRepository` reads and writes every status **as the admin** (`forUser`), so RLS `is_admin()` checks every write a second time; reorders and usage go through the SQL functions `reorder_content` and `content_usage`. Exercise prompt data and answer keys are validated with the grader's own parsers (`practice/exercise-schema.ts`).
 * Unique-slug (`23505`) and restrict-FK (`23503`) errors become `409` (`common/errors/pg-error.ts`).
 * Frontend `features/admin/`: `admin-api.ts`, `queries.ts` (`adminKeys`, `useAdminMutation`: returned details go into their cache, then every admin / learning / practice query is refreshed), pages `AdminCoursesPage` (filters in the URL, New course dialog, course reorder when one skill is shown), `AdminCoursePage` (details, publish / unpublish / archive / delete, outline with modules and lessons), `AdminLessonPage` (fields, `MarkdownEditor` with live preview, exercises), `AdminExercisePage` (per-type answer-key form; `exercise-form.ts` converts form and API shapes), `AdminLessonPreviewPage` (preview as learner). Reordering is `SortableList` (dnd-kit: pointer, touch, keyboard; plus up / down buttons), shown at once and put back if saving fails.
+
+## Dashboard and progress (Phase 5)
+
+* Derived data only: three **security invoker** views (`v_user_exercise_results`, `v_user_skill_progress`, `v_user_activity`) and `activity_days(tz)` read the caller's own rows through RLS; nothing is stored.
+* Backend module `src/dashboard/`: `DashboardController` (`GET /dashboard`, `GET /progress`), `DashboardService` and `ProgressService`, `DashboardRepository` (the views, as the user, always filtered on the user id because an admin's RLS shows everyone), pure rules in `stats.ts` (streak, weak skills / concepts, percent, average; unit-tested). It reuses `LearningService.loadCatalogue` / `loadCoursePage`, `chooseContinue`, the shared mapping in `learning/mapping.ts` (text refs, `toCourseSummary`, `toContinueItem`) and `ExercisesRepository` (exported by `PracticeModule`). One translation call per response.
+* Frontend `features/dashboard/`: `dashboard-api.ts`, `queries.ts` (`dashboardKeys`; `staleTime: 0`, so every visit refetches instead of every other feature's mutation invalidating it), `DashboardPage` (Continue block, `SummaryFigures` with the 14-day streak strip, `SkillTable`, `RetestSection`, `ActivityLog`) and `ProgressPage` (skill tabs, `CourseReport` per course, pager). The browser's time zone is sent as `tz`. `ContinueBlock` and `SkillFilter` moved from the Learning page to `features/learning/` to be shared.

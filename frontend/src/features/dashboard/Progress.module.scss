@@ -1,0 +1,165 @@
+@use '../../styles/tokens' as *;
+
+// Progress: a traceability matrix. Courses as sections, lessons as numbered
+// rows, their exercises indented under them; fixed columns so numbers,
+// results and verdicts line up across the page. Read-only report rows keep
+// Rules (not item cards); titles are ordinary links.
+
+.muted {
+  margin: 0;
+  color: $color-ink-muted;
+}
+
+.count {
+  @include type-id;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $space-1 $space-4;
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.course {
+  padding: $space-5 0 $space-6;
+
+  // The skill tabs above end in a Rule: only rules between courses.
+  & + & {
+    border-top: 1px solid $color-ink;
+  }
+}
+
+.courseTitle {
+  @include type-section-title;
+  margin: 0 0 $space-2;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.module {
+  margin-top: $space-5;
+}
+
+.moduleTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 $space-3;
+  margin: 0 0 $space-2;
+  font-size: $font-size-body;
+  line-height: $line-height-body;
+  font-weight: 600;
+}
+
+.moduleNumber {
+  @include type-small;
+  @include type-id;
+  color: $color-ink-muted;
+}
+
+.lessons,
+.exercises {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lessons {
+  border-top: 1px solid $color-rule;
+}
+
+.lesson {
+  border-bottom: 1px solid $color-rule;
+}
+
+// Number | title | stats | verdict. Exercise rows use the same columns with
+// an empty number cell, so they read as the lesson's cases.
+.row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 176px 96px;
+  align-items: baseline;
+  gap: $space-1 $space-3;
+  padding: $space-3 0;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+  }
+}
+
+.exercise {
+  padding-top: $space-2;
+  border-top: 1px dashed $color-rule;
+}
+
+.exercises {
+  padding-bottom: $space-1;
+}
+
+.number {
+  @include type-id;
+  color: $color-ink-muted;
+}
+
+.rowMain {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.question {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.rowStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 $space-3;
+  @include type-small;
+  color: $color-ink-muted;
+
+  @media (max-width: $breakpoint-md) {
+    grid-row: 2;
+    grid-column: 2;
+
+    &:empty {
+      display: none;
+    }
+  }
+}
+
+.verdict {
+  justify-self: end;
+
+  @media (max-width: $breakpoint-md) {
+    grid-row: 1;
+    grid-column: 3;
+  }
+}

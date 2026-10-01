@@ -1,5 +1,6 @@
 import type { Page, Route } from '@playwright/test';
 import { MockAdmin } from './mock-admin.ts';
+import { MockDashboard } from './mock-dashboard.ts';
 import { MockLearning } from './mock-learning.ts';
 import { MockPractice } from './mock-practice.ts';
 
@@ -49,6 +50,7 @@ export class MockApi {
   readonly learning = new MockLearning();
   readonly practice = new MockPractice();
   readonly admin = new MockAdmin();
+  readonly dashboard = new MockDashboard(this.learning, this.practice);
 
   addUser(input: Partial<MockUser> & { email: string }): MockUser {
     const user: MockUser = {
@@ -300,6 +302,7 @@ export class MockApi {
           this.admin.handle(method, path, body, user.role, query) ??
           this.learning.handle(method, path, body, user.id, query) ??
           this.practice.handle(method, path, body, user.id, query) ??
+          this.dashboard.handle(method, path, user.id, query) ??
           error(404, 'Not Found', `Cannot ${method} ${path}`)
         );
       }

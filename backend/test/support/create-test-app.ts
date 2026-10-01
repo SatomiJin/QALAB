@@ -4,6 +4,7 @@ import { App } from 'supertest/types.js';
 import { AdminContentRepository } from '../../src/admin/admin-content.repository.js';
 import { AppModule } from '../../src/app.module.js';
 import { configureApp } from '../../src/app.setup.js';
+import { DashboardRepository } from '../../src/dashboard/dashboard.repository.js';
 import { JWT_KEY_SET } from '../../src/auth/jwt-verifier.service.js';
 import { ContentRepository } from '../../src/learning/content.repository.js';
 import { LessonProgressRepository } from '../../src/learning/lesson-progress.repository.js';
@@ -16,6 +17,7 @@ import { TranslationsRepository } from '../../src/translation/translations.repos
 import { Translator } from '../../src/translation/translator.js';
 import { FakeAdminContentRepository } from './fake-admin.js';
 import { FakeAuthServer, FakeProfilesRepository } from './fake-auth-server.js';
+import { FakeDashboardRepository } from './fake-dashboard.js';
 import {
   FakeContentRepository,
   FakeLessonProgressRepository,
@@ -43,6 +45,7 @@ export interface TestApp {
   answers: FakeExerciseAnswersRepository;
   attempts: FakeAttemptsRepository;
   admin: FakeAdminContentRepository;
+  dashboard: FakeDashboardRepository;
 }
 
 const REVIEW_FIELD = /^(explanation|model_answer|rubric\..+)$/;
@@ -66,6 +69,12 @@ export async function createTestApp(
     content,
     exercises,
     answers,
+    progress,
+    attempts,
+  );
+  const dashboard = new FakeDashboardRepository(
+    content,
+    exercises,
     progress,
     attempts,
   );
@@ -109,6 +118,8 @@ export async function createTestApp(
     .useValue(attempts)
     .overrideProvider(AdminContentRepository)
     .useValue(admin)
+    .overrideProvider(DashboardRepository)
+    .useValue(dashboard)
     .compile();
 
   const app = moduleRef.createNestApplication<INestApplication<App>>({
@@ -128,5 +139,6 @@ export async function createTestApp(
     answers,
     attempts,
     admin,
+    dashboard,
   };
 }

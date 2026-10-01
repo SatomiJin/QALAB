@@ -53,7 +53,7 @@ interface MockExercise {
   explanation: string;
 }
 
-interface MockAttempt {
+export interface MockAttempt {
   id: string;
   userId: string;
   exerciseId: string;
@@ -262,14 +262,14 @@ export class MockPractice {
   submitFailing = false;
   /** Every submitted body, for assertions. */
   readonly attemptCalls: { exerciseId: string; body: unknown }[] = [];
-  private readonly attempts: MockAttempt[] = [];
+  readonly attempts: MockAttempt[] = [];
   private clock = Date.parse('2026-09-30T08:00:00Z');
 
-  private text(value: string, lang: Lang) {
+  text(value: string, lang: Lang) {
     return lang === 'vi' && value ? `(VI) ${value}` : value;
   }
 
-  private stats(userId: string, exerciseId: string) {
+  stats(userId: string, exerciseId: string) {
     const own = this.own(userId, exerciseId);
     return {
       attemptCount: own.length,

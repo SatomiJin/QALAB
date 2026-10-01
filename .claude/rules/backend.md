@@ -27,6 +27,12 @@ src/<feature>/
 * Features reuse another module's repositories through `exports` (`LearningModule` exports `ContentRepository` for practice), never by re-declaring the provider.
 * The Admin CMS (`src/admin/`) has one repository for all content tables (`AdminContentRepository`, generic `find/insert/update/remove` by `ContentKind`, typed with `RowByKind` / `WriteByKind` / `UpdateByKind`), because courses, modules, lessons and exercises are edited together. Its write types list only the columns the DB grants. Big routers split into several controllers on the same prefix (`AdminCoursesController`, `AdminLessonsController`); a service may use another (`AdminExercisesService` uses `AdminService.findOr404` / `reorder` / `removeUnused`).
 
+* Row → DTO mapping and text refs shared by several services live in the feature's `mapping.ts` (`learning/mapping.ts`: `toCourseSummary`, `toContinueItem`, `continueRefs`, `courseText`…), not exported from a service file. A service that shows another feature's texts collects all refs and translates **once** per response.
+* Loading the catalogue is `LearningService.loadCatalogue` (all visible outlines) / `loadCoursePage` (one page, filter, total); other features reuse them instead of rebuilding outlines. `LearningModule` exports `LearningService` and `LessonProgressRepository`, `PracticeModule` exports `ExercisesRepository`.
+* Derived data (dashboard) is read from SQL views by one read-only repository (`DashboardRepository`), filtered on the user id; the pure rules on top (streak, weak areas) are in `dashboard/stats.ts`. Several routes of one feature can share a controller (`DashboardController`: `/dashboard`, `/progress`).
+* Time zones in queries are validated with `@IsTimeZone()` + `@MaxLength(64)` before they reach SQL.
+* Lists that would need many ids in an `.in()` filter (hundreds of exercises) read the user's rows once instead (`listExerciseResults`): PostgREST filters go in the URL.
+
 * Shared code: `src/common/` (errors, filters, pipes), `src/config/` (env), `src/supabase/` (`SupabaseService`).
 * ESM: relative imports end in `.js` (`'./profile.service.js'`). Type-only imports use `import type`.
 * Keep the layers: controller → service → repository. Controllers never touch Supabase; repositories never throw HTTP exceptions.
@@ -92,6 +98,7 @@ src/<feature>/
 * When a new Supabase Auth call is used, extend the fake server to model it.
 * API tests never hit Supabase for data: every repository has an in-memory fake in `test/support/fake-*.ts` (`FakeProfilesRepository`, `FakeContentRepository`, `FakeLessonProgressRepository`, `FakeExercisesRepository`, `FakeExerciseAnswersRepository`, `FakeAttemptsRepository`), registered in `create-test-app.ts` with `overrideProvider`. A read policy that depends on the caller is modelled with a hook (`FakeTranslationsRepository.canRead(row, token)`, user id from the fake JWT via `userIdFromToken`).
 * The admin fake (`FakeAdminContentRepository`, `test/support/fake-admin.ts`) works on the learner fakes' stores (they expose `courses` / `modules` / `lessons` / `rows`), so an admin write is what learner endpoints (do not) show. It mirrors unique slugs (`23505`), restrict FKs (`23503`), cascades and `reorder_content` (`22023`). To test a race, replace a fake method for one request and restore it in `finally`.
+* Views have a fake too (`FakeDashboardRepository`, `test/support/fake-dashboard.ts`), computed from the other fakes' stores with the view rules (published only, best attempt, own rows). Tests that need past days move a user's timestamps back (`shiftUser`) instead of mocking the clock.
 * Admin endpoints: one parameterised test over the full route list for `403` (learner) and `401` (no token).
 * Seed content the app parses (exercise prompts and answer keys) is checked by a unit test that reads `supabase/seed.sql` (`practice/seed-exercises.spec.ts`). A fake must mirror what RLS/filters/triggers do (published-only, per-user rows, forward-only progress), or the API test proves nothing.
 * Sanity-check a new suite by breaking the rule it guards once (e.g. drop a visibility check) and seeing it fail.

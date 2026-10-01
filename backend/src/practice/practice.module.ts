@@ -16,5 +16,6 @@ import { PracticeService } from './practice.service.js';
     ExerciseAnswersRepository,
     AttemptsRepository,
   ],
+  exports: [ExercisesRepository],
 })
 export class PracticeModule {}

@@ -15,7 +15,7 @@ src/
 ├── features/<x>/ # feature code: <x>-api.ts, queries.ts, pure helpers + *.test.ts, pages/, components, *.module.scss
 ├── components/   # shared UI (PageHeader, PageTrail, ListPager, VerdictTag, BugReport, feedback/{PageLoader,ErrorState,EmptyState})
 ├── layouts/      # AppShell, AuthLayout, MainLayout, PracticeLayout, AdminLayout, navigation.ts
-├── pages/        # app-level pages (404, no access, placeholder, route error)
+├── pages/        # app-level pages (404, no access, route error)
 ├── hooks/        # shared hooks (useErrorMessage, useDocumentTitle)
 ├── lib/          # api client, storage, env, query client
 ├── i18n/locales/ # en.ts (source of truth), vi.ts
@@ -81,6 +81,14 @@ src/
 * Ant Design `Pagination` hides its size changer on small screens: render the page-size `Select` yourself (`aria-label`, options from `PAGE_SIZES`) next to `Pagination showSizeChanger={false}`.
 * Row lists that should read as a table (lessons, later attempts) use fixed grid column widths so columns line up across rows.
 
+## Dashboard and progress
+
+* Feature folder `features/dashboard/`: `dashboard-api.ts`, `queries.ts` (`dashboardKeys`), pages `DashboardPage` / `ProgressPage`, sections `SummaryFigures`, `SkillTable`, `RetestSection`, `ActivityLog`, `CourseReport`, pure helpers in `dashboard.ts` (`browserTimeZone`, `activityVerdict`, `activityPath`, `dayToDate`).
+* Queries of **derived** data (dashboard, progress) use `staleTime: 0`, so each visit refetches; mutations elsewhere do not have to know about them.
+* Pieces used by several pages of different features live in the owning feature, exported: `features/learning/ContinueBlock.tsx`, `features/learning/SkillFilter.tsx` (takes the `pathname` it links to).
+* A local date from the API (`YYYY-MM-DD`) is shown with `dayToDate` (local noon), never `new Date('YYYY-MM-DD')`, which is UTC midnight and shows the previous day west of UTC.
+* Tables that become blocks on mobile set column widths on `thead th` only, so the body cells can use the full width.
+
 ## Admin CMS
 
 * Feature folder `features/admin/`: pages under `pages/`, shared pieces (`StatusTag`, `StatusLine`, `SortableList`, `DeleteButton`, `MarkdownEditor`, `CourseFields` / `SlugField`, dialogs) next to them, pure helpers in `content.ts` (slugify, list params, move) and `exercise-form.ts` (form values and API payload per exercise type), tested in `admin.test.ts`.
@@ -100,7 +108,7 @@ src/
 | Unit | `src/**/*.test.ts` | pure logic (api client, redirects, storage) |
 | E2E | `tests/e2e/*.spec.ts` | Playwright, desktop + mobile, production build, API mocked by `tests/e2e/support/mock-api.ts` |
 
-* Keep `mock-api.ts` in sync with `docs/api.md` whenever the contract changes. Each feature's endpoints live in their own mock (`support/mock-learning.ts`, `support/mock-practice.ts` which grades with the backend rules), delegated from `MockApi.handle`'s default branch; mocks copy the backend rules (forward-only progress, continue choice) and expose switches for states (`empty`, `failing`) and a call log (`progressCalls`).
+* Keep `mock-api.ts` in sync with `docs/api.md` whenever the contract changes. Each feature's endpoints live in their own mock (`support/mock-learning.ts`, `support/mock-practice.ts` which grades with the backend rules, `support/mock-dashboard.ts` which derives the dashboard from the learning and practice mocks), delegated from `MockApi.handle`'s default branch; mocks copy the backend rules (forward-only progress, continue choice) and expose switches for states (`empty`, `failing`) and a call log (`progressCalls`).
 * Test files import with the `.ts` extension (`'./support/mock-api.ts'`); a missing extension fails the build that Playwright runs first.
 * Screenshot reviews: write a throwaway spec + config outside the committed suites (or delete them after); do not leave review harnesses in `tests/`.
 * Select by role/label or `data-testid` / `data-state`; never by translated text when the test is not about the text. Labels that are substrings of others ("Option 1" / "Remove: Option 1", "Skill" / "Filter by skill") need `exact: true` or a role (`getByRole('textbox', { name, exact: true })`).

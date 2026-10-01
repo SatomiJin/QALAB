@@ -207,6 +207,16 @@ The same system, no new devices. The admin works on the plan itself, so the scre
 * **Danger:** delete is the only red outside verdicts (Ant Design danger text button + confirmation dialog). Accepted because destroying content is a failure-grade action and people expect it red; it is never a filled button.
 * Changed after review: the breadcrumb first had "Admin, Courses" (two links to the same page); preview panels had a 320px minimum height that left big empty boxes next to short fields; add-row buttons stretched across the section; the preview's exercise card lacked its stats column, so the verdict sat in the middle.
 
-## Not in this pass
+## Dashboard and progress (Phase 5)
 
-Dashboard content is designed in its own phase, using this system.
+Checked against a generic "learning dashboard" (stat cards with icons, progress rings, a chart, a streak flame): none of those. The dashboard is the **test summary report** of your learning; Progress is its **traceability matrix**.
+
+* **Dashboard** (`/dashboard`): title and description, the Continue block (same as Learning: the page's one highlighter primary), then:
+  * **Summary** — the one bold thing: four figures in one row between two Rules, separated by vertical Rules (no cards): *Lessons completed* `1 of 4`, *Exercises passed* `1 of 3 answered`, *Average score* (best score per exercise; `–` without answers), *Streak* `4 days`. The figure is page-title size with tabular figures, the unit small and muted beside it, one muted note below. 2 × 2 on mobile, rules only between columns and rows.
+  * **Streak strip** under the streak figure: the last 14 days as small cells like a test run strip, filled Ink = studied, Rule outline = not; today has the 3px highlighter line under it ("you are here"). Each cell has an accessible label with the date.
+  * **Skills** — a read-only table with Rules and fixed columns (skill link to Progress filtered by it, lessons with a thin Ink-on-Rule bar and `1 of 4`, exercises `1 of 5 passed`, average, verdict). On mobile each row is a block: name and verdict first, the rest below, "Average" labelled.
+  * **Needs retest** — the QA word for weak areas: skills below 70 with a *Failed* tag and a "Retry: Scenario — best 40" link to the worst failed exercise, and concepts missed in the best answers ("missed in 2 of 3"). Side by side from 992px. Before any answer: one sentence saying what will appear.
+  * **Recent activity** — a test log: time (tabular) | event (small), item link, lesson | course trail | score + verdict (completed lesson Passed, started In progress, answer Passed / Failed).
+* **Progress** (`/progress`): title, skill tabs (as Learning), then each course as a section (courses separated by an Ink rule): title link, verdict and counts, then modules ("Module 1" small tabular + title) and lessons as numbered rows `1.2`, each lesson's exercises indented under it with a dashed Rule (question as two plain lines, type and difficulty, best score and attempts, verdict). Fixed columns so minutes, scores and verdicts line up across the page. The pager below.
+* These are **report rows**, not item cards: the page is read, and titles are ordinary links (a card per lesson and exercise would make a wall of boxes). Item cards stay for lists you pick one item from.
+* Changed after review: on mobile the skill name was squeezed into the desktop column width and the average stood alone without a label.
