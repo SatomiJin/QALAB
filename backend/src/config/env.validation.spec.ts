@@ -31,6 +31,32 @@ describe('validateEnv', () => {
     expect(env.NODE_ENV).toBe(NodeEnv.Production);
   });
 
+  it('accepts an anchored HTTPS origin pattern', () => {
+    const pattern = String.raw`^https://qalab-web-[a-z0-9-]+-team\.vercel\.app$`;
+    expect(
+      validateEnv({ ...REQUIRED, CORS_ORIGIN_PATTERN: pattern })
+        .CORS_ORIGIN_PATTERN,
+    ).toBe(pattern);
+  });
+
+  it('treats an empty origin pattern as not set', () => {
+    expect(
+      validateEnv({ ...REQUIRED, CORS_ORIGIN_PATTERN: '' }).CORS_ORIGIN_PATTERN,
+    ).toBeUndefined();
+  });
+
+  it.each([
+    '.*',
+    String.raw`https://qalab-web-.*\.vercel\.app$`,
+    String.raw`^https://qalab-web-.*\.vercel\.app`,
+    String.raw`^http://qalab-web-.*\.vercel\.app$`,
+    String.raw`^https://qalab-web-(\.vercel\.app$`,
+  ])('rejects the origin pattern %s', (pattern) => {
+    expect(() =>
+      validateEnv({ ...REQUIRED, CORS_ORIGIN_PATTERN: pattern }),
+    ).toThrow('CORS_ORIGIN_PATTERN');
+  });
+
   it.each(['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'SUPABASE_SERVICE_ROLE_KEY'])(
     'fails when %s is missing',
     (key) => {

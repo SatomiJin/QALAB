@@ -28,8 +28,10 @@ export function configureApp(app: INestApplication): void {
   app.setGlobalPrefix(API_PREFIX);
   // JSON-only API: CSP is disabled so Swagger UI can load its assets.
   app.use(helmet({ contentSecurityPolicy: false }));
+  const pattern = config.corsOriginPattern;
   app.enableCors({
-    origin: config.corsOrigins,
+    // Exact origins, plus the preview-deployment pattern when configured.
+    origin: pattern ? [...config.corsOrigins, pattern] : config.corsOrigins,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });

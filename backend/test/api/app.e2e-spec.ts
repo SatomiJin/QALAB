@@ -128,6 +128,31 @@ describe('App (e2e)', () => {
       );
     });
 
+    it('allows preview deployments matching the origin pattern', async () => {
+      const origin = 'https://qalab-web-git-feature-x-team.vercel.app';
+      const res = await request(app.getHttpServer())
+        .options('/api/v1/health')
+        .set('Origin', origin)
+        .set('Access-Control-Request-Method', 'GET');
+
+      expect(res.headers['access-control-allow-origin']).toBe(origin);
+    });
+
+    it.each([
+      // Look-alikes of a preview URL: another host, plain HTTP, another scope.
+      'https://qalab-web-abc-team.vercel.app.evil.com',
+      'http://qalab-web-abc-team.vercel.app',
+      'https://qalab-web-abc-other.vercel.app',
+      'https://evil-qalab-web-abc-team.vercel.app',
+    ])('does not allow %s', async (origin) => {
+      const res = await request(app.getHttpServer())
+        .options('/api/v1/health')
+        .set('Origin', origin)
+        .set('Access-Control-Request-Method', 'GET');
+
+      expect(res.headers['access-control-allow-origin']).toBeUndefined();
+    });
+
     it('does not allow other origins', async () => {
       const res = await request(app.getHttpServer())
         .options('/api/v1/health')

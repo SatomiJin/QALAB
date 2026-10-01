@@ -10,6 +10,8 @@ cp .env.example .env        # VITE_API_BASE_URL=http://localhost:3000/api/v1
 npx playwright install chromium   # once, for E2E tests
 ```
 
+`VITE_API_BASE_URL` is the only variable; it is public (baked into the bundle). Deploying to Vercel, `vercel.json` and CORS for preview deployments: [docs/deployment.md](../docs/deployment.md).
+
 ## Run
 
 ```bash

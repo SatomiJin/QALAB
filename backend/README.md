@@ -22,7 +22,9 @@ Where to find the Supabase values:
 | `SUPABASE_ANON_KEY` | anon / publishable key |
 | `SUPABASE_SERVICE_ROLE_KEY` | service_role / secret key |
 
-Other variables (`AUTH_RATE_LIMIT`, `ATTEMPT_RATE_LIMIT`, `TRUST_PROXY_HOPS`, …) are described in `.env.example`.
+Other variables (`CORS_ORIGIN_PATTERN`, `AUTH_RATE_LIMIT`, `ATTEMPT_RATE_LIMIT`, `TRUST_PROXY_HOPS`, …) are described in `.env.example`. `CORS_ORIGIN_PATTERN` (optional) allows origins by regular expression, e.g. the frontend's Vercel preview deployments; it must be anchored `^https://…$` or the API does not start.
+
+Deploying to Vercel (environment values, region, CORS for previews, cold starts): [docs/deployment.md](../docs/deployment.md).
 
 Vietnamese content comes first from manual translations in `content_translations` (the seed has the sample course; no key needed). `GOOGLE_TRANSLATE_API_KEY` (optional, paid) adds machine translation for everything else. Create it in Google Cloud (Cloud Translation API enabled, billing on), restrict it to that API. Without it, texts that have no manual translation stay English (`translation: "unavailable"`). Translations are cached in `content_translations`, so each text version is billed once.
 

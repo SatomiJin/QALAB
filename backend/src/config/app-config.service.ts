@@ -29,6 +29,12 @@ export class AppConfigService {
       .filter(Boolean);
   }
 
+  /** Extra allowed origins (preview deployments); null when not set. */
+  get corsOriginPattern(): RegExp | null {
+    const pattern = this.config.get('CORS_ORIGIN_PATTERN', { infer: true });
+    return pattern ? new RegExp(pattern) : null;
+  }
+
   get frontendUrl(): string {
     return this.config.get('FRONTEND_URL', { infer: true });
   }

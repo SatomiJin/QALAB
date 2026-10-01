@@ -84,6 +84,7 @@ src/<feature>/
 
 ## Config
 
+* CORS allows the exact origins of `CORS_ORIGIN` plus, optionally, one `CORS_ORIGIN_PATTERN` regular expression (Vercel preview deployments), validated at startup to be anchored `^https://…$`. Optional variables that `.env.example` lists empty turn `''` into `undefined` before validation. Deployment settings: `docs/deployment.md`; `backend/vercel.json` pins the function region to the Supabase region.
 * New env variables: add to `env.validation.ts` (validated at startup), expose through `AppConfigService`, add to `.env.example` with a safe placeholder, and document in `backend/README.md`.
 
 ## Tests

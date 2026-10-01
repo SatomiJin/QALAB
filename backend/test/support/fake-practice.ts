@@ -124,7 +124,9 @@ export class FakeExerciseAnswersRepository {
  */
 export class FakeAttemptsRepository {
   readonly rows: (AttemptRow & { user_id: string })[] = [];
-  private clock = Date.parse('2026-09-30T08:00:00Z');
+  // Starts now (date-based rules such as the streak see today), then moves
+  // forward one second per attempt.
+  private clock = Date.now();
 
   hasAttempted(userId: string, exerciseId: string): boolean {
     return this.rows.some(

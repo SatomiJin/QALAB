@@ -117,6 +117,10 @@ src/
 * Set mock failure switches only after the page has loaded, or the initial GET fails instead of the write under test.
 * A fixed bug gets a regression test.
 
+## Deployment
+
+* `frontend/vercel.json`: SPA fallback to `index.html`, long cache for hashed `/assets/*`, security headers. `VITE_` variables are public and build-time; never put secrets there. See `docs/deployment.md`.
+
 ## Before you finish
 
 ```bash

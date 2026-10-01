@@ -9,7 +9,11 @@ import {
   IsUrl,
   Max,
   Min,
+  Validate,
   validateSync,
+  type ValidationArguments,
+  ValidatorConstraint,
+  type ValidatorConstraintInterface,
 } from 'class-validator';
 
 export enum NodeEnv {
@@ -19,6 +23,29 @@ export enum NodeEnv {
 }
 
 const URL_OPTIONS = { require_tld: false, require_protocol: true };
+
+/**
+ * An origin pattern must match whole HTTPS origins only: anchored with `^`
+ * and `$` and starting with `https://`, so `.*` cannot open the API to every
+ * site, and it must compile.
+ */
+@ValidatorConstraint({ name: 'anchoredHttpsPattern' })
+class AnchoredHttpsPattern implements ValidatorConstraintInterface {
+  validate(value: unknown): boolean {
+    if (typeof value !== 'string') return false;
+    if (!value.startsWith('^https://') || !value.endsWith('$')) return false;
+    try {
+      new RegExp(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  defaultMessage({ property }: ValidationArguments): string {
+    return `${property} must be a valid regular expression of the form ^https://…$`;
+  }
+}
 
 export class EnvironmentVariables {
   @IsEnum(NodeEnv)
@@ -34,6 +61,18 @@ export class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   CORS_ORIGIN = 'http://localhost:5173';
+
+  /**
+   * Optional regular expression for more allowed origins, e.g. the Vercel
+   * preview deployments of the frontend:
+   * `^https://qalab-web-[a-z0-9-]+-<scope>\.vercel\.app$`.
+   */
+  // An empty value (as in .env.example) means "not set".
+  @Transform(({ value }) => (value === '' ? undefined : value))
+  @IsOptional()
+  @IsString()
+  @Validate(AnchoredHttpsPattern)
+  CORS_ORIGIN_PATTERN?: string;
 
   @IsUrl(URL_OPTIONS)
   FRONTEND_URL = 'http://localhost:5173';

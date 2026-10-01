@@ -27,7 +27,7 @@ cp .env.example .env
 npm run dev            # http://localhost:5173
 ```
 
-See [backend/README.md](backend/README.md) and [frontend/README.md](frontend/README.md).
+See [backend/README.md](backend/README.md) and [frontend/README.md](frontend/README.md). Deploying to Vercel: [docs/deployment.md](docs/deployment.md).
 
 ## Status
 
@@ -37,4 +37,6 @@ See [backend/README.md](backend/README.md) and [frontend/README.md](frontend/REA
 | 1 — Authentication & Profile | Done |
 | 2 — Learning | Done |
 | 3 — Practice | Done |
-| 4 — Admin CMS | Next |
+| 4 — Admin CMS | Done |
+| 5 — Dashboard & Progress | Done |
+| 6 — Curriculum | Next |
