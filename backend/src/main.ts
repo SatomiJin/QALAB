@@ -17,4 +17,7 @@ async function bootstrap() {
     logger.log(`Swagger UI at http://localhost:${config.port}/${DOCS_PATH}`);
   }
 }
-await bootstrap();
+// Not awaited at the top level: Vercel imports this module and takes over
+// `listen()`, so a top-level await keeps the import from ever finishing and
+// requests hang (docs/deployment.md). A startup error still exits the process.
+void bootstrap();

@@ -70,6 +70,7 @@ A Vercel Function is started on demand. After a while without requests the next 
 
 ## 7. Troubleshooting
 
+* Requests hang ("Waiting for response") on a Ready deployment: `main.ts` must not top-level `await bootstrap()`. Vercel imports the module and takes over `listen()`, so the import never finishes; `void bootstrap()` is used.
 * `500 FUNCTION_INVOCATION_FAILED`: open the project's **Logs** (runtime, level Error) and reload the failing URL. `Invalid environment configuration: - NAME: …` = a missing or invalid variable (fix it, then **Redeploy**: variables apply to new deployments only). `ERR_REQUIRE_ESM` = a CommonJS dependency (see above).
 * Vercel login page instead of the API: that URL is a preview / branch URL behind Deployment Protection; use the production domain.
 * `/api/v1/health` only proves the app started. `POST /api/v1/auth/login` with an unknown account answering `401 Invalid email or password` proves the Supabase URL and keys work (5 tries a minute, then `429`).

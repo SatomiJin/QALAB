@@ -35,6 +35,7 @@ src/<feature>/
 
 * Shared code: `src/common/` (errors, filters, pipes), `src/config/` (env), `src/supabase/` (`SupabaseService`).
 * ESM: relative imports end in `.js` (`'./profile.service.js'`). Type-only imports use `import type`.
+* `main.ts` calls `void bootstrap()`, never a top-level `await`: Vercel imports the entry and takes over `listen()`, so awaiting it hangs every request.
 * Keep the layers: controller → service → repository. Controllers never touch Supabase; repositories never throw HTTP exceptions.
 
 ## Controllers
