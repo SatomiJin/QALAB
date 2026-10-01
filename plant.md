@@ -147,7 +147,7 @@ Backend:
 * class-validator / class-transformer for DTO validation
 * Swagger / OpenAPI (`/api/docs`) — also used as a target for API-testing practice
 * supabase-js (auth wrapper + per-request user-scoped client + backend-only service client)
-* @nestjs/throttler (rate limiting for auth and attempt endpoints)
+* Rate limiting for auth and attempt endpoints (own `RateLimitGuard`; `@nestjs/throttler` was dropped because it is CommonJS and breaks the ESM build on Vercel)
 
 Database / Auth:
 

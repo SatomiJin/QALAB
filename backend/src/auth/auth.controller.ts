@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -17,8 +10,8 @@ import {
   ApiTooManyRequestsResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 import { ErrorResponseDto } from '../common/errors/error-response.dto.js';
+import { RateLimit } from '../common/rate-limit/rate-limit.guard.js';
 import type { AuthUser } from './auth-user.js';
 import { AuthService } from './auth.service.js';
 import { CurrentUser } from './decorators/current-user.decorator.js';
@@ -41,8 +34,7 @@ import {
   type: ErrorResponseDto,
   description: 'Rate limit per IP and endpoint (`AUTH_RATE_LIMIT`/minute)',
 })
-@UseGuards(ThrottlerGuard)
-@SkipThrottle({ attempts: true })
+@RateLimit('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly auth: AuthService) {}

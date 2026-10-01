@@ -63,10 +63,18 @@ A Vercel Function is started on demand. After a while without requests the next 
 
 ## 6. Known limits on Vercel
 
-* **Rate limits are per instance.** `@nestjs/throttler` counts in memory; requests can reach different instances, and instances restart, so the `/auth/*` limit (brute force) and the attempt limit are weaker than on one long-running server. Shared counters need a store such as Redis (e.g. Upstash): not done yet.
+* **Rate limits are per instance.** `RateLimitGuard` counts in memory (`RateLimitStore`); requests can reach different instances, and instances restart, so the `/auth/*` limit (brute force) and the attempt limit are weaker than on one long-running server. Shared counters need a store such as Redis (e.g. Upstash): not done yet.
 * Request bodies are limited to 4.5 MB by Vercel (the API allows 1 MB).
+* **ES modules only.** The backend is ESM (`"type": "module"`, Nest 12 packages are ESM-only). Vercel's function loader cannot `require()` an ES module, which local Node 22 can: a CommonJS dependency that `require()`s `@nestjs/common` builds fine and then crashes every request with `500 FUNCTION_INVOCATION_FAILED` / `ERR_REQUIRE_ESM` in the runtime logs. That is why `@nestjs/throttler` was replaced by our own guard. Check new dependencies for this before adding them.
+* **Type-checking uses the CommonJS types of dual packages** (e.g. `helmet`): a default import that is a function locally can be the module object there (`TS2349 not callable`). `app.setup.ts` unwraps helmet for both shapes.
 
-## 7. Before pushing
+## 7. Troubleshooting
+
+* `500 FUNCTION_INVOCATION_FAILED`: open the project's **Logs** (runtime, level Error) and reload the failing URL. `Invalid environment configuration: - NAME: …` = a missing or invalid variable (fix it, then **Redeploy**: variables apply to new deployments only). `ERR_REQUIRE_ESM` = a CommonJS dependency (see above).
+* Vercel login page instead of the API: that URL is a preview / branch URL behind Deployment Protection; use the production domain.
+* `/api/v1/health` only proves the app started. `POST /api/v1/auth/login` with an unknown account answering `401 Invalid email or password` proves the Supabase URL and keys work (5 tries a minute, then `429`).
+
+## 8. Before pushing
 
 ```bash
 cd backend && npm run typecheck && npm run lint && npm test && npm run test:e2e && npm run build

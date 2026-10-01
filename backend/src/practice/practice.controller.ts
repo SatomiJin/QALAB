@@ -8,7 +8,6 @@ import {
   ParseUUIDPipe,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -21,15 +20,14 @@ import {
   ApiTooManyRequestsResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { SkipThrottle } from '@nestjs/throttler';
 import type { AuthUser } from '../auth/auth-user.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { ErrorResponseDto } from '../common/errors/error-response.dto.js';
+import { RateLimit } from '../common/rate-limit/rate-limit.guard.js';
 import {
   LanguageQueryDto,
   PageQueryDto,
 } from '../learning/dto/learning.dto.js';
-import { AttemptThrottlerGuard } from './attempt-throttler.guard.js';
 import {
   AttemptDto,
   AttemptPageDto,
@@ -78,8 +76,7 @@ export class PracticeController {
   }
 
   @Post(':id/attempts')
-  @UseGuards(AttemptThrottlerGuard)
-  @SkipThrottle({ default: true })
+  @RateLimit('attempts')
   @ApiCreatedResponse({
     type: AttemptResultDto,
     description:

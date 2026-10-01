@@ -21,7 +21,7 @@
 1. `helmet` — security headers
 2. CORS — only origins in `CORS_ORIGIN`
 3. Global prefix `/api/v1`
-4. Guards — `JwtAuthGuard` (global; verifies the JWT against the Supabase JWKS; `@Public()` opts out), `RolesGuard` (`@Roles()`; role read from `profiles`), `ThrottlerGuard` on `/auth/*` (per IP), `AttemptThrottlerGuard` on attempt submission (per user)
+4. Guards — `JwtAuthGuard` (global; verifies the JWT against the Supabase JWKS; `@Public()` opts out), `RolesGuard` (`@Roles()`; role read from `profiles`), `RateLimitGuard` via `@RateLimit('auth')` on `/auth/*` (per IP and endpoint) and `@RateLimit('attempts')` on attempt submission (per user)
 5. `ValidationPipe` — whitelist + reject unknown fields → `400` with `details`
 6. Controller → service → Supabase
 7. `AllExceptionsFilter` — converts every error to `{ statusCode, error, message, details? }`
