@@ -2,10 +2,41 @@ import { INestApplication } from '@nestjs/common';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { Express } from 'express';
-import helmet from 'helmet';
+import * as helmetExports from 'helmet';
+import type { HelmetOptions } from 'helmet';
+import type { IncomingMessage, ServerResponse } from 'node:http';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
 import { createValidationPipe } from './common/pipes/validation.pipe.js';
 import { AppConfigService } from './config/app-config.service.js';
+
+type Helmet = (
+  options?: Readonly<HelmetOptions>,
+) => (
+  req: IncomingMessage,
+  res: ServerResponse,
+  next: (error?: unknown) => void,
+) => void;
+
+/**
+ * helmet ships separate ESM and CommonJS type files. Vercel's NestJS build
+ * type-checks against the CommonJS ones, where the default import is the
+ * whole module rather than the function (TS2349 "not callable"), while the
+ * local build uses the ESM ones. Unwrap either shape instead of relying on
+ * one; fail loudly if neither holds.
+ */
+function loadHelmet(): Helmet {
+  const exported = (helmetExports as unknown as { default?: unknown }).default;
+  const candidate =
+    typeof exported === 'function'
+      ? exported
+      : (exported as { default?: unknown } | undefined)?.default;
+  if (typeof candidate !== 'function') {
+    throw new Error('helmet could not be loaded');
+  }
+  return candidate as Helmet;
+}
+
+const helmet = loadHelmet();
 
 export const API_PREFIX = 'api/v1';
 export const DOCS_PATH = 'api/docs';
