@@ -44,3 +44,8 @@
 .notice {
   margin-bottom: $space-4;
 }
+
+// The screen's one primary button: full width on phones.
+.primaryAction {
+  @include primary-action;
+}

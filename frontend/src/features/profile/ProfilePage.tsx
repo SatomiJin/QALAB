@@ -206,7 +206,12 @@ function AboutSection({ profile }: { profile: Profile }) {
           >
             <Select mode="tags" open={false} suffixIcon={null} />
           </Form.Item>
-          <Button type="primary" htmlType="submit" loading={save.isPending}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={save.isPending}
+            className={styles.primaryAction}
+          >
             {t('profile.save')}
           </Button>
         </Form>

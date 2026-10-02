@@ -28,7 +28,7 @@
 
   // The skill tabs above end in a Rule: only rules between courses.
   & + & {
-    border-top: 1px solid $color-ink;
+    border-top: 1px solid $color-rule-strong;
   }
 }
 

@@ -32,6 +32,10 @@ export function RetestSection({ weakAreas, attempted }: RetestSectionProps) {
         <p className={styles.muted} data-testid="retest-empty">
           {t('dashboard.retest.noAnswers')}
         </p>
+      ) : weakAreas.skills.length === 0 && weakAreas.concepts.length === 0 ? (
+        <p className={styles.muted} data-testid="retest-clear">
+          {t('dashboard.retest.nothing', { pass: PASS_SCORE })}
+        </p>
       ) : (
         <>
           <p className={styles.sectionDescription}>

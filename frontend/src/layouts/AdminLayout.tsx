@@ -12,6 +12,7 @@ export function AdminLayout() {
     <AppShell
       links={ADMIN_LINKS}
       brandSuffix={t('app.admin')}
+      variant="admin"
       extra={
         <NavLink to="/dashboard" className={styles.navLink} end>
           {t('nav.backToApp')}

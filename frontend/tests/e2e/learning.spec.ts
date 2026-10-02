@@ -57,6 +57,38 @@ test.describe('Learning', () => {
     await expect(page).toHaveURL(`/learning/lessons/${lesson1.id}`);
   });
 
+  test('shows the lesson actions once: side column, footer or phone bar', async ({
+    page,
+  }) => {
+    await signedIn(page);
+    await page.goto(`/learning/lessons/${lesson1.id}`);
+    await expect(
+      page.getByRole('heading', { name: lesson1.title, level: 1 }),
+    ).toBeVisible();
+    await expect(page.getByTestId('complete-lesson')).toHaveCount(1);
+    const width = page.viewportSize()?.width ?? 1280;
+
+    if (width >= 1200) {
+      // Wide screens: a side column, visible without scrolling.
+      await expect(
+        page.getByTestId('lesson-aside').getByTestId('complete-lesson'),
+      ).toBeInViewport();
+      await expect(page.getByTestId('lesson-bar')).toHaveCount(0);
+    } else if (width < 768) {
+      // Phones: a bottom bar that slides in once most of the lesson is read.
+      const bar = page.getByTestId('lesson-bar');
+      await expect(bar).toHaveAttribute('data-shown', 'false');
+      await page
+        .getByRole('navigation', { name: 'Other lessons in this course' })
+        .scrollIntoViewIfNeeded();
+      await expect(bar).toHaveAttribute('data-shown', 'true');
+      await expect(bar.getByTestId('complete-lesson')).toBeInViewport();
+      await expect(
+        bar.getByRole('link', { name: 'Next lesson' }),
+      ).toBeInViewport();
+    }
+  });
+
   test('reads a lesson: tracks the visit and scrolling, then completes it', async ({
     page,
   }) => {
@@ -88,8 +120,9 @@ test.describe('Learning', () => {
       body: {},
     });
 
+    // To the end of the lesson (on phones the button is in the bottom bar).
     await page
-      .getByRole('button', { name: 'Mark as complete' })
+      .getByRole('navigation', { name: 'Other lessons in this course' })
       .scrollIntoViewIfNeeded();
     await expect
       .poll(() =>

@@ -4,9 +4,13 @@
 
 $color-paper: var(--qa-paper);
 $color-sheet: var(--qa-sheet);
+// Floating layers and hovered cards: one step above Sheet (dark only).
+$color-sheet-raised: var(--qa-sheet-raised);
 $color-ink: var(--qa-ink);
 $color-ink-muted: var(--qa-ink-muted);
 $color-rule: var(--qa-rule);
+// Table headers and section heads: stronger than Rule, quieter than Ink.
+$color-rule-strong: var(--qa-rule-strong);
 $color-highlighter: var(--qa-highlighter);
 
 $color-pass: var(--qa-pass);
@@ -109,6 +113,7 @@ $ease-out: cubic-bezier(0.2, 0, 0, 1);
   &:hover,
   &:focus-within {
     border-color: $color-ink-muted;
+    background: $color-sheet-raised;
     box-shadow: $shadow-hover;
     transform: translateY(-2px);
   }
@@ -200,6 +205,17 @@ $ease-out: cubic-bezier(0.2, 0, 0, 1);
     );
   }
 }
+
+// The screen's primary action spans the column on phones (within thumb
+// reach, and the same on every screen). Put it on the Button's className.
+@mixin primary-action {
+  @media (max-width: $breakpoint-md) {
+    width: 100%;
+  }
+}
+
+// Phone touch target (WCAG 2.5.5 asks for 44px; we use 48 like Material).
+$touch-target: 48px;
 
 @mixin card-list {
   display: grid;

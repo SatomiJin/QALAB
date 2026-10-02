@@ -21,6 +21,8 @@ interface AppShellProps {
   extra?: ReactNode;
   /** Page to show instead of the route outlet (guards that block a route). */
   children?: ReactNode;
+  /** `admin`: a heavier rule under the bar, so editors know where they are. */
+  variant?: 'app' | 'admin';
 }
 
 function linkClass({ isActive }: { isActive: boolean }) {
@@ -41,6 +43,7 @@ export function AppShell({
   brandSuffix,
   extra,
   children,
+  variant = 'app',
 }: AppShellProps) {
   const { t } = useTranslation();
   const screens = Grid.useBreakpoint();
@@ -91,7 +94,7 @@ export function AppShell({
       <a href="#main" className={styles.skipLink}>
         {t('nav.skipToContent')}
       </a>
-      <header className={styles.topbar}>
+      <header className={styles.topbar} data-variant={variant}>
         <Link to="/" className={styles.brand}>
           <BrandMark />
           <span className={styles.brandName}>{t('app.name')}</span>

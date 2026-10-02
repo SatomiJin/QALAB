@@ -5,6 +5,8 @@ export type Verdict = 'pass' | 'fail' | 'blocked' | 'notRun' | 'inProgress';
 
 interface VerdictTagProps {
   verdict: Verdict;
+  /** `large`: the verdict of the page itself (result header, course status). */
+  size?: 'default' | 'large';
 }
 
 /**
@@ -12,11 +14,14 @@ interface VerdictTagProps {
  * progress all use the same states (see docs/design.md). `inProgress` is
  * outlined, not coloured: it is not a result yet.
  */
-export function VerdictTag({ verdict }: VerdictTagProps) {
+export function VerdictTag({ verdict, size = 'default' }: VerdictTagProps) {
   const { t } = useTranslation();
 
   return (
-    <span className={`${styles.tag} ${styles[verdict]}`} data-verdict={verdict}>
+    <span
+      className={`${styles.tag} ${styles[verdict]} ${size === 'large' ? styles.large : ''}`}
+      data-verdict={verdict}
+    >
       {t(`verdict.${verdict}`)}
     </span>
   );

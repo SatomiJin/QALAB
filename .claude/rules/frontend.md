@@ -86,6 +86,9 @@ src/
 * Detail pages start with `PageTrail` (back button + breadcrumb, `components/PageTrail.tsx`). The back button goes to the level above (lesson → its course, course → the remembered list), not `history.back()`.
 * Ant Design `Pagination` hides its size changer on small screens: render the page-size `Select` yourself (`aria-label`, options from `PAGE_SIZES`) next to `Pagination showSizeChanger={false}`.
 * Row lists that should read as a table (lessons, later attempts) use fixed grid column widths so columns line up across rows.
+* A page with a side panel from 1200px uses `components/SideLayout` (`aside` + main column; below 1200px the aside comes first in the flow). It is CSS only, so the tree does not change with the width. When the **same control** must move between places by width (the lesson's *Mark as complete*: side column / footer / phone bar), render it in exactly one place chosen with `Grid.useBreakpoint()` (`xl` = 1200, `md` = 768), so there is one primary and one `data-testid`.
+* The live reading position shown on screen (lesson side column, phone bar) comes from `useReadPercent(articleRef)` (10-point steps, goes down when scrolling back); saving progress stays in `useReadingProgress`.
+* A fixed bar that slides off screen gets `inert` while hidden, so it is out of the tab order.
 
 ## Dashboard and progress
 
@@ -124,6 +127,7 @@ src/
 * A 5xx error state appears only after the global retries: give that assertion a longer timeout (15 s).
 * Set mock failure switches only after the page has loaded, or the initial GET fails instead of the write under test.
 * A fixed bug gets a regression test (Phase 8 ones: `tests/e2e/polish.spec.ts`).
+* On phones the lesson's *Mark as complete* is in the bottom bar, shown only after 80% is read: scroll to the lesson's end first (e.g. the *Other lessons in this course* nav). Skills not started are hidden rows on phones (folded into `skills-not-started`): pick visible elements (`locator('visible=true')`).
 * Below 992px the language and theme switchers are in the nav drawer: call `openPreferences(page)` (opens the drawer only when needed) before clicking them, and press `Escape` to close the drawer before using the top bar again. Horizontal-overflow checks compare `scrollWidth` with `page.viewportSize().width`, never `innerWidth` / `clientWidth` (mobile emulation widens them).
 * Specs that open antd menus (user menu, language) also use `reducedMotion: 'reduce'`. Before a second `page.goto` in a signed-in test, wait for the first page's data: reloading while the refresh token rotates reuses the old one and signs out.
 

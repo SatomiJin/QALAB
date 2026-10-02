@@ -77,3 +77,96 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+// From 1200px: the reading column plus a side column with the lesson's
+// state and actions, so a wide screen is not half empty.
+$aside-from: 1200px;
+
+.layout {
+  @media (min-width: $aside-from) {
+    display: grid;
+    grid-template-columns: minmax(0, $measure) 240px;
+    align-items: start;
+    gap: $space-7;
+  }
+}
+
+.body {
+  min-width: 0;
+}
+
+.aside {
+  position: sticky;
+  top: calc(#{$topbar-height} + #{$space-5});
+  display: grid;
+  gap: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid $color-rule-strong;
+}
+
+.asideState,
+.asideNext {
+  margin: 0;
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.asideNext a {
+  @include type-small;
+}
+
+// Phones: Mark as complete and the next lesson in a bar along the bottom,
+// once most of the lesson is read; no scrolling back up to finish.
+$bar-height: 56px;
+
+.bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  min-height: $bar-height;
+  padding: $space-2 $space-4 calc(#{$space-2} + env(safe-area-inset-bottom));
+  border-top: 1px solid $color-rule;
+  background: $color-paper;
+  transform: translateY(100%);
+  visibility: hidden;
+  transition:
+    transform $motion-base $ease-out,
+    visibility 0s linear $motion-base;
+
+  &[data-shown='true'] {
+    transform: none;
+    visibility: visible;
+    transition: transform $motion-base $ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &[data-shown='true'] {
+      transition: none;
+    }
+  }
+
+  .completeRow {
+    flex: 1;
+  }
+
+  // In the bar the button fills its share of the row.
+  .completeRow :global(.ant-btn) {
+    width: 100%;
+  }
+}
+
+.barNext {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.barSpace {
+  height: $bar-height;
+}

@@ -30,6 +30,14 @@ test.describe('Dashboard', () => {
       page.getByTestId('streak-days').locator('li[data-active="true"]'),
     ).toHaveCount(0);
     await expect(page.getByTestId('skill-row')).toHaveCount(7);
+    // Nothing started: on phones the skills fold into one line.
+    const folded = page.getByTestId('skills-not-started');
+    if ((page.viewportSize()?.width ?? 1280) < 768) {
+      await expect(folded).toBeVisible();
+      await expect(page.getByTestId('skill-table')).toBeHidden();
+    } else {
+      await expect(folded).toBeHidden();
+    }
     await expect(page.getByTestId('retest-empty')).toBeVisible();
     await expect(page.getByTestId('activity-empty')).toBeVisible();
     // The streak is counted in the browser's time zone.
@@ -134,9 +142,10 @@ test.describe('Dashboard', () => {
     await signedIn(page);
     await page.goto('/dashboard');
 
+    // A skill not started yet: its row on desktop, the folded line on phones.
     await page
-      .locator('[data-testid="skill-row"][data-skill="test_design"]')
-      .getByRole('link')
+      .locator('a[href="/progress?skill=test_design"]')
+      .locator('visible=true')
       .click();
     await expect(page).toHaveURL(/\/progress\?skill=test_design$/);
 

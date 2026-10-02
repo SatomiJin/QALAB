@@ -49,32 +49,32 @@
 .lesson {
   @include item-card;
   display: grid;
-  // Fixed columns so estimates and verdicts line up from card to card.
-  grid-template-columns: 3.5em minmax(0, 1fr) 4.5em 6.5rem;
+  // Fixed columns so numbers and verdicts line up from card to card; the
+  // estimate sits in a meta line under the title.
+  grid-template-columns: 2.75em minmax(0, 1fr) 6.5rem;
+  grid-template-areas:
+    'number title verdict'
+    '. minutes verdict';
   align-items: baseline;
-  gap: $space-1 $space-4;
+  gap: 0 $space-3;
   padding-block: $space-3;
 
   @media (max-width: $breakpoint-md) {
-    // Narrower number column and gap: the title needs the width on phones.
     grid-template-columns: 2.5em minmax(0, 1fr) auto;
-    column-gap: $space-3;
-    grid-template-areas:
-      'number title verdict'
-      '. minutes minutes';
+  }
 
-    .number {
-      grid-area: number;
-    }
-    .lessonTitle {
-      grid-area: title;
-    }
-    .minutes {
-      grid-area: minutes;
-    }
-    .verdict {
-      grid-area: verdict;
-    }
+  .number {
+    grid-area: number;
+  }
+  .lessonTitle {
+    grid-area: title;
+  }
+  .minutes {
+    grid-area: minutes;
+  }
+  .verdict {
+    grid-area: verdict;
+    align-self: center;
   }
 }
 
@@ -92,12 +92,7 @@
   @include type-small;
   @include type-id;
   color: $color-ink-muted;
-  text-align: right;
   white-space: nowrap;
-
-  @media (max-width: $breakpoint-md) {
-    text-align: left;
-  }
 }
 
 .verdict {

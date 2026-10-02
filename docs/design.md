@@ -25,12 +25,14 @@ Everything else is ink on paper.
 
 | Name | Light | Dark | Use |
 |---|---|---|---|
-| Paper | `#F6F7F4` | `#12171D` | Page background |
-| Sheet | `#FFFFFF` | `#1A2129` | Raised surfaces: inputs, drawer, popovers |
+| Paper | `#F3F4EF` | `#11161C` | Page background |
+| Sheet | `#FFFFFF` | `#1B232C` | Raised surfaces: inputs, item cards |
+| Sheet raised | `#FFFFFF` | `#232C36` | Floating layers (drawer, popovers, menus), hovered item cards, the avatar |
 | Ink | `#1E2A36` | `#E6EAED` | Text, icons, rules |
 | Ink muted | `#5A6673` | `#98A3AE` | Secondary text |
-| Rule | `#DDE1DC` | `#2A333D` | Borders and dividers that carry structure |
-| Highlighter | `#F4D35E` | `#E3C14F` | Current location, next action, primary button (ink text on top) |
+| Rule | `#D6DBD4` | `#34404C` | Borders and dividers that carry structure |
+| Rule strong | `#B9C0B8` | `#4C5967` | Table headers, section heads, side panels, the admin strip |
+| Highlighter | `#F4D35E` | `#DDBB4C` | Current location, next action, primary button (ink text on top) |
 
 Verdicts (text and tag colours; tags use a 14% tint of the same hue as background, and their text is the hue mixed with 25% Ink, `tinted-tag` mixin):
 
@@ -38,12 +40,14 @@ Verdicts (text and tag colours; tags use a 14% tint of the same hue as backgroun
 |---|---|---|
 | Pass | `#2F7D4E` | `#5CB880` |
 | Fail | `#C0392B` | `#E8776B` |
-| Blocked | `#A86200` | `#E0A443` |
+| Blocked | `#A86200` | `#E58A4E` |
 | Not run | `#6B7580` | `#8C96A0` |
 
 **In progress** (added in Phase 2) is not a result yet, so it gets no colour: Ink text in a 1px Ink-muted outline. Lesson and course progress map to verdicts: completed → Passed, in progress → In progress, not started → Not run.
 
 Links and focus rings use Ink with an underline / 2px outline; there is no separate "brand blue".
+
+Changed in the UI improvement pass (steps C and D): dark mode had no depth (page, cards and inputs were one flat surface, card borders invisible) and light mode read flat. Dark: Paper and Sheet moved apart, a *Sheet raised* step was added, Rule lightened so card borders show, Highlighter toned down for large areas (Ink text still about 9:1), and Blocked moved towards orange (it was close enough to the highlighter to read as "do next"). Light: warmer Paper, a slightly darker Rule, and *Rule strong* instead of Ink or plain Rule for table headers and section heads. The avatar is a Sheet raised disc with a Rule border (the white Ink disc was the brightest thing on a dark screen); the brand tile gets a 1px Rule strong outline in dark; the Ink rule above the Continue block is Ink muted in dark.
 
 Changed in Phase 8 (axe review): the pure verdict hue on its own tint was below WCAG AA (Not run 3.7:1, Pass 3.9:1 in light; Not run 4.4:1 in dark). Tag text is now the hue mixed with 25% Ink (≥ 4.8:1 for every verdict, both themes); the palette itself did not change. Input placeholders use Ink muted (antd's default grey was 1.8:1).
 
@@ -239,3 +243,20 @@ Reviewed every screen with screenshots (light + dark × EN + VI × desktop + mob
 * **Empty and error states** rebuilt in the document style (see *Copy*).
 * Course page on phones: narrower lesson-number column and gap, so lesson titles wrap less.
 * Checked and kept: no page scrolls sideways on a phone (412px) or desktop (1280px); Vietnamese text fits everywhere; one highlighter primary per screen.
+
+## UI improvement pass (after Phase 8)
+
+Plan and status: [ui-improvement-plan.md](ui-improvement-plan.md). Decided in this pass:
+
+* **Phones:** the top bar keeps brand, avatar and ☰; language and theme are in the drawer (see *Layout*). Drawer links are 48px high, pager buttons and the page-size select 40px, and each answer option is a whole ruled row (min 48px, 12px padding, Rule border turning Ink when hovered or chosen; on every screen size). The screen's primary button spans the column (`primary-action` mixin).
+* **Meta lines** (course | module, lesson | course) are separated by gaps only (16px columns, 4px rows): a separator rule started the wrapped second line.
+* **Dashboard on phones:** skills not started yet fold into one muted line ("Not started: Testing Types, Test Design…", each a link); *Needs retest* with nothing below the pass mark and no missed concepts is one sentence.
+* **Large verdict tag** (`VerdictTag size="large"`, 14/20, 4px 8px padding): the page's own verdict, next to the score on a result and the course status. Rows keep the 12px tag.
+* **Button sizes:** `large` only for the one "do next" action of a screen (Continue / Start, Submit answer, Try again, Mark as complete). Every form save is the default size, admin included (*Save self-assessment* went from large to default).
+* **Section rules span the column:** on the exercise page the rule above *Submit answer* now runs the full column like the result and attempts rules; the fields keep their 720px measure.
+* **Course lesson rows:** number column 2.75em, 12px gap, the minutes in a meta line under the title (every size), the verdict centred in the last column.
+* **Exercise rows:** the verdict is pinned to the last column; with no attempts it slid into the middle of the card.
+* **Lesson actions, one place per size** (one primary per screen): from 1200px a sticky 240px side column next to the 68ch text (read %, *Mark as complete*, next lesson); 768–1199px the footer, as before; on phones a 56px bar fixed to the bottom (Paper, Rule on top) with *Mark as complete* and the next lesson, sliding in once 80% of the lesson is read (completed lessons keep only the next link). This changes the "one reading column" decision: at 1280px the lesson left about 450px empty.
+* **Side panel from 1200px** (`components/SideLayout`): the exercise page (verdict, difficulty, lesson link) and the admin course / lesson / exercise editors (status actions, preview, delete; the exercise editor's type note) get a sticky 280px panel with a Rule strong line on top. Below 1200px the same content stays above the main column (CSS only, so forms keep their state on resize). *Save changes* and *Submit answer* stay at the end of their form, next to its errors, instead of moving into the panel as the plan suggested.
+* **Admin area:** a 3px Rule strong strip under the top bar (not a colour: verdicts and the highlighter keep their meaning); the current-item mark sits on it.
+* Not done: centring the top bar content in a 1200px frame (plan 4.6, optional; it reverses an earlier decision).

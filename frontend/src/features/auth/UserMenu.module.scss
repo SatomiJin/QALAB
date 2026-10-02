@@ -5,8 +5,10 @@
 }
 
 .avatar {
-  background: $color-ink;
-  color: $color-paper;
+  // Quiet: a white disc was the brightest thing on a dark screen.
+  border: 1px solid $color-rule;
+  background: $color-sheet-raised;
+  color: $color-ink;
   font-size: 12px;
   font-weight: 650;
 }

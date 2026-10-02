@@ -5,6 +5,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { ErrorState } from '../../../components/feedback/ErrorState';
 import { PageLoader } from '../../../components/feedback/PageLoader';
 import { PageHeader } from '../../../components/PageHeader';
+import { SideLayout } from '../../../components/SideLayout';
 import { errorMessage } from '../../../hooks/useErrorMessage';
 import { ApiError } from '../../../lib/api';
 import { NotFoundPage } from '../../../pages/NotFoundPage';
@@ -188,114 +189,124 @@ function ExerciseEditor({ type, lesson, exercise }: EditorProps) {
           ) : undefined
         }
       />
-      <p className={styles.meta}>
-        <span>
-          {t('admin.fields.type')}: {t(`practice.types.${type}`)}
-        </span>
-        <span>{t('admin.exercise.typeHint')}</span>
-      </p>
-
-      <Form
-        form={form}
-        layout="vertical"
-        requiredMark={false}
-        initialValues={
-          exercise ? toExerciseValues(exercise) : emptyExerciseValues(type)
+      <SideLayout
+        asideLabel={t('admin.pageActions')}
+        aside={
+          <p className={styles.meta}>
+            <span>
+              {t('admin.fields.type')}: {t(`practice.types.${type}`)}
+            </span>
+            <span>{t('admin.exercise.typeHint')}</span>
+          </p>
         }
-        onFinish={submit}
-        className={styles.exerciseForm}
-        name="exercise"
-        data-testid="exercise-form"
-        scrollToFirstError
       >
-        {otherErrors.length > 0 && (
-          <Alert
-            className={styles.formAlert}
-            type="error"
-            title={otherErrors.join(' ')}
-            data-testid="exercise-form-error"
-          />
-        )}
-
-        <section className={styles.section}>
-          <MarkdownField
-            name="question"
-            label={t('admin.fields.question')}
-            max={CONTENT_LIMITS.questionLength}
-            required={t('admin.validation.question')}
-            testId="exercise-question"
-          />
-          <div className={styles.fieldRow}>
-            <Form.Item name="difficulty" label={t('admin.fields.difficulty')}>
-              <Select
-                data-testid="exercise-difficulty"
-                options={DIFFICULTIES.map((value) => ({
-                  value,
-                  label: t(`practice.difficulty.${value}`),
-                }))}
-              />
-            </Form.Item>
-            <Form.Item name="status" label={t('admin.fields.status')}>
-              <StatusSelect testId="exercise-status" />
-            </Form.Item>
-          </div>
-        </section>
-
-        <section className={styles.section} aria-labelledby="answer-key">
-          <div className={styles.sectionHead}>
-            <h2 id="answer-key">{t('admin.exercise.answerKey')}</h2>
-          </div>
-          <p className={styles.muted}>{t('admin.exercise.answerKeyHint')}</p>
-          {locked && (
+        <Form
+          form={form}
+          layout="vertical"
+          requiredMark={false}
+          initialValues={
+            exercise ? toExerciseValues(exercise) : emptyExerciseValues(type)
+          }
+          onFinish={submit}
+          className={styles.exerciseForm}
+          name="exercise"
+          data-testid="exercise-form"
+          scrollToFirstError
+        >
+          {otherErrors.length > 0 && (
             <Alert
-              type="info"
-              title={t('admin.exercise.locked')}
-              data-testid="locked-note"
+              className={styles.formAlert}
+              type="error"
+              title={otherErrors.join(' ')}
+              data-testid="exercise-form-error"
             />
           )}
-          <div className={styles.form}>
-            {type === 'multiple_choice' && (
-              <ChoiceFields form={form} locked={locked} />
+
+          <section className={styles.section}>
+            <MarkdownField
+              name="question"
+              label={t('admin.fields.question')}
+              max={CONTENT_LIMITS.questionLength}
+              required={t('admin.validation.question')}
+              testId="exercise-question"
+            />
+            <div className={styles.fieldRow}>
+              <Form.Item name="difficulty" label={t('admin.fields.difficulty')}>
+                <Select
+                  data-testid="exercise-difficulty"
+                  options={DIFFICULTIES.map((value) => ({
+                    value,
+                    label: t(`practice.difficulty.${value}`),
+                  }))}
+                />
+              </Form.Item>
+              <Form.Item name="status" label={t('admin.fields.status')}>
+                <StatusSelect testId="exercise-status" />
+              </Form.Item>
+            </div>
+          </section>
+
+          <section className={styles.section} aria-labelledby="answer-key">
+            <div className={styles.sectionHead}>
+              <h2 id="answer-key">{t('admin.exercise.answerKey')}</h2>
+            </div>
+            <p className={styles.muted}>{t('admin.exercise.answerKeyHint')}</p>
+            {locked && (
+              <Alert
+                type="info"
+                title={t('admin.exercise.locked')}
+                data-testid="locked-note"
+              />
             )}
-            {type === 'classification' && (
-              <ClassificationFields form={form} locked={locked} />
+            <div className={styles.form}>
+              {type === 'multiple_choice' && (
+                <ChoiceFields form={form} locked={locked} />
+              )}
+              {type === 'classification' && (
+                <ClassificationFields form={form} locked={locked} />
+              )}
+            </div>
+            {(type === 'test_case' ||
+              type === 'bug_report' ||
+              type === 'scenario') && (
+              <FreeTextFields form={form} type={type} />
+            )}
+            <MarkdownField
+              name="explanation"
+              label={t('admin.fields.explanation')}
+              extra={t('admin.fields.explanationHint')}
+              max={CONTENT_LIMITS.explanationLength}
+              testId="exercise-explanation"
+            />
+          </section>
+
+          <div className={styles.actions}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={save.isPending}
+              className={styles.primaryAction}
+              data-testid="save-exercise"
+            >
+              {exercise ? t('admin.save') : t('admin.exercise.create')}
+            </Button>
+            <Button
+              onClick={() => void navigate(`/admin/lessons/${lesson.id}`)}
+            >
+              {t('admin.cancel')}
+            </Button>
+            {exercise && (
+              <DeleteButton
+                title={t(`practice.types.${type}`)}
+                inUse={exercise.inUse}
+                onDelete={() => remove.mutateAsync(undefined)}
+                onDeleted={() => void navigate(`/admin/lessons/${lesson.id}`)}
+                testId="delete-exercise"
+              />
             )}
           </div>
-          {(type === 'test_case' ||
-            type === 'bug_report' ||
-            type === 'scenario') && <FreeTextFields form={form} type={type} />}
-          <MarkdownField
-            name="explanation"
-            label={t('admin.fields.explanation')}
-            extra={t('admin.fields.explanationHint')}
-            max={CONTENT_LIMITS.explanationLength}
-            testId="exercise-explanation"
-          />
-        </section>
-
-        <div className={styles.actions}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            loading={save.isPending}
-            data-testid="save-exercise"
-          >
-            {exercise ? t('admin.save') : t('admin.exercise.create')}
-          </Button>
-          <Button onClick={() => void navigate(`/admin/lessons/${lesson.id}`)}>
-            {t('admin.cancel')}
-          </Button>
-          {exercise && (
-            <DeleteButton
-              title={t(`practice.types.${type}`)}
-              inUse={exercise.inUse}
-              onDelete={() => remove.mutateAsync(undefined)}
-              onDeleted={() => void navigate(`/admin/lessons/${lesson.id}`)}
-              testId="delete-exercise"
-            />
-          )}
-        </div>
-      </Form>
+        </Form>
+      </SideLayout>
     </>
   );
 }

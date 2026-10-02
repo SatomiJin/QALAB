@@ -7,10 +7,25 @@ import { verdictFor } from '../learning/progress';
 import { useSkillText } from '../learning/useSkillText';
 import styles from './Dashboard.module.scss';
 
-/** Every skill as a row: lessons (with a bar), exercises, average, status. */
+/** Nothing opened and nothing answered yet. */
+function isIdle(skill: SkillProgress) {
+  return (
+    skill.status === 'not_started' && skill.exercises.averageScore === null
+  );
+}
+
+/**
+ * Every skill as a row: lessons (with a bar), exercises, average, status.
+ * On phones the skills not started yet fold into one muted line.
+ */
 export function SkillTable({ skills }: { skills: SkillProgress[] }) {
   const { t } = useTranslation();
   const skillText = useSkillText();
+  const idle = skills.filter(isIdle);
+  const progressLink = (code: string) => ({
+    pathname: '/progress',
+    search: listSearch({ skill: code, page: 1, pageSize: DEFAULT_PAGE_SIZE }),
+  });
 
   return (
     <section className={styles.section} aria-labelledby="skills-title">
@@ -35,18 +50,10 @@ export function SkillTable({ skills }: { skills: SkillProgress[] }) {
               key={skill.code}
               data-testid="skill-row"
               data-skill={skill.code}
+              data-idle={isIdle(skill)}
             >
               <th scope="row" className={styles.skillName}>
-                <Link
-                  to={{
-                    pathname: '/progress',
-                    search: listSearch({
-                      skill: skill.code,
-                      page: 1,
-                      pageSize: DEFAULT_PAGE_SIZE,
-                    }),
-                  }}
-                >
+                <Link to={progressLink(skill.code)}>
                   {skillText(skill).name}
                 </Link>
               </th>
@@ -116,6 +123,17 @@ export function SkillTable({ skills }: { skills: SkillProgress[] }) {
           ))}
         </tbody>
       </table>
+      {idle.length > 0 && (
+        <p className={styles.idleSkills} data-testid="skills-not-started">
+          <span>{t('dashboard.skills.notStarted')}</span>{' '}
+          {idle.map((skill, index) => (
+            <span key={skill.code}>
+              {index > 0 && ', '}
+              <Link to={progressLink(skill.code)}>{skillText(skill).name}</Link>
+            </span>
+          ))}
+        </p>
+      )}
     </section>
   );
 }

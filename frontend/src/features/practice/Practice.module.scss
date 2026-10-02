@@ -103,6 +103,10 @@
 }
 
 .rowVerdict {
+  // Always the last column: with no attempts the stats cell is hidden, and
+  // auto placement would pull the verdict into the middle of the card.
+  grid-row: 1;
+  grid-column: -2;
   justify-self: end;
 }
 
@@ -130,13 +134,37 @@
   color: $color-ink-muted;
 }
 
-.form {
+// Fields keep a 720px measure; the rule above the actions spans the column
+// like every other section rule on the page.
+.form > :not(.actions) {
   max-width: 720px;
 }
 
 .choices {
   display: grid;
-  gap: $space-3;
+  gap: $space-2;
+}
+
+// One answer option: the whole ruled row selects it (a big touch target).
+.choice {
+  display: flex;
+  align-items: flex-start;
+  min-height: $touch-target;
+  margin: 0;
+  padding: $space-3;
+  border: 1px solid $color-rule;
+  border-radius: $radius-control;
+  cursor: pointer;
+  transition: border-color $motion-fast $ease-out;
+
+  &:hover,
+  &:has(input:checked) {
+    border-color: $color-ink;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 // Classification: item text, then its group choice.
@@ -253,6 +281,7 @@
 .checkHead {
   @include type-small;
   color: $color-ink-muted;
+  border-bottom-color: $color-rule-strong;
 }
 
 .checkVerdict {
@@ -373,4 +402,9 @@
 .lessonPractice {
   max-width: $measure;
   margin-bottom: $space-6;
+}
+
+// The screen's one primary button: full width on phones.
+.primaryAction {
+  @include primary-action;
 }

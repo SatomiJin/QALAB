@@ -1,6 +1,14 @@
-import { Pagination, Select } from 'antd';
+import { ConfigProvider, Grid, Pagination, Select } from 'antd';
 import { PAGE_SIZES, type PageSize } from '../types/api';
 import styles from './ListPager.module.scss';
+
+// Phones: 40px page buttons and select, easier to hit with a thumb.
+const TOUCH_THEME = {
+  components: {
+    Pagination: { itemSize: 40 },
+    Select: { controlHeight: 40 },
+  },
+};
 
 interface ListPagerProps {
   page: number;
@@ -32,38 +40,41 @@ export function ListPager({
   onChange,
   rangeTestId,
 }: ListPagerProps) {
+  const screens = Grid.useBreakpoint();
   const start = (page - 1) * pageSize + 1;
   const end = start + count - 1;
 
   return (
-    <div className={styles.pager}>
-      <span className={styles.range} data-testid={rangeTestId}>
-        {rangeLabel({
-          start: Math.min(start, total),
-          end: Math.max(end, 0),
-          total,
-        })}
-      </span>
-      <div className={styles.controls}>
-        <Select<PageSize>
-          value={pageSize}
-          aria-label={sizeLabel}
-          data-testid="page-size"
-          options={PAGE_SIZES.map((size) => ({
-            value: size,
-            label: optionLabel(size),
-          }))}
-          // A new page size starts again from the first page.
-          onChange={(nextSize) => onChange({ page: 1, pageSize: nextSize })}
-        />
-        <Pagination
-          current={page}
-          pageSize={pageSize}
-          total={total}
-          showSizeChanger={false}
-          onChange={(nextPage) => onChange({ page: nextPage, pageSize })}
-        />
+    <ConfigProvider theme={screens.md === false ? TOUCH_THEME : undefined}>
+      <div className={styles.pager}>
+        <span className={styles.range} data-testid={rangeTestId}>
+          {rangeLabel({
+            start: Math.min(start, total),
+            end: Math.max(end, 0),
+            total,
+          })}
+        </span>
+        <div className={styles.controls}>
+          <Select<PageSize>
+            value={pageSize}
+            aria-label={sizeLabel}
+            data-testid="page-size"
+            options={PAGE_SIZES.map((size) => ({
+              value: size,
+              label: optionLabel(size),
+            }))}
+            // A new page size starts again from the first page.
+            onChange={(nextSize) => onChange({ page: 1, pageSize: nextSize })}
+          />
+          <Pagination
+            current={page}
+            pageSize={pageSize}
+            total={total}
+            showSizeChanger={false}
+            onChange={(nextPage) => onChange({ page: nextPage, pageSize })}
+          />
+        </div>
       </div>
-    </div>
+    </ConfigProvider>
   );
 }

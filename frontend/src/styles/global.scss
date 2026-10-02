@@ -5,11 +5,13 @@
 // PreferencesProvider. Keep in sync with src/features/preferences/antd-theme.ts.
 :root,
 :root[data-theme='light'] {
-  --qa-paper: #f6f7f4;
+  --qa-paper: #f3f4ef;
   --qa-sheet: #ffffff;
+  --qa-sheet-raised: #ffffff;
   --qa-ink: #1e2a36;
   --qa-ink-muted: #5a6673;
-  --qa-rule: #dde1dc;
+  --qa-rule: #d6dbd4;
+  --qa-rule-strong: #b9c0b8;
   --qa-highlighter: #f4d35e;
   --qa-pass: #2f7d4e;
   --qa-fail: #c0392b;
@@ -21,15 +23,17 @@
 }
 
 :root[data-theme='dark'] {
-  --qa-paper: #12171d;
-  --qa-sheet: #1a2129;
+  --qa-paper: #11161c;
+  --qa-sheet: #1b232c;
+  --qa-sheet-raised: #232c36;
   --qa-ink: #e6eaed;
   --qa-ink-muted: #98a3ae;
-  --qa-rule: #2a333d;
-  --qa-highlighter: #e3c14f;
+  --qa-rule: #34404c;
+  --qa-rule-strong: #4c5967;
+  --qa-highlighter: #ddbb4c;
   --qa-pass: #5cb880;
   --qa-fail: #e8776b;
-  --qa-blocked: #e0a443;
+  --qa-blocked: #e58a4e;
   --qa-not-run: #8c96a0;
   --qa-shadow-hover: 0 2px 12px rgb(0 0 0 / 35%);
   color-scheme: dark;

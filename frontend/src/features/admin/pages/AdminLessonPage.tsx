@@ -7,6 +7,7 @@ import { ErrorState } from '../../../components/feedback/ErrorState';
 import { PageLoader } from '../../../components/feedback/PageLoader';
 import { PageHeader } from '../../../components/PageHeader';
 import { PageTrail } from '../../../components/PageTrail';
+import { SideLayout } from '../../../components/SideLayout';
 import { errorMessage } from '../../../hooks/useErrorMessage';
 import { ApiError } from '../../../lib/api';
 import { NotFoundPage } from '../../../pages/NotFoundPage';
@@ -107,24 +108,34 @@ function LessonEditor({ lesson }: { lesson: AdminLesson }) {
           />
         }
       />
-      <div className={`${styles.actions} ${styles.pageActions}`}>
-        <Button
-          icon={<EyeOutlined aria-hidden />}
-          onClick={() => void navigate(`/admin/lessons/${lesson.id}/preview`)}
-          data-testid="preview-lesson"
-        >
-          {t('admin.lesson.previewAsLearner')}
-        </Button>
-        <DeleteButton
-          title={lesson.title}
-          inUse={lesson.inUse}
-          onDelete={() => remove.mutateAsync(undefined)}
-          onDeleted={() => void navigate(`/admin/courses/${lesson.course.id}`)}
-          testId="delete-lesson"
-        />
-      </div>
-      <LessonForm key={lesson.updatedAt} lesson={lesson} />
-      <LessonExercises lesson={lesson} />
+      <SideLayout
+        asideLabel={t('admin.pageActions')}
+        aside={
+          <div className={`${styles.actions} ${styles.pageActions}`}>
+            <Button
+              icon={<EyeOutlined aria-hidden />}
+              onClick={() =>
+                void navigate(`/admin/lessons/${lesson.id}/preview`)
+              }
+              data-testid="preview-lesson"
+            >
+              {t('admin.lesson.previewAsLearner')}
+            </Button>
+            <DeleteButton
+              title={lesson.title}
+              inUse={lesson.inUse}
+              onDelete={() => remove.mutateAsync(undefined)}
+              onDeleted={() =>
+                void navigate(`/admin/courses/${lesson.course.id}`)
+              }
+              testId="delete-lesson"
+            />
+          </div>
+        }
+      >
+        <LessonForm key={lesson.updatedAt} lesson={lesson} />
+        <LessonExercises lesson={lesson} />
+      </SideLayout>
     </>
   );
 }
@@ -243,6 +254,7 @@ function LessonForm({ lesson }: { lesson: AdminLesson }) {
         type="primary"
         htmlType="submit"
         loading={save.isPending}
+        className={styles.primaryAction}
         data-testid="save-lesson"
       >
         {t('admin.save')}

@@ -6,3 +6,9 @@
   flex-shrink: 0;
   border-radius: 4px;
 }
+
+// The Ink tile sinks into a dark page: outline it.
+:global(:root[data-theme='dark']) .mark {
+  outline: 1px solid var(--qa-rule-strong);
+  outline-offset: -1px;
+}

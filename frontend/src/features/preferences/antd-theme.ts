@@ -5,11 +5,13 @@ import type { ResolvedTheme } from './theme-mode';
 // See docs/design.md for what each color means.
 export const palette = {
   light: {
-    paper: '#F6F7F4',
+    paper: '#F3F4EF',
     sheet: '#FFFFFF',
+    sheetRaised: '#FFFFFF',
     ink: '#1E2A36',
     inkMuted: '#5A6673',
-    rule: '#DDE1DC',
+    rule: '#D6DBD4',
+    ruleStrong: '#B9C0B8',
     highlighter: '#F4D35E',
     highlighterHover: '#EFC93F',
     // Highlighter tints for selected items in menus and selects.
@@ -20,18 +22,20 @@ export const palette = {
     blocked: '#A86200',
   },
   dark: {
-    paper: '#12171D',
-    sheet: '#1A2129',
+    paper: '#11161C',
+    sheet: '#1B232C',
+    sheetRaised: '#232C36',
     ink: '#E6EAED',
     inkMuted: '#98A3AE',
-    rule: '#2A333D',
-    highlighter: '#E3C14F',
-    highlighterHover: '#EDCD62',
-    highlighterTint: 'rgba(227, 193, 79, 0.22)',
-    highlighterTintHover: 'rgba(227, 193, 79, 0.32)',
+    rule: '#34404C',
+    ruleStrong: '#4C5967',
+    highlighter: '#DDBB4C',
+    highlighterHover: '#E7C85E',
+    highlighterTint: 'rgba(221, 187, 76, 0.22)',
+    highlighterTintHover: 'rgba(221, 187, 76, 0.32)',
     pass: '#5CB880',
     fail: '#E8776B',
-    blocked: '#E0A443',
+    blocked: '#E58A4E',
   },
 } as const;
 
@@ -58,7 +62,8 @@ export function buildAntdTheme(
       colorWarning: c.blocked,
       colorBgLayout: c.paper,
       colorBgContainer: c.sheet,
-      colorBgElevated: c.sheet,
+      // Drawer, popovers, menus: one step above Sheet in dark.
+      colorBgElevated: c.sheetRaised,
       colorBorder: c.rule,
       colorBorderSecondary: c.rule,
       colorText: c.ink,

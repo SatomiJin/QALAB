@@ -29,19 +29,14 @@
   color: $color-ink-muted;
 }
 
-// "Lesson | Course", separated by a rule, not a dot.
+// "Lesson | Course", separated by a gap, not a dot.
 .trail {
   display: flex;
   flex-wrap: wrap;
-  gap: $space-1 0;
+  // Gaps only: a separator rule would start the wrapped second line.
+  gap: $space-1 $space-4;
   @include type-small;
   color: $color-ink-muted;
-
-  > * + * {
-    margin-left: $space-2;
-    padding-left: $space-2;
-    border-left: 1px solid $color-rule;
-  }
 }
 
 .section {
@@ -205,7 +200,8 @@
   thead th {
     @include type-small;
     color: $color-ink-muted;
-    border-top: 1px solid $color-rule;
+    border-top: 1px solid $color-rule-strong;
+    border-bottom-color: $color-rule-strong;
   }
 
   th:last-child,
@@ -264,16 +260,15 @@
       display: none;
     }
 
+    // The table draws the top rule: its first row may be folded away.
+    border-top: 1px solid $color-rule;
+
     tbody tr {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       gap: $space-1 $space-3;
       padding: $space-3 0;
       border-bottom: 1px solid $color-rule;
-
-      &:first-child {
-        border-top: 1px solid $color-rule;
-      }
     }
 
     tbody th,
@@ -301,6 +296,15 @@
 
     // No average yet: nothing to say on a phone.
     .skillAverage[data-empty='true'] {
+      display: none;
+    }
+
+    // Not started: listed in one line under the table instead.
+    tbody tr[data-idle='true'] {
+      display: none;
+    }
+
+    &:not(:has(tbody tr:not([data-idle='true']))) {
       display: none;
     }
   }
@@ -417,4 +421,16 @@
   gap: $space-3;
   white-space: nowrap;
   @include type-small;
+}
+
+// Phones only: "Not started: Testing Types, Test Design…" under the table.
+.idleSkills {
+  display: none;
+  margin: $space-3 0 0;
+  @include type-small;
+  color: $color-ink-muted;
+
+  @media (max-width: $breakpoint-md) {
+    display: block;
+  }
 }

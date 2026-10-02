@@ -282,6 +282,7 @@ export const vi: TranslationSchema = {
       previous: 'Bài trước',
       next: 'Bài sau',
       backToCourse: 'Về trang khoá học',
+      actions: 'Bài học này',
       empty: 'Bài học này chưa có nội dung.',
     },
   },
@@ -321,6 +322,7 @@ export const vi: TranslationSchema = {
       noLessons: 'Chưa có bài học',
       noExercises: 'Chưa có bài tập',
       lessonsBar: 'Đã xong {{percent}}% số bài học',
+      notStarted: 'Chưa bắt đầu:',
     },
     retest: {
       title: 'Cần retest',
@@ -337,6 +339,8 @@ export const vi: TranslationSchema = {
         'Hãy làm vài bài tập trước: kỹ năng và ý cần luyện thêm sẽ hiện ở đây.',
       noSkills: 'Không có kỹ năng nào trung bình dưới {{pass}}.',
       noConcepts: 'Không thiếu ý nào.',
+      nothing:
+        'Không có gì cần retest: mọi kỹ năng đều trung bình từ {{pass}} trở lên và không thiếu ý nào.',
     },
     activity: {
       title: 'Hoạt động gần đây',
@@ -426,6 +430,7 @@ export const vi: TranslationSchema = {
       attempts_other: '{{count}} lần làm',
     },
     exercise: {
+      aside: 'Bài tập này',
       back: 'Về danh sách bài tập',
       fromLesson: 'Thuộc bài học',
       chooseOne: 'Chọn một đáp án.',
@@ -496,6 +501,7 @@ export const vi: TranslationSchema = {
     },
   },
   admin: {
+    pageActions: 'Thao tác',
     status: {
       draft: 'Bản nháp',
       published: 'Đã xuất bản',

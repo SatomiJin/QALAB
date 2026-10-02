@@ -89,7 +89,11 @@ test.describe('Journey', () => {
       'in_progress',
     );
 
-    // 4. Complete it.
+    // 4. Read to the end and complete it (on phones the button is in the
+    // bottom bar, shown once most of the lesson is read).
+    await page
+      .getByRole('navigation', { name: 'Other lessons in this course' })
+      .scrollIntoViewIfNeeded();
     await page.getByTestId('complete-lesson').click();
     await expect(page.getByTestId('lesson-status')).toHaveAttribute(
       'data-state',

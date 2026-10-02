@@ -6,6 +6,7 @@ import { ErrorState } from '../../../components/feedback/ErrorState';
 import { PageLoader } from '../../../components/feedback/PageLoader';
 import { PageHeader } from '../../../components/PageHeader';
 import { PageTrail } from '../../../components/PageTrail';
+import { SideLayout } from '../../../components/SideLayout';
 import { errorMessage } from '../../../hooks/useErrorMessage';
 import { ApiError } from '../../../lib/api';
 import { NotFoundPage } from '../../../pages/NotFoundPage';
@@ -66,6 +67,7 @@ function CourseTrail({ title }: { title?: string }) {
 }
 
 function CourseEditor({ course }: { course: AdminCourse }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -81,13 +83,19 @@ function CourseEditor({ course }: { course: AdminCourse }) {
           />
         }
       />
-      <StatusActions
-        course={course}
-        onDeleted={() => void navigate(adminListPath())}
-      />
-      {/* Keyed by the save time: a saved course refills the form. */}
-      <CourseDetails key={course.updatedAt} course={course} />
-      <CourseOutline course={course} />
+      <SideLayout
+        asideLabel={t('admin.pageActions')}
+        aside={
+          <StatusActions
+            course={course}
+            onDeleted={() => void navigate(adminListPath())}
+          />
+        }
+      >
+        {/* Keyed by the save time: a saved course refills the form. */}
+        <CourseDetails key={course.updatedAt} course={course} />
+        <CourseOutline course={course} />
+      </SideLayout>
     </>
   );
 }
@@ -231,6 +239,7 @@ function CourseDetails({ course }: { course: AdminCourse }) {
             type="primary"
             htmlType="submit"
             loading={save.isPending}
+            className={styles.primaryAction}
             data-testid="save-course"
           >
             {t('admin.save')}

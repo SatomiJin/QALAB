@@ -20,20 +20,15 @@
   @include type-id;
 }
 
-// Breadcrumb-like trail: "Course | Module", separated by a rule, not a dot.
+// Breadcrumb-like trail: "Course | Module", separated by a gap, not a dot.
 .trail {
   display: flex;
   flex-wrap: wrap;
-  gap: $space-1 0;
+  // Gaps only: a separator rule would start the wrapped second line.
+  gap: $space-1 $space-4;
   margin: 0;
   @include type-small;
   color: $color-ink-muted;
-
-  > * + * {
-    margin-left: $space-2;
-    padding-left: $space-2;
-    border-left: 1px solid $color-rule;
-  }
 }
 
 // Continue ---------------------------------------------------------------
@@ -45,6 +40,11 @@
   gap: $space-4 $space-6;
   padding: $space-5 0 $space-6;
   border-top: 1px solid $color-ink;
+
+  // A bright Ink line shouts on a dark page.
+  :global(:root[data-theme='dark']) & {
+    border-top-color: $color-ink-muted;
+  }
 
   @media (max-width: $breakpoint-md) {
     flex-direction: column;
@@ -168,4 +168,9 @@
 
 .flatList {
   @include card-list;
+}
+
+// The screen's one primary button: full width on phones.
+.primaryAction {
+  @include primary-action;
 }

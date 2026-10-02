@@ -1,0 +1,40 @@
+@use '../styles/tokens' as *;
+
+$wide: 1200px;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: $wide) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    align-items: start;
+    gap: $space-7;
+  }
+}
+
+.main {
+  min-width: 0;
+}
+
+// Below 1200px: the panel's content sits above the main column, as before.
+.aside {
+  order: -1;
+
+  @media (min-width: $wide) {
+    position: sticky;
+    top: calc(#{$topbar-height} + #{$space-5});
+    order: 0;
+    display: grid;
+    gap: $space-4;
+    padding-top: $space-4;
+    border-top: 1px solid $color-rule-strong;
+
+    // Spacing tuned for the flow (negative offsets under the title, bottom
+    // margins) does not apply inside the panel.
+    > * {
+      margin: 0;
+    }
+  }
+}

@@ -22,6 +22,16 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
   background: $color-paper;
   border-bottom: 1px solid $color-rule;
 
+  // Admin area: a 3px Rule strong strip, not a colour (verdicts and the
+  // highlighter keep their meaning). The current-item mark sits on it.
+  &[data-variant='admin'] {
+    border-bottom: 3px solid $color-rule-strong;
+
+    .navLink::after {
+      bottom: -3px;
+    }
+  }
+
   @media (max-width: $breakpoint-md) {
     gap: $space-3;
     padding: 0 $space-4;
@@ -148,7 +158,8 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
   }
 
   .navLink {
-    padding: $space-2 $space-3;
+    min-height: $touch-target;
+    padding: $space-3 $space-4;
     border-radius: $radius-control;
 
     &::after {

@@ -77,7 +77,7 @@ function CourseView({ course }: { course: CourseDetail }) {
 
       <div className={styles.summary}>
         <div className={shared.meta}>
-          <VerdictTag verdict={verdictFor(progress.status)} />
+          <VerdictTag verdict={verdictFor(progress.status)} size="large" />
           <span className={shared.count} data-testid="course-progress">
             {t('learning.lessonsDone', {
               done: progress.completedLessons,
@@ -93,6 +93,7 @@ function CourseView({ course }: { course: CourseDetail }) {
           <Button
             type={progress.status === 'completed' ? 'default' : 'primary'}
             size="large"
+            className={shared.primaryAction}
             onClick={() => navigate(`/learning/lessons/${target}`)}
           >
             {action}

@@ -91,7 +91,7 @@ test.describe('Theme', () => {
     const background = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor,
     );
-    expect(background).toBe('rgb(18, 23, 29)');
+    expect(background).toBe('rgb(17, 22, 28)');
 
     await page.reload();
     await expect(html(page)).toHaveAttribute('data-theme', 'dark');

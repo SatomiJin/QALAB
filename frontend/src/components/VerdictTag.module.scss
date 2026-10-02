@@ -12,6 +12,12 @@
   vertical-align: baseline;
 }
 
+.large {
+  padding: $space-1 $space-2;
+  font-size: 14px;
+  line-height: 20px;
+}
+
 @each $name,
   $color
     in (

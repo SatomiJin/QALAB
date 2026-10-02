@@ -280,6 +280,7 @@ export const en = {
       previous: 'Previous lesson',
       next: 'Next lesson',
       backToCourse: 'Back to the course',
+      actions: 'This lesson',
       empty: 'This lesson has no content yet.',
     },
   },
@@ -319,6 +320,7 @@ export const en = {
       noLessons: 'No lessons yet',
       noExercises: 'No exercises yet',
       lessonsBar: '{{percent}}% of lessons completed',
+      notStarted: 'Not started:',
     },
     retest: {
       title: 'Needs retest',
@@ -335,6 +337,8 @@ export const en = {
         'Answer a few exercises first: skills and concepts that need work show up here.',
       noSkills: 'No skill averages below {{pass}}.',
       noConcepts: 'No missed concepts.',
+      nothing:
+        'Nothing to retest: every skill averages {{pass}} or more and no concepts were missed.',
     },
     activity: {
       title: 'Recent activity',
@@ -424,6 +428,7 @@ export const en = {
       attempts_other: '{{count}} attempts',
     },
     exercise: {
+      aside: 'This exercise',
       back: 'Back to the exercises',
       fromLesson: 'From the lesson',
       chooseOne: 'Choose one answer.',
@@ -493,6 +498,7 @@ export const en = {
     },
   },
   admin: {
+    pageActions: 'Page actions',
     status: {
       draft: 'Draft',
       published: 'Published',

@@ -57,6 +57,7 @@ export function AnswerForm({
           size="large"
           htmlType="submit"
           loading={submitting}
+          className={styles.primaryAction}
           data-testid="submit-answer"
         >
           {t('practice.exercise.submit')}
@@ -118,7 +119,11 @@ function MultipleChoice({ exercise }: { exercise: Exercise }) {
         {multiple ? (
           <Checkbox.Group className={styles.choices}>
             {options.map((option) => (
-              <Checkbox key={option.id} value={option.id}>
+              <Checkbox
+                key={option.id}
+                value={option.id}
+                className={styles.choice}
+              >
                 {option.text}
               </Checkbox>
             ))}
@@ -126,7 +131,11 @@ function MultipleChoice({ exercise }: { exercise: Exercise }) {
         ) : (
           <Radio.Group className={styles.choices}>
             {options.map((option) => (
-              <Radio key={option.id} value={option.id}>
+              <Radio
+                key={option.id}
+                value={option.id}
+                className={styles.choice}
+              >
                 {option.text}
               </Radio>
             ))}

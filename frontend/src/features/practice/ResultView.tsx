@@ -55,7 +55,10 @@ export const ResultView = forwardRef<HTMLElement, ResultViewProps>(
             {attempt.score}
           </span>
           <span className={styles.scoreUnit}>{t('practice.result.outOf')}</span>
-          <VerdictTag verdict={attemptVerdict(attempt.isCorrect)} />
+          <VerdictTag
+            verdict={attemptVerdict(attempt.isCorrect)}
+            size="large"
+          />
         </div>
         <p className={styles.muted}>
           {free
@@ -99,6 +102,7 @@ export const ResultView = forwardRef<HTMLElement, ResultViewProps>(
             type={needsSelfAssessment ? 'default' : 'primary'}
             size="large"
             onClick={onTryAgain}
+            className={styles.primaryAction}
             data-testid="try-again"
           >
             {t('practice.exercise.tryAgain')}
@@ -324,8 +328,8 @@ function SelfAssessment({
         ) : (
           <Button
             type="primary"
-            size="large"
             loading={save.isPending}
+            className={styles.primaryAction}
             onClick={() =>
               save.mutate(
                 { attemptId: attempt.id, checked },

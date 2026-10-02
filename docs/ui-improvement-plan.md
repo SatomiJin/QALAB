@@ -1,6 +1,6 @@
 # Kế hoạch cải thiện UI: màu sắc và layout (desktop + mobile)
 
-Trạng thái: **bước A xong (2026-10-02)**, kèm mục 2.1 (vì đó là cách sửa 1.1); các bước B–E chưa làm. Nguồn: review ngày 2026-10-02 dựa trên `npm run ui:review` (224 ảnh chụp, light/dark × EN/VI, desktop 1280px + mobile Pixel 7 412px) và đối chiếu với `docs/design.md`. Chưa có Figma: connector chưa nạp được trong phiên review (xem mục 6).
+Trạng thái: **bước A–E xong (2026-10-02)**, trừ mục 4.6 (tuỳ chọn, chưa làm). Quyết định và các chỗ lệch so với kế hoạch được ghi ở mục *UI improvement pass* trong `docs/design.md`. Lệch chính: *Lưu thay đổi* / *Submit* vẫn nằm cuối form của nó, không chuyển vào panel bên phải (để nút ở cạnh lỗi validation của form). Nguồn: review ngày 2026-10-02 dựa trên `npm run ui:review` (224 ảnh chụp, light/dark × EN/VI, desktop 1280px + mobile Pixel 7 412px) và đối chiếu với `docs/design.md`. Chưa có Figma: connector chưa nạp được trong phiên review (xem mục 6).
 
 Ký hiệu: ✅ đã kiểm chứng lại · 🔎 thấy trên ảnh chụp, cần đo lại khi làm · ⚠️ đổi một quyết định đã ghi trong `docs/design.md`, cần bạn duyệt.
 
