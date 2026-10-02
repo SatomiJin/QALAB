@@ -10,6 +10,7 @@ export const vi: TranslationSchema = {
   },
   nav: {
     mainLabel: 'Điều hướng chính',
+    skipToContent: 'Bỏ qua, tới nội dung',
     practiceLabel: 'Các dạng luyện tập',
     open: 'Mở menu',
     close: 'Đóng menu',

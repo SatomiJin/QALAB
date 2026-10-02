@@ -13,10 +13,10 @@ Applies to everything in `frontend/`. Visual rules: [design.md](design.md). Cros
 src/
 ├── app/          # App, Providers, router
 ├── features/<x>/ # feature code: <x>-api.ts, queries.ts, pure helpers + *.test.ts, pages/, components, *.module.scss
-├── components/   # shared UI (PageHeader, PageTrail, ListPager, VerdictTag, BugReport, feedback/{PageLoader,ErrorState,EmptyState})
+├── components/   # shared UI (PageHeader, PageTrail, ListPager, VerdictTag, BugReport, NavigationBar, feedback/{PageLoader,ErrorState,EmptyState})
 ├── layouts/      # AppShell, AuthLayout, MainLayout, PracticeLayout, AdminLayout, navigation.ts
 ├── pages/        # app-level pages (404, no access, route error)
-├── hooks/        # shared hooks (useErrorMessage, useDocumentTitle)
+├── hooks/        # shared hooks (useErrorMessage, useDocumentTitle, useScrollEdges)
 ├── lib/          # api client, storage, env, query client
 ├── i18n/locales/ # en.ts (source of truth), vi.ts
 ├── styles/       # _tokens.scss, global.scss
@@ -50,6 +50,7 @@ src/
 * Forms whose API errors come back under a prefix (`answer.title`, `answer.mapping.login`, `answer.steps[2]`) map them with a feature helper (`answerFieldErrors` in `features/practice/answers.ts`) onto `form.setFields`; details with no field go into the form's `Alert`.
 * A page that swaps a form for its result keeps the form **mounted but hidden** (`hidden`), so "Try again" keeps what was typed; restore a previous answer with `form.setFieldsValue`.
 * Lists of text rows share `components/ListPager` (range, page-size select, pager); give it the feature's range label and `rangeTestId`.
+* `EmptyState` / `ErrorState` carry `data-state="empty"` / `"error"` (ErrorState also `role="alert"`): use those in tests.
 * Optional sections on a page (a lesson's exercises) render nothing while loading or empty, and a one-line retry on error, so the main content does not jump. Backend `400` field `details` are mapped onto the form with `applyFieldErrors` / `hasFieldErrors` (`features/auth/form-helpers.ts`).
 * Forms: Ant Design `Form` with client rules mirroring backend limits; the backend stays the authority. Emails use `inputMode="email"`, not `type="email"`.
 * Give every `Form` a `name` when two forms can be on screen (a page form and a dialog): field ids are the field names otherwise, and duplicate ids point labels at the wrong input. Custom controls inside `Form.Item` forward the `id` prop to the real input (`StatusSelect`, `MarkdownEditor`), or the label is not linked.
@@ -61,6 +62,9 @@ src/
 ## Routing and access
 
 * Routes in `app/router.tsx`. Protected pages wrap in `RequireAuth`, admin pages in `RequireAdmin`, guest-only pages in `GuestOnly`. These are UX only; never rely on them for security.
+* **Pages are lazy routes** (`lazy: page(() => import('…/XPage'), 'XPage')`): one chunk per page, so a new page must not be imported eagerly by the router. Guards, layouts, 404 and the route error page stay eager. The root route has `hydrateFallbackElement` (first load); later loads keep the current page and show `NavigationBar`. A chunk that fails to load (old deploy) lands on `RouteErrorPage` (reload).
+* `app/RootRoute.tsx` holds `ScrollRestoration` keyed by **pathname**: a new page starts at the top, Back restores, search-param changes (filters, pages) keep the position. Do not add `window.scrollTo(0, 0)` on navigation.
+* `AppShell` focuses `main` (`tabIndex={-1}`) when the pathname changes (not on first load, not for search params) and renders the *Skip to content* link first. Guards that block a route inside the app render their answer inside the frame (`<MainLayout>{…}</MainLayout>`, as `RequireAdmin` does), never a bare page.
 * Each page sets its title with `useDocumentTitle(t('…'))`.
 
 ## i18n
@@ -107,6 +111,7 @@ src/
 | --- | --- | --- |
 | Unit | `src/**/*.test.ts` | pure logic (api client, redirects, storage) |
 | E2E | `tests/e2e/*.spec.ts` | Playwright, desktop + mobile, production build, API mocked by `tests/e2e/support/mock-api.ts` |
+| Accessibility | `tests/e2e/accessibility.spec.ts` | axe-core (`@axe-core/playwright`, WCAG 2.1 A/AA + best practice) on every main screen, light and dark; must report no violations |
 
 * Keep `mock-api.ts` in sync with `docs/api.md` whenever the contract changes. Each feature's endpoints live in their own mock (`support/mock-learning.ts`, `support/mock-practice.ts` which grades with the backend rules, `support/mock-dashboard.ts` which derives the dashboard from the learning and practice mocks), delegated from `MockApi.handle`'s default branch; mocks copy the backend rules (forward-only progress, continue choice) and expose switches for states (`empty`, `failing`) and a call log (`progressCalls`).
 * Content published in the admin mock is what learners see: `MockApi` wires `learning.publishedCourses` to `admin.learnerCourses()` (published course, module and lesson only), so a test can publish through the CMS UI and find the course in the catalogue. The ten plant.md flows run as one journey in `tests/e2e/journey.spec.ts`, which also checks that no protected page opens without a session.
@@ -116,7 +121,8 @@ src/
 * Specs that pick many Select options run with `test.use({ reducedMotion: 'reduce' })` and pick inside the open dropdown (`.ant-select-dropdown:not(.ant-select-dropdown-hidden)`), then expect it closed: a click during the open animation can be lost.
 * A 5xx error state appears only after the global retries: give that assertion a longer timeout (15 s).
 * Set mock failure switches only after the page has loaded, or the initial GET fails instead of the write under test.
-* A fixed bug gets a regression test.
+* A fixed bug gets a regression test (Phase 8 ones: `tests/e2e/polish.spec.ts`).
+* Specs that open antd menus (user menu, language) also use `reducedMotion: 'reduce'`. Before a second `page.goto` in a signed-in test, wait for the first page's data: reloading while the refresh token rotates reuses the old one and signs out.
 
 ## Deployment
 
@@ -130,3 +136,5 @@ npm run format
 ```
 
 Then the screenshot review in [design.md](design.md).
+
+After fixing e2e failures, re-run **only the failed tests** with `npm run test:e2e:failed` (`playwright test --last-failed`, reads `test-results/.last-run.json`), not the full suite (≈ 6 min). Repeat until it is green; run the full suite once more only when the fix touched shared code (layouts, router, `lib/`, mocks) or before reporting a phase done. To check a flaky test, run that one file with `--repeat-each`, never the whole suite. A preview server already running on port 4173 is reused, which skips the build. An interrupted run records every unfinished test as failed, so `--last-failed` after an interruption is close to the full suite; `npx playwright test --last-failed --list` shows what it would run.

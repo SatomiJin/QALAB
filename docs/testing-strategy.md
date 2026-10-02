@@ -22,6 +22,18 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 
 `tests/e2e/support/mock-api.ts` is a stateful mock of the backend contract (docs/api.md). Tests use roles and `data-testid` / `data-state` where text would tie them to one language.
 
+## Phase 8 coverage (polish)
+
+| Requirement | Test |
+| --- | --- |
+| No WCAG 2.1 A/AA (+ axe best-practice) violation on the auth, learner, admin, 404 and 403 screens, light and dark (contrast is per theme) | `frontend/tests/e2e/accessibility.spec.ts` (`@axe-core/playwright`) |
+| Skip link reaches the content; a page change focuses `main` and starts at the top; a filter change keeps focus on the tab | `frontend/tests/e2e/polish.spec.ts` |
+| 403 for learners renders inside the app frame | `polish.spec.ts` |
+| Overflowing tab rows mark the hidden side and scroll the current tab into view | `polish.spec.ts` |
+| A load error reads as Blocked (`role=alert`) and *Try again* recovers | `polish.spec.ts` |
+
+axe covers the rendered page, not dialogs, menus or drawers once opened; those are covered by the keyboard and role-based assertions in the feature specs. A screenshot review (light + dark × EN + VI × desktop + mobile, empty / error / API-down states) was done by hand with a throwaway harness and is not part of the suite.
+
 ## QA documents (Phase 7)
 
 The platform is tested as a QA project: [test plan](qa/test-plan.md) (scope, levels, risks, entry/exit criteria, open findings), [test scenarios](qa/test-scenarios.md), [test cases](qa/test-cases.md) (the ten E2E flows and twelve security scenarios, traced to tests) and the [regression checklist](qa/regression-checklist.md).

@@ -36,8 +36,7 @@
 }
 
 .draft {
-  color: $color-not-run;
-  background: color-mix(in srgb, #{$color-not-run} 14%, transparent);
+  @include tinted-tag($color-not-run);
 }
 
 .published {

@@ -22,8 +22,7 @@
     )
 {
   .#{$name} {
-    color: $color;
-    background: color-mix(in srgb, #{$color} 14%, transparent);
+    @include tinted-tag($color);
   }
 }
 

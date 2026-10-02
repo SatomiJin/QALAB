@@ -35,6 +35,8 @@
 5. Non-2xx responses become `ApiError` with the backend error shape; network failures are `status 0`.
 6. Queries retry only network/5xx errors.
 
+Pages are lazy routes (`app/router.tsx`): the main bundle holds React, the router, antd core, guards and layouts; each page (and heavy code it alone needs, e.g. Markdown rendering, drag and drop) is a separate chunk loaded on first visit. Phase 8 measurement: main app chunk 1 267 kB → 349 kB (gzip 395 → 110 kB).
+
 ## Configuration
 
 Env variables are validated at startup (`src/config/env.validation.ts`). Invalid config stops the process with a list of problems.
@@ -51,6 +53,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 5 — Dashboard & Progress | Done | Done |
 | 6 — Curriculum | Done (content + importer) | No change (content comes from the API) |
 | 7 — QA | Done: security sweeps, journey through the real stack, QA documents ([docs/qa](qa/test-plan.md)) | Done: journey and no-session E2E |
+| 8 — Polish | No change | Done: per-page code splitting, accessibility (axe, contrast, skip link, focus), scroll restoration, overflowing tabs, empty / error states, 403 in the app frame |
 
 ## Authentication
 

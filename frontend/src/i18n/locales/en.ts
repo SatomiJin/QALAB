@@ -6,6 +6,7 @@ export const en = {
   },
   nav: {
     mainLabel: 'Main navigation',
+    skipToContent: 'Skip to content',
     practiceLabel: 'Practice types',
     open: 'Open navigation',
     close: 'Close navigation',

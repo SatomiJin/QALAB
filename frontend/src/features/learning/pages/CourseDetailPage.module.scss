@@ -56,7 +56,9 @@
   padding-block: $space-3;
 
   @media (max-width: $breakpoint-md) {
-    grid-template-columns: 3em minmax(0, 1fr) 6.5rem;
+    // Narrower number column and gap: the title needs the width on phones.
+    grid-template-columns: 2.5em minmax(0, 1fr) auto;
+    column-gap: $space-3;
     grid-template-areas:
       'number title verdict'
       '. minutes minutes';

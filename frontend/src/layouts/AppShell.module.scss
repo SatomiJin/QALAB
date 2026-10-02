@@ -153,6 +153,12 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
 
 .main {
   flex: 1;
+
+  // Focused by script after a page change; no ring around the whole page.
+  &:focus {
+    outline: none;
+  }
+
   width: 100%;
   padding: $space-7 $gutter;
 
@@ -169,5 +175,24 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
 
   @media (max-width: $breakpoint-md) {
     padding: $space-3 $space-4;
+  }
+}
+
+// First focusable element: hidden until it is focused with the keyboard.
+.skipLink {
+  position: absolute;
+  top: $space-2;
+  left: $space-2;
+  z-index: 1100;
+  padding: $space-2 $space-3;
+  border-radius: $radius-float;
+  background: $color-sheet;
+  box-shadow: 0 0 0 1px $color-rule;
+  color: $color-ink;
+  font-weight: 600;
+  transform: translateY(-200%);
+
+  &:focus-visible {
+    transform: none;
   }
 }

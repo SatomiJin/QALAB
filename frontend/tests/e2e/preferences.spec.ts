@@ -9,6 +9,9 @@ async function mockHealth(page: Page) {
 const html = (page: Page) => page.locator('html');
 
 test.describe('Language', () => {
+  // Menus open with an animation; a click during it can be lost (flaky).
+  test.use({ reducedMotion: 'reduce' });
+
   test.beforeEach(async ({ page }) => {
     await mockHealth(page);
   });

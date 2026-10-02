@@ -14,6 +14,13 @@ $color-fail: var(--qa-fail);
 $color-blocked: var(--qa-blocked);
 $color-not-run: var(--qa-not-run);
 
+// Text on a 14% tint of a verdict colour (tags): the pure colour is below
+// WCAG AA 4.5:1 there, so it is mixed with 25% Ink (>= 4.8:1, both themes).
+@mixin tinted-tag($color) {
+  color: color-mix(in srgb, #{$color} 75%, #{$color-ink});
+  background: color-mix(in srgb, #{$color} 14%, transparent);
+}
+
 $font-family:
   'Archivo Variable',
   system-ui,
@@ -153,6 +160,44 @@ $ease-out: cubic-bezier(0.2, 0, 0, 1);
   // The card draws the focus ring.
   &:focus-visible {
     outline: none;
+  }
+}
+
+// A row that scrolls sideways (tabs) without a scrollbar: the side with
+// hidden items fades out (attributes set by `hooks/useScrollEdges`).
+@mixin scroll-row {
+  $fade: 48px;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &[data-more-end] {
+    mask-image: linear-gradient(
+      to right,
+      #000 calc(100% - #{$fade}),
+      transparent
+    );
+  }
+
+  &[data-more-start] {
+    mask-image: linear-gradient(
+      to left,
+      #000 calc(100% - #{$fade}),
+      transparent
+    );
+  }
+
+  &[data-more-start][data-more-end] {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 $fade,
+      #000 calc(100% - #{$fade}),
+      transparent
+    );
   }
 }
 

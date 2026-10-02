@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation, useSearchParams } from 'react-router';
 import { ErrorState } from '../../components/feedback/ErrorState';
 import { PageLoader } from '../../components/feedback/PageLoader';
+import { MainLayout } from '../../layouts/MainLayout';
 import { NoAccessPage } from '../../pages/NoAccessPage';
 import { useAuth } from './auth-context';
 import { loginPath, safeRedirect } from './redirect';
@@ -28,13 +29,20 @@ export function RequireAuth() {
 export function RequireAdmin() {
   const { profile, profileQuery, isAdmin } = useAuth();
 
-  if (profileQuery.isPending) return <PageLoader />;
-  if (profileQuery.isError || !profile) {
-    return (
-      <ErrorState error={profileQuery.error} onRetry={profileQuery.refetch} />
-    );
-  }
-  return isAdmin ? <Outlet /> : <NoAccessPage />;
+  if (isAdmin) return <Outlet />;
+  // Not (yet) an admin: answer inside the learner frame, so the person keeps
+  // the navigation.
+  return (
+    <MainLayout>
+      {profileQuery.isPending ? (
+        <PageLoader />
+      ) : profileQuery.isError || !profile ? (
+        <ErrorState error={profileQuery.error} onRetry={profileQuery.refetch} />
+      ) : (
+        <NoAccessPage />
+      )}
+    </MainLayout>
+  );
 }
 
 /** Login / register / forgot password: skip them when already signed in. */

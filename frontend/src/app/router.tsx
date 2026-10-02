@@ -1,26 +1,7 @@
+import type { ComponentType } from 'react';
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router';
-import { AdminCoursePage } from '../features/admin/pages/AdminCoursePage';
-import { AdminCoursesPage } from '../features/admin/pages/AdminCoursesPage';
-import {
-  AdminExercisePage,
-  AdminNewExercisePage,
-} from '../features/admin/pages/AdminExercisePage';
-import { AdminLessonPage } from '../features/admin/pages/AdminLessonPage';
-import { AdminLessonPreviewPage } from '../features/admin/pages/AdminLessonPreviewPage';
+import { PageLoader } from '../components/feedback/PageLoader';
 import { GuestOnly, RequireAdmin, RequireAuth } from '../features/auth/guards';
-import { ForgotPasswordPage } from '../features/auth/pages/ForgotPasswordPage';
-import { LoginPage } from '../features/auth/pages/LoginPage';
-import { RegisterPage } from '../features/auth/pages/RegisterPage';
-import { ResetPasswordPage } from '../features/auth/pages/ResetPasswordPage';
-import { VerifyEmailPage } from '../features/auth/pages/VerifyEmailPage';
-import { CourseDetailPage } from '../features/learning/pages/CourseDetailPage';
-import { LearningPage } from '../features/learning/pages/LearningPage';
-import { LessonPage } from '../features/learning/pages/LessonPage';
-import { ExercisePage } from '../features/practice/pages/ExercisePage';
-import { DashboardPage } from '../features/dashboard/pages/DashboardPage';
-import { ProgressPage } from '../features/dashboard/pages/ProgressPage';
-import { PracticeListPage } from '../features/practice/pages/PracticeListPage';
-import { ProfilePage } from '../features/profile/ProfilePage';
 import { AdminLayout } from '../layouts/AdminLayout';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { MainLayout } from '../layouts/MainLayout';
@@ -28,10 +9,26 @@ import { PRACTICE_LINKS } from '../layouts/navigation';
 import { PracticeLayout } from '../layouts/PracticeLayout';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { RouteErrorPage } from '../pages/RouteErrorPage';
+import { RootRoute } from './RootRoute';
+
+/**
+ * Pages are loaded on demand (one chunk per page; shared code such as antd
+ * goes into common chunks), so the first visit downloads only what it shows.
+ * Guards and layouts stay in the main bundle: every page needs them.
+ */
+function page<M>(load: () => Promise<M>, name: keyof M) {
+  return async () => ({
+    Component: (await load())[name] as ComponentType,
+  });
+}
 
 export const routes: RouteObject[] = [
   {
+    element: <RootRoute />,
     errorElement: <RouteErrorPage />,
+    // Shown while the first page's chunk loads; later navigations keep the
+    // current page on screen (with the bar in AppShell) until the next is ready.
+    hydrateFallbackElement: <PageLoader />,
     children: [
       {
         element: <RequireAuth />,
@@ -42,14 +39,36 @@ export const routes: RouteObject[] = [
               { index: true, element: <Navigate to="/dashboard" replace /> },
               {
                 path: 'dashboard',
-                element: <DashboardPage />,
+                lazy: page(
+                  () => import('../features/dashboard/pages/DashboardPage'),
+                  'DashboardPage',
+                ),
               },
               {
                 path: 'learning',
                 children: [
-                  { index: true, element: <LearningPage /> },
-                  { path: 'courses/:slug', element: <CourseDetailPage /> },
-                  { path: 'lessons/:lessonId', element: <LessonPage /> },
+                  {
+                    index: true,
+                    lazy: page(
+                      () => import('../features/learning/pages/LearningPage'),
+                      'LearningPage',
+                    ),
+                  },
+                  {
+                    path: 'courses/:slug',
+                    lazy: page(
+                      () =>
+                        import('../features/learning/pages/CourseDetailPage'),
+                      'CourseDetailPage',
+                    ),
+                  },
+                  {
+                    path: 'lessons/:lessonId',
+                    lazy: page(
+                      () => import('../features/learning/pages/LessonPage'),
+                      'LessonPage',
+                    ),
+                  },
                 ],
               },
               {
@@ -66,18 +85,39 @@ export const routes: RouteObject[] = [
                       },
                       ...PRACTICE_LINKS.map((link) => ({
                         path: link.path.replace('/practice/', ''),
-                        element: <PracticeListPage kind={link.page} />,
+                        lazy: async () => {
+                          const { PracticeListPage } =
+                            await import('../features/practice/pages/PracticeListPage');
+                          return {
+                            element: <PracticeListPage kind={link.page} />,
+                          };
+                        },
                       })),
                     ],
                   },
-                  { path: 'exercises/:exerciseId', element: <ExercisePage /> },
+                  {
+                    path: 'exercises/:exerciseId',
+                    lazy: page(
+                      () => import('../features/practice/pages/ExercisePage'),
+                      'ExercisePage',
+                    ),
+                  },
                 ],
               },
               {
                 path: 'progress',
-                element: <ProgressPage />,
+                lazy: page(
+                  () => import('../features/dashboard/pages/ProgressPage'),
+                  'ProgressPage',
+                ),
               },
-              { path: 'profile', element: <ProfilePage /> },
+              {
+                path: 'profile',
+                lazy: page(
+                  () => import('../features/profile/ProfilePage'),
+                  'ProfilePage',
+                ),
+              },
               { path: '*', element: <NotFoundPage /> },
             ],
           },
@@ -92,20 +132,48 @@ export const routes: RouteObject[] = [
                     index: true,
                     element: <Navigate to="/admin/courses" replace />,
                   },
-                  { path: 'courses', element: <AdminCoursesPage /> },
-                  { path: 'courses/:courseId', element: <AdminCoursePage /> },
-                  { path: 'lessons/:lessonId', element: <AdminLessonPage /> },
+                  {
+                    path: 'courses',
+                    lazy: page(
+                      () => import('../features/admin/pages/AdminCoursesPage'),
+                      'AdminCoursesPage',
+                    ),
+                  },
+                  {
+                    path: 'courses/:courseId',
+                    lazy: page(
+                      () => import('../features/admin/pages/AdminCoursePage'),
+                      'AdminCoursePage',
+                    ),
+                  },
+                  {
+                    path: 'lessons/:lessonId',
+                    lazy: page(
+                      () => import('../features/admin/pages/AdminLessonPage'),
+                      'AdminLessonPage',
+                    ),
+                  },
                   {
                     path: 'lessons/:lessonId/preview',
-                    element: <AdminLessonPreviewPage />,
+                    lazy: page(
+                      () =>
+                        import('../features/admin/pages/AdminLessonPreviewPage'),
+                      'AdminLessonPreviewPage',
+                    ),
                   },
                   {
                     path: 'lessons/:lessonId/exercises/new',
-                    element: <AdminNewExercisePage />,
+                    lazy: page(
+                      () => import('../features/admin/pages/AdminExercisePage'),
+                      'AdminNewExercisePage',
+                    ),
                   },
                   {
                     path: 'exercises/:exerciseId',
-                    element: <AdminExercisePage />,
+                    lazy: page(
+                      () => import('../features/admin/pages/AdminExercisePage'),
+                      'AdminExercisePage',
+                    ),
                   },
                   { path: '*', element: <NotFoundPage /> },
                 ],
@@ -122,14 +190,44 @@ export const routes: RouteObject[] = [
           {
             element: <GuestOnly />,
             children: [
-              { path: 'login', element: <LoginPage /> },
-              { path: 'register', element: <RegisterPage /> },
-              { path: 'forgot-password', element: <ForgotPasswordPage /> },
+              {
+                path: 'login',
+                lazy: page(
+                  () => import('../features/auth/pages/LoginPage'),
+                  'LoginPage',
+                ),
+              },
+              {
+                path: 'register',
+                lazy: page(
+                  () => import('../features/auth/pages/RegisterPage'),
+                  'RegisterPage',
+                ),
+              },
+              {
+                path: 'forgot-password',
+                lazy: page(
+                  () => import('../features/auth/pages/ForgotPasswordPage'),
+                  'ForgotPasswordPage',
+                ),
+              },
             ],
           },
           // Email links: reachable signed in or not.
-          { path: 'verify', element: <VerifyEmailPage /> },
-          { path: 'reset-password', element: <ResetPasswordPage /> },
+          {
+            path: 'verify',
+            lazy: page(
+              () => import('../features/auth/pages/VerifyEmailPage'),
+              'VerifyEmailPage',
+            ),
+          },
+          {
+            path: 'reset-password',
+            lazy: page(
+              () => import('../features/auth/pages/ResetPasswordPage'),
+              'ResetPasswordPage',
+            ),
+          },
           { path: '*', element: <Navigate to="/auth/login" replace /> },
         ],
       },

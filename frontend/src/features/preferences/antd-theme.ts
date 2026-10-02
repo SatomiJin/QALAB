@@ -64,6 +64,8 @@ export function buildAntdTheme(
       colorText: c.ink,
       colorTextSecondary: c.inkMuted,
       colorTextDescription: c.inkMuted,
+      // antd's default placeholder grey is below 4.5:1 on Sheet.
+      colorTextPlaceholder: c.inkMuted,
       // Selected items (dropdown menus, select options) get the highlighter,
       // not a tint derived from Ink (dark-on-dark, looked disabled).
       controlItemBgActive: c.highlighterTint,

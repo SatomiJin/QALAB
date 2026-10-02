@@ -1,9 +1,10 @@
 import { CloseOutlined, MenuOutlined } from '@ant-design/icons';
 import { Button, Drawer, Grid } from 'antd';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet, useLocation } from 'react-router';
 import { BrandMark } from '../components/BrandMark';
+import { NavigationBar } from '../components/NavigationBar';
 import { UserMenu } from '../features/auth/UserMenu';
 import {
   LanguageSwitcher,
@@ -18,6 +19,8 @@ interface AppShellProps {
   brandSuffix?: string;
   /** Extra link shown after the main links (e.g. "Back to app"). */
   extra?: ReactNode;
+  /** Page to show instead of the route outlet (guards that block a route). */
+  children?: ReactNode;
 }
 
 function linkClass({ isActive }: { isActive: boolean }) {
@@ -29,10 +32,27 @@ function linkClass({ isActive }: { isActive: boolean }) {
  * and a single reading column, like a document (see docs/design.md).
  * Below the lg breakpoint the sections move into a drawer.
  */
-export function AppShell({ links, brandSuffix, extra }: AppShellProps) {
+export function AppShell({
+  links,
+  brandSuffix,
+  extra,
+  children,
+}: AppShellProps) {
   const { t } = useTranslation();
   const screens = Grid.useBreakpoint();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { pathname } = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+  const shownPath = useRef(pathname);
+
+  // After moving to another page, start keyboard and screen-reader users at
+  // its content instead of leaving focus on the link that was clicked.
+  // Not on the first page, and not when only the search params change.
+  useEffect(() => {
+    if (shownPath.current === pathname) return;
+    shownPath.current = pathname;
+    mainRef.current?.focus({ preventScroll: true });
+  }, [pathname]);
   // Until breakpoints are measured, assume desktop to avoid a layout flash.
   const isDesktop = screens.lg ?? true;
 
@@ -54,6 +74,10 @@ export function AppShell({ links, brandSuffix, extra }: AppShellProps) {
 
   return (
     <div className={styles.shell}>
+      <NavigationBar />
+      <a href="#main" className={styles.skipLink}>
+        {t('nav.skipToContent')}
+      </a>
       <header className={styles.topbar}>
         <Link to="/" className={styles.brand}>
           <BrandMark />
@@ -112,8 +136,8 @@ export function AppShell({ links, brandSuffix, extra }: AppShellProps) {
         </Drawer>
       )}
 
-      <main className={styles.main}>
-        <Outlet />
+      <main id="main" ref={mainRef} tabIndex={-1} className={styles.main}>
+        {children ?? <Outlet />}
       </main>
 
       <footer className={styles.footer}>

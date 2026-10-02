@@ -14,6 +14,9 @@ async function fillLogin(page: Page, email: string, password = PASSWORD) {
 }
 
 test.describe('Authentication', () => {
+  // Menus open with an animation; a click during it can be lost (flaky).
+  test.use({ reducedMotion: 'reduce' });
+
   test('register → verify → login → logout', async ({ page }) => {
     const api = await mockApi(page);
     const email = 'new.learner@example.com';
@@ -181,6 +184,9 @@ test.describe('Roles', () => {
   test('learners do not see admin and cannot open it', async ({ page }) => {
     await signedIn(page, { role: 'learner' });
     await page.goto('/dashboard');
+    // Wait for the session: reloading while the refresh token rotates would
+    // reuse the old one and sign out (single use).
+    await expect(page.getByTestId('summary')).toBeVisible();
 
     await openNav(page);
     await expect(page.getByRole('link', { name: 'Admin' })).toHaveCount(0);

@@ -11,7 +11,7 @@ Full decisions and rationale: [docs/design.md](../../docs/design.md). Use the `f
 ## The system in short
 
 * **Concept:** the app is a marked-up test plan. Ink on paper, plus two devices only:
-  1. **Verdicts** (`VerdictTag`: pass / fail / blocked / notRun, plus `inProgress` as an uncoloured outline) are the only saturated colour. Reuse them for any status: progress maps completed → pass, in progress → inProgress, not started → notRun (`verdictFor` in `features/learning/progress.ts`).
+  1. **Verdicts** (`VerdictTag`: pass / fail / blocked / notRun, plus `inProgress` as an uncoloured outline) are the only saturated colour. Reuse them for any status: progress maps completed → pass, in progress → inProgress, not started → notRun (`verdictFor` in `features/learning/progress.ts`). Tag text is the hue mixed with 25% Ink (`@include tinted-tag`), never the pure hue on its tint (below 4.5:1).
   2. **Highlighter** (yellow) marks "you are here / do this next": current nav item, current tab, the one primary button per screen. Never decoration.
 * **Colours:** Paper, Sheet, Ink, Ink muted, Rule, Highlighter + four verdicts, each with light and dark values. Links are Ink + underline (except card titles); no brand blue.
 * **Type:** Archivo only. Hierarchy through weight and width axis (expanded titles, condensed tags, tabular numbers for IDs/counts). Sentence case. No all-caps, no monospace in the UI (only code inside lesson content is monospace).
@@ -25,13 +25,15 @@ Full decisions and rationale: [docs/design.md](../../docs/design.md). Use the `f
 * **Layout:** full-width top bar + centred content column (max 1040px, 32px sides, 16px on mobile), body text ≤ 68ch. Settings pages: 240px label column + ≤ 560px fields, stacked below 992px. Mobile nav in a right drawer.
 * **Surfaces:** no cards around page sections. **Openable items** (course, lesson, exercise) are item cards: `@include item-card` on the item, `card-link` on its one link (the whole card opens it; no underline on card titles), `card-list` on the list. Sheet + shadow otherwise only for floating layers (drawer, popover, dropdown) and the auth form. Tables and read-only rows (checks, attempts) keep Rules.
 * **Radius:** tags 2px, controls 4px, floating layers 6px, item cards 8px. Nothing larger.
-* **Motion:** none on load; only in answer to the person. Use the tokens `$motion-fast` (120ms), `$motion-base` (180ms), `$ease-out`, and the mixins (`item-card` lift on hover/focus, settle on press; `color-transition` for tabs; highlighter grow-in under nav). Respect `prefers-reduced-motion` via antd's `motion` token and local media queries; never a global `animation-duration` override.
+* **Motion:** none on load; only in answer to the person. Use the tokens `$motion-fast` (120ms), `$motion-base` (180ms), `$ease-out`, and the mixins (`item-card` lift on hover/focus, settle on press; `color-transition` for tabs; highlighter grow-in under nav). Respect `prefers-reduced-motion` via antd's `motion` token and local media queries; never a global `animation-duration` override. Page loads show only the delayed 2px Ink bar (`NavigationBar`).
+* **Tab rows** that can overflow use `@include scroll-row` + `useScrollEdges` (fade on the hidden side, current tab scrolled into view).
+* **Empty / error states:** `EmptyState` = one muted sentence, left aligned; `ErrorState` = *Blocked* tag + title + message + *Try again*. No antd `Result` / `Empty` artwork in data views (only the crash page, `RouteErrorPage`, keeps `Result`).
 
 ## Copy
 
 * A page that is not built yet says what it will do and when (`[Not run] … Opens in Phase N.`). None is left since Phase 5 (`PlaceholderPage` was removed); rebuild it if one is needed again.
 * Errors say what happened and what to do; no apologies.
-* 404/403 use the `BugReport` component (Expected / Actual).
+* 404/403 use the `BugReport` component (Expected / Actual), inside the app frame.
 
 ## Review before done
 
@@ -42,6 +44,7 @@ Take Playwright screenshots of every new or changed screen in **light + dark × 
 * only one highlighter-primary action per screen;
 * no double rules where two blocks meet, and list columns line up across rows;
 * the page has no horizontal scroll (`document.documentElement.scrollWidth <= innerWidth`) on every screen, not only the dashboard;
-* loading, error and empty states look intentional too.
+* loading, error and empty states look intentional too;
+* `tests/e2e/accessibility.spec.ts` (axe, both themes) passes: add a new screen to it.
 
 If a decision changes during review, update `docs/design.md` with what changed and why.

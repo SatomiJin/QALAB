@@ -1,0 +1,42 @@
+@use '../styles/tokens' as *;
+
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 1100;
+  height: 2px;
+  overflow: hidden;
+  opacity: 0;
+  animation: appear 0s linear 200ms forwards;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 30%;
+    background: $color-ink;
+    animation: slide 1.2s $ease-out 200ms infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::before {
+      width: 100%;
+      animation: none;
+    }
+  }
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(340%);
+  }
+}

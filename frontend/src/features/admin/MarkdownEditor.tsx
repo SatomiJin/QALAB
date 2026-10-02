@@ -55,7 +55,9 @@ export function MarkdownEditor({
     <div
       className={styles.previewPane}
       aria-label={t('admin.lesson.preview')}
-      role="region"
+      // A group, not a region: an exercise has several editors, and landmarks
+      // with the same name cannot be told apart.
+      role="group"
     >
       {value.trim() ? (
         <LessonMarkdown source={value} testId="markdown-preview" />

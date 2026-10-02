@@ -77,6 +77,7 @@ npm run dev              # http://localhost:5173
 npm run typecheck && npm run lint
 npm test                 # unit (src/**/*.test.ts)
 npm run test:e2e         # Playwright, desktop + mobile, against a production build
+npm run test:e2e:failed  # re-run only the tests that failed in the last run
 ```
 
 Supabase is a **cloud** project linked from `backend/` (no Docker locally). Run Supabase CLI commands from `backend/`, never from the repo root.

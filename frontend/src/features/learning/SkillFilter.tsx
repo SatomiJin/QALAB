@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { useScrollEdges } from '../../hooks/useScrollEdges';
 import type { Skill } from '../../types/api';
 import { type ListParams, listSearch } from './list-params';
 import { useSkillText } from './useSkillText';
@@ -18,6 +19,7 @@ export function SkillFilter({
 }) {
   const { t } = useTranslation();
   const skillText = useSkillText();
+  const rowRef = useScrollEdges<HTMLElement>();
   const tabs = [
     { code: undefined, label: t('learning.list.all') },
     ...skills.map((skill) => ({
@@ -28,6 +30,7 @@ export function SkillFilter({
 
   return (
     <nav
+      ref={rowRef}
       aria-label={t('learning.list.filterLabel')}
       className={styles.filter}
       data-testid="skill-filter"

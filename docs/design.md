@@ -32,7 +32,7 @@ Everything else is ink on paper.
 | Rule | `#DDE1DC` | `#2A333D` | Borders and dividers that carry structure |
 | Highlighter | `#F4D35E` | `#E3C14F` | Current location, next action, primary button (ink text on top) |
 
-Verdicts (text and tag colours; tags use a 12–16% tint of the same hue as background):
+Verdicts (text and tag colours; tags use a 14% tint of the same hue as background, and their text is the hue mixed with 25% Ink, `tinted-tag` mixin):
 
 | Verdict | Light | Dark |
 |---|---|---|
@@ -44,6 +44,8 @@ Verdicts (text and tag colours; tags use a 12–16% tint of the same hue as back
 **In progress** (added in Phase 2) is not a result yet, so it gets no colour: Ink text in a 1px Ink-muted outline. Lesson and course progress map to verdicts: completed → Passed, in progress → In progress, not started → Not run.
 
 Links and focus rings use Ink with an underline / 2px outline; there is no separate "brand blue".
+
+Changed in Phase 8 (axe review): the pure verdict hue on its own tint was below WCAG AA (Not run 3.7:1, Pass 3.9:1 in light; Not run 4.4:1 in dark). Tag text is now the hue mixed with 25% Ink (≥ 4.8:1 for every verdict, both themes); the palette itself did not change. Input placeholders use Ink muted (antd's default grey was 1.8:1).
 
 ## Type
 
@@ -114,7 +116,7 @@ Auth pages: brand top left, preferences top right, and the form centred on a She
 * **Inputs:** Sheet background, Rule border, 4px radius, 2px Ink focus ring.
 * **Radius by role:** tags 2px, controls 4px, floating layers 6px, item cards 8px. Nothing larger.
 * **Shadow:** on floating layers (drawer, dropdown), and a soft lift under a hovered item card (`--qa-shadow-hover`). Flat everywhere else.
-* **Motion:** none on load; only in answer to the person. Tokens: `$motion-fast` 120ms, `$motion-base` 180ms, `$ease-out` `cubic-bezier(0.2, 0, 0, 1)`. The highlighter mark grows in under the new nav item on navigation (it does not travel between items). Item cards lift on hover/focus and settle on press; tabs fade their colour (`color-transition` mixin). Everything is disabled under `prefers-reduced-motion`.
+* **Motion:** none on load; only in answer to the person. Tokens: `$motion-fast` 120ms, `$motion-base` 180ms, `$ease-out` `cubic-bezier(0.2, 0, 0, 1)`. The highlighter mark grows in under the new nav item on navigation (it does not travel between items). Item cards lift on hover/focus and settle on press; tabs fade their colour (`color-transition` mixin). Everything is disabled under `prefers-reduced-motion`. While the next page's code loads (lazy routes), a 2px Ink bar slides along the top of the window, only after 200ms so fast navigations show nothing (static under reduced motion).
 
 ## Copy
 
@@ -129,6 +131,8 @@ Auth pages: brand top left, preferences top right, and the form centred on a She
   ```
 
 * Errors state what happened and what to do. They do not apologize.
+* **Empty state** (`EmptyState`): one muted sentence, left aligned in the column like the rest of the page (what will appear here and how), optional action below. No illustration.
+* **Load error** (`ErrorState`): reported like a test that could not run: a *Blocked* verdict tag beside a section-size title, the message, and *Try again* (primary). Left aligned, `role="alert"`. Changed in Phase 8: both used antd `Result` / `Empty` (centred red icon, inbox drawing), which looked like a different product next to the ruled pages.
 
 ## Review against the brief
 
@@ -220,3 +224,15 @@ Checked against a generic "learning dashboard" (stat cards with icons, progress 
 * **Progress** (`/progress`): title, skill tabs (as Learning), then each course as a section (courses separated by an Ink rule): title link, verdict and counts, then modules ("Module 1" small tabular + title) and lessons as numbered rows `1.2`, each lesson's exercises indented under it with a dashed Rule (question as two plain lines, type and difficulty, best score and attempts, verdict). Fixed columns so minutes, scores and verdicts line up across the page. The pager below.
 * These are **report rows**, not item cards: the page is read, and titles are ordinary links (a card per lesson and exercise would make a wall of boxes). Item cards stay for lists you pick one item from.
 * Changed after review: on mobile the skill name was squeezed into the desktop column width and the average stood alone without a label.
+
+## Polish (Phase 8)
+
+Reviewed every screen with screenshots (light + dark × EN + VI × desktop + mobile, plus empty, error and API-down states) and axe-core. Changes:
+
+* **Tag contrast** and **placeholders**: see *Color*.
+* **Overflowing tab rows** (skill filter, Practice tabs): they scroll sideways without a scrollbar, so a cut-off last tab ("Automation T…") gave no hint that more existed. The side with hidden tabs now fades out over 48px (`scroll-row` mixin + `hooks/useScrollEdges`), and the current tab is scrolled into view when the page opens from a link.
+* **No access (403)** rendered outside every layout (no top bar, text against the window edge). It now shows inside the learner frame, like 404.
+* **Page changes**: a new page opens at its top (it kept the previous page's scroll position); Back returns to where you were. Changing a list's filter or page keeps the position. Focus moves to the page content (`main`) after a page change, and a *Skip to content* link (hidden until focused) is the first stop for the keyboard.
+* **Empty and error states** rebuilt in the document style (see *Copy*).
+* Course page on phones: narrower lesson-number column and gap, so lesson titles wrap less.
+* Checked and kept: no page scrolls sideways on a phone (412px) or desktop (1280px); Vietnamese text fits everywhere; one highlighter primary per screen.

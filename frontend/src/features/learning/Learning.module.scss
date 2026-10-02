@@ -144,8 +144,7 @@
   gap: $space-5;
   margin-bottom: $space-5;
   border-bottom: 1px solid $color-rule;
-  overflow-x: auto;
-  scrollbar-width: none;
+  @include scroll-row;
 }
 
 .filterTab {

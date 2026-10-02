@@ -6,6 +6,7 @@ import {
   ThemeSwitcher,
 } from '../features/preferences/PreferenceControls';
 import { BrandMark } from '../components/BrandMark';
+import { NavigationBar } from '../components/NavigationBar';
 import { palette } from '../features/preferences/antd-theme';
 import { usePreferences } from '../features/preferences/preferences-context';
 import styles from './AuthLayout.module.scss';
@@ -20,6 +21,7 @@ export function AuthLayout() {
 
   return (
     <div className={styles.page}>
+      <NavigationBar />
       <header className={styles.topbar}>
         <Link to="/auth/login" className={styles.brand}>
           <BrandMark />
