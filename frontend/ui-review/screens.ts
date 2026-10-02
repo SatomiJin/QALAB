@@ -36,12 +36,19 @@ async function prefs(page: Page, c: Combo) {
   }, c);
 }
 
+async function pageOverflow(page: Page) {
+  const scrollWidth = await page.evaluate(
+    () => document.documentElement.scrollWidth,
+  );
+  return scrollWidth - (page.viewportSize()?.width ?? scrollWidth);
+}
+
 async function shoot(page: Page, name: string, c: Combo, project: string) {
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(300);
-  const overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - window.innerWidth,
-  );
+  // Against the configured viewport, not innerWidth: with mobile emulation
+  // the layout viewport grows to fit wide content, so innerWidth hides it.
+  const overflow = await pageOverflow(page);
   const file = `${project}-${c.theme}-${c.lang}-${name}.png`;
   await page.screenshot({ path: `${OUT}/shots/${file}`, fullPage: true });
   // Contrast differs per theme, not per language: axe once per theme.

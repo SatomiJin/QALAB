@@ -32,7 +32,7 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | Overflowing tab rows mark the hidden side and scroll the current tab into view | `polish.spec.ts` |
 | A load error reads as Blocked (`role=alert`) and *Try again* recovers | `polish.spec.ts` |
 
-axe covers the rendered page, not dialogs, menus or drawers once opened; those are covered by the keyboard and role-based assertions in the feature specs. A screenshot review (light + dark × EN + VI × desktop + mobile, empty / error / API-down states) was done by hand with a throwaway harness and is not part of the suite.
+axe covers the rendered page, not dialogs, menus or drawers once opened; those are covered by the keyboard and role-based assertions in the feature specs. The screenshot review (light + dark × EN + VI × desktop + mobile, empty / error / API-down states) runs with the committed harness `frontend/ui-review/` (`npm run ui:review`) and is not part of the suite. Horizontal scroll is a test (`foundation.spec.ts`, learner and admin pages, both projects); it compares `scrollWidth` with the configured viewport width, because mobile emulation widens `innerWidth` / `clientWidth` to fit the content and once hid a 31px overflow on every admin page.
 
 ## QA documents (Phase 7)
 

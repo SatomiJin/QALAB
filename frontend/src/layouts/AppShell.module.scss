@@ -32,7 +32,7 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
   display: flex;
   align-items: center;
   gap: $space-2;
-  flex-shrink: 0;
+  min-width: 0;
   color: $color-ink;
   font-weight: 650;
   font-stretch: 106%;
@@ -43,7 +43,14 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
   }
 }
 
+.brandName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .brandSuffix {
+  flex-shrink: 0;
   @include type-small;
   padding-left: $space-2;
   border-left: 1px solid $color-rule;
@@ -113,9 +120,18 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
 
 .actions {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: $space-1;
   margin-left: auto;
+}
+
+.drawerPreferences {
+  display: flex;
+  gap: $space-1;
+  margin-top: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid $color-rule;
 }
 
 .drawerHeader {

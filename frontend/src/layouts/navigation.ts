@@ -11,6 +11,11 @@ export interface NavLinkItem {
     | 'nav.testCase'
     | 'nav.bugReport'
     | 'nav.scenario';
+  /**
+   * Other path prefixes that belong to this section (pages that do not live
+   * under `path`), so the section stays marked as current there.
+   */
+  activePaths?: string[];
 }
 
 /** Top-level learner sections. Profile lives in the account menu. */
@@ -27,7 +32,11 @@ export const ADMIN_ENTRY: NavLinkItem = {
 };
 
 export const ADMIN_LINKS: NavLinkItem[] = [
-  { path: '/admin/courses', labelKey: 'nav.courses' },
+  {
+    path: '/admin/courses',
+    labelKey: 'nav.courses',
+    activePaths: ['/admin/lessons', '/admin/exercises'],
+  },
 ];
 
 /** Practice kinds, shown as tabs on the Practice pages. */

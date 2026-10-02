@@ -1,5 +1,14 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { openNav, signedIn } from './support/mock-api.ts';
+
+// Against the configured viewport: with mobile emulation the layout viewport
+// grows to fit wide content, so innerWidth / clientWidth would hide it.
+async function overflow(page: Page) {
+  const scrollWidth = await page.evaluate(
+    () => document.documentElement.scrollWidth,
+  );
+  return scrollWidth - (page.viewportSize()?.width ?? scrollWidth);
+}
 
 test.describe('Foundation', () => {
   test('redirects / to the dashboard', async ({ page }) => {
@@ -88,12 +97,22 @@ test.describe('Foundation', () => {
     for (const path of ['/dashboard', '/practice/test-case', '/profile']) {
       await page.goto(path);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-      const overflow = await page.evaluate(
-        () =>
-          document.documentElement.scrollWidth -
-          document.documentElement.clientWidth,
-      );
-      expect(overflow, path).toBeLessThanOrEqual(0);
+      expect(await overflow(page), path).toBeLessThanOrEqual(0);
+    }
+  });
+
+  test('has no horizontal scroll in the admin area', async ({ page }) => {
+    const { api } = await signedIn(page, { role: 'admin' });
+    const course = api.admin.addCourse();
+    const lesson = api.admin.addLesson(api.admin.addModule(course));
+    for (const path of [
+      '/admin/courses',
+      `/admin/courses/${course.id}`,
+      `/admin/lessons/${lesson.id}`,
+    ]) {
+      await page.goto(path);
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      expect(await overflow(page), path).toBeLessThanOrEqual(0);
     }
   });
 });

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { signedIn } from './support/mock-api.ts';
+import { openNav, signedIn } from './support/mock-api.ts';
 
 async function choose(page: Page, label: string, option: string) {
   await page.getByRole('combobox', { name: label, exact: true }).click();
@@ -20,6 +20,28 @@ const statuses = (page: Page, testId: string) =>
 test.use({ reducedMotion: 'reduce' });
 
 test.describe('Admin CMS', () => {
+  test('keeps Courses marked on lesson and exercise pages', async ({
+    page,
+  }) => {
+    const { api } = await signedIn(page, { role: 'admin' });
+    const lesson = api.admin.addLesson(
+      api.admin.addModule(api.admin.addCourse()),
+    );
+    for (const path of [
+      `/admin/lessons/${lesson.id}`,
+      `/admin/lessons/${lesson.id}/exercises/new?type=scenario`,
+    ]) {
+      await page.goto(path);
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      await openNav(page);
+      await expect(
+        page
+          .getByRole('navigation', { name: 'Main navigation' })
+          .getByRole('link', { name: 'Courses', exact: true }),
+      ).toHaveAttribute('aria-current', 'page');
+    }
+  });
+
   test('lists every course with filters and opens one', async ({ page }) => {
     const { api } = await signedIn(page, { role: 'admin' });
     const published = api.admin.addCourse({

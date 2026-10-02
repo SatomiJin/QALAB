@@ -97,7 +97,7 @@ Mobile (< 992px):
 
 ```text
 ┌───────────────────────────────┐
-│ ▣ QA Learning Lab     EN ☾ ☰ │
+│ ▣ QA Learning Lab        ◯ ☰ │
 ├───────────────────────────────┤
 │ Bug report practice           │
 │ [Not run] Opens in Phase 3.   │
@@ -105,7 +105,10 @@ Mobile (< 992px):
 │ ● API online                  │
 └───────────────────────────────┘
 ☰ opens a right-side drawer with the same five items; the current one is highlighted.
+Language and theme sit at the bottom of the drawer, under a Rule.
 ```
+
+(Changed in the UI improvement pass, step A: with language and theme in the bar, the admin bar (brand + "Admin" + both switchers + avatar + ☰) was 443–446px wide in a 412px phone and cut the menu button. The bar on phones now holds only brand, avatar and ☰; the brand name ellipsises before anything else shrinks. Pages outside their section's path, such as admin lessons and exercises, keep their section marked: `activePaths` in `layouts/navigation.ts`.)
 
 Auth pages: brand top left, preferences top right, and the form centred on a Sheet (440px max, 1px Rule border, 6px radius, no shadow) so it stands off the Paper background. Inputs on that sheet use Paper, so they read as fields to fill in. On mobile the sheet is full width and top aligned. (Changed after review: the first version, a bare column on the page, blended into the background.)
 

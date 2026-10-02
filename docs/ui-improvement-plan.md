@@ -1,6 +1,6 @@
 # Kế hoạch cải thiện UI: màu sắc và layout (desktop + mobile)
 
-Trạng thái: **đề xuất, chưa làm**. Nguồn: review ngày 2026-10-02 dựa trên `npm run ui:review` (224 ảnh chụp, light/dark × EN/VI, desktop 1280px + mobile Pixel 7 412px) và đối chiếu với `docs/design.md`. Chưa có Figma: connector chưa nạp được trong phiên review (xem mục 6).
+Trạng thái: **bước A xong (2026-10-02)**, kèm mục 2.1 (vì đó là cách sửa 1.1); các bước B–E chưa làm. Nguồn: review ngày 2026-10-02 dựa trên `npm run ui:review` (224 ảnh chụp, light/dark × EN/VI, desktop 1280px + mobile Pixel 7 412px) và đối chiếu với `docs/design.md`. Chưa có Figma: connector chưa nạp được trong phiên review (xem mục 6).
 
 Ký hiệu: ✅ đã kiểm chứng lại · 🔎 thấy trên ảnh chụp, cần đo lại khi làm · ⚠️ đổi một quyết định đã ghi trong `docs/design.md`, cần bạn duyệt.
 
@@ -10,13 +10,13 @@ Ký hiệu: ✅ đã kiểm chứng lại · 🔎 thấy trên ảnh chụp, c�
 
 | # | Vấn đề | Màn hình | Nguyên nhân / nơi sửa | |
 |---|---|---|---|---|
-| 1.1 | **Mọi trang admin tràn ngang trên mobile** (443–446px trong viewport 412px), nút menu ☰ bị cắt | Admin, mobile, cả 2 theme, cả 2 ngôn ngữ | Top bar admin chứa brand + "Admin" + Ngôn ngữ + Theme + Avatar + Menu, và brand có `flex-shrink: 0` (`layouts/AppShell.module.scss`) | ✅ |
-| 1.2 | **Phép đo tràn ngang bị "mù" trên mobile**: `scrollWidth − innerWidth` luôn ra 0 khi giả lập mobile, nên Phase 8 báo sai là không có tràn | `ui-review/screens.ts`, test e2e "no horizontal scroll" | So với `page.viewportSize().width` thay vì `innerWidth`; thêm regression test cho admin mobile | ✅ |
-| 1.3 | Trang sửa bài học/bài tập admin không đánh dấu mục nav hiện tại ("Courses" mất vạch highlighter) | Admin lesson/exercise | Route `/admin/lessons/*`, `/admin/exercises/*` không nằm dưới `/admin/courses`; dùng `isActive` tuỳ chỉnh cho NavLink | 🔎 |
+| 1.1 | **Mọi trang admin tràn ngang trên mobile** (443–446px trong viewport 412px), nút menu ☰ bị cắt | Admin, mobile, cả 2 theme, cả 2 ngôn ngữ | Top bar admin chứa brand + "Admin" + Ngôn ngữ + Theme + Avatar + Menu, và brand có `flex-shrink: 0` (`layouts/AppShell.module.scss`) | ✅ **Đã sửa** |
+| 1.2 | **Phép đo tràn ngang bị "mù" trên mobile**: `scrollWidth − innerWidth` luôn ra 0 khi giả lập mobile, nên Phase 8 báo sai là không có tràn | `ui-review/screens.ts`, test e2e "no horizontal scroll" | So với `page.viewportSize().width` thay vì `innerWidth`; thêm regression test cho admin mobile | ✅ **Đã sửa** |
+| 1.3 | Trang sửa bài học/bài tập admin không đánh dấu mục nav hiện tại ("Courses" mất vạch highlighter) | Admin lesson/exercise | Route `/admin/lessons/*`, `/admin/exercises/*` không nằm dưới `/admin/courses`; dùng `isActive` tuỳ chỉnh cho NavLink | ✅ **Đã sửa** (`activePaths`) |
 
 ## 2. Layout mobile (< 768px) (P1)
 
-1. **Top bar gọn lại**: chuyển Ngôn ngữ và Theme vào drawer, trên bar chỉ giữ brand, avatar và menu. Thay đổi này cũng sửa luôn 1.1. Dưới 400px chữ "QA Learning Lab" có thể rút gọn. 🔎
+1. **Top bar gọn lại**: chuyển Ngôn ngữ và Theme vào drawer, trên bar chỉ giữ brand, avatar và menu. Thay đổi này cũng sửa luôn 1.1. Dưới 400px chữ "QA Learning Lab" có thể rút gọn. ✅ **Đã làm ở bước A** (tên brand tự cắt bằng dấu … nếu thiếu chỗ).
 2. **Vùng chạm ≥ 44–48px**:
    - Link trong drawer: `min-height: 48px`, padding 12px 16px.
    - Nút phân trang: 40px.

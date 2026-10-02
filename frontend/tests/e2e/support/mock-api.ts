@@ -342,3 +342,9 @@ export async function openNav(page: Page): Promise<void> {
     await page.getByRole('button', { name: /Open navigation|Mở menu/ }).click();
   }
 }
+
+/** Language and theme switchers sit in the nav drawer on phones. */
+export async function openPreferences(page: Page): Promise<void> {
+  const language = page.getByRole('button', { name: /^(Language|Ngôn ngữ)/ });
+  if (!(await language.isVisible())) await openNav(page);
+}

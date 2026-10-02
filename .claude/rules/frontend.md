@@ -66,6 +66,8 @@ src/
 * `app/RootRoute.tsx` holds `ScrollRestoration` keyed by **pathname**: a new page starts at the top, Back restores, search-param changes (filters, pages) keep the position. Do not add `window.scrollTo(0, 0)` on navigation.
 * `AppShell` focuses `main` (`tabIndex={-1}`) when the pathname changes (not on first load, not for search params) and renders the *Skip to content* link first. Guards that block a route inside the app render their answer inside the frame (`<MainLayout>{…}</MainLayout>`, as `RequireAdmin` does), never a bare page.
 * Each page sets its title with `useDocumentTitle(t('…'))`.
+* Following a link in the mobile nav drawer closes it without returning focus to ☰ (`focusTriggerAfterClose: false`, then `main` is focused after the close animation); closing it with Escape / ✕ returns focus to ☰. Links in the drawer do not close it themselves: the drawer's `nav` does it for every link, including `extra`.
+* Nav items whose pages live outside their path (admin lessons and exercises belong to *Courses*) list those prefixes in `activePaths` (`layouts/navigation.ts`); `AppShell` then renders the item as current (`Link` with `aria-current="page"`, because `NavLink` only knows its own path).
 
 ## i18n
 
@@ -122,6 +124,7 @@ src/
 * A 5xx error state appears only after the global retries: give that assertion a longer timeout (15 s).
 * Set mock failure switches only after the page has loaded, or the initial GET fails instead of the write under test.
 * A fixed bug gets a regression test (Phase 8 ones: `tests/e2e/polish.spec.ts`).
+* Below 992px the language and theme switchers are in the nav drawer: call `openPreferences(page)` (opens the drawer only when needed) before clicking them, and press `Escape` to close the drawer before using the top bar again. Horizontal-overflow checks compare `scrollWidth` with `page.viewportSize().width`, never `innerWidth` / `clientWidth` (mobile emulation widens them).
 * Specs that open antd menus (user menu, language) also use `reducedMotion: 'reduce'`. Before a second `page.goto` in a signed-in test, wait for the first page's data: reloading while the refresh token rotates reuses the old one and signs out.
 
 ## Deployment

@@ -27,6 +27,10 @@ function linkClass({ isActive }: { isActive: boolean }) {
   return isActive ? `${styles.navLink} ${styles.active}` : styles.navLink;
 }
 
+function isUnder(pathname: string, prefix: string) {
+  return pathname === prefix || pathname.startsWith(`${prefix}/`);
+}
+
 /**
  * Shared frame for the learner and admin areas: a top bar with the sections
  * and a single reading column, like a document (see docs/design.md).
@@ -41,6 +45,8 @@ export function AppShell({
   const { t } = useTranslation();
   const screens = Grid.useBreakpoint();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // Closed by following a link: focus goes to the new page, not back to ☰.
+  const [leftByLink, setLeftByLink] = useState(false);
   const { pathname } = useLocation();
   const mainRef = useRef<HTMLElement>(null);
   const shownPath = useRef(pathname);
@@ -60,13 +66,20 @@ export function AppShell({
     <ul className={styles.navList}>
       {links.map((link) => (
         <li key={link.path}>
-          <NavLink
-            to={link.path}
-            className={linkClass}
-            onClick={() => setDrawerOpen(false)}
-          >
-            {t(link.labelKey)}
-          </NavLink>
+          {link.activePaths?.some((prefix) => isUnder(pathname, prefix)) ? (
+            // NavLink only knows its own path; mark the section by hand.
+            <Link
+              to={link.path}
+              className={linkClass({ isActive: true })}
+              aria-current="page"
+            >
+              {t(link.labelKey)}
+            </Link>
+          ) : (
+            <NavLink to={link.path} className={linkClass}>
+              {t(link.labelKey)}
+            </NavLink>
+          )}
         </li>
       ))}
     </ul>
@@ -81,7 +94,7 @@ export function AppShell({
       <header className={styles.topbar}>
         <Link to="/" className={styles.brand}>
           <BrandMark />
-          <span>{t('app.name')}</span>
+          <span className={styles.brandName}>{t('app.name')}</span>
           {brandSuffix && (
             <span className={styles.brandSuffix}>{brandSuffix}</span>
           )}
@@ -95,8 +108,12 @@ export function AppShell({
         )}
 
         <div className={styles.actions}>
-          <LanguageSwitcher />
-          <ThemeSwitcher />
+          {isDesktop && (
+            <>
+              <LanguageSwitcher />
+              <ThemeSwitcher />
+            </>
+          )}
           <UserMenu />
           {!isDesktop && (
             <Button
@@ -104,7 +121,10 @@ export function AppShell({
               icon={<MenuOutlined />}
               aria-label={t('nav.open')}
               aria-expanded={drawerOpen}
-              onClick={() => setDrawerOpen(true)}
+              onClick={() => {
+                setLeftByLink(false);
+                setDrawerOpen(true);
+              }}
             />
           )}
         </div>
@@ -115,6 +135,11 @@ export function AppShell({
           placement="right"
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
+          focusable={{ focusTriggerAfterClose: !leftByLink }}
+          afterOpenChange={(open) => {
+            if (!open && leftByLink)
+              mainRef.current?.focus({ preventScroll: true });
+          }}
           size={280}
           closable={false}
           title={
@@ -129,10 +154,23 @@ export function AppShell({
             </div>
           }
         >
-          <nav aria-label={t('nav.mainLabel')} className={styles.drawerNav}>
+          <nav
+            aria-label={t('nav.mainLabel')}
+            className={styles.drawerNav}
+            onClick={(event) => {
+              if (!(event.target as Element).closest('a')) return;
+              setLeftByLink(true);
+              setDrawerOpen(false);
+            }}
+          >
             {navList}
             {extra}
           </nav>
+          {/* On phones the bar keeps only brand, avatar and menu. */}
+          <div className={styles.drawerPreferences}>
+            <LanguageSwitcher />
+            <ThemeSwitcher />
+          </div>
         </Drawer>
       )}
 

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { signedIn } from './support/mock-api.ts';
+import { openPreferences, signedIn } from './support/mock-api.ts';
 
 // Preferences work the same signed in or out; these run signed in.
 async function mockHealth(page: Page) {
@@ -35,6 +35,8 @@ test.describe('Language', () => {
       page.getByRole('heading', { name: 'Dashboard' }),
     ).toBeVisible();
 
+    await openPreferences(page);
+
     await page.getByRole('button', { name: 'Language' }).click();
     await page.getByRole('menuitem', { name: 'Tiếng Việt' }).click();
 
@@ -49,6 +51,8 @@ test.describe('Language', () => {
     await expect(
       page.getByRole('heading', { name: 'Tổng quan' }),
     ).toBeVisible();
+
+    await openPreferences(page);
 
     await page.getByRole('button', { name: 'Ngôn ngữ' }).click();
     await page.getByRole('menuitem', { name: 'English' }).click();
@@ -78,6 +82,8 @@ test.describe('Theme', () => {
     await page.goto('/dashboard');
     await expect(html(page)).toHaveAttribute('data-theme', 'light');
 
+    await openPreferences(page);
+
     await page.getByRole('button', { name: 'Theme' }).click();
     await page.getByRole('menuitem', { name: 'Dark' }).click();
 
@@ -95,6 +101,8 @@ test.describe('Theme', () => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('/dashboard');
     await expect(html(page)).toHaveAttribute('data-theme', 'dark');
+
+    await openPreferences(page);
 
     await page.getByRole('button', { name: 'Theme' }).click();
     await page.getByRole('menuitem', { name: 'Light' }).click();
@@ -124,11 +132,15 @@ test.describe('Reduced motion (OS setting)', () => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('/profile');
 
+    await openPreferences(page);
+
     await page.getByRole('button', { name: 'Theme' }).click();
     const dark = page.getByRole('menuitem', { name: 'Dark' });
     await expect(dark).toBeInViewport();
     await dark.click();
     await expect(html(page)).toHaveAttribute('data-theme', 'dark');
+
+    await openPreferences(page);
 
     await page.getByRole('button', { name: 'Language' }).click();
     const vi = page.getByRole('menuitem', { name: 'Tiếng Việt' });
@@ -136,6 +148,8 @@ test.describe('Reduced motion (OS setting)', () => {
     await vi.click();
     await expect(html(page)).toHaveAttribute('lang', 'vi');
 
+    // Closes the nav drawer on phones (no-op on desktop).
+    await page.keyboard.press('Escape');
     await page.getByTestId('user-menu').click();
     await expect(
       page.getByRole('menuitem', { name: 'Đăng xuất' }),
