@@ -37,3 +37,6 @@ Thumbs.db
 .claude/settings.local.json
 # Added by code-review-graph
 .code-review-graph/
+
+# UI review output (npm run ui:review)
+frontend/ui-review/out/

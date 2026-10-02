@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:failed": "playwright test --last-failed",
-    "format": "prettier --write \"src/**/*.{ts,tsx,scss}\" \"tests/**/*.ts\" \"*.config.ts\""
+    "ui:review": "node -e \"require('fs').rmSync('ui-review/out',{recursive:true,force:true})\" && playwright test -c ui-review/ui-review.config.ts",
+    "format": "prettier --write \"src/**/*.{ts,tsx,scss}\" \"tests/**/*.ts\" \"ui-review/**/*.ts\" \"*.config.ts\""
   },
   "dependencies": {
     "@ant-design/icons": "^6.3.4",

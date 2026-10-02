@@ -26,6 +26,10 @@ RTK (`rtk`, installed globally with its Claude Code hook) rewrites shell command
 * Test, lint, typecheck and build runs go through `rtk` too (only failures and summaries come back). When you need the raw output to debug, use `rtk proxy <cmd>`.
 * Never dump whole files, full logs or lockfiles into context. Use `head`/`tail`, `Select-Object -First/-Last`, `Read` with `limit`, or `Grep` with `head_limit`.
 
+## figma-reviewer (visual review agent)
+
+Project subagent in `.claude/agents/figma-reviewer.md`. Read-only: it runs `npm run ui:review` (filtered), reads `ui-review/out/summary.json` and the screenshots it needs, and returns deviations as bug reports (Expected / Actual / file). With a Figma link it compares against the frames through the claude.ai Figma connector (`mcp__claude_ai_Figma__*`, must be authorized in claude.ai → Settings → Connectors); without one, against `.claude/rules/design.md` and `docs/design.md`. Hand it UI reviews instead of opening dozens of screenshots in the main context.
+
 ## Order of preference for finding code
 
 1. code-review-graph (symbols, relations, impact).

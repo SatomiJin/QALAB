@@ -37,7 +37,7 @@ Full decisions and rationale: [docs/design.md](../../docs/design.md). Use the `f
 
 ## Review before done
 
-Take Playwright screenshots of every new or changed screen in **light + dark × EN + VI × desktop + mobile** and check them:
+Take Playwright screenshots of every new or changed screen in **light + dark × EN + VI × desktop + mobile** (`cd frontend && UI_REVIEW_SCREENS=<names> npm run ui:review`) and check them, or hand the review to the `figma-reviewer` agent (`.claude/agents/figma-reviewer.md`: against Figma frames when a link is given and the Figma connector is authorized, otherwise against this file and `docs/design.md`):
 
 * nothing overflows or wraps badly in Vietnamese;
 * contrast is readable in dark (primary button text stays light-theme Ink);

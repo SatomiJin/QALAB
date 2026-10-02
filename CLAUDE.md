@@ -18,6 +18,7 @@ QALAB/
 ├── CLAUDE.md          # This file — entry point for agents, whole repo
 ├── .claude/rules/     # Detailed rules (tooling, backend, frontend, database, design, logic)
 ├── .claude/skills/    # Project skills (shared, committed)
+├── .claude/agents/    # Project subagents (figma-reviewer: visual review vs Figma or docs/design.md)
 ├── .claude/settings.json  # Shared hooks (code-review-graph auto-update)
 ├── .mcp.json          # MCP servers (code-review-graph)
 ├── plant.md           # Spec + phases (source of truth for scope)
@@ -78,6 +79,7 @@ npm run typecheck && npm run lint
 npm test                 # unit (src/**/*.test.ts)
 npm run test:e2e         # Playwright, desktop + mobile, against a production build
 npm run test:e2e:failed  # re-run only the tests that failed in the last run
+npm run ui:review        # screenshots light/dark × en/vi × desktop/mobile + overflow/axe summary (ui-review/out)
 ```
 
 Supabase is a **cloud** project linked from `backend/` (no Docker locally). Run Supabase CLI commands from `backend/`, never from the repo root.
