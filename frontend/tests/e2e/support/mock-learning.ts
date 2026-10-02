@@ -103,6 +103,19 @@ const PAGE_SIZES = [20, 50, 100];
 type Result = { status: number; json?: unknown };
 type Lang = 'en' | 'vi';
 type CourseInfo = typeof COURSE;
+type PublishedCourse = CourseInfo & {
+  modules: {
+    id: string;
+    title: string;
+    description: string;
+    lessons: {
+      id: string;
+      slug: string;
+      title: string;
+      estimatedMinutes: number;
+    }[];
+  }[];
+};
 
 function notFound(message: string): Result {
   return {
@@ -146,6 +159,8 @@ export class MockLearning {
   /** Extra lesson-less courses (skill `test_design`) to fill pages. */
   private readonly extraCourses: CourseInfo[] = [];
   private readonly progress = new Map<string, Progress>(); // user:lesson
+  /** Courses published in the admin mock (wired by `MockApi`). */
+  publishedCourses: () => PublishedCourse[] = () => [];
 
   addCourses(count: number): void {
     const start = this.extraCourses.length;
@@ -239,6 +254,42 @@ export class MockLearning {
     };
   }
 
+  /** A course published through the admin mock, with the user's progress. */
+  private publishedDetail(course: PublishedCourse, userId: string, lang: Lang) {
+    const lessons = course.modules.flatMap((m) => m.lessons);
+    const statuses = lessons.map((l) => this.get(userId, l.id).status);
+    const completed = statuses.filter((s) => s === 'completed').length;
+    return {
+      ...course,
+      title: this.text(course.title, lang),
+      description: this.text(course.description, lang),
+      estimatedMinutes: lessons.reduce((sum, l) => sum + l.estimatedMinutes, 0),
+      progress: {
+        totalLessons: lessons.length,
+        completedLessons: completed,
+        status:
+          lessons.length > 0 && completed === lessons.length
+            ? 'completed'
+            : statuses.some((s) => s !== 'not_started')
+              ? 'in_progress'
+              : 'not_started',
+      },
+      modules: course.modules.map((m) => ({
+        ...m,
+        title: this.text(m.title, lang),
+        description: this.text(m.description, lang),
+        lessons: m.lessons.map((l) => ({
+          ...l,
+          title: this.text(l.title, lang),
+          progress: this.get(userId, l.id),
+        })),
+      })),
+      nextLessonId:
+        lessons.find((l) => this.get(userId, l.id).status !== 'completed')
+          ?.id ?? null,
+    };
+  }
+
   private nextLessonId(userId: string): string | null {
     return (
       LESSONS.find((l) => this.get(userId, l.id).status !== 'completed')?.id ??
@@ -320,6 +371,14 @@ export class MockLearning {
         : [
             this.summary(userId, lang),
             ...this.extraCourses.map((c) => this.extraSummary(c, lang)),
+            ...this.publishedCourses().map((c) => {
+              const {
+                modules: _m,
+                nextLessonId: _n,
+                ...summary
+              } = this.publishedDetail(c, userId, lang);
+              return summary;
+            }),
           ];
       const matching = all.filter((c) => !skill || c.skill.code === skill);
       return {
@@ -335,6 +394,18 @@ export class MockLearning {
     }
 
     if (method === 'GET' && path.startsWith('/courses/')) {
+      const published = this.publishedCourses().find(
+        (c) => path === `/courses/${c.slug}`,
+      );
+      if (published && !this.empty) {
+        return {
+          status: 200,
+          json: {
+            ...this.publishedDetail(published, userId, lang),
+            ...this.localized(lang),
+          },
+        };
+      }
       if (this.empty || path !== `/courses/${COURSE.slug}`) {
         return notFound('Course not found');
       }

@@ -50,6 +50,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 4 — Admin CMS | Done | Done |
 | 5 — Dashboard & Progress | Done | Done |
 | 6 — Curriculum | Done (content + importer) | No change (content comes from the API) |
+| 7 — QA | Done: security sweeps, journey through the real stack, QA documents ([docs/qa](qa/test-plan.md)) | Done: journey and no-session E2E |
 
 ## Authentication
 

@@ -310,7 +310,10 @@ test.describe('Practice', () => {
     api.practice.empty = false;
     api.practice.failing = true;
     await page.goto('/practice/test-case');
-    await expect(page.getByText('Could not load data')).toBeVisible();
+    // Shown only after the global retries of a 5xx.
+    await expect(page.getByText('Could not load data')).toBeVisible({
+      timeout: 15_000,
+    });
     api.practice.failing = false;
     await page.getByRole('button', { name: 'Try again' }).click();
     await expect(page.getByTestId('exercise-item')).toHaveCount(1);

@@ -9,6 +9,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import type { AuthError, Session } from '@supabase/supabase-js';
+import { withMinDuration } from '../common/timing/min-duration.js';
 import { AppConfigService } from '../config/app-config.service.js';
 import { SupabaseService } from '../supabase/supabase.service.js';
 import type { AuthUser } from './auth-user.js';
@@ -111,6 +112,20 @@ export class AuthService {
     return `${this.config.frontendUrl.replace(/\/+$/, '')}${path}`;
   }
 
+  /**
+   * Answers no sooner than AUTH_MIN_RESPONSE_MS, for endpoints whose timing
+   * would otherwise reveal whether an email has an account (Supabase only
+   * sends an email when it does).
+   */
+  private evenly<T>(action: string, work: () => Promise<T>): Promise<T> {
+    return withMinDuration(work, this.config.authMinResponseMs, {
+      onOverrun: (ms) =>
+        this.logger.warn(
+          `${action} took ${Math.round(ms)} ms, over AUTH_MIN_RESPONSE_MS: raise it`,
+        ),
+    });
+  }
+
   private logFailure(action: string, error: AuthError): void {
     // Supabase messages describe the failure (e.g. "Error sending
     // confirmation email"); strip anything that looks like an email.
@@ -122,7 +137,11 @@ export class AuthService {
     );
   }
 
-  async register(dto: RegisterDto): Promise<MessageDto> {
+  register(dto: RegisterDto): Promise<MessageDto> {
+    return this.evenly('register', () => this.signUp(dto));
+  }
+
+  private async signUp(dto: RegisterDto): Promise<MessageDto> {
     const { error } = await this.supabase.anon().auth.signUp({
       email: dto.email,
       password: dto.password,
@@ -170,15 +189,17 @@ export class AuthService {
     return toSessionDto(data.session);
   }
 
-  async resendVerification(email: string): Promise<MessageDto> {
-    const { error } = await this.supabase.anon().auth.resend({
-      type: 'signup',
-      email,
-      options: { emailRedirectTo: this.redirect('/auth/verify') },
+  resendVerification(email: string): Promise<MessageDto> {
+    return this.evenly('resend-verification', async () => {
+      const { error } = await this.supabase.anon().auth.resend({
+        type: 'signup',
+        email,
+        options: { emailRedirectTo: this.redirect('/auth/verify') },
+      });
+      // Always the same answer, so the response does not reveal accounts.
+      if (error) this.logFailure('resend-verification', error);
+      return { message: MESSAGES.verificationSent };
     });
-    // Always the same answer, so the response does not reveal accounts.
-    if (error) this.logFailure('resend-verification', error);
-    return { message: MESSAGES.verificationSent };
   }
 
   async login(dto: LoginDto): Promise<SessionDto> {
@@ -234,14 +255,16 @@ export class AuthService {
     }
   }
 
-  async forgotPassword(email: string): Promise<MessageDto> {
-    const { error } = await this.supabase
-      .anon()
-      .auth.resetPasswordForEmail(email, {
-        redirectTo: this.redirect('/auth/reset-password'),
-      });
-    if (error) this.logFailure('forgot-password', error);
-    return { message: MESSAGES.resetSent };
+  forgotPassword(email: string): Promise<MessageDto> {
+    return this.evenly('forgot-password', async () => {
+      const { error } = await this.supabase
+        .anon()
+        .auth.resetPasswordForEmail(email, {
+          redirectTo: this.redirect('/auth/reset-password'),
+        });
+      if (error) this.logFailure('forgot-password', error);
+      return { message: MESSAGES.resetSent };
+    });
   }
 
   async resetPassword(dto: ResetPasswordDto): Promise<MessageDto> {

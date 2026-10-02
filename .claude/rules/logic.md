@@ -11,9 +11,12 @@ Business and security rules that both sides must follow. They come from `plant.m
 ## Authentication
 
 * No user enumeration: register, resend-verification and forgot-password give the same answer for known and unknown emails; login has one generic `401`. `403 Email not verified` only after a correct password.
+* Same timing too: register, resend-verification and forgot-password answer no sooner than `AUTH_MIN_RESPONSE_MS` (default 1500 ms), because Supabase only spends time sending an email when the account exists. Login is not padded (measured: no timing difference). A new endpoint that takes an email and may send one uses the same floor.
 * Status codes carry meaning to the frontend: `401` = session invalid (client refreshes once, then signs out). A wrong *current password* is therefore `400` with `details`, never `401`.
 * Refresh tokens rotate and are single use. On the frontend, all refreshes share one in-flight call; never send the same refresh token twice.
 * Logout revokes the current session only. Reset password revokes all sessions; change password keeps the current one.
+* Logout kills the refresh token; an access token already issued stays valid until it expires (≤ 1 hour). Accepted: tokens are short-lived and kept in memory only; there is no per-request session check (test plan F1).
+* Auth rate limits count per client IP, not per account, on purpose: one learner uses several devices and networks (test plan F3). Counters are per instance on serverless (F2, accepted).
 * Password policy 8–72 characters, applied on register/reset/change, not on login.
 * Emails are trimmed and lower-cased on both sides.
 

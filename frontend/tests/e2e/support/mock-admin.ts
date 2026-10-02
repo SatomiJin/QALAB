@@ -188,6 +188,42 @@ export class MockAdmin {
     );
   }
 
+  /**
+   * What learners see of the content edited here: published courses with
+   * their published modules and lessons (the item and every parent).
+   * `MockLearning` lists them next to its sample course.
+   */
+  learnerCourses() {
+    return [...this.courses.values()]
+      .filter((c) => c.status === 'published')
+      .map((c) => {
+        const skill = this.skill(c.skillId);
+        return {
+          id: c.id,
+          slug: c.slug,
+          title: c.title,
+          description: c.description,
+          skill: { code: skill.code, name: skill.name },
+          orderIndex: c.orderIndex,
+          modules: (this.children('module', c.id) as Module[])
+            .filter((m) => m.status === 'published')
+            .map((m) => ({
+              id: m.id,
+              title: m.title,
+              description: m.description,
+              lessons: (this.children('lesson', m.id) as Lesson[])
+                .filter((l) => l.status === 'published')
+                .map((l) => ({
+                  id: l.id,
+                  slug: l.slug,
+                  title: l.title,
+                  estimatedMinutes: l.estimatedMinutes,
+                })),
+            })),
+        };
+      });
+  }
+
   private exerciseInUse = (e: Exercise) => this.used.has(e.id);
   private lessonInUse = (l: Lesson): boolean =>
     this.used.has(l.id) ||

@@ -11,3 +11,5 @@ process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role-key';
 // High enough that only the dedicated rate-limit spec ever hits it.
 process.env.AUTH_RATE_LIMIT ??= '1000';
 process.env.ATTEMPT_RATE_LIMIT ??= '1000';
+// No response floor, except in the spec that tests it.
+process.env.AUTH_MIN_RESPONSE_MS ??= '0';

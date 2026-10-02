@@ -52,6 +52,11 @@ export class MockApi {
   readonly admin = new MockAdmin();
   readonly dashboard = new MockDashboard(this.learning, this.practice);
 
+  constructor() {
+    // Like the backend: what an admin publishes is what learners see.
+    this.learning.publishedCourses = () => this.admin.learnerCourses();
+  }
+
   addUser(input: Partial<MockUser> & { email: string }): MockUser {
     const user: MockUser = {
       id: nextId('user'),

@@ -226,6 +226,26 @@ describe('practice RLS (integration)', () => {
       expect(del.error?.code).toBe('42501');
     });
 
+    it("another learner cannot change or delete someone's attempt", async () => {
+      const update = await asBob
+        .from('exercise_attempts')
+        .update({ score: 100, is_correct: true })
+        .eq('id', aliceAttempt);
+      expect(update.error?.code).toBe('42501');
+      const del = await asBob
+        .from('exercise_attempts')
+        .delete()
+        .eq('id', aliceAttempt);
+      expect(del.error?.code).toBe('42501');
+
+      const { data } = await admin
+        .from('exercise_attempts')
+        .select('user_id, score')
+        .eq('id', aliceAttempt)
+        .single();
+      expect(data).toEqual({ user_id: alice.id, score: 0 });
+    });
+
     it("the self-assessment is written once, on the learner's own attempt", async () => {
       const byBob = await asBob
         .from('exercise_attempts')

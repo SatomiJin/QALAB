@@ -21,7 +21,7 @@ QALAB/
 ├── .claude/settings.json  # Shared hooks (code-review-graph auto-update)
 ├── .mcp.json          # MCP servers (code-review-graph)
 ├── plant.md           # Spec + phases (source of truth for scope)
-├── docs/              # architecture.md, design.md, api.md, database.md, testing-strategy.md, deployment.md, curriculum.md
+├── docs/              # architecture.md, design.md, api.md, database.md, testing-strategy.md, deployment.md, curriculum.md, qa/ (test plan, scenarios, cases, regression checklist)
 ├── backend/           # NestJS API + Supabase project (backend/supabase)
 └── frontend/          # React + Vite + Ant Design app
 ```
@@ -43,7 +43,7 @@ Read the files for the area you touch before writing code. Path-scoped rules als
 
 **Token budget (mandatory):** navigate with code-review-graph first (`get_minimal_context_tool`, then targeted `query_graph_tool` / impact), read only the line ranges it points to, and let RTK compact shell output. Do not read whole directories or large files to "get a feel" for the code. Details in [tooling.md](.claude/rules/tooling.md).
 
-Reference docs (what exists now): [architecture](docs/architecture.md), [api](docs/api.md), [database](docs/database.md), [design](docs/design.md), [testing strategy](docs/testing-strategy.md), [deployment](docs/deployment.md) (Vercel).
+Reference docs (what exists now): [architecture](docs/architecture.md), [api](docs/api.md), [database](docs/database.md), [design](docs/design.md), [testing strategy](docs/testing-strategy.md), [deployment](docs/deployment.md) (Vercel), QA documents in [docs/qa/](docs/qa/test-plan.md) (test plan, scenarios, cases, regression checklist).
 
 ## Architecture (non-negotiable)
 

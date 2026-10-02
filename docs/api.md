@@ -35,6 +35,8 @@ Base path `/api/v1`. JSON only. Swagger UI at `/api/docs` is the full, generated
 
 All `/auth/*` endpoints are rate limited per IP and per endpoint: `AUTH_RATE_LIMIT` requests per minute (default 5), then `429` with `Retry-After`.
 
+`register`, `resend-verification` and `forgot-password` answer no sooner than `AUTH_MIN_RESPONSE_MS` (default 1500 ms), whatever the email: Supabase only sends an email when the account exists, so without this floor the response time would reveal accounts. Login is not slowed down (measured: no difference between unknown and known emails).
+
 | Method | Path | Auth | Body | Success | Errors |
 |---|---|---|---|---|---|
 | POST | `/auth/register` | public | `{ email, password, displayName }` | `201 { message }` | `400` validation |

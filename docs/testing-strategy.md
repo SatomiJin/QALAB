@@ -22,6 +22,23 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 
 `tests/e2e/support/mock-api.ts` is a stateful mock of the backend contract (docs/api.md). Tests use roles and `data-testid` / `data-state` where text would tie them to one language.
 
+## QA documents (Phase 7)
+
+The platform is tested as a QA project: [test plan](qa/test-plan.md) (scope, levels, risks, entry/exit criteria, open findings), [test scenarios](qa/test-scenarios.md), [test cases](qa/test-cases.md) (the ten E2E flows and twelve security scenarios, traced to tests) and the [regression checklist](qa/regression-checklist.md).
+
+## Phase 7 coverage (QA)
+
+| Requirement (plant.md) | Test |
+| --- | --- |
+| E2E flows 1–10 through the UI: register → verify → login → open lesson → complete → quiz → Progress → logout → login → progress kept; admin builds and publishes a course, a learner finds it | `frontend/tests/e2e/journey.spec.ts` (the admin mock's published content feeds the learning mock: `MockAdmin.learnerCourses`) |
+| The same flows through the real API and Supabase: progress, attempt and dashboard read back from Postgres in a new session; draft course 404 until published; refresh token dead after logout | `backend/test/integration/journey.int-spec.ts` |
+| Every protected route (read from the OpenAPI document) is 401 without a token, with an expired token and with a tampered token; only the 8 public routes are open | `backend/test/api/security.e2e-spec.ts` |
+| Every path id: non-UUID → 400, unknown → 404 (GET / DELETE, and writes to lessons, exercises, attempts) | `security.e2e-spec.ts` |
+| 429 on every public auth endpoint | `backend/test/api/rate-limit.e2e-spec.ts` |
+| No account enumeration by timing: register / resend / forgot wait for `AUTH_MIN_RESPONSE_MS` for known and unknown emails; login is not slowed | `backend/test/api/auth-timing.e2e-spec.ts`; helper `backend/src/common/timing/min-duration.spec.ts` |
+| Another learner cannot change or delete someone's attempt (DB) | `backend/test/integration/practice-rls.int-spec.ts` |
+| Without a session every protected page redirects to login and no protected endpoint is called | `journey.spec.ts` |
+
 ## Phase 1 coverage
 
 | Requirement (plant.md) | Test |

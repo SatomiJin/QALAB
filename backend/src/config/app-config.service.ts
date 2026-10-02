@@ -47,6 +47,10 @@ export class AppConfigService {
     return this.config.get('AUTH_RATE_LIMIT', { infer: true });
   }
 
+  get authMinResponseMs(): number {
+    return this.config.get('AUTH_MIN_RESPONSE_MS', { infer: true });
+  }
+
   get attemptRateLimit(): number {
     return this.config.get('ATTEMPT_RATE_LIMIT', { infer: true });
   }

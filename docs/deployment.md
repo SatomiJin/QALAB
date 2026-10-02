@@ -23,6 +23,7 @@ Browser ──► qalab-web (frontend/, static)      https://<frontend-domain>
 | `SWAGGER_ENABLED` | `false` |
 | `TRUST_PROXY_HOPS` | `1` |
 | `AUTH_RATE_LIMIT`, `ATTEMPT_RATE_LIMIT` | `5`, `20` (defaults) |
+| `AUTH_MIN_RESPONSE_MS` | `1500` (default); raise it if the logs say "over AUTH_MIN_RESPONSE_MS" |
 | `SUPABASE_URL`, `SUPABASE_ANON_KEY` | Supabase → Project Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | same place; mark **Sensitive** |
 | `GOOGLE_TRANSLATE_API_KEY` | optional; mark Sensitive |

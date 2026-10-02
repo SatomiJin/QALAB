@@ -89,6 +89,17 @@ export class EnvironmentVariables {
   @Min(1)
   AUTH_RATE_LIMIT = 5;
 
+  /**
+   * Minimum response time (ms) of register, resend-verification and
+   * forgot-password, so the time taken does not reveal whether Supabase sent
+   * an email (that is, whether the account exists). 0 turns it off.
+   */
+  @Transform(({ value }) => (value === undefined ? value : Number(value)))
+  @IsInt()
+  @Min(0)
+  @Max(10_000)
+  AUTH_MIN_RESPONSE_MS = 1500;
+
   /** Attempt submissions per minute per user. */
   @Transform(({ value }) => (value === undefined ? value : Number(value)))
   @IsInt()
