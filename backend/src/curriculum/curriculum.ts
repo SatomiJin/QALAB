@@ -16,6 +16,7 @@ import {
   parseAnswerKey,
   parsePrompt,
 } from '../practice/exercise-schema.js';
+import { markdownParityErrors } from '../translation/translatable-texts.js';
 import { uuidV5 } from './uuid-v5.js';
 
 /**
@@ -247,21 +248,10 @@ const join2 = (path: string, key: string) => (path ? `${path}.${key}` : key);
 
 // Markdown checks -----------------------------------------------------------
 
-const headings = (md: string) =>
-  md.split('\n').filter((line) => /^#{1,6}\s/.test(line)).length;
-const fences = (md: string) =>
-  md.split('\n').filter((line) => /^\s*(```|~~~)/.test(line)).length;
-
 /** The Vietnamese body must keep the English structure. */
 function checkMarkdownParity(check: Check, path: string, text: Bilingual) {
-  if (headings(text.en) !== headings(text.vi)) {
-    check.fail(
-      path,
-      `vi has ${headings(text.vi)} headings, en has ${headings(text.en)}`,
-    );
-  }
-  if (fences(text.en) !== fences(text.vi)) {
-    check.fail(path, 'vi and en must have the same code blocks');
+  for (const message of markdownParityErrors(text.en, text.vi)) {
+    check.fail(path, `vi ${message}`);
   }
 }
 

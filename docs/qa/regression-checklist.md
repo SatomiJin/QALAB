@@ -50,6 +50,7 @@ Admin:
 - [ ] Publish it; it appears for the learner; unpublish it; it disappears (404 on its URL)
 - [ ] Deleting content a learner has used is blocked with "archive instead"
 - [ ] A learner account opening `/admin` gets the no-access page
+- [ ] Translate a published lesson's title in *Vietnamese translation*; a learner in Vietnamese sees it. Edit the English title: the translation shows *Out of date* and learners see English until it is confirmed or retranslated
 
 Security spot checks (browser devtools or curl):
 

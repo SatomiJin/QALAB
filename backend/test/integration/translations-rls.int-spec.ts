@@ -1,12 +1,12 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { randomBytes } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { sourceHash } from '../../src/translation/content-translation.service.js';
 import { anonClient, serviceClient, TestUsers } from './support.js';
 
 /**
  * RLS on `content_translations`: learners read translations only of content
- * they can see, nobody but the service role writes, and deleting content
- * removes its translations.
+ * they can see and write nothing, admins write manual rows only (machine rows
+ * are the service role's), and deleting content removes its translations.
  */
 describe('content_translations RLS (integration)', () => {
   const users = new TestUsers();
@@ -104,19 +104,104 @@ describe('content_translations RLS (integration)', () => {
     expect((data ?? []).length).toBe(2);
   });
 
-  it('does not let any API role write translations', async () => {
-    for (const client of [asLearner, asAdmin]) {
-      const insertRes = await client
-        .from('content_translations')
-        .insert({ ...translation(publishedLesson), field: 'content_md' });
-      expect(insertRes.error?.code).toBe('42501');
+  it('does not let learners write translations', async () => {
+    const insertRes = await asLearner
+      .from('content_translations')
+      .insert({ ...translation(publishedLesson), field: 'content_md' });
+    expect(insertRes.error?.code).toBe('42501');
 
-      const updateRes = await client
-        .from('content_translations')
-        .update({ text: '<script>x</script>' })
-        .eq('entity_id', publishedLesson);
-      expect(updateRes.error?.code).toBe('42501');
-    }
+    // Update / delete are granted (for admins); the policies match no row.
+    const updateRes = await asLearner
+      .from('content_translations')
+      .update({ text: '<script>x</script>' })
+      .eq('entity_id', publishedLesson)
+      .select('id');
+    expect(updateRes.error).toBeNull();
+    expect(updateRes.data).toEqual([]);
+
+    const deleteRes = await asLearner
+      .from('content_translations')
+      .delete()
+      .eq('entity_id', publishedLesson)
+      .select('id');
+    expect(deleteRes.error).toBeNull();
+    expect(deleteRes.data).toEqual([]);
+  });
+
+  it('lets admins write manual translations only (Admin CMS)', async () => {
+    const machine = {
+      ...translation(publishedLesson),
+      field: 'content_md',
+      provider: 'google',
+      pipeline_version: 1,
+      text: 'Máy dịch',
+    };
+    const seeded = await admin.from('content_translations').insert(machine);
+    expect(seeded.error).toBeNull();
+
+    // Insert and upsert a manual row, the way the backend saves.
+    const manual = { ...translation(publishedLesson), field: 'content_md' };
+    const insertRes = await asAdmin.from('content_translations').insert(manual);
+    expect(insertRes.error).toBeNull();
+    const upsertRes = await asAdmin
+      .from('content_translations')
+      .upsert(
+        { ...manual, text: 'Đã sửa' },
+        { onConflict: 'entity_type,entity_id,field,language,provider' },
+      )
+      .select('text');
+    expect(upsertRes.error).toBeNull();
+    expect(upsertRes.data).toEqual([{ text: 'Đã sửa' }]);
+
+    // Machine rows: no insert, no update, no delete, no turning manual into one.
+    const machineInsert = await asAdmin
+      .from('content_translations')
+      .insert({ ...machine, field: 'description' });
+    expect(machineInsert.error?.code).toBe('42501');
+    const machineUpdate = await asAdmin
+      .from('content_translations')
+      .update({ text: 'x' })
+      .eq('entity_id', publishedLesson)
+      .eq('provider', 'google')
+      .select('id');
+    expect(machineUpdate.data).toEqual([]);
+    const machineDelete = await asAdmin
+      .from('content_translations')
+      .delete()
+      .eq('entity_id', publishedLesson)
+      .eq('provider', 'google')
+      .select('id');
+    expect(machineDelete.data).toEqual([]);
+    const toMachine = await asAdmin
+      .from('content_translations')
+      .update({ provider: 'google' })
+      .eq('entity_id', publishedLesson)
+      .eq('field', 'content_md')
+      .eq('provider', 'manual');
+    expect(toMachine.error?.code).toBe('42501');
+
+    // Server-set columns are not granted.
+    const withId = await asAdmin
+      .from('content_translations')
+      .insert({ ...manual, field: 'description', id: randomUUID() });
+    expect(withId.error?.code).toBe('42501');
+
+    const deleteRes = await asAdmin
+      .from('content_translations')
+      .delete()
+      .eq('entity_id', publishedLesson)
+      .eq('field', 'content_md')
+      .eq('provider', 'manual')
+      .select('id');
+    expect(deleteRes.data).toHaveLength(1);
+
+    // Clean up the machine row for the next tests.
+    const cleanup = await admin
+      .from('content_translations')
+      .delete()
+      .eq('entity_id', publishedLesson)
+      .eq('field', 'content_md');
+    if (cleanup.error) throw cleanup.error;
   });
 
   it('gives anonymous clients nothing', async () => {

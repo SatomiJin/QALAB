@@ -36,6 +36,7 @@ import {
 import { StatusSelect } from '../ModuleDialog';
 import { useAdminExercise, useAdminLesson, useAdminMutation } from '../queries';
 import { StatusLine } from '../StatusLine';
+import { TranslationLink } from '../TranslationLink';
 import { LessonTrail } from './AdminLessonPage';
 
 const isExerciseType = (value: string | null): value is ExerciseType =>
@@ -192,12 +193,22 @@ function ExerciseEditor({ type, lesson, exercise }: EditorProps) {
       <SideLayout
         asideLabel={t('admin.pageActions')}
         aside={
-          <p className={styles.meta}>
-            <span>
-              {t('admin.fields.type')}: {t(`practice.types.${type}`)}
-            </span>
-            <span>{t('admin.exercise.typeHint')}</span>
-          </p>
+          <>
+            {exercise && (
+              <div className={`${styles.actions} ${styles.pageActions}`}>
+                <TranslationLink
+                  to={`/admin/exercises/${exercise.id}/translation`}
+                  testId="translate-exercise"
+                />
+              </div>
+            )}
+            <p className={styles.meta}>
+              <span>
+                {t('admin.fields.type')}: {t(`practice.types.${type}`)}
+              </span>
+              <span>{t('admin.exercise.typeHint')}</span>
+            </p>
+          </>
         }
       >
         <Form

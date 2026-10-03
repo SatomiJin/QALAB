@@ -18,6 +18,7 @@ import { NewLessonDialog } from './NewLessonDialog';
 import { useAdminMutation } from './queries';
 import { SortableList } from './SortableList';
 import { StatusTag } from './StatusTag';
+import { TranslationLink } from './TranslationLink';
 
 type Dialog =
   | { kind: 'module'; module?: AdminModule }
@@ -75,6 +76,7 @@ export function CourseOutline({ course }: { course: AdminCourse }) {
             onReorder={(ids) => saved(reorderModules.mutateAsync(ids))}
             renderItem={(module, index, handle) => (
               <ModuleSection
+                courseId={course.id}
                 module={module}
                 number={index + 1}
                 controls={handle.controls}
@@ -111,6 +113,7 @@ export function CourseOutline({ course }: { course: AdminCourse }) {
 }
 
 interface ModuleSectionProps {
+  courseId: string;
   module: AdminModule;
   number: number;
   controls: ReactNode;
@@ -120,6 +123,7 @@ interface ModuleSectionProps {
 }
 
 function ModuleSection({
+  courseId,
   module,
   number,
   controls,
@@ -165,6 +169,12 @@ function ModuleSection({
           >
             {t('admin.course.addLesson')}
           </Button>
+          <TranslationLink
+            small
+            to={`/admin/courses/${courseId}/modules/${module.id}/translation`}
+            label={t('admin.translation.openModule', { title: module.title })}
+            testId="translate-module"
+          />
           <DeleteButton
             size="small"
             title={module.title}

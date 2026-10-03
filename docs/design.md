@@ -218,6 +218,13 @@ The same system, no new devices. The admin works on the plan itself, so the scre
 * **Danger:** delete is the only red outside verdicts (Ant Design danger text button + confirmation dialog). Accepted because destroying content is a failure-grade action and people expect it red; it is never a filled button.
 * Changed after review: the breadcrumb first had "Admin, Courses" (two links to the same page); preview panels had a 320px minimum height that left big empty boxes next to short fields; add-row buttons stretched across the section; the preview's exercise card lacked its stats column, so the verdict sat in the middle.
 
+## Translation editor (V1 gap)
+
+* **Same system, no new device.** Trail (… › Lesson › Vietnamese translation), title *Vietnamese translation* with the item's English title under it, the side panel (from 1200px; above the form below) with one muted sentence on what learners see and the three counts.
+* **One ruled row per text** (not cards: these are read-and-edit rows, like checks): field name as a small section title (`Option 2`, numbered in list order because label ids mean nothing to an editor) + a translation stamp in the content-status shapes, never verdict colours: *Translated* Ink outline, *Out of date* dashed, *Not translated* grey tint. Then English and Vietnamese side by side from 768px (stacked below); Markdown texts stack at every width: the English rendered as learners see it in a Sheet panel (max 360px, scrolls), then the usual `MarkdownEditor`, sized to the English (4–18 lines).
+* **Out of date** is a quiet muted note with one small *Still correct* button, not a warning colour: it is a to-do, not a failure. *Start from the machine translation* is a link button under the field, only when a machine draft exists and the text is not current.
+* One primary, *Save translation*; saving with nothing changed says so instead of sending.
+
 ## Dashboard and progress (Phase 5)
 
 Checked against a generic "learning dashboard" (stat cards with icons, progress rings, a chart, a streak flame): none of those. The dashboard is the **test summary report** of your learning; Progress is its **traceability matrix**.

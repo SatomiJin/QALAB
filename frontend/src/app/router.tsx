@@ -175,6 +175,38 @@ export const routes: RouteObject[] = [
                       'AdminExercisePage',
                     ),
                   },
+                  {
+                    path: 'courses/:courseId/translation',
+                    lazy: page(
+                      () =>
+                        import('../features/admin/pages/AdminTranslationPage'),
+                      'AdminCourseTranslationPage',
+                    ),
+                  },
+                  {
+                    path: 'courses/:courseId/modules/:moduleId/translation',
+                    lazy: page(
+                      () =>
+                        import('../features/admin/pages/AdminTranslationPage'),
+                      'AdminModuleTranslationPage',
+                    ),
+                  },
+                  {
+                    path: 'lessons/:lessonId/translation',
+                    lazy: page(
+                      () =>
+                        import('../features/admin/pages/AdminTranslationPage'),
+                      'AdminLessonTranslationPage',
+                    ),
+                  },
+                  {
+                    path: 'exercises/:exerciseId/translation',
+                    lazy: page(
+                      () =>
+                        import('../features/admin/pages/AdminTranslationPage'),
+                      'AdminExerciseTranslationPage',
+                    ),
+                  },
                   { path: '*', element: <NotFoundPage /> },
                 ],
               },

@@ -104,6 +104,7 @@ src/
 * Content status uses `StatusTag` (never `VerdictTag`: a status is not a result).
 * Slugs are generated from the title (`slugify`, accents removed) until the slug field is edited by hand (`form.isFieldTouched('slug')`).
 * Editing Markdown uses `MarkdownEditor` (live preview with `LessonMarkdown`, side by side from `lg`, tabs below).
+* Vietnamese translations: `TranslationEditor` (one ruled row per text, English next to the input, stacked for Markdown) on four lazy routes in `pages/AdminTranslationPage.tsx` (`/admin/courses/:courseId/translation`, `…/modules/:moduleId/translation`, `/admin/lessons/:lessonId/translation`, `/admin/exercises/:exerciseId/translation`), opened with `TranslationLink` from each editor and each module row. Pure helpers in `translation-form.ts` (which fields to send, labels, counts, API details → fields), tested in `translation-form.test.ts`. The form is not keyed: after a save it is refilled with `setFieldsValue`, and after a `409` the query is refetched so the new English shows while the typed text stays. `useSaveTranslations` puts the result in `adminKeys.translations(kind, id)` and refreshes the learner views.
 
 ## Markdown content
 
@@ -124,6 +125,7 @@ src/
 * Screenshot reviews use the committed harness in `ui-review/` (`npm run ui:review`, filters `UI_REVIEW_SCREENS` / `UI_REVIEW_THEMES` / `UI_REVIEW_LANGS`, output in git-ignored `ui-review/out/`: shots + `summary.json` with overflow and axe per screen). It is not a test suite (findings do not fail it) and is not run by `npm run test:e2e`. A new screen gets a step in `ui-review/screens.ts`; do not write another harness, and never put review code in `tests/`.
 * Select by role/label or `data-testid` / `data-state`; never by translated text when the test is not about the text. Labels that are substrings of others ("Option 1" / "Remove: Option 1", "Skill" / "Filter by skill") need `exact: true` or a role (`getByRole('textbox', { name, exact: true })`).
 * Specs that pick many Select options run with `test.use({ reducedMotion: 'reduce' })` and pick inside the open dropdown (`.ant-select-dropdown:not(.ant-select-dropdown-hidden)`), then expect it closed: a click during the open animation can be lost.
+* After a click that navigates to another (lazy) page, wait for that page (URL + one of its own controls) before filling a field: the old page stays on screen until the chunk loads, and a label both pages share ("Email" on sign-in and forgot-password) fills the old form. A longer timeout does not fix this (it flaked ~1 in 15 runs).
 * A 5xx error state appears only after the global retries: give that assertion a longer timeout (15 s).
 * Set mock failure switches only after the page has loaded, or the initial GET fails instead of the write under test.
 * A fixed bug gets a regression test (Phase 8 ones: `tests/e2e/polish.spec.ts`).

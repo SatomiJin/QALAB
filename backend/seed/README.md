@@ -12,7 +12,7 @@ npm run seed:curriculum -- --update    # the files win: overwrite existing conte
 * **Never deletes.** Removing something from the files leaves it in the database.
 * **CMS edits are safe by default.** Without `--update`, existing rows are not touched. With `--update`, rows are overwritten except where the CMS rules forbid it (another parent, another exercise type, changed option / item / category ids of an attempted exercise): those are skipped with a warning.
 * **Translations.** Every text has a Vietnamese version, imported as a `manual` translation — but only while the stored English is the English of the files. If an admin changed the English, the file's Vietnamese is not written (the existing one goes stale as usual).
-* Runs with the service role from `backend/.env` (it writes translations, which no API role may). It changes the shared cloud database: say so before running it.
+* Runs with the service role from `backend/.env` (it writes content and translations as no user; admins edit them later in the CMS). It changes the shared cloud database: say so before running it.
 
 ## Layout
 

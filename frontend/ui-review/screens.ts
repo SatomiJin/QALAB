@@ -194,9 +194,37 @@ for (const c of COMBOS) {
     const module = api.admin.addModule(course, { title: 'Foundations' });
     const lesson = api.admin.addLesson(module, {
       title: 'Equivalence partitioning',
+      contentMd: [
+        '## Why partitions',
+        '',
+        'Inputs that behave the same form one partition: test one value from each.',
+        '',
+        '```js',
+        'isAdult(17); // invalid partition',
+        '```',
+      ].join('\n'),
     });
     api.admin.addLesson(module, { title: 'Boundary values' });
-    api.admin.addExercise(lesson);
+    const exercise = api.admin.addExercise(lesson);
+    // Translation statuses: title out of date, body missing with a machine
+    // draft, exercise question current.
+    api.admin.addTranslation(
+      'lesson',
+      lesson.id,
+      'title',
+      'Phân vùng tương đương',
+      'Equivalence classes',
+    );
+    api.admin.machine.set(
+      `lesson:${lesson.id}:content_md`,
+      '## Vì sao phân vùng\n\nMáy dịch.',
+    );
+    api.admin.addTranslation(
+      'exercise',
+      exercise.id,
+      'question',
+      'Kỹ thuật nào kiểm thử các biên của một khoảng?',
+    );
     api.admin.addCourse({ title: 'Draft course' });
     await run(
       page,
@@ -218,6 +246,14 @@ for (const c of COMBOS) {
             await p.goto(`/admin/lessons/${lesson.id}`);
             await p.goto(await firstHref(p, 'admin-exercise'));
           },
+        ],
+        [
+          'admin-lesson-translation',
+          (p) => p.goto(`/admin/lessons/${lesson.id}/translation`),
+        ],
+        [
+          'admin-exercise-translation',
+          (p) => p.goto(`/admin/exercises/${exercise.id}/translation`),
         ],
       ],
       c,

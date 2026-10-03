@@ -145,6 +145,12 @@ test.describe('Authentication', () => {
 
     await page.goto('/auth/login');
     await page.getByRole('link', { name: 'Forgot password?' }).click();
+    // The page is a lazy route: until it renders, "Email" is still the
+    // sign-in form's field, and filling it would be lost.
+    await expect(page).toHaveURL(/\/auth\/forgot-password$/);
+    await expect(
+      page.getByRole('button', { name: 'Send reset link' }),
+    ).toBeVisible();
     await page.getByLabel('Email').fill(email);
     await page.getByRole('button', { name: 'Send reset link' }).click();
     await expect(page.getByTestId('forgot-sent')).toContainText(email);

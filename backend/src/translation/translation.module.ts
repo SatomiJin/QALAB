@@ -9,6 +9,6 @@ import { GoogleTranslator, Translator } from './translator.js';
     TranslationsRepository,
     { provide: Translator, useClass: GoogleTranslator },
   ],
-  exports: [ContentTranslationService],
+  exports: [ContentTranslationService, TranslationsRepository],
 })
 export class TranslationModule {}

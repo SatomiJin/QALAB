@@ -729,3 +729,47 @@ export type UpdateExerciseRequest = Partial<
 export interface ReorderRequest {
   ids: string[];
 }
+
+// Admin CMS: manual Vietnamese translations ------------------------------------
+
+export type TranslatableKind = 'course' | 'module' | 'lesson' | 'exercise';
+
+/** `current`: translated from this English. `stale`: from an older English. */
+export const FIELD_TRANSLATION_STATUSES = [
+  'current',
+  'stale',
+  'missing',
+] as const;
+export type FieldTranslationStatus =
+  (typeof FIELD_TRANSLATION_STATUSES)[number];
+
+export interface TranslationField {
+  /** `title`, `description`, `content_md`, `question`, `explanation`, `model_answer`, `option.<id>`… */
+  field: string;
+  markdown: boolean;
+  maxLength: number;
+  source: string;
+  sourceHash: string;
+  text: string | null;
+  status: FieldTranslationStatus;
+  machineText: string | null;
+  updatedAt: string | null;
+}
+
+export interface AdminTranslations {
+  entityType: TranslatableKind;
+  entityId: string;
+  language: 'vi';
+  fields: TranslationField[];
+}
+
+export interface TranslationFieldWrite {
+  field: string;
+  sourceHash: string;
+  /** Null removes the translation. */
+  text: string | null;
+}
+
+export interface SaveTranslationsRequest {
+  fields: TranslationFieldWrite[];
+}

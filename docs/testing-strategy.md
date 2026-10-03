@@ -80,7 +80,7 @@ The platform is tested as a QA project: [test plan](qa/test-plan.md) (scope, lev
 | Markdown ↔ HTML pipeline: identity round trip, structure/code/URLs/tables kept, glossary terms, entity decoding | `backend/src/translation/markdown-translate.spec.ts` |
 | Google provider: key in header (not URL), errors do not leak the key, batching | `backend/src/translation/translator.spec.ts` (`fetch` stubbed) |
 | `/courses` pages (default 20, 50/100, across skills, past the end, invalid values → 400); `?lang=vi` on lesson, course, list, continue; cache reuse and invalidation on edit; fallback with no key, provider failure, unreadable cache | `backend/test/api/learning-i18n-pages.e2e-spec.ts` (fakes: `test/support/fake-translation.ts`) |
-| RLS on `content_translations`: learners read published only, nobody writes, delete trigger | `backend/test/integration/translations-rls.int-spec.ts` |
+| RLS on `content_translations`: learners read published only and write nothing, admins write manual rows only (insert, upsert, delete; no machine rows, no turning manual into machine, no `id`), delete trigger | `backend/test/integration/translations-rls.int-spec.ts` |
 | URL list params (parse, defaults, round trip) | `frontend/src/features/learning/list-params.test.ts` |
 | E2E: breadcrumb + back buttons, back returns to the same list page, pagination (desktop + mobile size picker), skill filter, invalid URL params, machine translation note + English original toggle, unavailable note | `frontend/tests/e2e/learning.spec.ts` |
 
@@ -102,6 +102,16 @@ The platform is tested as a QA project: [test plan](qa/test-plan.md) (scope, lev
 | Views and `activity_days`: own rows only, admin sees all (so the backend filters), published-only counts, best / last score, `visible` flag on activity, anon denied, unknown time zone `22023` | `backend/test/integration/dashboard-rls.int-spec.ts` |
 | Time zone fallback, activity verdict and link, local day parsing | `frontend/src/features/dashboard/dashboard.test.ts` |
 | E2E: new learner, populated summary / streak / skills / retest / activity, skill link to Progress, continue button, error + retry, empty, Vietnamese; Progress matrix, exercise link, skill filter in the URL, error and empty | `frontend/tests/e2e/dashboard.spec.ts` (mock: `tests/e2e/support/mock-dashboard.ts`, derived from the learning and practice mocks) |
+
+## Translations in the Admin CMS (V1 gap)
+
+| Requirement | Test |
+| --- | --- |
+| Texts per kind (labels, review texts, empty skipped), Markdown parity; status current / stale / missing, machine draft only for the current English and pipeline; save plan (unknown, repeated, empty, too long, Markdown, conflict after validation) | `backend/src/translation/translatable-texts.spec.ts`, `backend/src/admin/translation-rules.spec.ts` |
+| 403 learner / 401 no token on the 8 routes, 404 unknown; listing; save → learners read it; stale after an English edit, 409 with the old hash, nothing written; remove with null; machine draft; validation writes nothing; review translations still hidden from learners without an attempt | `backend/test/api/admin-translations.e2e-spec.ts` (sanity-checked by disabling the hash check once) |
+| PUT routes are in the security sweep (method list now includes `put`) | `backend/test/api/security.e2e-spec.ts` |
+| Which fields to send (changed, emptied → null, confirmed stale), counts, labels, API details → fields | `frontend/src/features/admin/translation-form.test.ts` |
+| E2E: lesson translate + save, nothing to save, confirm stale + remove, module link, machine draft, Markdown error on the field, 409 keeps typed text and shows the new English, exercise fields, 404; axe on the lesson and exercise translation pages | `frontend/tests/e2e/admin-translations.spec.ts`, `accessibility.spec.ts` |
 
 ## Phase 4 coverage (Admin CMS)
 

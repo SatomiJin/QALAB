@@ -31,6 +31,7 @@ import { useAdminLesson, useAdminMutation } from '../queries';
 import { SortableList } from '../SortableList';
 import { StatusLine } from '../StatusLine';
 import { StatusTag } from '../StatusTag';
+import { TranslationLink } from '../TranslationLink';
 
 interface LessonFormValues {
   title: string;
@@ -121,6 +122,10 @@ function LessonEditor({ lesson }: { lesson: AdminLesson }) {
             >
               {t('admin.lesson.previewAsLearner')}
             </Button>
+            <TranslationLink
+              to={`/admin/lessons/${lesson.id}/translation`}
+              testId="translate-lesson"
+            />
             <DeleteButton
               title={lesson.title}
               inUse={lesson.inUse}

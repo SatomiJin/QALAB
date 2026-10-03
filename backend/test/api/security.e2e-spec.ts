@@ -12,7 +12,7 @@ import { createTestApp, TestApp } from '../support/create-test-app.js';
  * and answer 400 for a malformed id and 404 for an unknown one.
  */
 
-type Method = 'get' | 'post' | 'patch' | 'delete';
+type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
 interface RouteInfo {
   method: Method;
   path: string; // OpenAPI form: /api/v1/lessons/{id}
@@ -31,7 +31,7 @@ const PUBLIC = [
   'POST /api/v1/auth/reset-password',
 ];
 
-const METHODS: Method[] = ['get', 'post', 'patch', 'delete'];
+const METHODS: Method[] = ['get', 'post', 'put', 'patch', 'delete'];
 const label = (r: RouteInfo) => `${r.method.toUpperCase()} ${r.path}`;
 const fill = (r: RouteInfo, value: (param: string) => string) =>
   r.path.replace(/\{(\w+)\}/g, (_, name: string) => value(name));

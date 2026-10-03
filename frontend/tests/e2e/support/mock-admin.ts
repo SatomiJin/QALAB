@@ -3,8 +3,11 @@
  * store, with the backend's rules: 403 for learners, unique slugs (409),
  * publish needs a published lesson in a published module (409), content in
  * use cannot be deleted (409), reorders list every child once (400), answer
- * keys checked against the prompt (400 with `details`).
+ * keys checked against the prompt (400 with `details`), manual Vietnamese
+ * translations tied to a hash of their English (stale / 409 when it changed).
  */
+
+import { createHash } from 'node:crypto';
 
 type Status = 'draft' | 'published' | 'archived';
 type Result = { status: number; json?: unknown };
@@ -80,6 +83,23 @@ const notFound = (what: string) => err(404, 'Not Found', `${what} not found`);
 const invalid = (details: { field: string; message: string }[]) =>
   err(400, 'Bad Request', 'Validation failed', details);
 const IN_USE = 'Learners have progress or attempts here. Archive it instead.';
+type TranslatableKind = 'course' | 'module' | 'lesson' | 'exercise';
+interface SourceText {
+  field: string;
+  text: string;
+  markdown: boolean;
+  maxLength: number;
+}
+const KIND_BY_RESOURCE: Record<string, TranslatableKind> = {
+  courses: 'course',
+  modules: 'module',
+  lessons: 'lesson',
+  exercises: 'exercise',
+};
+const hash = (text: string) =>
+  createHash('sha256').update(text, 'utf8').digest('hex');
+const headings = (md: string) =>
+  md.split('\n').filter((line) => /^#{1,6}\s/.test(line)).length;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 export class MockAdmin {
@@ -92,6 +112,13 @@ export class MockAdmin {
   /** Every write, for assertions: `PATCH /admin/...` with its body. */
   readonly writes: { key: string; body: Record<string, unknown> }[] = [];
   failing = false;
+  /** Manual translations: `<kind>:<id>:<field>` → text + hash of its English. */
+  readonly translations = new Map<
+    string,
+    { text: string; sourceHash: string; updatedAt: string }
+  >();
+  /** Cached machine translations of the current English, same keys. */
+  readonly machine = new Map<string, string>();
 
   // Setup helpers -----------------------------------------------------------
 
@@ -455,6 +482,189 @@ export class MockAdmin {
     }
   }
 
+  // Translations --------------------------------------------------------------
+
+  /** A manual translation saved for `english` (default: the current English). */
+  addTranslation(
+    kind: TranslatableKind,
+    id: string,
+    field: string,
+    text: string,
+    english?: string,
+  ): void {
+    const source =
+      english ??
+      this.sourceTexts(kind, id)!.find((entry) => entry.field === field)!.text;
+    this.translations.set(`${kind}:${id}:${field}`, {
+      text,
+      sourceHash: hash(source),
+      updatedAt: now(),
+    });
+  }
+
+  private sourceTexts(kind: TranslatableKind, id: string): SourceText[] | null {
+    const text = (
+      field: string,
+      value: string,
+      maxLength: number,
+      markdown = false,
+    ): SourceText => ({ field, text: value, markdown, maxLength });
+    const labels = (prefix: string, list: unknown): SourceText[] =>
+      ((list as { id: string; text: string }[] | undefined) ?? []).map((l) =>
+        text(`${prefix}.${l.id}`, l.text, 500),
+      );
+    let texts: SourceText[];
+    if (kind === 'course' || kind === 'module') {
+      const row = (kind === 'course' ? this.courses : this.modules).get(id);
+      if (!row) return null;
+      texts = [
+        text('title', row.title, 160),
+        text('description', row.description, 2000),
+      ];
+    } else if (kind === 'lesson') {
+      const row = this.lessons.get(id);
+      if (!row) return null;
+      texts = [
+        text('title', row.title, 160),
+        text('content_md', row.contentMd, 100_000, true),
+      ];
+    } else {
+      const row = this.exercises.get(id);
+      if (!row) return null;
+      texts = [
+        text('question', row.question, 2000, true),
+        ...labels('option', row.promptData.options),
+        ...labels('category', row.promptData.categories),
+        ...labels('item', row.promptData.items),
+        text('explanation', row.explanation, 10_000, true),
+        text(
+          'model_answer',
+          String(row.answerData.modelAnswer ?? ''),
+          10_000,
+          true,
+        ),
+        ...labels('rubric', row.answerData.rubric),
+      ];
+    }
+    return texts.filter((entry) => entry.text.trim());
+  }
+
+  private describeTranslations(kind: TranslatableKind, id: string) {
+    const fields = this.sourceTexts(kind, id)!.map((source) => {
+      const key = `${kind}:${id}:${source.field}`;
+      const manual = this.translations.get(key);
+      const sourceHash = hash(source.text);
+      let status = 'missing';
+      if (manual)
+        status = manual.sourceHash === sourceHash ? 'current' : 'stale';
+      return {
+        field: source.field,
+        markdown: source.markdown,
+        maxLength: source.maxLength,
+        source: source.text,
+        sourceHash,
+        text: manual?.text ?? null,
+        status,
+        machineText: this.machine.get(key) ?? null,
+        updatedAt: manual?.updatedAt ?? null,
+      };
+    });
+    return { entityType: kind, entityId: id, language: 'vi', fields };
+  }
+
+  /** `GET` / `PUT /admin/<kind>s/:id/translations`, with the backend checks. */
+  private translationRoute(
+    resource: string,
+    id: string,
+    method: string,
+    body: Record<string, unknown>,
+  ): Result | undefined {
+    const kind = KIND_BY_RESOURCE[resource];
+    if (!kind) return undefined;
+    const texts = this.sourceTexts(kind, id);
+    if (!texts) return notFound(kind.charAt(0).toUpperCase() + kind.slice(1));
+    if (method === 'GET') {
+      return { status: 200, json: this.describeTranslations(kind, id) };
+    }
+    if (method !== 'PUT') return undefined;
+
+    const writes = (body.fields ?? []) as {
+      field: string;
+      sourceHash: string;
+      text: string | null;
+    }[];
+    if (!Array.isArray(writes) || writes.length === 0) {
+      return invalid([
+        { field: 'fields', message: 'fields must contain at least 1 elements' },
+      ]);
+    }
+    const errors: { field: string; message: string }[] = [];
+    const conflicts: { field: string; message: string }[] = [];
+    const seen = new Set<string>();
+    writes.forEach((write, index) => {
+      const at = `fields[${index}]`;
+      const source = texts.find((entry) => entry.field === write.field);
+      if (!source) {
+        errors.push({
+          field: `${at}.field`,
+          message: `${write.field} is not a text of this content`,
+        });
+        return;
+      }
+      if (seen.has(write.field)) {
+        errors.push({ field: `${at}.field`, message: 'field is listed twice' });
+        return;
+      }
+      seen.add(write.field);
+      if (write.sourceHash !== hash(source.text)) {
+        conflicts.push({
+          field: `${at}.sourceHash`,
+          message: 'The English text changed since it was loaded',
+        });
+        return;
+      }
+      const value = write.text === null ? null : write.text.trim();
+      if (value === null) return;
+      if (!value) {
+        errors.push({
+          field: `${at}.text`,
+          message: 'text must not be empty (null removes the translation)',
+        });
+      } else if (value.length > source.maxLength) {
+        errors.push({
+          field: `${at}.text`,
+          message: `text must be at most ${source.maxLength} characters`,
+        });
+      } else if (source.markdown && headings(source.text) !== headings(value)) {
+        errors.push({
+          field: `${at}.text`,
+          message: `text has ${headings(value)} headings, English has ${headings(source.text)}`,
+        });
+      }
+    });
+    if (errors.length > 0) return invalid(errors);
+    if (conflicts.length > 0) {
+      return err(
+        409,
+        'Conflict',
+        'The English text changed since the editor was opened. Reload and translate again.',
+        conflicts,
+      );
+    }
+    for (const write of writes) {
+      const key = `${kind}:${id}:${write.field}`;
+      if (write.text === null) this.translations.delete(key);
+      else {
+        this.translations.set(key, {
+          text: write.text.trim(),
+          sourceHash: write.sourceHash,
+          updatedAt: now(),
+        });
+      }
+    }
+    return { status: 200, json: this.describeTranslations(kind, id) };
+  }
+
   // Routes ------------------------------------------------------------------
 
   handle(
@@ -475,6 +685,10 @@ export class MockAdmin {
     const [resource, id, sub, subAction] = parts;
     if (id && id !== 'reorder' && !UUID.test(id)) {
       return err(400, 'Bad Request', 'Validation failed (uuid is expected)');
+    }
+
+    if (sub === 'translations') {
+      return this.translationRoute(resource, id, method, body);
     }
 
     if (resource === 'courses') {

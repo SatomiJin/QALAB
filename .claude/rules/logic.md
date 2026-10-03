@@ -36,11 +36,11 @@ Business and security rules that both sides must follow. They come from `plant.m
 
 ## Content language (Phase 2)
 
-* Content is authored in English. `?lang=vi` serves, per text: a **manual** translation (written by a person; curriculum files now, Admin CMS later) → a cached machine translation → a new machine translation (only if a provider key is configured; it costs money) → English. QA terms, code, code blocks and URLs stay English; Markdown structure is kept.
+* Content is authored in English. `?lang=vi` serves, per text: a **manual** translation (written by a person: curriculum files or the Admin CMS) → a cached machine translation → a new machine translation (only if a provider key is configured; it costs money) → English. QA terms, code, code blocks and URLs stay English; Markdown structure is kept.
 * Manual translations are the default way to add Vietnamese (free, controlled wording). Curriculum files (`backend/seed/curriculum/`) are bilingual: every text has its `vi` version. Status `manual` only when every text on the response is human-translated.
 * Translation never fails a request: no key, provider error or unreadable cache → English with `translation: "unavailable"`. Every content response states `language` and `translation`.
 * Every translation stores the sha-256 of its English source; an edited source makes it stale (machine ones are redone, manual ones wait for a person). Machine rows also store the pipeline version.
-* Only the service role writes translations (curriculum importer, backend, later the Admin CMS through the backend). A learner-written translation would be shown to every learner.
+* Machine translations are written only with the service role (backend cache), manual ones by the curriculum importer (service role) or by an admin in the CMS (as the admin: `RolesGuard` + RLS `is_admin()`, `provider = 'manual'` rows only). Learners write none: a learner-written translation would be shown to every learner.
 * A translation must not reveal content that is no longer published (read policy checks the content's visibility).
 
 ## Lists
@@ -71,7 +71,8 @@ Business and security rules that both sides must follow. They come from `plant.m
 * Reorder requests list every child of the parent exactly once (the full new order), applied in one statement. New items go to the end (`max(order_index) + 1`).
 * Content tables store `created_by`, `updated_by` (set by a DB trigger from `auth.uid()`, never from the client), `created_at`, `updated_at`.
 * Slugs: lowercase `a-z0-9-`, course slugs unique, lesson slugs unique within their module; a used slug is `409` with `details[slug]`.
-* Editing English text makes manual Vietnamese translations stale (English is shown until someone retranslates); translation editing in the CMS is not built yet.
+* Editing English text makes manual Vietnamese translations stale (English is shown until someone retranslates or confirms them).
+* **Translations in the CMS:** `GET` / `PUT /admin/{courses|modules|lessons|exercises}/:id/translations` list every non-empty English text of the item (exercise review texts included) with its manual translation and status `current` / `stale` / `missing`, plus a cached machine translation of the current English as a draft. A save sends, per field, the `sourceHash` of the English it was written from: a different hash (the English changed meanwhile) is `409` and nothing is written. All fields are checked before anything is written (`400 details[fields[i].…]`): the field exists on the item and is listed once, text trimmed and not empty (`null` removes the translation), at most the English field's limit, Markdown keeps the English number of headings and code fences (same check as the curriculum importer). A stale translation becomes current again only by saving it with the current hash (edit or confirm).
 * Grading is deterministic (no AI in V1). Free-text answers also show the model answer + self-assessment checklist; both results are stored in `exercise_attempts` (see Grading).
 * Visible exercise = the exercise **and** its lesson, module and course are `published`; anything else is `404`.
 

@@ -25,6 +25,7 @@ import { CourseOutline } from '../CourseOutline';
 import { DeleteButton } from '../DeleteButton';
 import { useAdminCourse, useAdminMutation } from '../queries';
 import { StatusLine } from '../StatusLine';
+import { TranslationLink } from '../TranslationLink';
 
 /** Admin → course: details, publish / archive / delete, and the outline. */
 export function AdminCoursePage() {
@@ -160,6 +161,10 @@ function StatusActions({
           {t('admin.course.archive')}
         </Button>
       )}
+      <TranslationLink
+        to={`/admin/courses/${course.id}/translation`}
+        testId="translate-course"
+      />
       <DeleteButton
         title={course.title}
         inUse={course.inUse}

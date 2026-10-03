@@ -135,7 +135,7 @@ Rules:
 * **Pagination** (`/courses`): `page` ≥ 1 (default 1), `pageSize` one of `20`, `50`, `100` (default 20). `total` counts every course matching the filter. A page past the end returns `items: []` with the real `total`. An unknown skill code returns an empty page.
 * **Language** (`?lang=en|vi`, default `en`) on `/courses`, `/courses/:slug`, `/lessons/:id`, `/continue`. Every one of these responses carries `language` (asked for) and `translation`:
   * `none` — English.
-  * `manual` — every text has a translation written by a person (seeded now, Admin CMS later). Preferred over machine translation; needs no provider.
+  * `manual` — every text has a translation written by a person (curriculum files or the Admin CMS). Preferred over machine translation; needs no provider.
   * `machine` — at least one text is machine-translated; course/module/lesson titles, descriptions and the lesson Markdown are machine-translated (Google Cloud Translation). QA terms (Test case, Bug report, Severity, Priority, Pass/Fail…), inline code, code blocks and URLs stay in English; Markdown structure is kept.
   * `unavailable` — some or all text is English because no provider is configured (`GOOGLE_TRANSLATE_API_KEY` unset) or it failed. The request still succeeds.
 * Per text: a manual translation of the current English source, else a cached machine translation of it, else a new machine translation (if configured), else English. Translations are tied to the source text by hash: editing the English makes them stale. Machine ones are cached, so each version of a text is translated (and billed) once. Skill names are translated in the frontend by `code`.
@@ -225,6 +225,8 @@ Every `/admin/*` route needs a JWT **and** `profiles.role = 'admin'` (`RolesGuar
 | GET | `/admin/exercises/:id` | | `200 AdminExercise` **with the answer key** | `400`; `404` |
 | PATCH | `/admin/exercises/:id` | `{ question?, promptData?, answerData?, explanation?, difficulty?, status? }` | `200 AdminExercise` | `400` (`type` not allowed; key does not fit the prompt; changed ids after attempts); `404` |
 | DELETE | `/admin/exercises/:id` | | `204` | `404`; `409` attempted |
+| GET | `/admin/{courses,modules,lessons,exercises}/:id/translations` | | `200 AdminTranslations` | `400`; `404` |
+| PUT | `/admin/{courses,modules,lessons,exercises}/:id/translations` | `{ fields: [{ field, sourceHash, text \| null }] }` (1–60) | `200 AdminTranslations` | `400` with `details` (`fields[1].field` not a text of this item / listed twice, `fields[0].text` empty / too long / Markdown headings or code blocks differ, unknown body field); `404`; `409` English changed since `sourceHash` (`details[fields[i].sourceHash]`) |
 
 ```json
 // AdminCoursePage: { items: [AdminCourseSummary], total, page, pageSize }
@@ -240,6 +242,11 @@ Every `/admin/*` route needs a JWT **and** `profiles.role = 'admin'` (`RolesGuar
 //                module: { id, title, status }, course: { id, slug, title, status }, exercises: [...], createdAt, updatedAt }
 // AdminExercise: exercise summary + answerData (null if missing), explanation, visibleToLearners,
 //                lesson / module / course refs, createdAt, updatedAt
+// AdminTranslations (Vietnamese)
+{ "entityType": "lesson", "entityId": "uuid", "language": "vi",
+  "fields": [{ "field": "content_md", "markdown": true, "maxLength": 100000,
+               "source": "## Why…", "sourceHash": "sha-256 hex of source",
+               "text": "## Vì sao…", "status": "stale", "machineText": null, "updatedAt": "…" }] }
 ```
 
 Rules:
@@ -252,7 +259,8 @@ Rules:
 * **Exercises.** `promptData` and `answerData` are checked together with the grader's parsers (`parsePrompt`, `parseAnswerKey`) and stored normalised (trimmed). A new `promptData` alone is checked against the stored key. Once learners have attempted an exercise, option / item / category ids (and `multiple`) cannot change (`400` on `promptData.options`…); texts can. The key is stored in `exercise_answers` (explanation included).
 * **Limits** (DTO = DB = `frontend/src/types/api.ts`): titles 1–160, descriptions ≤ 2000, `contentMd` ≤ 100 000, minutes 1–600, question 1–2000, explanation ≤ 10 000. The JSON body limit is 1 MB.
 * Audit columns (`created_by`, `updated_by`) come from the token, set by a DB trigger; the client cannot send them.
-* Editing English text makes its Vietnamese translations stale (they fall back to English until retranslated); editing translations in the CMS is not built yet.
+* Editing English text makes its Vietnamese translations stale (they fall back to English until retranslated).
+* **Translations.** The fields are the item's non-empty English texts in reading order: `title`, `description` (course, module), `content_md` (lesson), `question`, `option.<id>`, `category.<id>`, `item.<id>`, `explanation`, `model_answer`, `rubric.<id>` (exercise; the review texts too, which learners only read after an attempt). `status`: `current` (manual translation of this English), `stale` (of an older English: learners get English or machine text), `missing`. `machineText` is a cached machine translation of the current English, offered as a draft. A PUT is checked as a whole before anything is written; `text` is trimmed, `null` removes the manual translation, and the limit is the English field's (labels 500). Resending a stale text with the current `sourceHash` confirms it. Written as the admin (RLS: manual rows only).
 
 ## Dashboard and progress (Phase 5)
 

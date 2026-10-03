@@ -1,0 +1,120 @@
+@use '../../styles/tokens' as *;
+
+// Translation editor: one ruled row per text, English next to Vietnamese
+// (stacked for Markdown and on narrow screens). See docs/design.md › Admin CMS.
+
+.itemTitle {
+  overflow-wrap: anywhere;
+}
+
+.summary {
+  display: grid;
+  gap: $space-4;
+  margin-bottom: $space-5;
+}
+
+.counts {
+  display: grid;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-4;
+    max-width: 240px;
+  }
+}
+
+.rows {
+  margin: 0 0 $space-5;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  gap: $space-3;
+  padding: $space-5 0;
+  border-top: 1px solid $color-rule;
+
+  &:last-child {
+    border-bottom: 1px solid $color-rule;
+  }
+
+  :global(.ant-form-item) {
+    margin-bottom: 0;
+  }
+}
+
+.rowHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2 $space-3;
+
+  h2 {
+    margin: 0;
+    @include type-section-title;
+    font-size: 17px;
+  }
+}
+
+// Out of date: a quiet note with its one action, no warning colour.
+.note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2 $space-4;
+  @include type-small;
+  color: $color-ink-muted;
+
+  p {
+    margin: 0;
+    max-width: 68ch;
+  }
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: $space-3 $space-5;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.stack {
+  display: grid;
+  gap: $space-4;
+}
+
+.english {
+  display: grid;
+  align-content: start;
+  gap: $space-2;
+}
+
+// Same place as the form label in the Vietnamese column.
+.columnLabel {
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.englishText {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.englishMarkdown {
+  max-height: 360px;
+}
+
+.machine {
+  padding-inline: 0;
+}

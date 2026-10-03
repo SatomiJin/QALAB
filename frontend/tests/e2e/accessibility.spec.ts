@@ -83,13 +83,17 @@ for (const theme of THEMES) {
       const { api } = await signedIn(page, { role: 'admin' });
       const course = api.admin.addCourse({ status: 'published' });
       const lesson = api.admin.addLesson(api.admin.addModule(course));
-      api.admin.addExercise(lesson);
+      const exercise = api.admin.addExercise(lesson);
       api.admin.addCourse();
+      // One text of each translation status.
+      api.admin.addTranslation('lesson', lesson.id, 'title', 'Bài học', 'Old');
       for (const path of [
         '/admin/courses',
         `/admin/courses/${course.id}`,
         `/admin/lessons/${lesson.id}`,
         `/admin/lessons/${lesson.id}/exercises/new`,
+        `/admin/lessons/${lesson.id}/translation`,
+        `/admin/exercises/${exercise.id}/translation`,
       ]) {
         await page.goto(path);
         await expectNoViolations(page);

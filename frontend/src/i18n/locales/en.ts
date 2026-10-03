@@ -676,6 +676,53 @@ export const en = {
       locked:
         'Learners have answered this exercise. You can change texts, but not add or remove options, categories or items.',
     },
+    translation: {
+      backToExercise: 'Back to the exercise',
+      open: 'Vietnamese translation',
+      openModule: 'Vietnamese translation of {{title}}',
+      title: 'Vietnamese translation',
+      description:
+        'Learners reading in Vietnamese see these texts. A text without a current translation is shown in English, or machine-translated.',
+      summary: 'Summary',
+      counts: {
+        current: 'Translated: {{count}}',
+        stale: 'Out of date: {{count}}',
+        missing: 'Not translated: {{count}}',
+      },
+      status: {
+        current: 'Translated',
+        stale: 'Out of date',
+        missing: 'Not translated',
+      },
+      english: 'English',
+      vietnamese: 'Vietnamese',
+      fields: {
+        title: 'Title',
+        description: 'Description',
+        content_md: 'Lesson content',
+        question: 'Question',
+        explanation: 'Explanation',
+        model_answer: 'Model answer',
+        option: 'Option {{n}}',
+        item: 'Item {{n}}',
+        category: 'Category {{n}}',
+        rubric: 'Check {{n}}',
+      },
+      staleHint:
+        'The English changed after this was translated. Learners see English until you update it or confirm it.',
+      confirm: 'Still correct',
+      confirmed: 'Marked as still correct. Save to apply.',
+      useMachine: 'Start from the machine translation',
+      markdownHint: 'Keep the same headings and code blocks as the English.',
+      clearHint: 'Leave empty to remove the translation.',
+      save: 'Save translation',
+      saved: 'Translation saved.',
+      nothingToSave: 'Nothing changed.',
+      conflict:
+        'The English changed while you were translating. The page now shows the new English: check your text and save again.',
+      empty: 'This item has no text to translate yet.',
+      reviewTexts: 'Review texts are shown to learners only after they answer.',
+    },
   },
   profile: {
     title: 'Profile',

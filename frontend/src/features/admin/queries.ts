@@ -5,7 +5,13 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import type { AdminCourse, AdminExercise, AdminLesson } from '../../types/api';
+import type {
+  AdminCourse,
+  AdminExercise,
+  AdminLesson,
+  SaveTranslationsRequest,
+  TranslatableKind,
+} from '../../types/api';
 import { type AdminCourseListParams, adminApi } from './admin-api';
 
 export const adminKeys = {
@@ -15,6 +21,8 @@ export const adminKeys = {
   course: (id: string) => ['admin', 'course', id] as const,
   lesson: (id: string) => ['admin', 'lesson', id] as const,
   exercise: (id: string) => ['admin', 'exercise', id] as const,
+  translations: (kind: TranslatableKind, id: string) =>
+    ['admin', 'translations', kind, id] as const,
 };
 
 export function useAdminCourses(params: AdminCourseListParams) {
@@ -44,6 +52,32 @@ export function useAdminExercise(id: string | undefined) {
     queryKey: adminKeys.exercise(id ?? ''),
     queryFn: ({ signal }) => adminApi.getExercise(id!, signal),
     enabled: id !== undefined,
+  });
+}
+
+export function useAdminTranslations(kind: TranslatableKind, id: string) {
+  return useQuery({
+    queryKey: adminKeys.translations(kind, id),
+    queryFn: ({ signal }) => adminApi.getTranslations(kind, id, signal),
+  });
+}
+
+/**
+ * Saves manual translations: the result goes into its cache, and learner
+ * views (which show the translations) are refreshed.
+ */
+export function useSaveTranslations(kind: TranslatableKind, id: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (body: SaveTranslationsRequest) =>
+      adminApi.saveTranslations(kind, id, body),
+    onSuccess: (result) => {
+      queryClient.setQueryData(adminKeys.translations(kind, id), result);
+      return queryClient.invalidateQueries({
+        predicate: (query) =>
+          ['learning', 'practice'].includes(String(query.queryKey[0])),
+      });
+    },
   });
 }
 

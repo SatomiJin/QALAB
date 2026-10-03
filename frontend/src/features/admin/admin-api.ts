@@ -5,6 +5,7 @@ import type {
   AdminExercise,
   AdminLesson,
   AdminModule,
+  AdminTranslations,
   ContentStatus,
   CreateCourseRequest,
   CreateExerciseRequest,
@@ -12,6 +13,8 @@ import type {
   CreateModuleRequest,
   PageSize,
   ReorderRequest,
+  SaveTranslationsRequest,
+  TranslatableKind,
   UpdateCourseRequest,
   UpdateExerciseRequest,
   UpdateLessonRequest,
@@ -26,6 +29,14 @@ export interface AdminCourseListParams {
 }
 
 const id = (value: string) => encodeURIComponent(value);
+
+/** API path segment of each translatable kind. */
+const KIND_PATH: Record<TranslatableKind, string> = {
+  course: 'courses',
+  module: 'modules',
+  lesson: 'lessons',
+  exercise: 'exercises',
+};
 
 export type CourseStatusAction = 'publish' | 'unpublish' | 'archive';
 
@@ -95,4 +106,24 @@ export const adminApi = {
 
   reorderExercises: (lessonId: string, body: ReorderRequest) =>
     api.patch<void>(`/admin/lessons/${id(lessonId)}/exercises/reorder`, body),
+
+  getTranslations: (
+    kind: TranslatableKind,
+    entityId: string,
+    signal?: AbortSignal,
+  ) =>
+    api.get<AdminTranslations>(
+      `/admin/${KIND_PATH[kind]}/${id(entityId)}/translations`,
+      { signal },
+    ),
+
+  saveTranslations: (
+    kind: TranslatableKind,
+    entityId: string,
+    body: SaveTranslationsRequest,
+  ) =>
+    api.put<AdminTranslations>(
+      `/admin/${KIND_PATH[kind]}/${id(entityId)}/translations`,
+      body,
+    ),
 };

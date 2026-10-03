@@ -12,6 +12,7 @@ Supabase PostgreSQL (cloud project, linked from `backend/`). Every change is a m
 | `20260930064552_content_translations_manual.sql` | 2 | `provider` `manual` \| `google`, `pipeline_version` (machine rows only), unique key per provider. Upgrades the table as first pushed; idempotent |
 | `20260930070812_practice.sql` | 3 | Enums `exercise_type`, `difficulty`; `exercises`, `exercise_answers`, `exercise_attempts`; `is_exercise_published()`; immutable-attempt trigger; RLS and grants; `content_translations` accepts exercises (fields, review-text read rule, delete trigger) |
 | `20260930090356_admin_cms.sql` | 4 | Admin writes: `set_content_audit()` trigger on content; insert/update/delete policies (`is_admin()`) and column grants on `courses`, `modules`, `lessons`, `exercises`, insert/update on `exercise_answers`; `reorder_content()`, `content_usage()` |
+| `20261003155528_admin_manual_translations.sql` | V1 gap | Admins write manual translations: insert / update grants on `entity_type, entity_id, field, language, provider, source_hash, text`, delete grant; insert / update / delete policies `is_admin() and provider = 'manual'` |
 | `20260930144044_dashboard.sql` | 5 | Views `v_user_exercise_results`, `v_user_skill_progress`, `v_user_activity` (security invoker); `activity_days(tz)`; select for `authenticated` only |
 
 Curriculum (`backend/seed/curriculum/`, imported by `npm run seed:curriculum`, `backend/src/curriculum/`): the V1 curriculum for all 7 skills (outline in [curriculum.md](curriculum.md)), with answer keys and Vietnamese `manual` translations. Written with the service role (audit columns stay `null`). Courses are matched by slug; modules, lessons and exercises by UUID v5 ids derived from their keys; the Phase 2–3 sample course *QA fundamentals: first steps* keeps its original fixed ids (`6f1d2a4e-…`). Idempotent, never deletes, inserts only what is missing unless `--update`. `curriculum/curriculum.spec.ts` checks every file. `supabase/seed.sql` is a stub.
@@ -93,7 +94,7 @@ Translations of content, one row per (entity, field, language, provider). `manua
 | `pipeline_version` | int | required for `google` rows (check), null for `manual`; a pipeline change redoes machine rows only |
 
 * `unique (entity_type, entity_id, field, language, provider)`: a manual and a machine translation can coexist. Index `(entity_id, language)`.
-* Written only with the service role: the curriculum importer (`manual`) and the backend (`google`). No API role may insert or update (a learner-written row would be shown to everyone).
+* `google` rows are written only with the service role (backend cache). `manual` rows by the curriculum importer (service role) and by admins in the CMS (as themselves: policies `is_admin() and provider = 'manual'`; the backend upserts, so the update grant covers every written column). Learners write nothing (a learner-written row would be shown to everyone): their insert is `42501`, their update / delete matches no row.
 
 ## Views (derived, Phase 5)
 
@@ -130,7 +131,7 @@ All `security_invoker = true`: the caller's RLS applies to every table they read
 | `exercise_answers` | **none** | select all; insert / update (removed only with the exercise) | none |
 | `exercise_attempts` | select own; update own `self_assessment` only (on published exercises); **no insert, no delete** | select all | none |
 | `v_user_*` views | own rows (RLS of the underlying tables) | all rows | none |
-| `content_translations` | select when the content is published (`is_content_published`); exercise review texts only after an own attempt at that exercise | select all | none |
+| `content_translations` | select when the content is published (`is_content_published`); exercise review texts only after an own attempt at that exercise | select all; insert / update / delete `manual` rows only | none |
 
 * Content writes (Phase 4): the grants are to `authenticated`, the policies allow admins only (`is_admin()`). A learner's insert is `42501`; a learner's update / delete matches no row (RLS) and changes nothing. Column grants: nobody writes `id`, `created_by`, `updated_by` or timestamps; nobody updates a module's `course_id`, a lesson's `module_id`, an exercise's `lesson_id` or `type` (content does not move, types do not change). Hard deletes of content with progress or attempts fail on the `restrict` foreign keys (`23503`); cascaded children and translations go with an allowed delete.
 * No delete on `lesson_progress`. Column grants keep `id`, `created_at`, `updated_at` unwritable; `user_id`/`lesson_id` are in the update grant only because upserts set them, and the trigger keeps them unchanged.

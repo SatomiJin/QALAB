@@ -53,6 +53,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 5 — Dashboard & Progress | Done | Done |
 | 6 — Curriculum | Done (content + importer) | No change (content comes from the API) |
 | 7 — QA | Done: security sweeps, journey through the real stack, QA documents ([docs/qa](qa/test-plan.md)) | Done: journey and no-session E2E |
+| V1 gap — translations in the CMS | Done: `GET` / `PUT /admin/*/:id/translations`, admin RLS on manual rows | Done: translation editor per course / module / lesson / exercise |
 | 8 — Polish | No change | Done: per-page code splitting, accessibility (axe, contrast, skip link, focus), scroll restoration, overflowing tabs, empty / error states, 403 in the app frame |
 
 ## Authentication
@@ -92,6 +93,12 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 * Backend module `src/admin/`: `AdminCoursesController` (courses, modules) and `AdminLessonsController` (lessons, exercises), both `@Roles('admin')`. `AdminService` / `AdminExercisesService` load the course tree, apply the rules and map to DTOs; the pure rules are in `content-rules.ts` (in use, can publish, complete reorder, locked prompt ids) and unit-tested. `AdminContentRepository` reads and writes every status **as the admin** (`forUser`), so RLS `is_admin()` checks every write a second time; reorders and usage go through the SQL functions `reorder_content` and `content_usage`. Exercise prompt data and answer keys are validated with the grader's own parsers (`practice/exercise-schema.ts`).
 * Unique-slug (`23505`) and restrict-FK (`23503`) errors become `409` (`common/errors/pg-error.ts`).
 * Frontend `features/admin/`: `admin-api.ts`, `queries.ts` (`adminKeys`, `useAdminMutation`: returned details go into their cache, then every admin / learning / practice query is refreshed), pages `AdminCoursesPage` (filters in the URL, New course dialog, course reorder when one skill is shown), `AdminCoursePage` (details, publish / unpublish / archive / delete, outline with modules and lessons), `AdminLessonPage` (fields, `MarkdownEditor` with live preview, exercises), `AdminExercisePage` (per-type answer-key form; `exercise-form.ts` converts form and API shapes), `AdminLessonPreviewPage` (preview as learner). Reordering is `SortableList` (dnd-kit: pointer, touch, keyboard; plus up / down buttons), shown at once and put back if saving fails.
+
+## Translations in the Admin CMS (V1 gap)
+
+* Backend: `AdminTranslationsController` (GET + PUT on `courses`, `modules`, `lessons`, `exercises` `/:id/translations`, `@Roles('admin')`) → `AdminTranslationsService`: loads the row (`AdminService.findOr404`; exercises also their answer key) → `contentTexts` (pure, `translation/translatable-texts.ts`) → `describeTranslations` / `planTranslationWrites` (pure, `admin/translation-rules.ts`) → `TranslationsRepository.findForEntity` / `saveManual` (one upsert) / `removeManual`, all as the admin.
+* Frontend: `TranslationEditor` on four routes (`AdminTranslationPage.tsx`), linked from every editor and module row (`TranslationLink`).
+* Staleness is the existing `source_hash` rule: the learner side already ignores a manual row whose hash is not the current English's; the editor shows it as *Out of date* and lets the admin edit or confirm it.
 
 ## Curriculum (Phase 6)
 

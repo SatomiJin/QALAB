@@ -679,6 +679,53 @@ export const vi: TranslationSchema = {
       locked:
         'Đã có người làm bài tập này. Bạn có thể sửa phần chữ, nhưng không thêm hoặc bỏ lựa chọn, nhóm hay mục.',
     },
+    translation: {
+      backToExercise: 'Quay lại bài tập',
+      open: 'Bản dịch tiếng Việt',
+      openModule: 'Bản dịch tiếng Việt của {{title}}',
+      title: 'Bản dịch tiếng Việt',
+      description:
+        'Người học đọc bằng tiếng Việt sẽ thấy các nội dung này. Phần chưa có bản dịch còn hiệu lực sẽ hiện bằng tiếng Anh, hoặc bản máy dịch.',
+      summary: 'Tóm tắt',
+      counts: {
+        current: 'Đã dịch: {{count}}',
+        stale: 'Đã cũ: {{count}}',
+        missing: 'Chưa dịch: {{count}}',
+      },
+      status: {
+        current: 'Đã dịch',
+        stale: 'Đã cũ',
+        missing: 'Chưa dịch',
+      },
+      english: 'Tiếng Anh',
+      vietnamese: 'Tiếng Việt',
+      fields: {
+        title: 'Tiêu đề',
+        description: 'Mô tả',
+        content_md: 'Nội dung bài học',
+        question: 'Câu hỏi',
+        explanation: 'Giải thích',
+        model_answer: 'Đáp án mẫu',
+        option: 'Lựa chọn {{n}}',
+        item: 'Mục {{n}}',
+        category: 'Nhóm {{n}}',
+        rubric: 'Mục kiểm {{n}}',
+      },
+      staleHint:
+        'Bản tiếng Anh đã thay đổi sau khi phần này được dịch. Người học sẽ thấy tiếng Anh cho tới khi bạn cập nhật hoặc xác nhận bản dịch.',
+      confirm: 'Vẫn đúng',
+      confirmed: 'Đã đánh dấu là vẫn đúng. Lưu để áp dụng.',
+      useMachine: 'Bắt đầu từ bản máy dịch',
+      markdownHint: 'Giữ đúng số tiêu đề và khối code như bản tiếng Anh.',
+      clearHint: 'Để trống để xoá bản dịch.',
+      save: 'Lưu bản dịch',
+      saved: 'Đã lưu bản dịch.',
+      nothingToSave: 'Không có gì thay đổi.',
+      conflict:
+        'Bản tiếng Anh đã thay đổi trong lúc bạn dịch. Trang đang hiện bản tiếng Anh mới: hãy kiểm tra lại bản dịch rồi lưu lần nữa.',
+      empty: 'Mục này chưa có nội dung nào để dịch.',
+      reviewTexts: 'Phần đáp án chỉ hiện cho người học sau khi họ làm bài.',
+    },
   },
   profile: {
     title: 'Hồ sơ',
