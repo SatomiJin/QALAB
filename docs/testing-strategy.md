@@ -22,6 +22,21 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 
 `tests/e2e/support/mock-api.ts` is a stateful mock of the backend contract (docs/api.md). Tests use roles and `data-testid` / `data-state` where text would tie them to one language.
 
+## Phase 9 coverage (admin user management)
+
+| Requirement | Test |
+| --- | --- |
+| Role / status refusal rules, status derivation | `backend/src/admin-users/user-rules.spec.ts` |
+| Learner `403` and no-token `401` on every `/admin/users*` route; a learner cannot promote themselves | `backend/test/api/admin-users.e2e-spec.ts` |
+| List: newest first, search (email / name, case-insensitive), role and status filters, past-the-end page, query validation | `admin-users.e2e-spec.ts` |
+| User page shows progress and scores, never the learner's answers | `admin-users.e2e-spec.ts` |
+| Role change effective on the next request; own role `409`; promoting a disabled account `409`; same role writes nothing; one audit row per change | `admin-users.e2e-spec.ts` |
+| Disabled user cannot sign in (generic `401`) or refresh; enable restores; admins and yourself `409`; Auth down → `503`, no audit row | `admin-users.e2e-spec.ts` (fake auth server models `ban_duration`, `user_banned`) |
+| The SQL functions refuse learners (`42501`), the internal row function is not callable, audit rows cannot be read, written, forged, changed or deleted through the API; `%` in search is literal; a real ban blocks sign-in and refresh and the log only accepts the true state | `backend/test/integration/admin-users-rls.int-spec.ts` |
+| List params in the URL, `allowedActions` | `frontend/src/features/admin-users/users.test.ts` |
+| Search / filters / clear, promote with confirmation and history, disable → sign-in fails → enable, no actions on yourself, server refusal keeps the old role, error / 404 / no-access | `frontend/tests/e2e/admin-users.spec.ts` |
+| axe on the Users list and a user page, both themes | `frontend/tests/e2e/accessibility.spec.ts` |
+
 ## Phase 8 coverage (polish)
 
 | Requirement | Test |

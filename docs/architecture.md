@@ -55,6 +55,7 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 | 7 — QA | Done: security sweeps, journey through the real stack, QA documents ([docs/qa](qa/test-plan.md)) | Done: journey and no-session E2E |
 | V1 gap — translations in the CMS | Done: `GET` / `PUT /admin/*/:id/translations`, admin RLS on manual rows | Done: translation editor per course / module / lesson / exercise |
 | 8 — Polish | No change | Done: per-page code splitting, accessibility (axe, contrast, skip link, focus), scroll restoration, overflowing tabs, empty / error states, 403 in the app frame |
+| V2 · 9 — Admin user management | Done: `/admin/users*`, `admin_audit_log`, SQL functions over `auth.users`, Supabase Auth ban | Done: Users list (search, filters) and user page (facts, skills, attempts, history, role, disable / enable) |
 
 ## Authentication
 
@@ -99,6 +100,12 @@ Env variables are validated at startup (`src/config/env.validation.ts`). Invalid
 * Backend: `AdminTranslationsController` (GET + PUT on `courses`, `modules`, `lessons`, `exercises` `/:id/translations`, `@Roles('admin')`) → `AdminTranslationsService`: loads the row (`AdminService.findOr404`; exercises also their answer key) → `contentTexts` (pure, `translation/translatable-texts.ts`) → `describeTranslations` / `planTranslationWrites` (pure, `admin/translation-rules.ts`) → `TranslationsRepository.findForEntity` / `saveManual` (one upsert) / `removeManual`, all as the admin.
 * Frontend: `TranslationEditor` on four routes (`AdminTranslationPage.tsx`), linked from every editor and module row (`TranslationLink`).
 * Staleness is the existing `source_hash` rule: the learner side already ignores a manual row whose hash is not the current English's; the editor shows it as *Out of date* and lets the admin edit or confirm it.
+
+## Admin user management (Phase 9)
+
+* Backend module `src/admin-users/`: `AdminUsersController` (`/admin/users`, `@Roles('admin')`) → `AdminUsersService`. Reads and role changes go through `AdminUsersRepository` **as the admin**: the SQL functions `admin_list_users` / `admin_get_user` / `admin_set_role` / `admin_log_status_change` are security definer (they read `auth.users`) and check `is_admin()` themselves; attempts and the audit log are read under admin RLS; skill progress reuses `DashboardRepository.listSkillProgress` (exported by `DashboardModule`, mapping in `dashboard/mapping.ts`). Pure rules in `user-rules.ts` (status, role / status refusals).
+* Disable / enable: `UserAccountsRepository.setDisabled` bans / unbans with the Supabase Auth admin API (`service()`, the only service-role use here), then the audit row is written as the admin; `admin_log_status_change` refuses a row that does not match `auth.users`. If Auth fails nothing changes (`503`); if only the audit write fails, it is logged as an error and the ban stays.
+* Frontend `features/admin-users/`: `users-api.ts`, `queries.ts` (`usersKeys`, `useUserMutation`: the returned user goes into its cache, lists refresh), `users.ts` (list params in the URL, remembered list, `allowedActions`), pages `AdminUsersPage` and `AdminUserPage` (side panel with the role select and disable / enable, both confirmed), `AccountTag`. *Users* is in the admin nav.
 
 ## Curriculum (Phase 6)
 

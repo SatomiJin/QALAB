@@ -2,6 +2,7 @@ import { INestApplication, ModuleMetadata } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { App } from 'supertest/types.js';
 import { AdminContentRepository } from '../../src/admin/admin-content.repository.js';
+import { AdminUsersRepository } from '../../src/admin-users/admin-users.repository.js';
 import { AppModule } from '../../src/app.module.js';
 import { configureApp } from '../../src/app.setup.js';
 import { DashboardRepository } from '../../src/dashboard/dashboard.repository.js';
@@ -16,6 +17,7 @@ import { SupabaseService } from '../../src/supabase/supabase.service.js';
 import { TranslationsRepository } from '../../src/translation/translations.repository.js';
 import { Translator } from '../../src/translation/translator.js';
 import { FakeAdminContentRepository } from './fake-admin.js';
+import { FakeAdminUsersRepository } from './fake-admin-users.js';
 import { FakeAuthServer, FakeProfilesRepository } from './fake-auth-server.js';
 import { FakeDashboardRepository } from './fake-dashboard.js';
 import {
@@ -46,6 +48,7 @@ export interface TestApp {
   attempts: FakeAttemptsRepository;
   admin: FakeAdminContentRepository;
   dashboard: FakeDashboardRepository;
+  adminUsers: FakeAdminUsersRepository;
 }
 
 const REVIEW_FIELD = /^(explanation|model_answer|rubric\..+)$/;
@@ -84,6 +87,14 @@ export async function createTestApp(
     !REVIEW_FIELD.test(row.field) ||
     attempts.hasAttempted(userIdFromToken(token), row.entity_id);
   const auth = await FakeAuthServer.create((user) => profiles.addFor(user));
+  const adminUsers = new FakeAdminUsersRepository(
+    auth,
+    profiles,
+    content,
+    progress,
+    exercises,
+    attempts,
+  );
 
   const fakeSupabase: Pick<SupabaseService, 'anon' | 'service' | 'forUser'> = {
     anon: () => auth.client() as never,
@@ -120,6 +131,8 @@ export async function createTestApp(
     .useValue(admin)
     .overrideProvider(DashboardRepository)
     .useValue(dashboard)
+    .overrideProvider(AdminUsersRepository)
+    .useValue(adminUsers)
     .compile();
 
   const app = moduleRef.createNestApplication<INestApplication<App>>({
@@ -140,5 +153,6 @@ export async function createTestApp(
     attempts,
     admin,
     dashboard,
+    adminUsers,
   };
 }

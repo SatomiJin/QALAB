@@ -24,12 +24,8 @@ import {
   type ActivityRow,
   DashboardRepository,
 } from './dashboard.repository.js';
-import {
-  ActivityDto,
-  DashboardDto,
-  ExerciseTotalsDto,
-  SkillProgressDto,
-} from './dto/dashboard.dto.js';
+import { ActivityDto, DashboardDto } from './dto/dashboard.dto.js';
+import { toSkillProgress } from './mapping.js';
 import {
   averageOf,
   type ExercisePlacement,
@@ -37,7 +33,6 @@ import {
   localDate,
   percentOf,
   type SkillProgressRow,
-  skillStatus,
   streakOf,
   weakConcepts,
   weakSkills,
@@ -48,27 +43,6 @@ export const RECENT_ACTIVITY_LIMIT = 10;
 interface LessonPlace {
   lesson: LessonSummaryRow;
   outline: CourseOutline;
-}
-
-function exerciseTotals(row: SkillProgressRow): ExerciseTotalsDto {
-  return {
-    total: row.total_exercises,
-    attempted: row.attempted_exercises,
-    passed: row.passed_exercises,
-    averageScore: row.average_score,
-  };
-}
-
-function toSkillProgress(row: SkillProgressRow): SkillProgressDto {
-  return {
-    code: row.skill_code,
-    name: row.skill_name,
-    totalLessons: row.total_lessons,
-    completedLessons: row.completed_lessons,
-    percent: percentOf(row.completed_lessons, row.total_lessons),
-    status: skillStatus(row),
-    exercises: exerciseTotals(row),
-  };
 }
 
 /**

@@ -3,6 +3,7 @@ import { MockAdmin } from './mock-admin.ts';
 import { MockDashboard } from './mock-dashboard.ts';
 import { MockLearning } from './mock-learning.ts';
 import { MockPractice } from './mock-practice.ts';
+import { MockUsers } from './mock-users.ts';
 
 /**
  * Stateful stand-in for the backend API, installed with `page.route`. It
@@ -19,6 +20,10 @@ interface MockUser {
   role: 'learner' | 'admin';
   experienceLevel: string | null;
   learningGoals: string[];
+  /** Banned by an admin: sign-in and refresh fail like a wrong password. */
+  disabled?: boolean;
+  createdAt?: string;
+  lastSignInAt?: string | null;
 }
 
 export const PASSWORD = 'correct-horse-battery';
@@ -51,6 +56,7 @@ export class MockApi {
   readonly practice = new MockPractice();
   readonly admin = new MockAdmin();
   readonly dashboard = new MockDashboard(this.learning, this.practice);
+  readonly accounts = new MockUsers(() => [...this.users.values()]);
 
   constructor() {
     // Like the backend: what an admin publishes is what learners see.
@@ -217,6 +223,9 @@ export class MockApi {
         }
         if (!user.verified)
           return error(403, 'Forbidden', 'Email not verified');
+        if (user.disabled)
+          return error(401, 'Unauthorized', 'Invalid email or password');
+        user.lastSignInAt = new Date().toISOString();
         return { status: 200, json: this.session(user) };
       }
 
@@ -224,7 +233,7 @@ export class MockApi {
         const token = String(body.refreshToken);
         const owner = this.refreshTokens.get(token);
         const user = owner && this.users.get(owner);
-        if (!user)
+        if (!user || user.disabled)
           return error(401, 'Unauthorized', 'Invalid or expired refresh token');
         this.refreshTokens.delete(token);
         return { status: 200, json: this.session(user) };
@@ -304,6 +313,7 @@ export class MockApi {
         if (!user) return unauthorized;
         const query = new URL(route.request().url()).searchParams;
         return (
+          this.accounts.handle(method, path, body, user, query) ??
           this.admin.handle(method, path, body, user.role, query) ??
           this.learning.handle(method, path, body, user.id, query) ??
           this.practice.handle(method, path, body, user.id, query) ??

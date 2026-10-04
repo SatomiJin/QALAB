@@ -226,6 +226,72 @@ for (const c of COMBOS) {
       'Kỹ thuật nào kiểm thử các biên của một khoảng?',
     );
     api.admin.addCourse({ title: 'Draft course' });
+    const admin = [...api.users.values()][0]!;
+    const learner = api.addUser({
+      email: 'nguyen.thi.thu.huong.qa.engineer@example.com',
+      displayName: 'Nguyễn Thị Thu Hương',
+      createdAt: '2026-09-12T08:00:00.000Z',
+      lastSignInAt: '2026-10-03T21:15:00.000Z',
+      experienceLevel: 'some_qa',
+      learningGoals: ['Boundary value analysis', 'Bug reports'],
+    });
+    api.addUser({
+      email: 'new.learner@example.com',
+      displayName: 'New learner',
+      verified: false,
+      createdAt: '2026-10-02T08:00:00.000Z',
+    });
+    api.addUser({
+      email: 'disabled@example.com',
+      displayName: 'Disabled learner',
+      disabled: true,
+      createdAt: '2026-09-02T08:00:00.000Z',
+    });
+    api.accounts.skills.set(learner.id, [
+      {
+        code: 'fundamentals',
+        name: 'QA Fundamentals',
+        totalLessons: 6,
+        completedLessons: 4,
+        percent: 67,
+        status: 'in_progress',
+        exercises: { total: 12, attempted: 5, passed: 4, averageScore: 78 },
+      },
+      {
+        code: 'test_design',
+        name: 'Test Design',
+        totalLessons: 5,
+        completedLessons: 0,
+        percent: 0,
+        status: 'not_started',
+        exercises: { total: 9, attempted: 0, passed: 0, averageScore: null },
+      },
+    ]);
+    api.accounts.attempts.set(learner.id, [
+      {
+        id: 'attempt-2',
+        exerciseId: exercise.id,
+        exerciseType: 'bug_report',
+        question:
+          'The checkout button stays disabled after a valid card number is entered. Write the bug report.',
+        lessonId: lesson.id,
+        score: 55,
+        isCorrect: false,
+        attemptedAt: '2026-10-03T21:20:00.000Z',
+      },
+      {
+        id: 'attempt-1',
+        exerciseId: exercise.id,
+        exerciseType: 'multiple_choice',
+        question: 'Which technique tests the edges of a range?',
+        lessonId: lesson.id,
+        score: 100,
+        isCorrect: true,
+        attemptedAt: '2026-10-02T09:00:00.000Z',
+      },
+    ]);
+    api.accounts.log(admin, learner, 'disabled', 'active', 'disabled');
+    api.accounts.log(admin, learner, 'enabled', 'disabled', 'active');
     await run(
       page,
       [
@@ -255,6 +321,8 @@ for (const c of COMBOS) {
           'admin-exercise-translation',
           (p) => p.goto(`/admin/exercises/${exercise.id}/translation`),
         ],
+        ['admin-users', (p) => p.goto('/admin/users')],
+        ['admin-user', (p) => p.goto(`/admin/users/${learner.id}`)],
       ],
       c,
       info.project.name,

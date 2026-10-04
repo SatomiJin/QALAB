@@ -85,6 +85,20 @@ for (const theme of THEMES) {
       const lesson = api.admin.addLesson(api.admin.addModule(course));
       const exercise = api.admin.addExercise(lesson);
       api.admin.addCourse();
+      const learner = api.addUser({ email: 'axe-learner@example.com' });
+      api.addUser({ email: 'axe-new@example.com', verified: false });
+      api.accounts.attempts.set(learner.id, [
+        {
+          id: 'attempt-1',
+          exerciseId: exercise.id,
+          exerciseType: 'scenario',
+          question: 'Which boundaries?',
+          lessonId: lesson.id,
+          score: 80,
+          isCorrect: true,
+          attemptedAt: '2026-10-01T09:00:00.000Z',
+        },
+      ]);
       // One text of each translation status.
       api.admin.addTranslation('lesson', lesson.id, 'title', 'Bài học', 'Old');
       for (const path of [
@@ -94,6 +108,8 @@ for (const theme of THEMES) {
         `/admin/lessons/${lesson.id}/exercises/new`,
         `/admin/lessons/${lesson.id}/translation`,
         `/admin/exercises/${exercise.id}/translation`,
+        '/admin/users',
+        `/admin/users/${learner.id}`,
       ]) {
         await page.goto(path);
         await expectNoViolations(page);

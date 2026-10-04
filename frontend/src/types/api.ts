@@ -47,7 +47,8 @@ export const EXPERIENCE_LEVELS = [
 ] as const;
 export type ExperienceLevel = (typeof EXPERIENCE_LEVELS)[number];
 
-export type UserRole = 'learner' | 'admin';
+export const USER_ROLES = ['learner', 'admin'] as const;
+export type UserRole = (typeof USER_ROLES)[number];
 
 /** Mirrors backend `ProfileDto`. */
 export interface Profile {
@@ -772,4 +773,76 @@ export interface TranslationFieldWrite {
 
 export interface SaveTranslationsRequest {
   fields: TranslationFieldWrite[];
+}
+
+// Admin user management (Phase 9) ----------------------------------------------
+
+/** Mirrors backend `USER_STATUSES`: disabled = banned, unverified = email not confirmed. */
+export const USER_STATUSES = ['active', 'disabled', 'unverified'] as const;
+export type UserStatus = (typeof USER_STATUSES)[number];
+
+/** Mirrors backend `USER_SEARCH_MAX_LENGTH`. */
+export const USER_SEARCH_MAX_LENGTH = 100;
+
+/** Mirrors backend `AdminUserSummaryDto`. */
+export interface AdminUserSummary {
+  id: string;
+  email: string;
+  displayName: string;
+  role: UserRole;
+  status: UserStatus;
+  emailVerified: boolean;
+  disabled: boolean;
+  createdAt: string;
+  lastSignInAt: string | null;
+  lessonsCompleted: number;
+  exercisesAttempted: number;
+}
+
+export interface AdminUserPage {
+  items: AdminUserSummary[];
+  total: number;
+  page: number;
+  pageSize: PageSize;
+}
+
+export interface AdminUserAttempt {
+  id: string;
+  exerciseId: string;
+  exerciseType: ExerciseType | null;
+  /** Markdown, English. */
+  question: string | null;
+  lessonId: string | null;
+  score: number;
+  isCorrect: boolean;
+  attemptedAt: string;
+}
+
+export const AUDIT_ACTIONS = ['role_changed', 'disabled', 'enabled'] as const;
+export type AuditAction = (typeof AUDIT_ACTIONS)[number];
+
+export interface AdminAuditEntry {
+  id: string;
+  action: AuditAction;
+  /** Role or status before / after. */
+  from: string | null;
+  to: string | null;
+  /** Null when the admin account no longer exists. */
+  actor: { id: string; displayName: string } | null;
+  createdAt: string;
+}
+
+/** Mirrors backend `AdminUserDto`. */
+export interface AdminUser extends AdminUserSummary {
+  experienceLevel: ExperienceLevel | null;
+  learningGoals: string[];
+  skills: SkillProgress[];
+  /** Latest 10, scores only. */
+  recentAttempts: AdminUserAttempt[];
+  /** Latest 50, newest first. */
+  auditLog: AdminAuditEntry[];
+}
+
+export interface ChangeRoleRequest {
+  role: UserRole;
 }

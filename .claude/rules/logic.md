@@ -92,6 +92,14 @@ Business and security rules that both sides must follow. They come from `plant.m
 * A file's Vietnamese is written as a `manual` translation only while the stored English (trimmed) equals the file's English; `source_hash` is of the stored text.
 * Content is validated before anything is written: unknown fields, limits (same as the DB checks), the grader's prompt / answer-key parsers, a Vietnamese version for every text with the same headings and code blocks, and every model answer (en **and** vi) matching at least `PASS_SCORE` % of its own concepts. One invalid file stops the whole import.
 
+## Admin user management (Phase 9)
+
+* Same two locks as the CMS: `RolesGuard` on `/admin/users*` **and** the database: the `admin_*` SQL functions raise `42501` unless `is_admin()`. Reads of `auth.users` (email, verified, banned, last sign-in) only happen inside those security definer functions, never with `service()`.
+* **Roles:** nobody changes their own role (`409`), so the admin making a change stays an admin and the last admin can never be demoted. Role changes are serialised in SQL and the caller is re-checked after the lock (two admins cannot demote each other at once). A disabled account is not promoted (`409`). The same role is a no-op. A new role is effective on the next request (role is read from `profiles` per request, no token claim).
+* **Disable = Supabase Auth ban** (`ban_duration`), the one use of `service()` in user management (the Auth admin API needs it). Not on yourself, not on an admin (demote first), so an admin account always works. A disabled user's sign-in answers the generic `401` (no "account disabled" message: it would confirm the account and the password); refresh `401`; an access token already issued lasts until it expires (≤ 1 h, like F1). Progress and attempts are kept; no hard delete of users in V2.
+* **Audit:** every real role / status change writes exactly one `admin_audit_log` row (actor, before, after). Role: in the same transaction as the change. Status: after the ban, through a function that refuses a row that does not match `auth.users`, so the log cannot record what did not happen. No API role can write, change or delete audit rows.
+* Admins see a learner's progress and scores, never their answers.
+
 ## Keep in sync
 
 When any of these rules changes, update this file, `docs/api.md`, and the tests that prove the rule.

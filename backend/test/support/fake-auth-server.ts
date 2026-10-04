@@ -32,6 +32,10 @@ interface FakeUser {
   password: string;
   confirmed: boolean;
   metadata: Record<string, unknown>;
+  /** Epoch ms until which the account is banned (GoTrue `banned_until`). */
+  bannedUntil: number | null;
+  lastSignInAt: string | null;
+  createdAt: string;
 }
 
 interface TokenHash {
@@ -119,6 +123,9 @@ export class FakeAuthServer {
       password: input.password,
       confirmed: input.confirmed ?? true,
       metadata: input.displayName ? { display_name: input.displayName } : {},
+      bannedUntil: null,
+      lastSignInAt: null,
+      createdAt: new Date().toISOString(),
     };
     this.users.set(user.id, user);
     this.onUserCreated(user);
@@ -133,6 +140,10 @@ export class FakeAuthServer {
 
   lastEmail(to: string, type: SentEmail['type']): SentEmail | undefined {
     return this.sentEmails.filter((e) => e.to === to && e.type === type).at(-1);
+  }
+
+  isBanned(user: FakeUser): boolean {
+    return user.bannedUntil !== null && user.bannedUntil > Date.now();
   }
 
   expireTokenHash(tokenHash: string): void {
@@ -199,6 +210,7 @@ export class FakeAuthServer {
   }
 
   async startSession(user: FakeUser): Promise<FakeSession> {
+    user.lastSignInAt = new Date().toISOString();
     const sessionId = randomUUID();
     this.sessions.set(sessionId, { userId: user.id, revoked: false });
     return this.sessionFor(user, sessionId);
@@ -230,9 +242,11 @@ export class FakeAuthServer {
     const entry = this.refreshTokens.get(token);
     const session = entry && this.sessions.get(entry.sessionId);
     if (!entry || entry.used || !session || session.revoked) return null;
-    entry.used = true;
     const user = this.users.get(session.userId);
-    return user ? this.sessionFor(user, entry.sessionId) : null;
+    // GoTrue refuses to refresh a banned user's session.
+    if (!user || this.isBanned(user)) return null;
+    entry.used = true;
+    return this.sessionFor(user, entry.sessionId);
   }
 
   /** Resolves the session from an access token, like GoTrue's /logout. */
@@ -285,6 +299,27 @@ export class FakeAuthClient {
       }
       this.server.revoke(found.sessionId, scope);
       return { data: null, error: null };
+    },
+
+    /** Only `ban_duration` is modelled: `'none'` or `'<hours>h'`. */
+    updateUserById: async (
+      id: string,
+      attributes: { ban_duration?: string },
+    ): Result<{ user: { id: string } }> => {
+      const down = this.server.guard();
+      if (down) return { data: null as never, error: down };
+      const user = this.server.users.get(id);
+      if (!user) return this.fail('User not found', 404, 'user_not_found');
+      const ban = attributes.ban_duration;
+      if (ban === 'none') user.bannedUntil = null;
+      else if (ban) {
+        const hours = /^(\d+)h$/.exec(ban);
+        if (!hours) {
+          return this.fail('Invalid ban duration', 400, 'validation_failed');
+        }
+        user.bannedUntil = Date.now() + Number(hours[1]) * 3600_000;
+      }
+      return { data: { user: { id } }, error: null };
     },
   };
 
@@ -380,6 +415,9 @@ export class FakeAuthClient {
     }
     if (!user.confirmed) {
       return this.fail('Email not confirmed', 400, 'email_not_confirmed');
+    }
+    if (this.server.isBanned(user)) {
+      return this.fail('User is banned', 400, 'user_banned');
     }
     this.session = await this.server.startSession(user);
     return {

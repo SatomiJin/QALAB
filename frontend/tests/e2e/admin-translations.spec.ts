@@ -182,6 +182,8 @@ test.describe('Admin CMS: Vietnamese translations', () => {
     );
     await page.goto(`/admin/exercises/${exercise.id}`);
     await page.getByTestId('translate-exercise').click();
+    // Wait for the (lazy) translation page before reading its rows.
+    await expect(page.getByTestId('translation-field')).toHaveCount(4);
     expect((await statuses(page)).map(([field]) => field)).toEqual([
       'question',
       'option.a',

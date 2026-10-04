@@ -1077,25 +1077,134 @@ A feature is complete only when:
 
 ---
 
-# Future V2
+# V2
 
-Do NOT implement V2 now.
+V1 (Phases 0–8) is done. V2 keeps the V1 architecture, rules and Definition of Done; it adds features in the phases below, one at a time, with the same stop-and-report after each.
 
-Possible future features:
+Scope decided 2026-10-04:
 
-* Phone OTP (if not done in V1)
-* Bug report file attachments (Supabase Storage)
-* AI QA Coach
-* AI Test Case Review
-* AI Bug Report Review
-* AI Scenario Evaluation
-* Personalized learning recommendations
-* Advanced analytics
-* Gamification
-* Achievement system
-* Content version history in the Admin CMS
+* **In:** admin user management, content version history, bug report attachments, analytics, personalized recommendations, gamification (XP, levels, achievements).
+* **Not now:** AI features (QA Coach, AI review of test cases / bug reports / scenarios; grading stays deterministic), phone OTP (no SMS provider; email auth only).
 
-The V1 architecture should leave room for these features without implementing them now.
+V2 principles:
+
+* Derived values stay derived on read (XP, levels, achievements, analytics, recommendations). A table is added only for facts that cannot be derived (who changed what, files, what a user has already been shown).
+* Every new admin endpoint: `RolesGuard` **and** RLS `is_admin()`. Every new use of `service()` is named in `.claude/rules/logic.md` with its reason.
+* Learners never see other learners' data. Admin analytics are aggregates; per-learner data only in user management.
+
+---
+
+## Phase 9 — Admin user management
+
+Implement:
+
+* `GET /admin/users`: paginated (20/50/100), search by email or display name, filter by role and by status (active / disabled / email not verified). Row: email, display name, role, verified, disabled, created, last sign-in, lessons completed, exercises attempted.
+* `GET /admin/users/:id`: profile, per-skill progress, recent attempts (scores only; answers are the learner's own data and stay out).
+* `PATCH /admin/users/:id/role` (`learner` ↔ `admin`). An admin cannot change their own role (`409`), so the admin making a change stays one and the last admin can never be demoted (decided in Phase 9: this replaces a separate last-admin check). A disabled account is not promoted (`409`).
+* `POST /admin/users/:id/disable` and `/enable`: Supabase Auth ban (sign-in and refresh refused, so no session survives past its access token). Not on yourself, not on an admin (demote first). Already issued access tokens expire within an hour (same as test plan F1).
+* `admin_audit_log` table: actor, action, target user, before / after, time. Written for every role and status change; shown on the user page.
+* Emails and sign-in data come from `auth.users` through a `security definer` function that checks `is_admin()` (no service role for reads). Ban / unban / sign-out use the Supabase Auth admin API (service role, listed in logic.md).
+* Admin UI: Users page (list + filters in the URL), user page (details, progress, audit log, role and disable actions with confirmation).
+
+No hard delete of users in V2 (disable instead).
+
+Add tests:
+
+* Learner gets 403 on every `/admin/users*` endpoint; RLS blocks the function for learners
+* Self role change → 409 (hence no last-admin demotion), promoting a disabled account → 409
+* Disabled user cannot sign in or refresh; enable restores access
+* Every change writes one audit row
+
+Stop and report.
+
+---
+
+## Phase 10 — Content version history & bug report attachments
+
+Content version history:
+
+* `content_versions` table: entity type + id, version number, snapshot (jsonb: the editable fields, answer key included for exercises), author, time. Written by a DB trigger on update of courses, modules, lessons, exercises and answer keys, so no write path can skip it.
+* `GET /admin/{courses|modules|lessons|exercises}/:id/versions` (list), `…/versions/:version` (snapshot + diff with the current one), `POST …/versions/:version/restore`.
+* Restore is a normal update (new version, same validation): it never changes the parent, the exercise type or locked option / item / category ids of an attempted exercise (`409` with details). Status is not restored.
+* Snapshots are admin only (they hold answer keys). Kept forever in V2; size limit per row like the source tables.
+* UI: History tab in each editor, side-by-side diff (Markdown as text), restore with confirmation.
+
+Bug report attachments:
+
+* Private Storage bucket `bug-attachments`. The frontend uploads **through the backend** (multipart), never to Supabase directly.
+* Limits: images (png, jpg, webp) and text logs (txt, log); at most 4 MB per file (under the Vercel request limit), 3 files per attempt; type checked by content (magic bytes), not by name. Same limits in DTO, DB and frontend.
+* Upload before submit → attachment id; the attempt lists its ids; unattached uploads older than 24 hours are removed. Files are read back through short-lived signed URLs issued by the backend, only to the owner (and admins).
+* Attachments are never graded; the score does not change.
+* `attachments` table (owner, attempt, path, type, size) with RLS select own; inserts by the backend.
+
+Add tests:
+
+* Restore rules (locked ids, type, parent) and that every update writes a version
+* Learner cannot read versions (API + RLS)
+* Upload limits: size, count, wrong type with a renamed extension
+* User A cannot read or link user B's attachments
+
+Stop and report.
+
+---
+
+## Phase 11 — Analytics & recommendations
+
+Learner analytics (`GET /dashboard/analytics?range=`):
+
+* Score trend over time (best and latest per exercise), activity calendar (study days, learner's time zone like the streak), breakdown per skill and difficulty, estimated study time (sum of `estimated_minutes` of completed lessons).
+
+Admin analytics (`GET /admin/analytics`):
+
+* Active learners (7 / 30 days), new sign-ups, completion funnel per course (started → completed), per exercise: attempts, average best score, pass rate (flag exercises that are too hard or too easy), most-missed concepts across learners. Aggregates only; small groups (fewer than 5 learners) are not broken down further.
+
+Recommendations (`GET /recommendations`):
+
+* Rule-based and explained ("Because your best score in Boundary Value Analysis is 45"): lessons for weak skills, exercises to retry, lessons to review after a while, next course for the profile's experience level and learning goals. At most 5, each with its reason; derived on read; published content only.
+* Shown on the dashboard next to Continue learning.
+
+Charts follow the `dataviz` skill (light/dark, accessible); any chart library is justified before it is installed and loaded only on the pages that use it.
+
+Add tests:
+
+* Pure rules for each recommendation and each metric (unit)
+* Learner sees only their own analytics; admin aggregates never expose another learner's answers
+* Empty states for a new learner and an empty catalogue
+
+Stop and report.
+
+---
+
+## Phase 12 — Gamification
+
+* **XP** derived on read: completed lesson + its `estimated_minutes`, exercise by best score (only the best attempt counts, so retrying cannot farm XP), bonus for streak days. Levels from fixed XP thresholds.
+* **Achievements** defined in code (id, name, description, rule, icon), e.g. first lesson, first passed exercise, a course completed, a skill completed, 7-day streak, 10 perfect scores, every exercise type tried. Unlocked = rule true on the learner's history; unlock date = the event that made it true. Nothing is stored except which unlocks the learner has already been shown (`achievement_seen`), for the "new" badge.
+* Content unpublished later: achievements already earned stay (decided in the phase; documented in logic.md).
+* No public leaderboard (learners never see each other).
+* UI: level and XP on the dashboard and profile, Achievements page (earned + locked with progress), a notice when a new achievement is unlocked.
+
+Add tests:
+
+* XP and achievement rules (unit), retrying does not add XP
+* Seen state cannot be set for another user
+
+Stop and report.
+
+---
+
+## Phase 13 — V2 QA & polish
+
+* Security sweep of every V2 endpoint (403 / RLS / IDOR / file upload abuse), journey through the real stack, QA documents updated (test plan, scenarios, cases, regression checklist).
+* UI review light/dark × en/vi × desktop/mobile for every new screen.
+
+Stop and report.
+
+---
+
+# Future (after V2)
+
+* AI QA Coach, AI review of test cases / bug reports / scenarios (deterministic grading stays the source of truth)
+* Phone OTP (needs an SMS provider)
 
 ---
 

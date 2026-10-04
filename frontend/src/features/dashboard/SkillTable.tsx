@@ -14,18 +14,40 @@ function isIdle(skill: SkillProgress) {
   );
 }
 
+interface SkillTableProps {
+  skills: SkillProgress[];
+  /**
+   * Link skill names to the viewer's own Progress page. Off when the figures
+   * are someone else's (admin user page).
+   */
+  linked?: boolean;
+}
+
 /**
  * Every skill as a row: lessons (with a bar), exercises, average, status.
  * On phones the skills not started yet fold into one muted line.
  */
-export function SkillTable({ skills }: { skills: SkillProgress[] }) {
+export function SkillTable({ skills, linked = true }: SkillTableProps) {
   const { t } = useTranslation();
   const skillText = useSkillText();
   const idle = skills.filter(isIdle);
-  const progressLink = (code: string) => ({
-    pathname: '/progress',
-    search: listSearch({ skill: code, page: 1, pageSize: DEFAULT_PAGE_SIZE }),
-  });
+  const skillName = (skill: SkillProgress) =>
+    linked ? (
+      <Link
+        to={{
+          pathname: '/progress',
+          search: listSearch({
+            skill: skill.code,
+            page: 1,
+            pageSize: DEFAULT_PAGE_SIZE,
+          }),
+        }}
+      >
+        {skillText(skill).name}
+      </Link>
+    ) : (
+      skillText(skill).name
+    );
 
   return (
     <section className={styles.section} aria-labelledby="skills-title">
@@ -53,9 +75,7 @@ export function SkillTable({ skills }: { skills: SkillProgress[] }) {
               data-idle={isIdle(skill)}
             >
               <th scope="row" className={styles.skillName}>
-                <Link to={progressLink(skill.code)}>
-                  {skillText(skill).name}
-                </Link>
+                {skillName(skill)}
               </th>
               <td className={styles.skillLessons}>
                 {skill.totalLessons === 0 ? (
@@ -129,7 +149,7 @@ export function SkillTable({ skills }: { skills: SkillProgress[] }) {
           {idle.map((skill, index) => (
             <span key={skill.code}>
               {index > 0 && ', '}
-              <Link to={progressLink(skill.code)}>{skillText(skill).name}</Link>
+              {skillName(skill)}
             </span>
           ))}
         </p>

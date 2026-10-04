@@ -262,6 +262,39 @@ Rules:
 * Editing English text makes its Vietnamese translations stale (they fall back to English until retranslated).
 * **Translations.** The fields are the item's non-empty English texts in reading order: `title`, `description` (course, module), `content_md` (lesson), `question`, `option.<id>`, `category.<id>`, `item.<id>`, `explanation`, `model_answer`, `rubric.<id>` (exercise; the review texts too, which learners only read after an attempt). `status`: `current` (manual translation of this English), `stale` (of an older English: learners get English or machine text), `missing`. `machineText` is a cached machine translation of the current English, offered as a draft. A PUT is checked as a whole before anything is written; `text` is trimmed, `null` removes the manual translation, and the limit is the English field's (labels 500). Resending a stale text with the current `sourceHash` confirms it. Written as the admin (RLS: manual rows only).
 
+## Admin users (Phase 9)
+
+Same access rule as every `/admin/*` route (`RolesGuard` → `403` for learners, before validation). The database checks it again: the SQL functions behind these routes raise `42501` for a non-admin.
+
+| Method | Path | Body / query | Success | Errors |
+|---|---|---|---|---|
+| GET | `/admin/users` | `?search=&role=&status=&page=&pageSize=` | `200 AdminUserPage`, newest first | `400` unknown role / status / query parameter, search > 100, page size not 20/50/100 |
+| GET | `/admin/users/:id` | | `200 AdminUser` | `400`; `404` |
+| PATCH | `/admin/users/:id/role` | `{ role: "learner" \| "admin" }` | `200 AdminUser` (the same role changes nothing, no audit entry) | `400`; `404`; `409` your own role, or promoting a disabled account |
+| POST | `/admin/users/:id/disable` | | `200 AdminUser` (already disabled: unchanged) | `400`; `404`; `409` yourself or an admin; `503` Supabase Auth unavailable (nothing changed) |
+| POST | `/admin/users/:id/enable` | | `200 AdminUser` | `400`; `404`; `409` yourself; `503` |
+
+```json
+// AdminUserPage: { items: [AdminUserSummary], total, page, pageSize }
+// AdminUserSummary
+{ "id": "uuid", "email": "ana@example.com", "displayName": "Ana", "role": "learner",
+  "status": "active", "emailVerified": true, "disabled": false,
+  "createdAt": "…", "lastSignInAt": "…" | null, "lessonsCompleted": 4, "exercisesAttempted": 7 }
+// AdminUser: summary + experienceLevel, learningGoals,
+//   skills: [SkillProgress]            (same as the dashboard)
+//   recentAttempts: [{ id, exerciseId, exerciseType, question, lessonId, score, isCorrect, attemptedAt }]  (latest 10)
+//   auditLog: [{ id, action: "role_changed" | "disabled" | "enabled", from, to,
+//               actor: { id, displayName } | null, createdAt }]                                         (latest 50)
+```
+
+Rules:
+
+* **Status.** `disabled` = banned in Supabase Auth; `unverified` = not disabled, email not confirmed; `active` = neither. `search` matches part of the email or display name, case-insensitive (`%` and `_` are literal).
+* **Roles.** Nobody changes their own role, so the admin making a change stays an admin and there is always at least one. A disabled account is not promoted (enable it first). The change is effective on the user's next request (`RolesGuard` and `is_admin()` read `profiles.role`).
+* **Disable.** A Supabase Auth ban: sign-in fails with the generic `401 Invalid email or password` and refresh with `401`; an access token already issued keeps working until it expires (≤ 1 hour, same as test plan F1). Not on yourself; not on an admin (change the role first). Progress and attempts are kept. Users are never hard-deleted in V2.
+* **Audit.** Every real change (role, disable, enable) writes one `admin_audit_log` row: actor, before, after, time. Shown on the user page.
+* **Privacy.** The user page shows scores, never answers.
+
 ## Dashboard and progress (Phase 5)
 
 All routes need a JWT. Every value is derived on read from your lesson progress and attempts (views `v_user_skill_progress`, `v_user_exercise_results`, `v_user_activity`); nothing is stored. Only published content counts (the item and every parent), and only your own data.

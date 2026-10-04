@@ -50,6 +50,9 @@ Cloud project linked from `backend/`. No Docker, no local database. Current sche
 * **Views** are `with (security_invoker = true)` (never the default owner rights, which bypass RLS): the caller's RLS applies to every table read, so they need no policy of their own. Check content status explicitly in them (admins read drafts). `revoke all … from anon, authenticated; grant select … to authenticated`. Derived data lives in views, not tables (plant.md); a set-returning function (`activity_days`) is used when the result must be aggregated per call (a time zone) or would exceed the API row limit.
 * Integration-test cleanup checks the delete result (`if (error) throw error`): a silently failed delete leaves published `qalab-it-*` content that real learners see.
 * `security definer` functions: `set search_path = ''`, fully qualified names, `revoke execute … from public`, grant to the roles that need it.
+* Reading `auth.users` for admins: a security definer function that raises `42501` unless `is_admin()` as its first statement (`admin_list_users`, `admin_get_user`). Shared row logic goes in an internal function with **no** execute grant for API roles (`admin_user_rows()`), called only from the checked ones. Never expose `auth.users` through a view.
+* Audit logs: no write grant for any API role; rows are inserted by the security definer function that makes the change, in the same transaction (`admin_set_role`). When the change happens outside Postgres (a Supabase Auth ban), the logging function checks the real state first and refuses a row that does not match (`admin_log_status_change`, hint `state`).
+* Rules a function enforces on purpose raise `P0001` with a `hint` naming the rule (`self`, `disabled`, `state`) so the backend can map them to `409`; unknown rows `P0002`; not allowed `42501`. A rule that two callers could race on (two admins demoting each other) takes `pg_advisory_xact_lock` and re-checks the caller after it.
 
 ## Verification
 

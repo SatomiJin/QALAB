@@ -225,6 +225,15 @@ The same system, no new devices. The admin works on the plan itself, so the scre
 * **Out of date** is a quiet muted note with one small *Still correct* button, not a warning colour: it is a to-do, not a failure. *Start from the machine translation* is a link button under the field, only when a machine draft exists and the text is not current.
 * One primary, *Save translation*; saving with nothing changed says so instead of sending.
 
+## Admin users (Phase 9)
+
+* **No new device.** Users are openable items, so the list is item cards like courses: display name as the card link (with a condensed *Admin* / *You* mark after it), a gap-separated meta line (email, joined, last sign-in, lessons completed, exercises tried), and the account status stamp on the right.
+* **Account status is a stamp, not a verdict** (`AccountTag`), in the content-status shapes: *Active* Ink outline, *Email not verified* grey tint, *Disabled* dashed.
+* **Filters:** search field (name or email, submitted with Enter) + role and status selects, in the existing filter row; state in the URL.
+* **User page** = the settings layout read-only: trail, name as title, status line (stamp, role, email); *Account* as ruled label / value rows (200px label column, stacked on phones); the dashboard's *Skills* table without links (the links go to the viewer's own Progress); *Recent attempts* and *Change history* as test-log rows (time column, what, result with score + verdict).
+* **Side panel** (*Manage account*): role select with *Change role* under it (not beside it: the 280px panel is too narrow, and a row that wraps moved the button under the pointer), then *Disable account* as a red danger text button, or *Enable account*. Both role change and disable ask for confirmation saying what follows. No highlighter primary: managing an account is not the page's "do next". On your own account the panel is one muted sentence.
+* Log lists drop the last row's bottom rule so the next section's top rule closes them (no double rule).
+
 ## Dashboard and progress (Phase 5)
 
 Checked against a generic "learning dashboard" (stat cards with icons, progress rings, a chart, a streak flame): none of those. The dashboard is the **test summary report** of your learning; Progress is its **traceability matrix**.

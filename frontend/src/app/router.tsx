@@ -207,6 +207,22 @@ export const routes: RouteObject[] = [
                       'AdminExerciseTranslationPage',
                     ),
                   },
+                  {
+                    path: 'users',
+                    lazy: page(
+                      () =>
+                        import('../features/admin-users/pages/AdminUsersPage'),
+                      'AdminUsersPage',
+                    ),
+                  },
+                  {
+                    path: 'users/:userId',
+                    lazy: page(
+                      () =>
+                        import('../features/admin-users/pages/AdminUserPage'),
+                      'AdminUserPage',
+                    ),
+                  },
                   { path: '*', element: <NotFoundPage /> },
                 ],
               },

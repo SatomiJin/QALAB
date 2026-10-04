@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AdminModule } from './admin/admin.module.js';
+import { AdminUsersModule } from './admin-users/admin-users.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { RateLimitModule } from './common/rate-limit/rate-limit.module.js';
 import { AppConfigModule } from './config/app-config.module.js';
@@ -22,6 +23,7 @@ import { SupabaseModule } from './supabase/supabase.module.js';
     PracticeModule,
     DashboardModule,
     AdminModule,
+    AdminUsersModule,
   ],
 })
 export class AppModule {}

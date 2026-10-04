@@ -106,6 +106,14 @@ src/
 * Editing Markdown uses `MarkdownEditor` (live preview with `LessonMarkdown`, side by side from `lg`, tabs below).
 * Vietnamese translations: `TranslationEditor` (one ruled row per text, English next to the input, stacked for Markdown) on four lazy routes in `pages/AdminTranslationPage.tsx` (`/admin/courses/:courseId/translation`, `…/modules/:moduleId/translation`, `/admin/lessons/:lessonId/translation`, `/admin/exercises/:exerciseId/translation`), opened with `TranslationLink` from each editor and each module row. Pure helpers in `translation-form.ts` (which fields to send, labels, counts, API details → fields), tested in `translation-form.test.ts`. The form is not keyed: after a save it is refilled with `setFieldsValue`, and after a `409` the query is refetched so the new English shows while the typed text stays. `useSaveTranslations` puts the result in `adminKeys.translations(kind, id)` and refreshes the learner views.
 
+## Admin users
+
+* Feature folder `features/admin-users/` (own query keys `usersKeys`, starting with `adminUsers`, so CMS invalidations do not refetch it): `users-api.ts`, `queries.ts` (`useUserMutation`: the returned `AdminUser` goes into `usersKeys.user(id)`, lists are invalidated), pure helpers in `users.ts` (`?q=&role=&status=&page=&pageSize=` parse / write, remembered list for the back button, `allowedActions`, `auditRole`), tested in `users.test.ts`; pages `AdminUsersPage`, `AdminUserPage`; `AccountTag` (account status in the content-status stamp shapes).
+* `allowedActions(viewerId, user)` mirrors the API rules for the UI only (nothing on yourself, no disable of an admin, no promotion of a disabled account); the API answers `409` anyway and the page shows its message.
+* Role change and disable go through `modal.confirm` (from `App.useApp()`); on a refused role change the select returns to the saved role.
+* `SkillTable` takes `linked={false}` when the figures are not the viewer's own (its skill names link to the viewer's Progress otherwise).
+* Mock: `tests/e2e/support/mock-users.ts` (`api.accounts`) serves `/admin/users*` with the backend rules and audit; `MockUser.disabled` makes login and refresh fail like the backend. Seed attempts / skills for a user page with `api.accounts.attempts` / `.skills`.
+
 ## Markdown content
 
 * Render lesson/content Markdown (lessons, exercise questions, explanations, model answers) only with `LessonMarkdown` (`react-markdown` + `remark-gfm`; pass `testId` when it is not the lesson body). In lists, show a question as one plain line (`plainText`). Never enable raw HTML (`rehype-raw`) or use `dangerouslySetInnerHTML`: content comes from the database. An e2e test checks that `<script>` / HTML in content is not rendered.

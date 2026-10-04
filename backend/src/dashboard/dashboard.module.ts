@@ -11,5 +11,6 @@ import { ProgressService } from './progress.service.js';
   imports: [LearningModule, PracticeModule, TranslationModule],
   controllers: [DashboardController],
   providers: [DashboardService, ProgressService, DashboardRepository],
+  exports: [DashboardRepository],
 })
 export class DashboardModule {}

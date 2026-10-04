@@ -7,6 +7,7 @@ export interface NavLinkItem {
     | 'nav.progress'
     | 'nav.admin'
     | 'nav.courses'
+    | 'nav.users'
     | 'nav.quiz'
     | 'nav.testCase'
     | 'nav.bugReport'
@@ -37,6 +38,7 @@ export const ADMIN_LINKS: NavLinkItem[] = [
     labelKey: 'nav.courses',
     activePaths: ['/admin/lessons', '/admin/exercises'],
   },
+  { path: '/admin/users', labelKey: 'nav.users' },
 ];
 
 /** Practice kinds, shown as tabs on the Practice pages. */
