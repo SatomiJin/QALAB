@@ -37,6 +37,19 @@ API tests must be fast, deterministic and not send email. `test/support/fake-aut
 | Search / filters / clear, promote with confirmation and history, disable → sign-in fails → enable, no actions on yourself, server refusal keeps the old role, error / 404 / no-access | `frontend/tests/e2e/admin-users.spec.ts` |
 | axe on the Users list and a user page, both themes | `frontend/tests/e2e/accessibility.spec.ts` |
 
+## Glossary coverage
+
+| Requirement | Test |
+| --- | --- |
+| Phrase rules (twice in a term, used by another term, both apostrophes), related ids, matcher (whole words, plurals, acronyms, hyphens, code, Vietnamese), usage per course; seed file valid, seed validation and write plan (insert missing / `--update` keeps status / skip a phrase a CMS term owns) | `backend/src/glossary/glossary-rules.spec.ts` |
+| `403` learner / `401` on every admin route; learners and admins get published terms only, related limited to visible ones; create (draft) → usage → publish → empty PATCH unchanged → delete → `404`; validation and unknown fields `400`; phrase twice / self / unknown related `400`; taken slug / phrase `409`, also on a race (DB); delete unlinks related | `backend/test/api/glossary.e2e-spec.ts` (fake `test/support/fake-glossary.ts`) |
+| RLS: learners read published only, no writes (`42501` / no row); admin insert with audit columns from the JWT; audit columns not writable; phrase check `23514` and unique trigger `23505` hint `match`; self-related `23514`; delete unlinks related | `backend/test/integration/glossary-rls.int-spec.ts` |
+| Lesson linking (first occurrence, plurals, longest phrase, acronyms, whole words, Vietnamese, code / links / headings untouched), search and A–Z helpers | `frontend/src/features/glossary/glossary.test.ts` |
+| Admin list params in the URL, filters (topic, status, course, unused), pages, form ↔ request, API errors on fields | `frontend/src/features/admin-glossary/admin-glossary.test.ts` |
+| A term in a lesson opens its entry, Back returns; search, related links, Vietnamese; drafts hidden; error with retry | `frontend/tests/e2e/glossary.spec.ts` |
+| Admin: list with usage and course filter; create (slug from the term) → draft hidden from learners → publish → linked in a lesson; taken phrase / slug shown on the fields; delete; learner no-access; unknown id 404 | `frontend/tests/e2e/admin-glossary.spec.ts` (mock `support/mock-glossary.ts`) |
+| axe on `/glossary`, `/admin/glossary`, a term page and the new-term page, both themes | `frontend/tests/e2e/accessibility.spec.ts` |
+
 ## Phase 8 coverage (polish)
 
 | Requirement | Test |

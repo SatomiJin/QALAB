@@ -5,6 +5,7 @@ export interface NavLinkItem {
     | 'nav.learning'
     | 'nav.practice'
     | 'nav.progress'
+    | 'nav.glossary'
     | 'nav.admin'
     | 'nav.courses'
     | 'nav.users'
@@ -25,6 +26,7 @@ export const MAIN_LINKS: NavLinkItem[] = [
   { path: '/learning', labelKey: 'nav.learning' },
   { path: '/practice', labelKey: 'nav.practice' },
   { path: '/progress', labelKey: 'nav.progress' },
+  { path: '/glossary', labelKey: 'nav.glossary' },
 ];
 
 export const ADMIN_ENTRY: NavLinkItem = {
@@ -38,6 +40,7 @@ export const ADMIN_LINKS: NavLinkItem[] = [
     labelKey: 'nav.courses',
     activePaths: ['/admin/lessons', '/admin/exercises'],
   },
+  { path: '/admin/glossary', labelKey: 'nav.glossary' },
   { path: '/admin/users', labelKey: 'nav.users' },
 ];
 

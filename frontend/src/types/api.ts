@@ -846,3 +846,84 @@ export interface AdminUser extends AdminUserSummary {
 export interface ChangeRoleRequest {
   role: UserRole;
 }
+
+// Glossary --------------------------------------------------------------------
+
+/** Skill codes (fixed reference data, as the locale's `skills.*`). */
+export const SKILL_CODES = [
+  'fundamentals',
+  'testing_types',
+  'test_design',
+  'test_docs',
+  'defect_mgmt',
+  'api_testing',
+  'automation',
+] as const;
+export type SkillCode = (typeof SKILL_CODES)[number];
+
+/** Same limits as backend `GLOSSARY_LIMITS` and the DB checks. */
+export const GLOSSARY_LIMITS = {
+  slugLength: 64,
+  termLength: 80,
+  viNameLength: 80,
+  definitionLength: 500,
+  phrases: 10,
+  phraseMin: 2,
+  phraseMax: 60,
+  related: 8,
+} as const;
+
+/** Mirrors backend `GlossaryTermDto`. */
+export interface GlossaryTerm {
+  id: string;
+  /** Anchor on the glossary page: `/glossary#<slug>`. */
+  slug: string;
+  term: string;
+  viName: string | null;
+  skill: SkillCode;
+  /** Linked in lesson text: whole words, plurals too, all-caps in capitals only. */
+  matchPhrases: string[];
+  definitionEn: string;
+  definitionVi: string;
+  /** Slugs of related terms the caller can see. */
+  related: string[];
+}
+
+export interface GlossaryList {
+  items: GlossaryTerm[];
+}
+
+export interface GlossaryUsage {
+  /** Lessons (any status) whose English text uses one of the phrases. */
+  lessons: number;
+  courseIds: string[];
+}
+
+/** Mirrors backend `AdminGlossaryTermDto`. */
+export interface AdminGlossaryTerm extends GlossaryTerm {
+  status: ContentStatus;
+  relatedIds: string[];
+  usage: GlossaryUsage;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AdminGlossaryList {
+  items: AdminGlossaryTerm[];
+  /** Every course, for the usage filter. */
+  courses: { id: string; title: string }[];
+}
+
+export interface CreateGlossaryTermRequest {
+  slug: string;
+  term: string;
+  viName?: string | null;
+  skill: SkillCode;
+  matchPhrases?: string[];
+  definitionEn: string;
+  definitionVi: string;
+  relatedIds?: string[];
+  status?: ContentStatus;
+}
+
+export type UpdateGlossaryTermRequest = Partial<CreateGlossaryTermRequest>;

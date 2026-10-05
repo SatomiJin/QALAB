@@ -81,7 +81,7 @@ function Preview({ lesson }: { lesson: AdminLesson }) {
 
       <article className={lessonStyles.article}>
         {lesson.contentMd.trim() ? (
-          <LessonMarkdown source={lesson.contentMd} />
+          <LessonMarkdown source={lesson.contentMd} linkTerms />
         ) : (
           <EmptyState description={t('learning.lesson.empty')} />
         )}

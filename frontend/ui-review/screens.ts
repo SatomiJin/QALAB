@@ -137,6 +137,7 @@ for (const c of COMBOS) {
         ],
         ['dashboard', (p) => p.goto('/dashboard')],
         ['progress', (p) => p.goto('/progress')],
+        ['glossary', (p) => p.goto('/glossary#test-case')],
         ['profile', (p) => p.goto('/profile')],
         ['not-found', (p) => p.goto('/nowhere')],
         ['no-access', (p) => p.goto('/admin/courses')],
@@ -323,6 +324,14 @@ for (const c of COMBOS) {
         ],
         ['admin-users', (p) => p.goto('/admin/users')],
         ['admin-user', (p) => p.goto(`/admin/users/${learner.id}`)],
+        ['admin-glossary', (p) => p.goto('/admin/glossary')],
+        [
+          'admin-glossary-term',
+          (p) =>
+            p.goto(
+              `/admin/glossary/${[...api.glossary.terms.values()].find((t) => t.slug === 'test-case')!.id}`,
+            ),
+        ],
       ],
       c,
       info.project.name,

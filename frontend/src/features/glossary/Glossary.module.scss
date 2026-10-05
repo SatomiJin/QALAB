@@ -1,0 +1,158 @@
+@use '../../styles/tokens' as *;
+
+// A term inside lesson text: Ink like the text around it, dotted underline
+// (a normal link is solid), solid on hover. Says "explained elsewhere"
+// without turning the paragraph into a list of links.
+.termLink {
+  color: inherit;
+  text-decoration: underline dotted;
+  text-decoration-color: $color-ink-muted;
+  text-underline-offset: 3px;
+  @include color-transition;
+
+  &:hover {
+    color: inherit;
+    text-decoration-style: solid;
+    text-decoration-color: $color-ink;
+  }
+}
+
+// Page ------------------------------------------------------------------
+
+// Entries targeted by `#id` stop below the sticky top bar.
+%anchor {
+  scroll-margin-top: calc(#{$topbar-height} + #{$space-4});
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+  margin-bottom: $space-3;
+
+  > * {
+    min-width: 200px;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    > * {
+      flex: 1 1 100%;
+    }
+  }
+}
+
+.search {
+  flex: 2 1 280px;
+}
+
+.count {
+  margin: 0 0 $space-4;
+  @include type-small;
+  @include type-id;
+  color: $color-ink-muted;
+}
+
+.letters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+  margin-bottom: $space-5;
+}
+
+.letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  border: 1px solid $color-rule;
+  border-radius: $radius-control;
+  color: $color-ink;
+  font-weight: 600;
+  text-decoration: none;
+  @include color-transition;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink-muted;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    min-width: 40px;
+    height: 40px;
+  }
+}
+
+.group {
+  @extend %anchor;
+  margin-bottom: $space-6;
+}
+
+.groupTitle {
+  margin: 0;
+  padding-bottom: $space-2;
+  border-bottom: 1px solid $color-rule-strong;
+  @include type-section-title;
+}
+
+.term {
+  @extend %anchor;
+  max-width: $measure;
+  padding: $space-4 0;
+  border-bottom: 1px solid $color-rule;
+}
+
+.termName {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 $space-3;
+  margin: 0 0 $space-1;
+  font-size: $font-size-body;
+  line-height: $line-height-body;
+  font-weight: 650;
+}
+
+// The entry opened from a lesson: the highlighter stroke under its name
+// ("you are here"), never a fill.
+.termText {
+  .term[data-active] & {
+    box-shadow: inset 0 -3px 0 $color-highlighter;
+  }
+}
+
+.viName {
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.definition {
+  margin: 0 0 $space-2;
+
+  code {
+    padding: 0 $space-1;
+    border-radius: $radius-tag;
+    background: color-mix(in srgb, #{$color-ink} 7%, transparent);
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-size: 0.9em;
+    overflow-wrap: anywhere;
+  }
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1 $space-4;
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1 $space-3;
+
+  a {
+    color: $color-ink;
+  }
+}

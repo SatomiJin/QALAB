@@ -206,7 +206,7 @@ function LessonView({
 
           <article ref={articleRef} className={styles.article}>
             {lesson.contentMd.trim() ? (
-              <LessonMarkdown source={lesson.contentMd} />
+              <LessonMarkdown source={lesson.contentMd} linkTerms />
             ) : (
               <EmptyState description={t('learning.lesson.empty')} />
             )}

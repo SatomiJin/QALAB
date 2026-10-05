@@ -117,6 +117,7 @@ src/
 ## Markdown content
 
 * Render lesson/content Markdown (lessons, exercise questions, explanations, model answers) only with `LessonMarkdown` (`react-markdown` + `remark-gfm`; pass `testId` when it is not the lesson body). In lists, show a question as one plain line (`plainText`). Never enable raw HTML (`rehype-raw`) or use `dangerouslySetInnerHTML`: content comes from the database. An e2e test checks that `<script>` / HTML in content is not rendered.
+* `linkTerms` turns on glossary links (`remarkGlossary` from `features/glossary/link-terms.ts`: first occurrence of each term per text, skips code, links and headings; rendered as `GlossaryLink`). Use it only where leaving the page loses nothing (lesson page, admin preview); never on exercise, result or editor screens.
 * Content `h1` is demoted to `h2` (the page title is the only `h1`); external links open in a new tab with `rel="noreferrer noopener"`; tables scroll inside their own wrapper.
 
 ## Tests
@@ -140,6 +141,12 @@ src/
 * On phones the lesson's *Mark as complete* is in the bottom bar, shown only after 80% is read: scroll to the lesson's end first (e.g. the *Other lessons in this course* nav). Skills not started are hidden rows on phones (folded into `skills-not-started`): pick visible elements (`locator('visible=true')`).
 * Below 992px the language and theme switchers are in the nav drawer: call `openPreferences(page)` (opens the drawer only when needed) before clicking them, and press `Escape` to close the drawer before using the top bar again. Horizontal-overflow checks compare `scrollWidth` with `page.viewportSize().width`, never `innerWidth` / `clientWidth` (mobile emulation widens them).
 * Specs that open antd menus (user menu, language) also use `reducedMotion: 'reduce'`. Before a second `page.goto` in a signed-in test, wait for the first page's data: reloading while the refresh token rotates reuses the old one and signs out.
+
+## Glossary
+
+* Feature folder `features/glossary/`: `glossary-api.ts`, `queries.ts` (`glossaryKeys` all starting with `glossary`; `useGlossary` fresh for 5 min, shared by the page and the lesson links; admin queries `staleTime: 0` because usage depends on lesson text; `useGlossaryMutation` puts the returned term in its cache and invalidates the rest, `useDeleteGlossaryTerm` does not refetch the deleted term), `link-terms.ts` (`TermLinker`, `remarkGlossary`, `glossaryHref(slug)`), `glossary.ts` (search / A–Z helpers), `GlossaryPage`, `GlossaryLink`; tests in `glossary.test.ts`.
+* Admin pages in `features/admin-glossary/` (own folder like admin users): `admin-glossary.ts` (URL params `?q=&skill=&status=&course=&page=&pageSize=`, `course=unused`, client-side filter + pages, remembered list, form ↔ request, `termFieldErrors` maps `matchPhrases[i]` / `relatedIds[i]` onto the field and names the phrase), pages `AdminGlossaryPage`, `AdminGlossaryTermPage` (`/admin/glossary/new` and `/:termId`), tests in `admin-glossary.test.ts`. The slug follows the term on a new entry until edited (`slugify`).
+* Mock: `tests/e2e/support/mock-glossary.ts` (`api.glossary`: seeded terms incl. one draft, backend rules, `failing` switch), checked first in `MockApi.handle`'s default branch.
 
 ## Deployment
 

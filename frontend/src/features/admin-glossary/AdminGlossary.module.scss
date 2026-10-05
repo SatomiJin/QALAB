@@ -1,0 +1,53 @@
+@use '../../styles/tokens' as *;
+
+// Admin › Glossary (see docs/design.md › Glossary).
+
+.search {
+  flex: 2 1 280px;
+}
+
+.name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $space-1 $space-3;
+}
+
+.viName {
+  @include type-small;
+  color: $color-ink-muted;
+}
+
+.phrases {
+  overflow-wrap: anywhere;
+}
+
+// Side panel: where the term is used, then the page actions.
+.aside {
+  display: grid;
+  gap: $space-5;
+}
+
+.usage {
+  display: grid;
+  gap: $space-2;
+}
+
+// The side panel draws the rule above; no second one under the title.
+.usageTitle {
+  margin: 0;
+  font-size: $font-size-body;
+  line-height: $line-height-body;
+  font-weight: 650;
+}
+
+.usageCourses {
+  margin: 0;
+  padding-left: $space-4;
+}
+
+.hint {
+  margin: 0;
+  @include type-small;
+  color: $color-ink-muted;
+}

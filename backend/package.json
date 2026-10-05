@@ -24,7 +24,8 @@
     "db:migration": "supabase migration new",
     "db:types": "supabase gen types typescript --linked > src/supabase/database.types.ts",
     "db:push": "supabase db push",
-    "seed:curriculum": "nest build && node dist/curriculum/import-curriculum.js"
+    "seed:curriculum": "nest build && node dist/curriculum/import-curriculum.js",
+    "seed:glossary": "nest build && node dist/glossary/import-glossary.js"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",

@@ -112,6 +112,13 @@ export const routes: RouteObject[] = [
                 ),
               },
               {
+                path: 'glossary',
+                lazy: page(
+                  () => import('../features/glossary/GlossaryPage'),
+                  'GlossaryPage',
+                ),
+              },
+              {
                 path: 'profile',
                 lazy: page(
                   () => import('../features/profile/ProfilePage'),
@@ -205,6 +212,30 @@ export const routes: RouteObject[] = [
                       () =>
                         import('../features/admin/pages/AdminTranslationPage'),
                       'AdminExerciseTranslationPage',
+                    ),
+                  },
+                  {
+                    path: 'glossary',
+                    lazy: page(
+                      () =>
+                        import('../features/admin-glossary/pages/AdminGlossaryPage'),
+                      'AdminGlossaryPage',
+                    ),
+                  },
+                  {
+                    path: 'glossary/new',
+                    lazy: page(
+                      () =>
+                        import('../features/admin-glossary/pages/AdminGlossaryTermPage'),
+                      'AdminGlossaryTermPage',
+                    ),
+                  },
+                  {
+                    path: 'glossary/:termId',
+                    lazy: page(
+                      () =>
+                        import('../features/admin-glossary/pages/AdminGlossaryTermPage'),
+                      'AdminGlossaryTermPage',
                     ),
                   },
                   {

@@ -55,6 +55,7 @@ for (const theme of THEMES) {
         '/learning',
         '/practice',
         '/progress',
+        '/glossary',
         '/profile',
       ]) {
         await page.goto(path);
@@ -110,6 +111,9 @@ for (const theme of THEMES) {
         `/admin/exercises/${exercise.id}/translation`,
         '/admin/users',
         `/admin/users/${learner.id}`,
+        '/admin/glossary',
+        `/admin/glossary/${[...api.glossary.terms.values()][0].id}`,
+        '/admin/glossary/new',
       ]) {
         await page.goto(path);
         await expectNoViolations(page);

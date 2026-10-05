@@ -99,3 +99,30 @@ Ids (options, items, categories, rubric): `^[a-z0-9][a-z0-9_-]{0,39}$`, unique i
 * **Exercises:** 2–3 per lesson; mix the types (multiple choice and classification for concepts; test case, bug report and scenario for skills). The question must be answerable from the lesson. Wrong options are plausible mistakes, not jokes. Every explanation says why the right answer is right and why the tempting wrong one is wrong.
 * **Keywords** (free-text grading is keyword matching at the start of a word, case and accent insensitive): give each concept 2–6 keywords, including word stems (`boundar` finds boundary/boundaries), synonyms and **unaccented Vietnamese** forms (`bien`, `gia tri bien`, `khong hop le`) so answers in Vietnamese are graded too. Avoid keywords so short they match by accident (`id`, `ok`). The loader checks that the English **and** the Vietnamese model answer each match at least 70 % of the concepts.
 * **Severity vs priority** are taught and graded separately: severity = impact on the system, priority = urgency of the fix.
+
+## Glossary
+
+`seed/glossary/terms.json`: the QA glossary, one entry per term. Code: `src/glossary/` (`glossary-seed.ts` validate + plan, `import-glossary.ts` CLI).
+
+```bash
+npm run seed:glossary -- --dry-run   # validate the file, no network
+npm run seed:glossary                # insert missing terms (published)
+npm run seed:glossary -- --update    # the file wins for existing terms (their status is kept)
+```
+
+```json
+{
+  "slug": "test-case",
+  "term": "Test case",
+  "viName": "Ca kiểm thử",
+  "skill": "test_docs",
+  "match": ["test case"],
+  "definition": { "en": "…", "vi": "…" },
+  "related": ["test-scenario", "precondition"]
+}
+```
+
+* Matched by `slug`; new terms get the id UUID v5 of `glossary:<slug>`. Never deletes; edits made in the CMS survive unless `--update`.
+* Validated before anything is written: unknown fields, limits (same as the DB), skill codes, a phrase in one term only, related slugs that exist. A term whose phrase a term created in the CMS already uses is skipped with a warning.
+* `match` lists the phrases linked in lesson text (whole words, plurals too; ALL-CAPS phrases match capitals only). Leave it empty for words too common to link.
+* Service role from `backend/.env`; it changes the shared cloud database: say so before running it.

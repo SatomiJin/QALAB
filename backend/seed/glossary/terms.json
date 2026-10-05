@@ -1,0 +1,1934 @@
+[
+  {
+    "slug": "qa",
+    "term": "QA (Quality Assurance)",
+    "viName": "Đảm bảo chất lượng",
+    "skill": "fundamentals",
+    "match": [
+      "QA",
+      "quality assurance"
+    ],
+    "definition": {
+      "en": "Activities that prevent defects by improving the process that builds the software: reviews, standards, test planning. QA asks \"are we building it the right way?\".",
+      "vi": "Các hoạt động phòng ngừa defect bằng cách cải thiện quy trình làm ra phần mềm: review, tiêu chuẩn, lập test plan. QA hỏi \"ta có đang làm đúng cách không?\"."
+    },
+    "related": [
+      "qc",
+      "stlc"
+    ]
+  },
+  {
+    "slug": "qc",
+    "term": "QC (Quality Control)",
+    "viName": "Kiểm soát chất lượng",
+    "skill": "fundamentals",
+    "match": [
+      "QC",
+      "quality control"
+    ],
+    "definition": {
+      "en": "Activities that find defects in the product itself, mainly by testing it. QC checks the result; QA improves the process.",
+      "vi": "Các hoạt động tìm defect trong chính sản phẩm, chủ yếu bằng cách test. QC kiểm tra kết quả; QA cải thiện quy trình."
+    },
+    "related": [
+      "qa"
+    ]
+  },
+  {
+    "slug": "defect",
+    "term": "Defect (bug)",
+    "viName": "Lỗi",
+    "skill": "fundamentals",
+    "match": [
+      "defect",
+      "bug"
+    ],
+    "definition": {
+      "en": "A flaw in the code or a document that can make the software behave differently from what is expected. A person makes an error, the error leaves a defect, running the defect causes a failure.",
+      "vi": "Một sai sót trong code hoặc tài liệu khiến phần mềm có thể chạy khác với mong đợi. Con người mắc error, error để lại defect, chạy vào defect thì gây ra failure."
+    },
+    "related": [
+      "failure",
+      "bug-report",
+      "bug-lifecycle"
+    ]
+  },
+  {
+    "slug": "failure",
+    "term": "Failure",
+    "viName": "Sự cố khi chạy",
+    "skill": "fundamentals",
+    "match": [
+      "failure"
+    ],
+    "definition": {
+      "en": "What the user sees when a defect is executed: a wrong result, a crash, a missing screen. Not every defect causes a failure (the code may never run).",
+      "vi": "Điều người dùng thấy khi một defect được thực thi: kết quả sai, app bị crash, mất màn hình. Không phải defect nào cũng gây failure (đoạn code có thể không bao giờ chạy)."
+    },
+    "related": [
+      "defect"
+    ]
+  },
+  {
+    "slug": "sdlc",
+    "term": "SDLC",
+    "viName": "Vòng đời phát triển phần mềm",
+    "skill": "fundamentals",
+    "match": [
+      "SDLC",
+      "software development life cycle"
+    ],
+    "definition": {
+      "en": "Software Development Life Cycle: the phases a product goes through, from requirements and design to coding, testing, release and maintenance. Waterfall, V-model and Agile are different ways to run it.",
+      "vi": "Software Development Life Cycle: các giai đoạn một sản phẩm đi qua, từ requirement, thiết kế đến code, test, release và bảo trì. Waterfall, V-model và Agile là những cách vận hành khác nhau."
+    },
+    "related": [
+      "stlc",
+      "waterfall",
+      "v-model",
+      "agile"
+    ]
+  },
+  {
+    "slug": "stlc",
+    "term": "STLC",
+    "viName": "Vòng đời kiểm thử",
+    "skill": "fundamentals",
+    "match": [
+      "STLC",
+      "software testing life cycle"
+    ],
+    "definition": {
+      "en": "Software Testing Life Cycle: requirement analysis, test planning, test case design, environment setup, test execution and test closure. Each phase has entry and exit criteria.",
+      "vi": "Software Testing Life Cycle: phân tích requirement, lập test plan, thiết kế test case, chuẩn bị môi trường, chạy test và kết thúc test. Mỗi giai đoạn có entry criteria và exit criteria."
+    },
+    "related": [
+      "sdlc",
+      "test-plan",
+      "entry-criteria",
+      "exit-criteria"
+    ]
+  },
+  {
+    "slug": "waterfall",
+    "term": "Waterfall",
+    "viName": "Mô hình thác nước",
+    "skill": "fundamentals",
+    "match": [
+      "waterfall"
+    ],
+    "definition": {
+      "en": "An SDLC model where each phase finishes before the next starts. Testing comes late, so defects in the requirements are found late and cost more.",
+      "vi": "Mô hình SDLC trong đó giai đoạn trước xong mới sang giai đoạn sau. Test đến muộn, nên defect trong requirement bị phát hiện muộn và tốn kém hơn."
+    },
+    "related": [
+      "sdlc",
+      "v-model",
+      "agile"
+    ]
+  },
+  {
+    "slug": "v-model",
+    "term": "V-model",
+    "viName": "Mô hình chữ V",
+    "skill": "fundamentals",
+    "match": [
+      "V-model"
+    ],
+    "definition": {
+      "en": "An SDLC model that pairs every development phase with a test level: requirements with acceptance testing, design with system and integration testing, code with unit testing. Tests are planned early.",
+      "vi": "Mô hình SDLC ghép mỗi giai đoạn phát triển với một test level: requirement với acceptance testing, thiết kế với system và integration testing, code với unit testing. Test được lên kế hoạch từ sớm."
+    },
+    "related": [
+      "sdlc",
+      "test-level",
+      "waterfall"
+    ]
+  },
+  {
+    "slug": "agile",
+    "term": "Agile",
+    "viName": "Phát triển linh hoạt",
+    "skill": "fundamentals",
+    "match": [
+      "agile"
+    ],
+    "definition": {
+      "en": "A way of building software in short iterations with frequent feedback. Testers work inside the team during each iteration instead of waiting for a finished product.",
+      "vi": "Cách làm phần mềm theo các vòng lặp ngắn, nhận phản hồi thường xuyên. Tester làm việc ngay trong team ở mỗi vòng lặp thay vì chờ sản phẩm hoàn chỉnh."
+    },
+    "related": [
+      "scrum",
+      "sprint",
+      "user-story",
+      "shift-left"
+    ]
+  },
+  {
+    "slug": "scrum",
+    "term": "Scrum",
+    "skill": "fundamentals",
+    "match": [
+      "scrum"
+    ],
+    "definition": {
+      "en": "The most common Agile framework: work is planned in sprints, with a product backlog, a daily stand-up, a sprint review and a retrospective.",
+      "vi": "Framework Agile phổ biến nhất: công việc được lên kế hoạch theo sprint, có product backlog, daily stand-up, sprint review và retrospective."
+    },
+    "related": [
+      "agile",
+      "sprint"
+    ]
+  },
+  {
+    "slug": "sprint",
+    "term": "Sprint",
+    "skill": "fundamentals",
+    "match": [
+      "sprint"
+    ],
+    "definition": {
+      "en": "A fixed time box in Scrum, usually one to four weeks, at the end of which the team delivers a tested, potentially releasable increment.",
+      "vi": "Một khoảng thời gian cố định trong Scrum, thường từ một đến bốn tuần; cuối sprint team bàn giao phần sản phẩm đã được test và có thể release."
+    },
+    "related": [
+      "scrum",
+      "agile"
+    ]
+  },
+  {
+    "slug": "shift-left",
+    "term": "Shift-left",
+    "viName": "Test sớm",
+    "skill": "fundamentals",
+    "match": [
+      "shift-left",
+      "shift left"
+    ],
+    "definition": {
+      "en": "Moving testing earlier in the life cycle: reviewing requirements, testing while coding, automating early. The earlier a defect is found, the cheaper it is to fix.",
+      "vi": "Đưa việc test lên sớm hơn trong vòng đời: review requirement, test ngay khi code, tự động hoá sớm. Defect được phát hiện càng sớm thì sửa càng rẻ."
+    },
+    "related": [
+      "static-testing",
+      "agile"
+    ]
+  },
+  {
+    "slug": "verification",
+    "term": "Verification vs validation",
+    "viName": "Kiểm tra đúng đặc tả và đúng nhu cầu",
+    "skill": "fundamentals",
+    "match": [
+      "verification"
+    ],
+    "definition": {
+      "en": "Verification: are we building the product right (does it match the specification)? Validation: are we building the right product (does it meet the user's real need)?",
+      "vi": "Verification: ta có làm sản phẩm đúng cách không (có khớp đặc tả không)? Validation: ta có làm đúng sản phẩm không (có đáp ứng nhu cầu thật của người dùng không)?"
+    },
+    "related": [
+      "acceptance-testing",
+      "requirement"
+    ]
+  },
+  {
+    "slug": "static-testing",
+    "term": "Static testing",
+    "viName": "Kiểm thử tĩnh",
+    "skill": "fundamentals",
+    "match": [
+      "static testing"
+    ],
+    "definition": {
+      "en": "Finding defects without running the code: reviewing requirements, designs and code, or using static analysis tools.",
+      "vi": "Tìm defect mà không chạy code: review requirement, thiết kế và code, hoặc dùng công cụ phân tích tĩnh."
+    },
+    "related": [
+      "dynamic-testing",
+      "shift-left"
+    ]
+  },
+  {
+    "slug": "dynamic-testing",
+    "term": "Dynamic testing",
+    "viName": "Kiểm thử động",
+    "skill": "fundamentals",
+    "match": [
+      "dynamic testing"
+    ],
+    "definition": {
+      "en": "Testing by running the software and comparing what it does with what is expected. Most test levels and types are dynamic.",
+      "vi": "Test bằng cách chạy phần mềm và so sánh hành vi thực tế với mong đợi. Hầu hết test level và test type đều là dynamic."
+    },
+    "related": [
+      "static-testing"
+    ]
+  },
+  {
+    "slug": "exploratory-testing",
+    "term": "Exploratory testing",
+    "viName": "Kiểm thử khám phá",
+    "skill": "fundamentals",
+    "match": [
+      "exploratory testing",
+      "exploratory"
+    ],
+    "definition": {
+      "en": "Learning, designing and running tests at the same time, without written test cases, guided by a goal (a charter) and a time box. Good at finding what scripted tests miss.",
+      "vi": "Vừa tìm hiểu, vừa thiết kế, vừa chạy test cùng lúc, không có test case viết sẵn, theo một mục tiêu (charter) và khung thời gian. Giỏi tìm ra những gì test theo kịch bản bỏ sót."
+    },
+    "related": [
+      "error-guessing",
+      "test-case"
+    ]
+  },
+  {
+    "slug": "requirement",
+    "term": "Requirement",
+    "viName": "Yêu cầu",
+    "skill": "fundamentals",
+    "match": [],
+    "definition": {
+      "en": "A statement of what the software must do (functional) or how well it must do it (non-functional). Tests are derived from requirements and traced back to them.",
+      "vi": "Mô tả điều phần mềm phải làm (functional) hoặc phải làm tốt đến mức nào (non-functional). Test được suy ra từ requirement và truy vết ngược về requirement."
+    },
+    "related": [
+      "acceptance-criteria",
+      "user-story",
+      "rtm"
+    ]
+  },
+  {
+    "slug": "test-level",
+    "term": "Test level",
+    "viName": "Cấp độ kiểm thử",
+    "skill": "testing_types",
+    "match": [
+      "test level"
+    ],
+    "definition": {
+      "en": "A group of test activities at one stage of development: unit, integration, system and acceptance testing. Each has its own goals, test basis and owners.",
+      "vi": "Một nhóm hoạt động test ở một giai đoạn phát triển: unit, integration, system và acceptance testing. Mỗi level có mục tiêu, cơ sở test và người phụ trách riêng."
+    },
+    "related": [
+      "unit-testing",
+      "integration-testing",
+      "system-testing",
+      "acceptance-testing"
+    ]
+  },
+  {
+    "slug": "unit-testing",
+    "term": "Unit testing",
+    "viName": "Kiểm thử đơn vị",
+    "skill": "testing_types",
+    "match": [
+      "unit testing",
+      "unit test"
+    ],
+    "definition": {
+      "en": "Testing the smallest pieces of code (a function, a class) on their own, usually written and run by developers, fast and automated.",
+      "vi": "Test những phần code nhỏ nhất (một function, một class) một cách độc lập, thường do developer viết và chạy, nhanh và tự động."
+    },
+    "related": [
+      "test-level",
+      "integration-testing",
+      "mock",
+      "test-pyramid"
+    ]
+  },
+  {
+    "slug": "integration-testing",
+    "term": "Integration testing",
+    "viName": "Kiểm thử tích hợp",
+    "skill": "testing_types",
+    "match": [
+      "integration testing",
+      "integration test"
+    ],
+    "definition": {
+      "en": "Testing that components or systems work together: calls between modules, a service and its database, two APIs.",
+      "vi": "Test các thành phần hoặc hệ thống chạy cùng nhau: lời gọi giữa các module, một service với database của nó, hai API với nhau."
+    },
+    "related": [
+      "unit-testing",
+      "system-testing",
+      "contract-testing"
+    ]
+  },
+  {
+    "slug": "system-testing",
+    "term": "System testing",
+    "viName": "Kiểm thử hệ thống",
+    "skill": "testing_types",
+    "match": [
+      "system testing",
+      "system test"
+    ],
+    "definition": {
+      "en": "Testing the complete, integrated system against its requirements, in an environment close to production. Usually done by the test team.",
+      "vi": "Test toàn bộ hệ thống đã tích hợp so với requirement, trong môi trường gần giống production. Thường do team test thực hiện."
+    },
+    "related": [
+      "test-level",
+      "end-to-end-testing",
+      "acceptance-testing"
+    ]
+  },
+  {
+    "slug": "acceptance-testing",
+    "term": "Acceptance testing",
+    "viName": "Kiểm thử chấp nhận",
+    "skill": "testing_types",
+    "match": [
+      "acceptance testing",
+      "acceptance test"
+    ],
+    "definition": {
+      "en": "Testing whether the system is ready to be accepted by the user or customer: does it meet the business need? UAT is the most common form.",
+      "vi": "Test xem hệ thống đã sẵn sàng để người dùng hoặc khách hàng chấp nhận chưa: có đáp ứng nhu cầu nghiệp vụ không? UAT là dạng phổ biến nhất."
+    },
+    "related": [
+      "uat",
+      "acceptance-criteria",
+      "verification"
+    ]
+  },
+  {
+    "slug": "uat",
+    "term": "UAT",
+    "viName": "Kiểm thử chấp nhận người dùng",
+    "skill": "testing_types",
+    "match": [
+      "UAT",
+      "user acceptance testing"
+    ],
+    "definition": {
+      "en": "User Acceptance Testing: real users or the customer try the system on their own business scenarios before release.",
+      "vi": "User Acceptance Testing: người dùng thật hoặc khách hàng dùng thử hệ thống với các tình huống nghiệp vụ của họ trước khi release."
+    },
+    "related": [
+      "acceptance-testing"
+    ]
+  },
+  {
+    "slug": "functional-testing",
+    "term": "Functional testing",
+    "viName": "Kiểm thử chức năng",
+    "skill": "testing_types",
+    "match": [
+      "functional testing",
+      "functional test"
+    ],
+    "definition": {
+      "en": "Testing what the system does: features, business rules, inputs and outputs, against the functional requirements.",
+      "vi": "Test hệ thống làm được gì: tính năng, quy tắc nghiệp vụ, đầu vào và đầu ra, so với functional requirement."
+    },
+    "related": [
+      "non-functional-testing",
+      "black-box"
+    ]
+  },
+  {
+    "slug": "non-functional-testing",
+    "term": "Non-functional testing",
+    "viName": "Kiểm thử phi chức năng",
+    "skill": "testing_types",
+    "match": [
+      "non-functional testing",
+      "non-functional"
+    ],
+    "definition": {
+      "en": "Testing how well the system works: performance, security, usability, accessibility, compatibility, reliability.",
+      "vi": "Test hệ thống hoạt động tốt đến mức nào: performance, security, usability, accessibility, compatibility, độ tin cậy."
+    },
+    "related": [
+      "functional-testing",
+      "performance-testing",
+      "usability-testing",
+      "accessibility-testing"
+    ]
+  },
+  {
+    "slug": "smoke-testing",
+    "term": "Smoke testing",
+    "viName": "Kiểm thử khói",
+    "skill": "testing_types",
+    "match": [
+      "smoke testing",
+      "smoke test"
+    ],
+    "definition": {
+      "en": "A short, broad check that a new build works at all (it starts, you can log in, the main flows open) before spending time on deeper testing.",
+      "vi": "Một lượt kiểm tra ngắn và rộng xem build mới có chạy được không (khởi động được, đăng nhập được, các luồng chính mở được) trước khi tốn thời gian test sâu."
+    },
+    "related": [
+      "sanity-testing",
+      "regression-testing"
+    ]
+  },
+  {
+    "slug": "sanity-testing",
+    "term": "Sanity testing",
+    "viName": "Kiểm thử nhanh phần vừa sửa",
+    "skill": "testing_types",
+    "match": [
+      "sanity testing",
+      "sanity test",
+      "sanity check"
+    ],
+    "definition": {
+      "en": "A narrow, quick check that a specific fix or change works and makes sense, before wider testing. Smoke is broad and shallow; sanity is narrow.",
+      "vi": "Một lượt kiểm tra hẹp và nhanh xem một bản sửa hay thay đổi cụ thể có hoạt động hợp lý không, trước khi test rộng hơn. Smoke rộng và nông; sanity thì hẹp."
+    },
+    "related": [
+      "smoke-testing",
+      "retest"
+    ]
+  },
+  {
+    "slug": "regression-testing",
+    "term": "Regression testing",
+    "viName": "Kiểm thử hồi quy",
+    "skill": "testing_types",
+    "match": [
+      "regression testing",
+      "regression test",
+      "regression"
+    ],
+    "definition": {
+      "en": "Re-running tests on parts that did not change, to make sure a change or fix did not break something that used to work. A prime candidate for automation.",
+      "vi": "Chạy lại test cho những phần không thay đổi để chắc rằng thay đổi hay bản sửa không làm hỏng chỗ vốn đang chạy tốt. Ứng viên hàng đầu để tự động hoá."
+    },
+    "related": [
+      "retest",
+      "test-automation",
+      "smoke-testing"
+    ]
+  },
+  {
+    "slug": "retest",
+    "term": "Retest (confirmation testing)",
+    "viName": "Kiểm thử lại",
+    "skill": "testing_types",
+    "match": [
+      "retest",
+      "retesting",
+      "re-test",
+      "confirmation testing"
+    ],
+    "definition": {
+      "en": "Running the failed test again after a fix, to confirm that this defect is really fixed. Regression testing then checks nothing else broke.",
+      "vi": "Chạy lại test đã fail sau khi có bản sửa, để xác nhận đúng defect đó đã được sửa. Sau đó regression testing kiểm tra không có gì khác bị hỏng."
+    },
+    "related": [
+      "regression-testing",
+      "bug-lifecycle"
+    ]
+  },
+  {
+    "slug": "performance-testing",
+    "term": "Performance testing",
+    "viName": "Kiểm thử hiệu năng",
+    "skill": "testing_types",
+    "match": [
+      "performance testing",
+      "performance test"
+    ],
+    "definition": {
+      "en": "Measuring response time, throughput and resource use under a given load. Load and stress testing are kinds of performance testing.",
+      "vi": "Đo thời gian phản hồi, thông lượng và mức dùng tài nguyên dưới một tải nhất định. Load testing và stress testing là các dạng performance testing."
+    },
+    "related": [
+      "load-testing",
+      "stress-testing",
+      "non-functional-testing"
+    ]
+  },
+  {
+    "slug": "load-testing",
+    "term": "Load testing",
+    "viName": "Kiểm thử tải",
+    "skill": "testing_types",
+    "match": [
+      "load testing",
+      "load test"
+    ],
+    "definition": {
+      "en": "Checking the system under the load it is expected to handle (e.g. 500 users at once) to see that it stays within its performance targets.",
+      "vi": "Kiểm tra hệ thống dưới mức tải dự kiến (ví dụ 500 người dùng cùng lúc) để xem nó vẫn đạt mục tiêu hiệu năng."
+    },
+    "related": [
+      "performance-testing",
+      "stress-testing"
+    ]
+  },
+  {
+    "slug": "stress-testing",
+    "term": "Stress testing",
+    "viName": "Kiểm thử áp lực",
+    "skill": "testing_types",
+    "match": [
+      "stress testing",
+      "stress test"
+    ],
+    "definition": {
+      "en": "Pushing the system beyond its expected load to find where it breaks and whether it fails and recovers gracefully.",
+      "vi": "Đẩy hệ thống vượt mức tải dự kiến để tìm điểm gãy và xem nó lỗi và phục hồi có êm không."
+    },
+    "related": [
+      "performance-testing",
+      "load-testing"
+    ]
+  },
+  {
+    "slug": "usability-testing",
+    "term": "Usability testing",
+    "viName": "Kiểm thử tính dễ dùng",
+    "skill": "testing_types",
+    "match": [
+      "usability testing",
+      "usability"
+    ],
+    "definition": {
+      "en": "Checking how easy the product is to learn and use, often by watching real users try to complete tasks.",
+      "vi": "Kiểm tra sản phẩm có dễ học, dễ dùng không, thường bằng cách quan sát người dùng thật thực hiện các tác vụ."
+    },
+    "related": [
+      "accessibility-testing",
+      "non-functional-testing"
+    ]
+  },
+  {
+    "slug": "accessibility-testing",
+    "term": "Accessibility testing",
+    "viName": "Kiểm thử khả năng tiếp cận",
+    "skill": "testing_types",
+    "match": [
+      "accessibility testing",
+      "accessibility"
+    ],
+    "definition": {
+      "en": "Checking that people with disabilities can use the product: keyboard navigation, screen readers, colour contrast, text alternatives (WCAG).",
+      "vi": "Kiểm tra người khuyết tật có dùng được sản phẩm không: điều hướng bằng bàn phím, trình đọc màn hình, độ tương phản màu, văn bản thay thế (WCAG)."
+    },
+    "related": [
+      "usability-testing",
+      "non-functional-testing"
+    ]
+  },
+  {
+    "slug": "compatibility-testing",
+    "term": "Compatibility testing",
+    "viName": "Kiểm thử tương thích",
+    "skill": "testing_types",
+    "match": [
+      "compatibility testing",
+      "compatibility"
+    ],
+    "definition": {
+      "en": "Checking that the product works across browsers, devices, operating systems and screen sizes.",
+      "vi": "Kiểm tra sản phẩm chạy được trên nhiều trình duyệt, thiết bị, hệ điều hành và kích thước màn hình."
+    },
+    "related": [
+      "non-functional-testing"
+    ]
+  },
+  {
+    "slug": "end-to-end-testing",
+    "term": "End-to-end testing (E2E)",
+    "viName": "Kiểm thử đầu-cuối",
+    "skill": "testing_types",
+    "match": [
+      "end-to-end testing",
+      "end-to-end test",
+      "end-to-end",
+      "E2E"
+    ],
+    "definition": {
+      "en": "Testing a complete user journey through every layer (UI, API, database), the way a real user would, e.g. sign up → buy → receive the email.",
+      "vi": "Test trọn một hành trình người dùng qua mọi tầng (UI, API, database) như người dùng thật, ví dụ đăng ký → mua hàng → nhận email."
+    },
+    "related": [
+      "system-testing",
+      "test-pyramid",
+      "playwright"
+    ]
+  },
+  {
+    "slug": "black-box",
+    "term": "Black-box testing",
+    "viName": "Kiểm thử hộp đen",
+    "skill": "testing_types",
+    "match": [
+      "black-box testing",
+      "black-box",
+      "black box"
+    ],
+    "definition": {
+      "en": "Designing tests from the requirements and behaviour only, without looking at the code. Equivalence partitioning and boundary values are black-box techniques.",
+      "vi": "Thiết kế test chỉ dựa trên requirement và hành vi, không nhìn vào code. Equivalence partitioning và boundary value là các kỹ thuật black-box."
+    },
+    "related": [
+      "white-box",
+      "grey-box",
+      "equivalence-partitioning"
+    ]
+  },
+  {
+    "slug": "white-box",
+    "term": "White-box testing",
+    "viName": "Kiểm thử hộp trắng",
+    "skill": "testing_types",
+    "match": [
+      "white-box testing",
+      "white-box",
+      "white box"
+    ],
+    "definition": {
+      "en": "Designing tests from the internal structure of the code, e.g. to cover every statement or branch.",
+      "vi": "Thiết kế test dựa trên cấu trúc bên trong của code, ví dụ để phủ mọi câu lệnh hoặc mọi nhánh."
+    },
+    "related": [
+      "black-box",
+      "coverage"
+    ]
+  },
+  {
+    "slug": "grey-box",
+    "term": "Grey-box testing",
+    "viName": "Kiểm thử hộp xám",
+    "skill": "testing_types",
+    "match": [
+      "grey-box testing",
+      "grey-box",
+      "gray-box"
+    ],
+    "definition": {
+      "en": "Black-box testing helped by some knowledge of the inside: the database schema, the API, the architecture.",
+      "vi": "Test black-box có thêm hiểu biết một phần về bên trong: database schema, API, kiến trúc."
+    },
+    "related": [
+      "black-box",
+      "white-box"
+    ]
+  },
+  {
+    "slug": "positive-testing",
+    "term": "Positive testing",
+    "viName": "Kiểm thử dữ liệu hợp lệ",
+    "skill": "testing_types",
+    "match": [
+      "positive testing",
+      "positive test"
+    ],
+    "definition": {
+      "en": "Testing with valid input and normal use, to check that the system does what it should.",
+      "vi": "Test với dữ liệu hợp lệ và cách dùng bình thường, để kiểm tra hệ thống làm đúng điều nó phải làm."
+    },
+    "related": [
+      "negative-testing",
+      "happy-path"
+    ]
+  },
+  {
+    "slug": "negative-testing",
+    "term": "Negative testing",
+    "viName": "Kiểm thử dữ liệu không hợp lệ",
+    "skill": "testing_types",
+    "match": [
+      "negative testing",
+      "negative test"
+    ],
+    "definition": {
+      "en": "Testing with invalid input or unexpected use, to check that the system rejects it safely with a clear error instead of crashing or accepting bad data.",
+      "vi": "Test với dữ liệu không hợp lệ hoặc cách dùng bất thường, để kiểm tra hệ thống từ chối an toàn với thông báo lỗi rõ ràng thay vì crash hay nhận dữ liệu sai."
+    },
+    "related": [
+      "positive-testing",
+      "boundary-value-analysis",
+      "edge-case"
+    ]
+  },
+  {
+    "slug": "happy-path",
+    "term": "Happy path",
+    "viName": "Luồng chính suôn sẻ",
+    "skill": "testing_types",
+    "match": [
+      "happy path"
+    ],
+    "definition": {
+      "en": "The default scenario where everything goes right: valid data, no errors. Test it first, but never only it.",
+      "vi": "Kịch bản mặc định khi mọi thứ đều suôn sẻ: dữ liệu hợp lệ, không có lỗi. Test nó trước, nhưng đừng chỉ test mỗi nó."
+    },
+    "related": [
+      "positive-testing",
+      "negative-testing",
+      "edge-case"
+    ]
+  },
+  {
+    "slug": "equivalence-partitioning",
+    "term": "Equivalence partitioning",
+    "viName": "Phân vùng tương đương",
+    "skill": "test_design",
+    "match": [
+      "equivalence partitioning",
+      "equivalence partition",
+      "equivalence class"
+    ],
+    "definition": {
+      "en": "Splitting inputs into groups the system should treat the same way (e.g. age < 18, 18–65, > 65) and testing one value from each group instead of every value.",
+      "vi": "Chia dữ liệu đầu vào thành các nhóm mà hệ thống xử lý giống nhau (ví dụ tuổi < 18, 18–65, > 65) và test một giá trị trong mỗi nhóm thay vì mọi giá trị."
+    },
+    "related": [
+      "boundary-value-analysis",
+      "black-box"
+    ]
+  },
+  {
+    "slug": "boundary-value-analysis",
+    "term": "Boundary value analysis",
+    "viName": "Phân tích giá trị biên",
+    "skill": "test_design",
+    "match": [
+      "boundary value analysis",
+      "boundary value"
+    ],
+    "definition": {
+      "en": "Testing the values at the edges of each partition (17, 18 and 65, 66), because off-by-one mistakes like `>` instead of `>=` hide there.",
+      "vi": "Test các giá trị ở mép của mỗi phân vùng (17, 18 và 65, 66), vì lỗi lệch một như `>` thay cho `>=` hay nằm ở đó."
+    },
+    "related": [
+      "equivalence-partitioning",
+      "edge-case",
+      "negative-testing"
+    ]
+  },
+  {
+    "slug": "decision-table",
+    "term": "Decision table",
+    "viName": "Bảng quyết định",
+    "skill": "test_design",
+    "match": [
+      "decision table testing",
+      "decision table"
+    ],
+    "definition": {
+      "en": "A table of every combination of conditions and the expected action for each. Each column (rule) becomes a test case. Good for business rules with several conditions.",
+      "vi": "Bảng liệt kê mọi tổ hợp điều kiện và hành động mong đợi cho từng tổ hợp. Mỗi cột (rule) thành một test case. Hợp với quy tắc nghiệp vụ có nhiều điều kiện."
+    },
+    "related": [
+      "state-transition",
+      "equivalence-partitioning"
+    ]
+  },
+  {
+    "slug": "state-transition",
+    "term": "State transition testing",
+    "viName": "Kiểm thử chuyển trạng thái",
+    "skill": "test_design",
+    "match": [
+      "state transition testing",
+      "state transition"
+    ],
+    "definition": {
+      "en": "Modelling the system as states and the events that move it between them (e.g. an order: new → paid → shipped), then testing valid and invalid transitions.",
+      "vi": "Mô hình hoá hệ thống thành các trạng thái và sự kiện chuyển giữa chúng (ví dụ đơn hàng: mới → đã thanh toán → đã giao), rồi test các bước chuyển hợp lệ và không hợp lệ."
+    },
+    "related": [
+      "decision-table",
+      "bug-lifecycle"
+    ]
+  },
+  {
+    "slug": "error-guessing",
+    "term": "Error guessing",
+    "viName": "Đoán lỗi",
+    "skill": "test_design",
+    "match": [
+      "error guessing"
+    ],
+    "definition": {
+      "en": "Using experience to guess where defects are likely (empty fields, special characters, double clicks, time zones) and testing those cases.",
+      "vi": "Dùng kinh nghiệm để đoán chỗ dễ có defect (ô trống, ký tự đặc biệt, bấm hai lần, múi giờ) và test những trường hợp đó."
+    },
+    "related": [
+      "exploratory-testing",
+      "edge-case"
+    ]
+  },
+  {
+    "slug": "edge-case",
+    "term": "Edge case",
+    "viName": "Trường hợp biên",
+    "skill": "test_design",
+    "match": [
+      "edge case",
+      "corner case"
+    ],
+    "definition": {
+      "en": "An input or situation at the extreme of what is allowed or expected: the maximum length, an empty list, the last day of the month.",
+      "vi": "Dữ liệu hoặc tình huống ở mức cực của giới hạn cho phép hay dự kiến: độ dài tối đa, danh sách rỗng, ngày cuối tháng."
+    },
+    "related": [
+      "boundary-value-analysis",
+      "happy-path"
+    ]
+  },
+  {
+    "slug": "coverage",
+    "term": "Test coverage",
+    "viName": "Độ bao phủ",
+    "skill": "test_design",
+    "match": [
+      "test coverage",
+      "code coverage",
+      "coverage"
+    ],
+    "definition": {
+      "en": "How much of something the tests exercise: requirements covered by test cases, or lines and branches of code run by the tests. High coverage does not prove the absence of defects.",
+      "vi": "Mức độ mà test chạm tới: số requirement có test case, hoặc số dòng và nhánh code được test chạy qua. Coverage cao không chứng minh là không còn defect."
+    },
+    "related": [
+      "rtm",
+      "white-box"
+    ]
+  },
+  {
+    "slug": "test-plan",
+    "term": "Test plan",
+    "viName": "Kế hoạch kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test plan"
+    ],
+    "definition": {
+      "en": "The document for one project or release: scope, approach, resources, schedule, environments, risks, entry and exit criteria.",
+      "vi": "Tài liệu cho một dự án hoặc một lần release: phạm vi, cách tiếp cận, nguồn lực, lịch trình, môi trường, rủi ro, entry và exit criteria."
+    },
+    "related": [
+      "test-strategy",
+      "entry-criteria",
+      "exit-criteria",
+      "test-report"
+    ]
+  },
+  {
+    "slug": "test-strategy",
+    "term": "Test strategy",
+    "viName": "Chiến lược kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test strategy"
+    ],
+    "definition": {
+      "en": "The general testing approach of an organisation or product (levels, types, tools, automation), above any single test plan.",
+      "vi": "Cách tiếp cận test chung của một tổ chức hoặc sản phẩm (level, loại test, công cụ, tự động hoá), ở tầng cao hơn từng test plan."
+    },
+    "related": [
+      "test-plan"
+    ]
+  },
+  {
+    "slug": "test-scenario",
+    "term": "Test scenario",
+    "viName": "Kịch bản kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test scenario"
+    ],
+    "definition": {
+      "en": "A one-line description of what to test, e.g. \"a user resets a forgotten password\". One scenario is covered by several test cases.",
+      "vi": "Mô tả một dòng về điều cần test, ví dụ \"người dùng đặt lại mật khẩu đã quên\". Một scenario được phủ bằng nhiều test case."
+    },
+    "related": [
+      "test-case",
+      "use-case"
+    ]
+  },
+  {
+    "slug": "test-case",
+    "term": "Test case",
+    "viName": "Ca kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test case"
+    ],
+    "definition": {
+      "en": "A set of preconditions, steps, test data and an expected result that checks one thing. Running it gives a verdict: passed, failed, blocked or not run.",
+      "vi": "Tập hợp precondition, các bước, test data và expected result để kiểm tra một điều. Chạy nó cho ra một kết quả: passed, failed, blocked hoặc not run."
+    },
+    "related": [
+      "test-scenario",
+      "test-suite",
+      "precondition",
+      "expected-result",
+      "test-data"
+    ]
+  },
+  {
+    "slug": "test-suite",
+    "term": "Test suite",
+    "viName": "Bộ kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test suite"
+    ],
+    "definition": {
+      "en": "A group of test cases run together, e.g. the login suite, the smoke suite or the regression suite.",
+      "vi": "Một nhóm test case được chạy cùng nhau, ví dụ suite đăng nhập, suite smoke hay suite regression."
+    },
+    "related": [
+      "test-case",
+      "regression-testing"
+    ]
+  },
+  {
+    "slug": "test-data",
+    "term": "Test data",
+    "viName": "Dữ liệu kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test data"
+    ],
+    "definition": {
+      "en": "The exact input values and records a test needs (accounts, products, files). Written precisely so anyone can repeat the test.",
+      "vi": "Các giá trị đầu vào và bản ghi cụ thể mà test cần (tài khoản, sản phẩm, file). Ghi chính xác để ai cũng lặp lại được test."
+    },
+    "related": [
+      "test-case",
+      "precondition",
+      "fixture"
+    ]
+  },
+  {
+    "slug": "precondition",
+    "term": "Precondition",
+    "viName": "Điều kiện tiên quyết",
+    "skill": "test_docs",
+    "match": [
+      "precondition"
+    ],
+    "definition": {
+      "en": "What must be true before the test starts: a signed-in user, an item in the cart, a feature flag on.",
+      "vi": "Điều phải đúng trước khi bắt đầu test: người dùng đã đăng nhập, có sản phẩm trong giỏ, feature flag đã bật."
+    },
+    "related": [
+      "postcondition",
+      "test-case"
+    ]
+  },
+  {
+    "slug": "postcondition",
+    "term": "Postcondition",
+    "viName": "Điều kiện sau",
+    "skill": "test_docs",
+    "match": [
+      "postcondition"
+    ],
+    "definition": {
+      "en": "The state the system should be in after the test, e.g. the order is saved with status \"paid\".",
+      "vi": "Trạng thái hệ thống cần có sau khi test, ví dụ đơn hàng được lưu với trạng thái \"đã thanh toán\"."
+    },
+    "related": [
+      "precondition",
+      "expected-result"
+    ]
+  },
+  {
+    "slug": "expected-result",
+    "term": "Expected result",
+    "viName": "Kết quả mong đợi",
+    "skill": "test_docs",
+    "match": [
+      "expected result",
+      "expected behaviour",
+      "expected behavior"
+    ],
+    "definition": {
+      "en": "What the system should do, taken from the requirements, written before running the test so it can be compared with the actual result.",
+      "vi": "Điều hệ thống phải làm, lấy từ requirement, viết trước khi chạy test để so với actual result."
+    },
+    "related": [
+      "actual-result",
+      "test-case"
+    ]
+  },
+  {
+    "slug": "actual-result",
+    "term": "Actual result",
+    "viName": "Kết quả thực tế",
+    "skill": "test_docs",
+    "match": [
+      "actual result",
+      "actual behaviour",
+      "actual behavior"
+    ],
+    "definition": {
+      "en": "What the system really did when the test ran. A difference from the expected result is a failed test and usually a bug report.",
+      "vi": "Điều hệ thống thực sự làm khi chạy test. Khác với expected result là test fail và thường dẫn tới một bug report."
+    },
+    "related": [
+      "expected-result",
+      "bug-report"
+    ]
+  },
+  {
+    "slug": "entry-criteria",
+    "term": "Entry criteria",
+    "viName": "Tiêu chí bắt đầu",
+    "skill": "test_docs",
+    "match": [
+      "entry criteria"
+    ],
+    "definition": {
+      "en": "Conditions that must be met before a test activity can start, e.g. the build passed the smoke test and the test environment is ready.",
+      "vi": "Các điều kiện phải đạt trước khi một hoạt động test được bắt đầu, ví dụ build đã qua smoke test và test environment đã sẵn sàng."
+    },
+    "related": [
+      "exit-criteria",
+      "test-plan"
+    ]
+  },
+  {
+    "slug": "exit-criteria",
+    "term": "Exit criteria",
+    "viName": "Tiêu chí kết thúc",
+    "skill": "test_docs",
+    "match": [
+      "exit criteria"
+    ],
+    "definition": {
+      "en": "Conditions that say testing is done enough to stop, e.g. every planned test ran, no open critical defects, coverage above an agreed level.",
+      "vi": "Các điều kiện cho biết đã test đủ để dừng, ví dụ đã chạy mọi test theo kế hoạch, không còn defect critical đang mở, coverage đạt mức đã thống nhất."
+    },
+    "related": [
+      "entry-criteria",
+      "test-plan",
+      "test-report"
+    ]
+  },
+  {
+    "slug": "rtm",
+    "term": "RTM (traceability matrix)",
+    "viName": "Ma trận truy vết yêu cầu",
+    "skill": "test_docs",
+    "match": [
+      "RTM",
+      "traceability matrix",
+      "traceability"
+    ],
+    "definition": {
+      "en": "Requirements Traceability Matrix: a table linking every requirement to its test cases (and their results), so you can see what is untested.",
+      "vi": "Requirements Traceability Matrix: bảng nối mỗi requirement với các test case (và kết quả của chúng), để thấy chỗ nào chưa được test."
+    },
+    "related": [
+      "requirement",
+      "coverage",
+      "test-case"
+    ]
+  },
+  {
+    "slug": "test-report",
+    "term": "Test report",
+    "viName": "Báo cáo kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test summary report",
+      "test report"
+    ],
+    "definition": {
+      "en": "A summary of what was tested, the results, open defects and risks, so the team can decide whether to release.",
+      "vi": "Bản tóm tắt những gì đã test, kết quả, các defect còn mở và rủi ro, để team quyết định có release hay không."
+    },
+    "related": [
+      "test-plan",
+      "exit-criteria"
+    ]
+  },
+  {
+    "slug": "test-environment",
+    "term": "Test environment (staging)",
+    "viName": "Môi trường kiểm thử",
+    "skill": "test_docs",
+    "match": [
+      "test environment",
+      "staging"
+    ],
+    "definition": {
+      "en": "The hardware, software, data and configuration tests run on. Staging is the environment closest to production, used for the last checks before a release.",
+      "vi": "Phần cứng, phần mềm, dữ liệu và cấu hình nơi test được chạy. Staging là môi trường gần production nhất, dùng cho các lượt kiểm tra cuối trước khi release."
+    },
+    "related": [
+      "entry-criteria",
+      "test-data"
+    ]
+  },
+  {
+    "slug": "acceptance-criteria",
+    "term": "Acceptance criteria",
+    "viName": "Tiêu chí chấp nhận",
+    "skill": "test_docs",
+    "match": [
+      "acceptance criteria"
+    ],
+    "definition": {
+      "en": "The conditions a user story must meet to be accepted, often written as Given / When / Then. Each one is a starting point for test cases.",
+      "vi": "Các điều kiện một user story phải đạt để được chấp nhận, thường viết theo dạng Given / When / Then. Mỗi tiêu chí là điểm khởi đầu cho test case."
+    },
+    "related": [
+      "user-story",
+      "acceptance-testing"
+    ]
+  },
+  {
+    "slug": "user-story",
+    "term": "User story",
+    "viName": "Câu chuyện người dùng",
+    "skill": "test_docs",
+    "match": [
+      "user story",
+      "user stories"
+    ],
+    "definition": {
+      "en": "A short requirement from the user's point of view: \"As a learner, I want to save my progress, so that I can continue later.\" Comes with acceptance criteria.",
+      "vi": "Một requirement ngắn dưới góc nhìn người dùng: \"Là học viên, tôi muốn lưu tiến độ, để có thể học tiếp sau.\" Đi kèm acceptance criteria."
+    },
+    "related": [
+      "acceptance-criteria",
+      "agile",
+      "use-case"
+    ]
+  },
+  {
+    "slug": "use-case",
+    "term": "Use case",
+    "viName": "Ca sử dụng",
+    "skill": "test_docs",
+    "match": [
+      "use case"
+    ],
+    "definition": {
+      "en": "A description of how an actor interacts with the system to reach a goal, with a main flow and alternative or error flows. Each flow suggests test scenarios.",
+      "vi": "Mô tả cách một tác nhân tương tác với hệ thống để đạt một mục tiêu, gồm luồng chính và các luồng thay thế hoặc luồng lỗi. Mỗi luồng gợi ý test scenario."
+    },
+    "related": [
+      "test-scenario",
+      "user-story"
+    ]
+  },
+  {
+    "slug": "bug-report",
+    "term": "Bug report",
+    "viName": "Báo cáo lỗi",
+    "skill": "defect_mgmt",
+    "match": [
+      "bug report",
+      "defect report"
+    ],
+    "definition": {
+      "en": "The record of a defect: a clear title, environment, steps to reproduce, expected and actual result, severity, priority and evidence (screenshots, logs).",
+      "vi": "Bản ghi một defect: tiêu đề rõ ràng, môi trường, steps to reproduce, expected và actual result, severity, priority và bằng chứng (ảnh chụp, log)."
+    },
+    "related": [
+      "steps-to-reproduce",
+      "severity",
+      "priority",
+      "bug-lifecycle"
+    ]
+  },
+  {
+    "slug": "steps-to-reproduce",
+    "term": "Steps to reproduce",
+    "viName": "Các bước tái hiện",
+    "skill": "defect_mgmt",
+    "match": [
+      "steps to reproduce",
+      "reproduction steps",
+      "repro steps"
+    ],
+    "definition": {
+      "en": "The numbered, exact actions that make the defect appear again, starting from a known state. If a developer cannot reproduce a bug, it rarely gets fixed.",
+      "vi": "Các thao tác được đánh số, chính xác, làm defect xuất hiện lại, bắt đầu từ một trạng thái đã biết. Developer không tái hiện được bug thì hiếm khi bug được sửa."
+    },
+    "related": [
+      "bug-report",
+      "precondition"
+    ]
+  },
+  {
+    "slug": "severity",
+    "term": "Severity",
+    "viName": "Mức độ nghiêm trọng",
+    "skill": "defect_mgmt",
+    "match": [
+      "severity"
+    ],
+    "definition": {
+      "en": "How badly the defect hurts the system or the user (critical, major, minor, trivial). Set by the tester, from the technical impact.",
+      "vi": "Defect gây hại cho hệ thống hoặc người dùng nặng đến mức nào (critical, major, minor, trivial). Do tester đặt, dựa trên tác động kỹ thuật."
+    },
+    "related": [
+      "priority",
+      "bug-report",
+      "blocker"
+    ]
+  },
+  {
+    "slug": "priority",
+    "term": "Priority",
+    "viName": "Độ ưu tiên",
+    "skill": "defect_mgmt",
+    "match": [
+      "priority"
+    ],
+    "definition": {
+      "en": "How soon the defect should be fixed (high, medium, low), decided with the product owner from business impact. A typo in the logo: low severity, high priority.",
+      "vi": "Defect cần được sửa sớm đến mức nào (high, medium, low), quyết định cùng product owner dựa trên tác động kinh doanh. Lỗi chính tả trên logo: severity thấp, priority cao."
+    },
+    "related": [
+      "severity",
+      "triage"
+    ]
+  },
+  {
+    "slug": "blocker",
+    "term": "Blocker",
+    "viName": "Lỗi chặn",
+    "skill": "defect_mgmt",
+    "match": [
+      "blocker"
+    ],
+    "definition": {
+      "en": "A defect that stops testing or use of a feature completely, with no workaround. Tests that cannot run because of it are marked blocked.",
+      "vi": "Defect làm dừng hoàn toàn việc test hoặc việc dùng một tính năng, không có workaround. Các test không chạy được vì nó được đánh dấu blocked."
+    },
+    "related": [
+      "severity",
+      "workaround"
+    ]
+  },
+  {
+    "slug": "bug-lifecycle",
+    "term": "Bug lifecycle",
+    "viName": "Vòng đời của lỗi",
+    "skill": "defect_mgmt",
+    "match": [
+      "bug lifecycle",
+      "bug life cycle",
+      "defect lifecycle",
+      "defect life cycle"
+    ],
+    "definition": {
+      "en": "The states a bug report moves through: New → Assigned → In progress → Fixed → Retest → Closed, or Reopened if the retest fails. Some end as Duplicate, Won't fix or Not a bug.",
+      "vi": "Các trạng thái một bug report đi qua: New → Assigned → In progress → Fixed → Retest → Closed, hoặc Reopened nếu retest fail. Một số kết thúc là Duplicate, Won't fix hoặc Not a bug."
+    },
+    "related": [
+      "triage",
+      "retest",
+      "bug-resolution"
+    ]
+  },
+  {
+    "slug": "triage",
+    "term": "Triage",
+    "viName": "Phân loại lỗi",
+    "skill": "defect_mgmt",
+    "match": [
+      "triage"
+    ],
+    "definition": {
+      "en": "The meeting or step where new bug reports are reviewed: confirmed or rejected, given a priority, and assigned to someone.",
+      "vi": "Cuộc họp hoặc bước xem xét các bug report mới: xác nhận hay từ chối, đặt priority và giao cho người xử lý."
+    },
+    "related": [
+      "priority",
+      "bug-lifecycle",
+      "bug-resolution"
+    ]
+  },
+  {
+    "slug": "bug-resolution",
+    "term": "Duplicate, Won't fix, Not a bug, Deferred",
+    "viName": "Các kết luận khác của bug",
+    "skill": "defect_mgmt",
+    "match": [
+      "won't fix",
+      "not a bug"
+    ],
+    "definition": {
+      "en": "Outcomes other than Fixed. Duplicate: already reported. Won't fix: real, but not worth fixing. Not a bug: works as designed. Deferred: will be fixed in a later release.",
+      "vi": "Các kết luận khác ngoài Fixed. Duplicate: đã có người báo. Won't fix: có thật nhưng không đáng sửa. Not a bug: chạy đúng thiết kế. Deferred: sẽ sửa ở bản release sau."
+    },
+    "related": [
+      "bug-lifecycle",
+      "triage"
+    ]
+  },
+  {
+    "slug": "root-cause",
+    "term": "Root cause",
+    "viName": "Nguyên nhân gốc",
+    "skill": "defect_mgmt",
+    "match": [
+      "root cause analysis",
+      "root cause"
+    ],
+    "definition": {
+      "en": "The underlying reason a defect happened (a misunderstood requirement, a missing check), not just the line of code. Fixing the root cause prevents similar defects.",
+      "vi": "Lý do sâu xa khiến defect xảy ra (hiểu sai requirement, thiếu một bước kiểm tra), không chỉ là dòng code sai. Sửa tận gốc giúp tránh các defect tương tự."
+    },
+    "related": [
+      "defect"
+    ]
+  },
+  {
+    "slug": "workaround",
+    "term": "Workaround",
+    "viName": "Cách đi vòng",
+    "skill": "defect_mgmt",
+    "match": [
+      "workaround"
+    ],
+    "definition": {
+      "en": "A way for users to reach their goal despite the defect. Having one usually lowers the priority.",
+      "vi": "Cách giúp người dùng vẫn đạt mục tiêu dù còn defect. Có workaround thường làm giảm priority."
+    },
+    "related": [
+      "priority",
+      "blocker"
+    ]
+  },
+  {
+    "slug": "hotfix",
+    "term": "Hotfix",
+    "viName": "Bản sửa khẩn",
+    "skill": "defect_mgmt",
+    "match": [
+      "hotfix"
+    ],
+    "definition": {
+      "en": "An urgent fix released to production outside the normal release cycle, for a critical defect. Needs a focused retest and regression check.",
+      "vi": "Bản sửa khẩn cấp được đưa lên production ngoài chu kỳ release thông thường, cho một defect nghiêm trọng. Cần retest tập trung và kiểm tra regression."
+    },
+    "related": [
+      "retest",
+      "regression-testing"
+    ]
+  },
+  {
+    "slug": "api",
+    "term": "API",
+    "viName": "Giao diện lập trình ứng dụng",
+    "skill": "api_testing",
+    "match": [
+      "API"
+    ],
+    "definition": {
+      "en": "Application Programming Interface: the contract one program uses to talk to another. In web apps, usually HTTP endpoints that send and receive JSON.",
+      "vi": "Application Programming Interface: giao ước để một chương trình nói chuyện với chương trình khác. Trong web app thường là các HTTP endpoint gửi và nhận JSON."
+    },
+    "related": [
+      "rest",
+      "endpoint",
+      "http-method",
+      "json"
+    ]
+  },
+  {
+    "slug": "rest",
+    "term": "REST",
+    "skill": "api_testing",
+    "match": [
+      "REST"
+    ],
+    "definition": {
+      "en": "A common style for HTTP APIs: resources have URLs (`/courses/42`), HTTP methods say what to do with them, status codes say how it went.",
+      "vi": "Một kiểu thiết kế HTTP API phổ biến: mỗi tài nguyên có URL (`/courses/42`), HTTP method cho biết làm gì với nó, status code cho biết kết quả."
+    },
+    "related": [
+      "api",
+      "endpoint",
+      "http-method",
+      "status-code"
+    ]
+  },
+  {
+    "slug": "endpoint",
+    "term": "Endpoint",
+    "viName": "Điểm cuối API",
+    "skill": "api_testing",
+    "match": [
+      "endpoint"
+    ],
+    "definition": {
+      "en": "One operation of an API: a method plus a path, e.g. `POST /auth/login`.",
+      "vi": "Một thao tác của API: một method cộng một đường dẫn, ví dụ `POST /auth/login`."
+    },
+    "related": [
+      "api",
+      "http-method"
+    ]
+  },
+  {
+    "slug": "http-method",
+    "term": "HTTP method",
+    "viName": "Phương thức HTTP",
+    "skill": "api_testing",
+    "match": [
+      "HTTP method"
+    ],
+    "definition": {
+      "en": "The verb of a request: GET reads, POST creates, PUT replaces, PATCH changes part, DELETE removes.",
+      "vi": "Động từ của một request: GET đọc, POST tạo mới, PUT thay thế, PATCH sửa một phần, DELETE xoá."
+    },
+    "related": [
+      "endpoint",
+      "idempotent",
+      "status-code"
+    ]
+  },
+  {
+    "slug": "status-code",
+    "term": "Status code",
+    "viName": "Mã trạng thái",
+    "skill": "api_testing",
+    "match": [
+      "status code"
+    ],
+    "definition": {
+      "en": "The three-digit result of an HTTP request: 2xx success (200, 201, 204), 4xx client error (400, 401, 403, 404, 409), 5xx server error (500).",
+      "vi": "Kết quả ba chữ số của một HTTP request: 2xx thành công (200, 201, 204), 4xx lỗi phía client (400, 401, 403, 404, 409), 5xx lỗi phía server (500)."
+    },
+    "related": [
+      "http-method",
+      "http-header",
+      "negative-testing"
+    ]
+  },
+  {
+    "slug": "http-header",
+    "term": "HTTP header",
+    "skill": "api_testing",
+    "match": [
+      "HTTP header",
+      "header"
+    ],
+    "definition": {
+      "en": "A name–value pair sent with a request or response, e.g. `Content-Type: application/json` or `Authorization: Bearer <token>`.",
+      "vi": "Một cặp tên–giá trị gửi kèm request hoặc response, ví dụ `Content-Type: application/json` hoặc `Authorization: Bearer <token>`."
+    },
+    "related": [
+      "status-code",
+      "access-token"
+    ]
+  },
+  {
+    "slug": "request-body",
+    "term": "Request body (payload)",
+    "viName": "Phần thân request",
+    "skill": "api_testing",
+    "match": [
+      "request body",
+      "payload"
+    ],
+    "definition": {
+      "en": "The data sent with a POST, PUT or PATCH request, usually JSON. Test missing fields, wrong types, extra fields and limits.",
+      "vi": "Dữ liệu gửi kèm request POST, PUT hoặc PATCH, thường là JSON. Hãy test field bị thiếu, sai kiểu, field thừa và các giới hạn."
+    },
+    "related": [
+      "json",
+      "schema",
+      "query-parameter"
+    ]
+  },
+  {
+    "slug": "query-parameter",
+    "term": "Query parameter",
+    "viName": "Tham số truy vấn",
+    "skill": "api_testing",
+    "match": [
+      "query parameter",
+      "query string",
+      "path parameter"
+    ],
+    "definition": {
+      "en": "Values in the URL. Path parameters identify a resource (`/lessons/:id`); query parameters after `?` filter or page it (`?page=2&pageSize=20`).",
+      "vi": "Các giá trị nằm trong URL. Path parameter xác định tài nguyên (`/lessons/:id`); query parameter sau dấu `?` dùng để lọc hoặc phân trang (`?page=2&pageSize=20`)."
+    },
+    "related": [
+      "request-body",
+      "endpoint"
+    ]
+  },
+  {
+    "slug": "json",
+    "term": "JSON",
+    "skill": "api_testing",
+    "match": [
+      "JSON"
+    ],
+    "definition": {
+      "en": "JavaScript Object Notation: the text format most APIs use for data, made of objects `{}`, arrays `[]`, strings, numbers, booleans and `null`.",
+      "vi": "JavaScript Object Notation: định dạng văn bản mà hầu hết API dùng cho dữ liệu, gồm object `{}`, array `[]`, chuỗi, số, boolean và `null`."
+    },
+    "related": [
+      "schema",
+      "request-body"
+    ]
+  },
+  {
+    "slug": "schema",
+    "term": "Schema",
+    "viName": "Lược đồ dữ liệu",
+    "skill": "api_testing",
+    "match": [
+      "JSON Schema",
+      "schema"
+    ],
+    "definition": {
+      "en": "A description of the shape of data: which fields exist, their types, which are required. Schema validation checks every response against it.",
+      "vi": "Mô tả hình dạng của dữ liệu: có những field nào, kiểu gì, field nào bắt buộc. Schema validation kiểm tra mọi response theo nó."
+    },
+    "related": [
+      "json",
+      "contract-testing"
+    ]
+  },
+  {
+    "slug": "contract-testing",
+    "term": "Contract testing",
+    "viName": "Kiểm thử hợp đồng API",
+    "skill": "api_testing",
+    "match": [
+      "contract testing",
+      "contract test"
+    ],
+    "definition": {
+      "en": "Checking that an API still keeps the agreement its consumers rely on (endpoints, fields, types, status codes), so a change on one side does not break the other.",
+      "vi": "Kiểm tra API vẫn giữ đúng giao ước mà bên sử dụng dựa vào (endpoint, field, kiểu dữ liệu, status code), để thay đổi ở một bên không làm hỏng bên kia."
+    },
+    "related": [
+      "schema",
+      "integration-testing"
+    ]
+  },
+  {
+    "slug": "authentication",
+    "term": "Authentication",
+    "viName": "Xác thực",
+    "skill": "api_testing",
+    "match": [
+      "authentication"
+    ],
+    "definition": {
+      "en": "Proving who you are (password, token). Failing it is `401 Unauthorized`.",
+      "vi": "Chứng minh bạn là ai (mật khẩu, token). Không qua được thì là `401 Unauthorized`."
+    },
+    "related": [
+      "authorization",
+      "access-token",
+      "jwt"
+    ]
+  },
+  {
+    "slug": "authorization",
+    "term": "Authorization",
+    "viName": "Phân quyền",
+    "skill": "api_testing",
+    "match": [
+      "authorization"
+    ],
+    "definition": {
+      "en": "Deciding what an authenticated user may do (a learner cannot open admin pages). Failing it is `403 Forbidden`.",
+      "vi": "Quyết định người dùng đã xác thực được làm gì (học viên không mở được trang quản trị). Không đủ quyền thì là `403 Forbidden`."
+    },
+    "related": [
+      "authentication",
+      "status-code"
+    ]
+  },
+  {
+    "slug": "access-token",
+    "term": "Access token",
+    "skill": "api_testing",
+    "match": [
+      "access token",
+      "refresh token",
+      "bearer token"
+    ],
+    "definition": {
+      "en": "A short-lived credential sent with each request (`Authorization: Bearer …`). When it expires, a longer-lived refresh token gets a new one.",
+      "vi": "Thông tin xác thực ngắn hạn gửi kèm mỗi request (`Authorization: Bearer …`). Khi nó hết hạn, refresh token (sống lâu hơn) được dùng để lấy cái mới."
+    },
+    "related": [
+      "jwt",
+      "authentication",
+      "http-header"
+    ]
+  },
+  {
+    "slug": "jwt",
+    "term": "JWT",
+    "skill": "api_testing",
+    "match": [
+      "JWT"
+    ],
+    "definition": {
+      "en": "JSON Web Token: a signed token that carries claims (user id, expiry). The server checks the signature, so the token cannot be changed by the client.",
+      "vi": "JSON Web Token: token có chữ ký, chứa các claim (user id, thời hạn). Server kiểm tra chữ ký nên client không sửa được token."
+    },
+    "related": [
+      "access-token",
+      "authentication"
+    ]
+  },
+  {
+    "slug": "idempotent",
+    "term": "Idempotent",
+    "viName": "Lặp lại không đổi kết quả",
+    "skill": "api_testing",
+    "match": [
+      "idempotent",
+      "idempotency"
+    ],
+    "definition": {
+      "en": "A request that has the same effect whether it is sent once or many times. GET, PUT and DELETE should be idempotent; POST usually is not.",
+      "vi": "Một request có cùng tác dụng dù gửi một lần hay nhiều lần. GET, PUT và DELETE nên idempotent; POST thường thì không."
+    },
+    "related": [
+      "http-method"
+    ]
+  },
+  {
+    "slug": "postman",
+    "term": "Postman",
+    "skill": "api_testing",
+    "match": [
+      "Postman"
+    ],
+    "definition": {
+      "en": "A popular desktop tool for sending API requests by hand, saving them in collections and adding simple checks.",
+      "vi": "Công cụ desktop phổ biến để gửi API request thủ công, lưu thành collection và thêm các kiểm tra đơn giản."
+    },
+    "related": [
+      "curl",
+      "api"
+    ]
+  },
+  {
+    "slug": "curl",
+    "term": "curl",
+    "skill": "api_testing",
+    "match": [
+      "curl"
+    ],
+    "definition": {
+      "en": "A command-line tool for sending HTTP requests, e.g. `curl -i https://api.example.com/health`. Handy for sharing an exact request in a bug report.",
+      "vi": "Công cụ dòng lệnh để gửi HTTP request, ví dụ `curl -i https://api.example.com/health`. Tiện để đưa đúng request vào bug report."
+    },
+    "related": [
+      "postman",
+      "bug-report"
+    ]
+  },
+  {
+    "slug": "test-automation",
+    "term": "Test automation",
+    "viName": "Kiểm thử tự động",
+    "skill": "automation",
+    "match": [
+      "test automation",
+      "automated test",
+      "automated testing"
+    ],
+    "definition": {
+      "en": "Using code to run tests and check results without a person. Pays off for tests that run often (regression, smoke); exploratory testing stays manual.",
+      "vi": "Dùng code để chạy test và kiểm tra kết quả mà không cần người. Có lời với test chạy thường xuyên (regression, smoke); exploratory testing vẫn làm tay."
+    },
+    "related": [
+      "test-pyramid",
+      "playwright",
+      "ci",
+      "flaky-test"
+    ]
+  },
+  {
+    "slug": "test-pyramid",
+    "term": "Test pyramid",
+    "viName": "Kim tự tháp kiểm thử",
+    "skill": "automation",
+    "match": [
+      "test pyramid",
+      "testing pyramid"
+    ],
+    "definition": {
+      "en": "A guide for balancing automated tests: many fast unit tests at the bottom, fewer integration and API tests, a few slow end-to-end tests at the top.",
+      "vi": "Hướng dẫn cân bằng test tự động: đáy là nhiều unit test nhanh, giữa là ít integration và API test hơn, đỉnh là vài end-to-end test chậm."
+    },
+    "related": [
+      "unit-testing",
+      "end-to-end-testing",
+      "test-automation"
+    ]
+  },
+  {
+    "slug": "playwright",
+    "term": "Playwright",
+    "skill": "automation",
+    "match": [
+      "Playwright"
+    ],
+    "definition": {
+      "en": "A browser automation and testing framework (Chromium, Firefox, WebKit) with auto-waiting, locators and built-in assertions. This app's own UI tests use it.",
+      "vi": "Framework tự động hoá và test trình duyệt (Chromium, Firefox, WebKit) có auto-waiting, locator và assertion sẵn. Chính các UI test của app này dùng nó."
+    },
+    "related": [
+      "locator",
+      "assertion",
+      "end-to-end-testing"
+    ]
+  },
+  {
+    "slug": "locator",
+    "term": "Locator",
+    "viName": "Bộ định vị phần tử",
+    "skill": "automation",
+    "match": [
+      "locator",
+      "selector"
+    ],
+    "definition": {
+      "en": "The way an automated test finds an element on the page, preferably by role and name (`getByRole('button', { name: 'Save' })`) or a test id, not by fragile CSS paths.",
+      "vi": "Cách test tự động tìm một phần tử trên trang, nên theo role và tên (`getByRole('button', { name: 'Save' })`) hoặc test id, không theo đường dẫn CSS dễ vỡ."
+    },
+    "related": [
+      "playwright",
+      "page-object",
+      "flaky-test"
+    ]
+  },
+  {
+    "slug": "assertion",
+    "term": "Assertion",
+    "viName": "Câu kiểm định",
+    "skill": "automation",
+    "match": [
+      "assertion"
+    ],
+    "definition": {
+      "en": "The line in an automated test that compares the actual result with the expected one, e.g. `expect(total).toBe(42)`. A test without assertions checks nothing.",
+      "vi": "Dòng trong test tự động so sánh actual result với expected result, ví dụ `expect(total).toBe(42)`. Test không có assertion thì không kiểm tra gì cả."
+    },
+    "related": [
+      "expected-result",
+      "playwright"
+    ]
+  },
+  {
+    "slug": "fixture",
+    "term": "Fixture",
+    "skill": "automation",
+    "match": [
+      "fixture"
+    ],
+    "definition": {
+      "en": "Setup that a test needs and gets automatically (a browser page, a signed-in user, seeded data), and that is cleaned up afterwards.",
+      "vi": "Phần chuẩn bị mà test cần và được cấp tự động (một trang trình duyệt, một người dùng đã đăng nhập, dữ liệu mẫu), và được dọn dẹp sau đó."
+    },
+    "related": [
+      "test-data",
+      "precondition"
+    ]
+  },
+  {
+    "slug": "page-object",
+    "term": "Page Object Model",
+    "skill": "automation",
+    "match": [
+      "page object model",
+      "page object"
+    ],
+    "definition": {
+      "en": "A pattern that puts the locators and actions of one page in one class, so tests read like steps and a UI change is fixed in one place.",
+      "vi": "Mẫu thiết kế gom locator và thao tác của một trang vào một class, để test đọc như các bước và khi UI đổi chỉ cần sửa một chỗ."
+    },
+    "related": [
+      "locator",
+      "test-automation"
+    ]
+  },
+  {
+    "slug": "flaky-test",
+    "term": "Flaky test",
+    "viName": "Test chập chờn",
+    "skill": "automation",
+    "match": [
+      "flaky test",
+      "flaky"
+    ],
+    "definition": {
+      "en": "A test that sometimes passes and sometimes fails on the same code, often because of timing, shared data or order. Flaky tests destroy trust in the suite.",
+      "vi": "Test lúc pass lúc fail trên cùng một code, thường do thời gian chờ, dữ liệu dùng chung hoặc thứ tự chạy. Test flaky làm mất niềm tin vào cả bộ test."
+    },
+    "related": [
+      "locator",
+      "test-automation"
+    ]
+  },
+  {
+    "slug": "mock",
+    "term": "Mock and stub",
+    "viName": "Đối tượng giả lập",
+    "skill": "automation",
+    "match": [
+      "mock",
+      "stub",
+      "mocking"
+    ],
+    "definition": {
+      "en": "Fake versions of a dependency used in tests. A stub returns canned answers; a mock also checks how it was called. They make tests fast and independent of real services.",
+      "vi": "Phiên bản giả của một thành phần phụ thuộc, dùng trong test. Stub trả về câu trả lời soạn sẵn; mock còn kiểm tra nó được gọi thế nào. Chúng giúp test nhanh và không phụ thuộc service thật."
+    },
+    "related": [
+      "unit-testing",
+      "fixture"
+    ]
+  },
+  {
+    "slug": "ci",
+    "term": "CI (continuous integration)",
+    "viName": "Tích hợp liên tục",
+    "skill": "automation",
+    "match": [
+      "CI/CD",
+      "CI",
+      "continuous integration"
+    ],
+    "definition": {
+      "en": "Merging code often and running the build and automated tests on every change, in a pipeline. CI/CD adds continuous delivery or deployment of what passed.",
+      "vi": "Gộp code thường xuyên và chạy build cùng test tự động cho mỗi thay đổi, trong một pipeline. CI/CD thêm việc bàn giao hoặc deploy liên tục những gì đã pass."
+    },
+    "related": [
+      "pipeline",
+      "test-automation"
+    ]
+  },
+  {
+    "slug": "pipeline",
+    "term": "Pipeline",
+    "skill": "automation",
+    "match": [
+      "pipeline"
+    ],
+    "definition": {
+      "en": "The automated sequence a change goes through: install, lint, build, unit tests, API tests, end-to-end tests, deploy. A failed step stops it.",
+      "vi": "Chuỗi bước tự động mà một thay đổi đi qua: cài đặt, lint, build, unit test, API test, end-to-end test, deploy. Một bước fail sẽ dừng cả chuỗi."
+    },
+    "related": [
+      "ci"
+    ]
+  }
+]

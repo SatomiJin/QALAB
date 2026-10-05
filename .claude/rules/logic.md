@@ -92,6 +92,15 @@ Business and security rules that both sides must follow. They come from `plant.m
 * A file's Vietnamese is written as a `manual` translation only while the stored English (trimmed) equals the file's English; `source_hash` is of the stored text.
 * Content is validated before anything is written: unknown fields, limits (same as the DB checks), the grader's prompt / answer-key parsers, a Vietnamese version for every text with the same headings and code blocks, and every model answer (en **and** vi) matching at least `PASS_SCORE` % of its own concepts. One invalid file stops the whole import.
 
+## Glossary
+
+* One shared glossary (not per course): table `glossary_terms`, seeded from `backend/seed/glossary/terms.json`, then edited in the Admin CMS. Lifecycle `draft → published → archived`; learners (and learner endpoints for admins) see published terms only, and only the related terms they can see.
+* A term is linked in lesson text wherever one of its **match phrases** appears; nobody pastes links. Matching is the same on both sides (frontend `TermLinker`, backend `TermMatcher`): whole words (letters, digits, `_`, `-` are word characters), plural `s` / `es`, all-caps phrases only in capitals, longest phrase first, code ignored. The frontend links only the first occurrence of each term per text, and skips headings and existing links.
+* A phrase (case-insensitive, both apostrophes) belongs to **one** term: service check (`409 details[matchPhrases[i]]` naming the owner) and DB trigger (`23505` hint `match`, race → `409`). Twice in one term, self-related or unknown related ids are `400`.
+* Same two locks as the CMS: `RolesGuard` on `/admin/glossary*` and RLS `is_admin()` on every write (as the admin, never `service()`; only the seed script uses the service role). Terms carry no learner data: hard delete, which also removes the term from other terms' related lists.
+* Usage ("used in N lessons, these courses") is derived on read from every lesson's English text, drafts included; nothing is stored. QA terms stay English in Vietnamese lessons, so the English phrases match both.
+* Links are only rendered where leaving the page loses nothing (lesson page, admin preview), never next to a form being typed.
+
 ## Admin user management (Phase 9)
 
 * Same two locks as the CMS: `RolesGuard` on `/admin/users*` **and** the database: the `admin_*` SQL functions raise `42501` unless `is_admin()`. Reads of `auth.users` (email, verified, banned, last sign-in) only happen inside those security definer functions, never with `service()`.

@@ -69,6 +69,7 @@ npm run test:int         # integration against the linked cloud project (RLS, re
 npx supabase migration new <name>
 npx supabase db push     # apply migrations to the linked cloud project
 npm run seed:curriculum -- --dry-run   # validate backend/seed/curriculum; without the flag: import (cloud DB)
+npm run seed:glossary -- --dry-run     # validate backend/seed/glossary/terms.json; without the flag: import (cloud DB)
 ```
 
 Frontend (`cd frontend`):

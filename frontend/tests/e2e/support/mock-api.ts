@@ -1,3 +1,4 @@
+import { MockGlossary } from './mock-glossary.ts';
 import type { Page, Route } from '@playwright/test';
 import { MockAdmin } from './mock-admin.ts';
 import { MockDashboard } from './mock-dashboard.ts';
@@ -57,6 +58,7 @@ export class MockApi {
   readonly admin = new MockAdmin();
   readonly dashboard = new MockDashboard(this.learning, this.practice);
   readonly accounts = new MockUsers(() => [...this.users.values()]);
+  readonly glossary = new MockGlossary();
 
   constructor() {
     // Like the backend: what an admin publishes is what learners see.
@@ -313,6 +315,7 @@ export class MockApi {
         if (!user) return unauthorized;
         const query = new URL(route.request().url()).searchParams;
         return (
+          this.glossary.handle(method, path, body, user.role) ??
           this.accounts.handle(method, path, body, user, query) ??
           this.admin.handle(method, path, body, user.role, query) ??
           this.learning.handle(method, path, body, user.id, query) ??

@@ -18,7 +18,9 @@ import { TranslationsRepository } from '../../src/translation/translations.repos
 import { Translator } from '../../src/translation/translator.js';
 import { FakeAdminContentRepository } from './fake-admin.js';
 import { FakeAdminUsersRepository } from './fake-admin-users.js';
+import { GlossaryRepository } from '../../src/glossary/glossary.repository.js';
 import { FakeAuthServer, FakeProfilesRepository } from './fake-auth-server.js';
+import { FakeGlossaryRepository } from './fake-glossary.js';
 import { FakeDashboardRepository } from './fake-dashboard.js';
 import {
   FakeContentRepository,
@@ -49,6 +51,7 @@ export interface TestApp {
   admin: FakeAdminContentRepository;
   dashboard: FakeDashboardRepository;
   adminUsers: FakeAdminUsersRepository;
+  glossary: FakeGlossaryRepository;
 }
 
 const REVIEW_FIELD = /^(explanation|model_answer|rubric\..+)$/;
@@ -96,6 +99,8 @@ export async function createTestApp(
     attempts,
   );
 
+  const glossary = new FakeGlossaryRepository(profiles, content);
+
   const fakeSupabase: Pick<SupabaseService, 'anon' | 'service' | 'forUser'> = {
     anon: () => auth.client() as never,
     service: () => auth.client() as never,
@@ -133,6 +138,8 @@ export async function createTestApp(
     .useValue(dashboard)
     .overrideProvider(AdminUsersRepository)
     .useValue(adminUsers)
+    .overrideProvider(GlossaryRepository)
+    .useValue(glossary)
     .compile();
 
   const app = moduleRef.createNestApplication<INestApplication<App>>({
@@ -154,5 +161,6 @@ export async function createTestApp(
     admin,
     dashboard,
     adminUsers,
+    glossary,
   };
 }

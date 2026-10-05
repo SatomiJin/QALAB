@@ -295,6 +295,41 @@ Rules:
 * **Audit.** Every real change (role, disable, enable) writes one `admin_audit_log` row: actor, before, after, time. Shown on the user page.
 * **Privacy.** The user page shows scores, never answers.
 
+## Glossary
+
+QA terms with English and Vietnamese definitions. Lesson text links a term wherever one of its `matchPhrases` appears (the frontend does the linking). Not paginated: the glossary is small (about 100 terms) and the lesson links need all of it.
+
+| Method | Path | Body | Success | Errors |
+|---|---|---|---|---|
+| GET | `/glossary` | | `200 { items: [GlossaryTerm] }`, published only, sorted by term | `401` |
+| GET | `/admin/glossary` | | `200 { items: [AdminGlossaryTerm], courses: [{ id, title }] }`, every status | `401`; `403` |
+| POST | `/admin/glossary` | `CreateGlossaryTerm` | `201 AdminGlossaryTerm` (draft unless `status` is given) | `400`; `409` slug or phrase used by another term |
+| GET | `/admin/glossary/:id` | | `200 AdminGlossaryTerm` | `400`; `404` |
+| PATCH | `/admin/glossary/:id` | any fields of `CreateGlossaryTerm` (empty body: unchanged) | `200 AdminGlossaryTerm` | `400`; `404`; `409` |
+| DELETE | `/admin/glossary/:id` | | `204` (removed from other terms' `relatedIds` too) | `400`; `404` |
+
+```json
+// GlossaryTerm
+{ "id": "uuid", "slug": "test-case", "term": "Test case", "viName": "Ca kiểm thử" | null,
+  "skill": "test_docs", "matchPhrases": ["test case"],
+  "definitionEn": "…", "definitionVi": "…",
+  "related": ["test-scenario"] }            // slugs of related terms the caller can see
+// AdminGlossaryTerm: GlossaryTerm + status, relatedIds, createdAt, updatedAt,
+//   usage: { lessons: 3, courseIds: ["uuid"] }   // lessons (any status) whose English text uses a phrase
+// CreateGlossaryTerm
+{ "slug": "test-case", "term": "Test case", "viName": "Ca kiểm thử", "skill": "test_docs",
+  "matchPhrases": ["test case"], "definitionEn": "…", "definitionVi": "…",
+  "relatedIds": ["uuid"], "status": "draft" }
+```
+
+Rules:
+
+* **Limits** (DTO, DB check, `frontend/src/types/api.ts` `GLOSSARY_LIMITS`): slug ≤ 64 (`a-z0-9` and single dashes), term ≤ 80, `viName` ≤ 80 (empty = `null`), each definition 1–500, at most 10 phrases of 2–60 characters (trimmed), at most 8 related terms. `skill` is one of the 7 skill codes.
+* **Phrases.** A phrase (case-insensitive) belongs to one term: listed twice in the body is `400 details[matchPhrases[i]]`; used by another term is `409 details[matchPhrases[i]]` naming that term (the DB trigger catches a race: `409 details[matchPhrases]`). Matching in lessons: whole words (letters, digits, `_` and `-` are word characters), plural `s` / `es` too, all-caps phrases (`CI`, `REST`) only in capitals, longest phrase first, code ignored.
+* **Related.** Existing terms, not the term itself, each once (`400 details[relatedIds[i]]`). Learners get only the related terms they can see (published), as slugs.
+* **Access.** `/admin/glossary*`: `RolesGuard` (`403` for learners, before validation) and RLS `is_admin()` on every write. Learners and admins alike get only published terms from `/glossary`.
+* Terms have no learner data: hard delete (with confirmation in the UI). Seeded from `backend/seed/glossary/terms.json` (`npm run seed:glossary`).
+
 ## Dashboard and progress (Phase 5)
 
 All routes need a JWT. Every value is derived on read from your lesson progress and attempts (views `v_user_skill_progress`, `v_user_exercise_results`, `v_user_activity`); nothing is stored. Only published content counts (the item and every parent), and only your own data.

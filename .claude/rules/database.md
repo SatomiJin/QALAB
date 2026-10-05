@@ -54,6 +54,8 @@ Cloud project linked from `backend/`. No Docker, no local database. Current sche
 * Audit logs: no write grant for any API role; rows are inserted by the security definer function that makes the change, in the same transaction (`admin_set_role`). When the change happens outside Postgres (a Supabase Auth ban), the logging function checks the real state first and refuses a row that does not match (`admin_log_status_change`, hint `state`).
 * Rules a function enforces on purpose raise `P0001` with a `hint` naming the rule (`self`, `disabled`, `state`) so the backend can map them to `409`; unknown rows `P0002`; not allowed `42501`. A rule that two callers could race on (two admins demoting each other) takes `pg_advisory_xact_lock` and re-checks the caller after it.
 
+* Rules on array elements (each phrase trimmed, length, unique in the row) go in an `immutable` SQL function used by the `check` (`glossary_phrases_valid`). Uniqueness of an element **across rows** is a `before insert or update of <col>` trigger that takes `pg_advisory_xact_lock` and raises `23505` with a `hint` (`glossary_terms_unique_phrases`, hint `match`). Ids kept in an array have no FK: drop unknown ones on read and clean them up with an `after delete` trigger.
+
 ## Verification
 
 * Every policy has an integration test in `backend/test/integration/` that acts as a real user with supabase-js: own row allowed, other user's row denied, admin path, protected columns (`42501`).
