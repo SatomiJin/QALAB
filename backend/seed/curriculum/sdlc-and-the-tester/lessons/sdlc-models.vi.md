@@ -62,4 +62,8 @@ Với tester, điều này có nghĩa là:
 
 Không mô hình nào loại bỏ được nhu cầu kiểm thử. Điều thay đổi là công sức của tester dồn vào đâu: với waterfall và V-model là tài liệu kỹ lưỡng và các test level được lên kế hoạch, với cách làm iterative là phản hồi nhanh và regression.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.1 "Testing in the context of a software development lifecycle", 2.1.1 và 2.1.2. © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+
 > Ý chính: mô hình SDLC quyết định khi nào việc kiểm thử diễn ra. V-model ghép mỗi giai đoạn phát triển với một test level, còn các mô hình iterative test một chút trong mỗi vòng; ở mô hình nào cũng vậy, tester tham gia càng sớm thì defect càng rẻ.

@@ -37,6 +37,15 @@
             "vi": "Agile và Scrum dành cho tester"
           },
           "minutes": 10
+        },
+        {
+          "slug": "test-first-devops-shift-left",
+          "title": {
+            "en": "Test-first, DevOps, shift left and retrospectives",
+            "vi": "Test-first, DevOps, shift left và retrospective"
+          },
+          "minutes": 11,
+          "status": "draft"
         }
       ]
     },
@@ -66,6 +75,15 @@
             "vi": "Static testing và review"
           },
           "minutes": 10
+        },
+        {
+          "slug": "review-process-and-roles",
+          "title": {
+            "en": "The review process and its roles",
+            "vi": "Quy trình review và các vai trò"
+          },
+          "minutes": 9,
+          "status": "draft"
         }
       ]
     }

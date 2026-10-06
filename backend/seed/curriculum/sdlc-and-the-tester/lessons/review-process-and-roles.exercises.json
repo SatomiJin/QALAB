@@ -1,0 +1,261 @@
+[
+  {
+    "key": "review-activities",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "A team reviews the API specification for a new \"orders\" service. Which review activity does each step belong to?",
+      "vi": "Một nhóm review đặc tả API của service \"orders\" mới. Mỗi bước thuộc hoạt động review nào?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "planning",
+          "text": {
+            "en": "Planning",
+            "vi": "Planning"
+          }
+        },
+        {
+          "id": "initiation",
+          "text": {
+            "en": "Review initiation",
+            "vi": "Review initiation"
+          }
+        },
+        {
+          "id": "individual",
+          "text": {
+            "en": "Individual review",
+            "vi": "Individual review"
+          }
+        },
+        {
+          "id": "analysis",
+          "text": {
+            "en": "Communication and analysis",
+            "vi": "Communication và analysis"
+          }
+        },
+        {
+          "id": "fixing",
+          "text": {
+            "en": "Fixing and reporting",
+            "vi": "Fixing và reporting"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "scope",
+          "text": {
+            "en": "Decide to focus on error responses, with \"no open major issue\" as the exit criterion",
+            "vi": "Quyết định tập trung vào các response lỗi, với exit criterion \"không còn vấn đề major nào mở\""
+          }
+        },
+        {
+          "id": "send-docs",
+          "text": {
+            "en": "Give each reviewer access to the spec, the checklist and their role",
+            "vi": "Cấp cho từng reviewer quyền xem spec, checklist và vai trò của họ"
+          }
+        },
+        {
+          "id": "own-notes",
+          "text": {
+            "en": "A reviewer reads the spec alone and logs \"no status code for a duplicate order\"",
+            "vi": "Một reviewer tự đọc spec và ghi \"chưa có status code cho đơn hàng trùng\""
+          }
+        },
+        {
+          "id": "meeting",
+          "text": {
+            "en": "In the meeting the team decides which logged anomalies are real defects and who owns each",
+            "vi": "Trong buổi họp, nhóm quyết định anomaly nào đã ghi là defect thật và ai phụ trách"
+          }
+        },
+        {
+          "id": "defects",
+          "text": {
+            "en": "Defect reports are created and the author updates the spec",
+            "vi": "Defect report được tạo và author cập nhật spec"
+          }
+        },
+        {
+          "id": "accept",
+          "text": {
+            "en": "The exit criteria are met, the spec is accepted and the results are shared",
+            "vi": "Đạt exit criteria, spec được chấp nhận và kết quả được chia sẻ"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "scope": "planning",
+        "send-docs": "initiation",
+        "own-notes": "individual",
+        "meeting": "analysis",
+        "defects": "fixing",
+        "accept": "fixing"
+      }
+    },
+    "explanation": {
+      "en": "**Planning** sets scope, focus and exit criteria. **Initiation** makes sure everyone has the material and knows their role. In the **individual review** each reviewer logs anomalies alone. **Communication and analysis** decides which anomalies are defects, their owner and action (an anomaly is not automatically a defect). **Fixing and reporting** creates defect reports, follows up the fixes, accepts the work product and reports results.",
+      "vi": "**Planning** đặt phạm vi, trọng tâm và exit criteria. **Initiation** bảo đảm ai cũng có tài liệu và biết vai trò của mình. Trong **individual review**, từng reviewer tự ghi các anomaly. **Communication và analysis** quyết định anomaly nào là defect, ai phụ trách và hành động gì (anomaly không mặc nhiên là defect). **Fixing và reporting** tạo defect report, theo dõi việc sửa, chấp nhận sản phẩm công việc và báo cáo kết quả."
+    }
+  },
+  {
+    "key": "review-roles",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "During a review meeting, one person keeps time, calms a heated discussion and makes sure the quiet reviewer gets to speak. Which role is this?",
+      "vi": "Trong buổi họp review, một người giữ thời gian, xoa dịu một cuộc tranh luận căng thẳng và bảo đảm reviewer ít nói cũng được lên tiếng. Đó là vai trò nào?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "moderator",
+          "text": {
+            "en": "Moderator (facilitator)",
+            "vi": "Moderator (facilitator)"
+          }
+        },
+        {
+          "id": "scribe",
+          "text": {
+            "en": "Scribe (recorder)",
+            "vi": "Scribe (recorder)"
+          }
+        },
+        {
+          "id": "author",
+          "text": {
+            "en": "Author",
+            "vi": "Author"
+          }
+        },
+        {
+          "id": "manager",
+          "text": {
+            "en": "Manager",
+            "vi": "Manager"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "moderator"
+      ]
+    },
+    "explanation": {
+      "en": "The **moderator** (facilitator) runs the meeting: mediation, time management and a safe place where everyone can speak. The **scribe** records anomalies and decisions, the **author** created the work product and fixes it, and the **manager** decides what is reviewed and provides time and people, usually outside the meeting.",
+      "vi": "**Moderator** (facilitator) điều hành buổi họp: hòa giải, quản lý thời gian và tạo môi trường an toàn để ai cũng dám nói. **Scribe** ghi lại anomaly và quyết định, **author** là người tạo ra sản phẩm và sửa nó, còn **manager** quyết định review cái gì và cung cấp thời gian, nhân lực, thường không ở trong buổi họp."
+    }
+  },
+  {
+    "key": "fix-the-review",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "Your team's reviews are not working. A 60-page requirements document is sent the evening before a two-hour meeting. There is no checklist and no stated goal. The author's manager attends and notes how many mistakes each author made. Reviewers come unprepared and the meeting ends with no decisions.\n\nWhat would you change so that reviews succeed? List concrete changes and explain why.",
+      "vi": "Các buổi review của nhóm bạn không hiệu quả. Một tài liệu requirement 60 trang được gửi vào tối hôm trước buổi họp hai tiếng. Không có checklist, không nêu mục tiêu. Quản lý của author tham dự và ghi lại mỗi author mắc bao nhiêu lỗi. Reviewer đến mà không chuẩn bị và buổi họp kết thúc không có quyết định nào.\n\nBạn sẽ thay đổi những gì để review thành công? Liệt kê các thay đổi cụ thể và giải thích lý do."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Clear objectives and exit criteria",
+          "keywords": [
+            "objective",
+            "goal",
+            "exit criteri",
+            "muc tieu"
+          ]
+        },
+        {
+          "concept": "Review small chunks",
+          "keywords": [
+            "small",
+            "chunk",
+            "split",
+            "smaller",
+            "chia nho",
+            "tung phan"
+          ]
+        },
+        {
+          "concept": "Enough preparation time",
+          "keywords": [
+            "preparation",
+            "prepare",
+            "in advance",
+            "chuan bi",
+            "truoc vai ngay"
+          ]
+        },
+        {
+          "concept": "Never evaluate the participants",
+          "keywords": [
+            "evaluat",
+            "blame",
+            "not the people",
+            "danh gia",
+            "do loi"
+          ]
+        },
+        {
+          "concept": "Checklist, roles and a facilitator",
+          "keywords": [
+            "checklist",
+            "moderator",
+            "facilitat",
+            "role",
+            "vai tro"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "1. **Clear objectives and exit criteria**: state the goal (for example \"find gaps in the refund rules\") and when the review is done, so the meeting can end with decisions.\n2. **Small chunks**: split the 60 pages into sections reviewed separately; nobody concentrates on 60 pages at once.\n3. **Preparation time**: send each chunk several days in advance so everyone does the individual review before the meeting.\n4. **Never evaluate people**: the manager must not count authors' mistakes. If authors feel judged they hide problems; the review judges the document, not the author.\n5. **Checklist, roles and a moderator**: give reviewers a checklist, assign a scribe, and have a trained moderator run the meeting and the follow-up.\n\nWith management support for these changes, reviews become a normal, safe part of the culture.",
+        "vi": "1. **Mục tiêu rõ ràng và exit criteria**: nêu mục tiêu (ví dụ \"tìm chỗ thiếu trong quy tắc hoàn tiền\") và khi nào review xong, để buổi họp kết thúc với các quyết định.\n2. **Chia nhỏ**: chia 60 trang thành từng phần review riêng; không ai tập trung nổi vào 60 trang một lúc.\n3. **Thời gian chuẩn bị**: gửi từng phần trước vài ngày để mọi người làm individual review trước buổi họp.\n4. **Không bao giờ đánh giá con người**: quản lý không được đếm lỗi của author. Khi author thấy mình bị đánh giá, họ sẽ giấu vấn đề; review đánh giá tài liệu, không đánh giá author.\n5. **Checklist, vai trò và moderator**: đưa reviewer một checklist, chỉ định scribe, và để một moderator được đào tạo điều hành buổi họp và việc theo dõi sau đó.\n\nKhi quản lý ủng hộ những thay đổi này, review trở thành một phần bình thường, an toàn của văn hóa nhóm."
+      },
+      "rubric": [
+        {
+          "id": "objectives",
+          "text": {
+            "en": "I set a clear goal and exit criteria for the review",
+            "vi": "Tôi đặt mục tiêu rõ ràng và exit criteria cho buổi review"
+          }
+        },
+        {
+          "id": "chunks",
+          "text": {
+            "en": "I split the document into smaller parts with time to prepare",
+            "vi": "Tôi chia tài liệu thành các phần nhỏ hơn và có thời gian chuẩn bị"
+          }
+        },
+        {
+          "id": "people",
+          "text": {
+            "en": "I stopped the review from being used to judge authors",
+            "vi": "Tôi ngăn việc dùng review để đánh giá author"
+          }
+        },
+        {
+          "id": "roles",
+          "text": {
+            "en": "I added a checklist, clear roles and a moderator",
+            "vi": "Tôi bổ sung checklist, vai trò rõ ràng và moderator"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Almost every **success factor** for reviews is missing here. Without **objectives and exit criteria** the meeting cannot decide anything; 60 pages are too big, so review **small chunks**; one evening is not enough **preparation time**; and using the review to **evaluate the participants** makes authors defensive, which hides defects. A **checklist**, clear **roles** and a trained **moderator** give the review structure. A longer meeting alone would not fix any of this.",
+      "vi": "Ở đây thiếu gần như mọi **yếu tố thành công** của review. Không có **mục tiêu và exit criteria** thì buổi họp không quyết định được gì; 60 trang quá lớn, nên hãy review **từng phần nhỏ**; một buổi tối không đủ **thời gian chuẩn bị**; và dùng review để **đánh giá người tham gia** khiến author phòng thủ, che giấu defect. Một **checklist**, các **vai trò** rõ ràng và một **moderator** được đào tạo cho buổi review có cấu trúc. Chỉ kéo dài buổi họp thì không giải quyết được điều nào trong số này."
+    }
+  }
+]

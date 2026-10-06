@@ -71,4 +71,8 @@ A tester's review notes:
 
 Seven defects or questions, found in ten minutes, with no code written. Each answer becomes an acceptance criterion and, later, a test case: boundary values for the size limit, invalid formats, the error message.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 3.1 "Static testing basics" and 3.2.4 "Review types". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+
 > Key idea: static testing finds defects by examining work products instead of running them. Reviews range from informal checks to formal inspections, tools do static analysis of code, and reviewing requirements for ambiguity and missing cases is where a tester prevents the most defects for the least cost.

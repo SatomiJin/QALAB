@@ -71,4 +71,9 @@ A story is done only when it meets **both**.
 
 **Shift-left** means moving testing activities earlier, to the left on the timeline: reviewing stories in refinement, agreeing on examples before coding, developers writing unit tests, testing small pieces continuously. It applies the principle of early testing you met in the previous course: a question asked in refinement costs minutes, the same bug found after release can cost days.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 1.5.2 "Whole team approach", 2.1.1 and 2.1.5 "Shift left". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+* [The Scrum Guide](https://scrumguides.org/scrum-guide.html) (November 2020) by Ken Schwaber and Jeff Sutherland, licensed [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/): the Scrum roles, events and the Definition of Done. Summarised in our own words.
+
 > Key idea: in Scrum the tester is part of the team from the first conversation about a story. Acceptance criteria say what one story must do, the Definition of Done says what every story needs to be finished, and shift-left moves testing as early as possible.

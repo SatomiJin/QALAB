@@ -62,4 +62,8 @@ For testers this means:
 
 No model removes the need for testing. What changes is where the tester's effort goes: in waterfall and the V-model into thorough documents and planned test levels, in iterative work into fast feedback and regression.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 2.1 "Testing in the context of a software development lifecycle", 2.1.1 and 2.1.2. © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+
 > Key idea: the SDLC model decides when testing happens. The V-model mirrors each development phase with a test level, and iterative models test a little in every cycle; in every model, the earlier the tester gets involved, the cheaper the defects are.

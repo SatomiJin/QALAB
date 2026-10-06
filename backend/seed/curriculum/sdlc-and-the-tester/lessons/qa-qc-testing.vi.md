@@ -60,4 +60,8 @@ Cả hai đều cần thiết. Phát hiện mà không ngăn ngừa nghĩa là m
 
 Dù mang chức danh "QA engineer", bạn không một mình *sở hữu* chất lượng, và bạn không thể "test cho ra chất lượng" vào sản phẩm ở phút cuối. Developer ngăn ngừa defect bằng review và unit test, Product Owner bằng story rõ ràng, còn tester hỗ trợ tất cả họ, điều này gắn trực tiếp với shift-left ở bài trước.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 1.2.2 "Testing and quality assurance (QA)". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+
 > Ý chính: QA cải tiến quy trình để ngăn ngừa defect, QC kiểm tra sản phẩm để phát hiện defect, và testing là hoạt động QC chính. Một QA engineer giỏi làm cả hai: tìm bug trong sản phẩm và giúp thay đổi quy trình để chúng không bị tạo ra lần nữa.

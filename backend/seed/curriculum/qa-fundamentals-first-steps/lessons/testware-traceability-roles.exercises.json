@@ -1,0 +1,235 @@
+[
+  {
+    "key": "testware-by-activity",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Which test activity typically produces each piece of testware?",
+      "vi": "Mỗi testware dưới đây thường do hoạt động kiểm thử nào tạo ra?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "planning",
+          "text": {
+            "en": "Test planning",
+            "vi": "Test planning"
+          }
+        },
+        {
+          "id": "design",
+          "text": {
+            "en": "Test design",
+            "vi": "Test design"
+          }
+        },
+        {
+          "id": "implementation",
+          "text": {
+            "en": "Test implementation",
+            "vi": "Test implementation"
+          }
+        },
+        {
+          "id": "execution",
+          "text": {
+            "en": "Test execution",
+            "vi": "Test execution"
+          }
+        },
+        {
+          "id": "completion",
+          "text": {
+            "en": "Test completion",
+            "vi": "Test completion"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "risk-register",
+          "text": {
+            "en": "Risk register with likelihood and impact",
+            "vi": "Risk register có khả năng xảy ra và mức ảnh hưởng"
+          }
+        },
+        {
+          "id": "exit-criteria",
+          "text": {
+            "en": "Exit criteria: \"no open critical bug\"",
+            "vi": "Exit criteria: \"không còn bug critical nào mở\""
+          }
+        },
+        {
+          "id": "test-cases",
+          "text": {
+            "en": "Test cases for the password length limits",
+            "vi": "Test case cho giới hạn độ dài mật khẩu"
+          }
+        },
+        {
+          "id": "test-charter",
+          "text": {
+            "en": "A 60-minute exploratory test charter for checkout",
+            "vi": "Một test charter exploratory 60 phút cho checkout"
+          }
+        },
+        {
+          "id": "auto-script",
+          "text": {
+            "en": "An automated Playwright script for login",
+            "vi": "Một script Playwright tự động cho đăng nhập"
+          }
+        },
+        {
+          "id": "test-suite",
+          "text": {
+            "en": "The regression test suite assembled for release 2.4",
+            "vi": "Regression test suite được ghép cho release 2.4"
+          }
+        },
+        {
+          "id": "test-log",
+          "text": {
+            "en": "The log of today's test run with Pass / Fail results",
+            "vi": "Log của lần chạy test hôm nay với kết quả Pass / Fail"
+          }
+        },
+        {
+          "id": "lessons-learned",
+          "text": {
+            "en": "Lessons learned recorded at the end of the release",
+            "vi": "Bài học kinh nghiệm ghi lại khi kết thúc release"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "risk-register": "planning",
+        "exit-criteria": "planning",
+        "test-cases": "design",
+        "test-charter": "design",
+        "auto-script": "implementation",
+        "test-suite": "implementation",
+        "test-log": "execution",
+        "lessons-learned": "completion"
+      }
+    },
+    "explanation": {
+      "en": "Planning decides objectives, risks and when to stop (**risk register**, **exit criteria**). Design answers *how to test*: **test cases** and **test charters**. Implementation makes everything ready to run: **scripts** and **test suites**. Execution leaves **test logs** (and defect reports). Completion captures **lessons learned** and the completion report. A common mix-up is putting the automated script under design: the test case is designed, the script that runs it is implemented.",
+      "vi": "Planning quyết định mục tiêu, rủi ro và khi nào dừng (**risk register**, **exit criteria**). Design trả lời *test thế nào*: **test case** và **test charter**. Implementation chuẩn bị mọi thứ để chạy: **script** và **test suite**. Execution để lại **test log** (và defect report). Completion ghi lại **bài học kinh nghiệm** và completion report. Nhầm lẫn hay gặp là xếp script tự động vào design: test case được thiết kế, còn script chạy nó thì được implement."
+    }
+  },
+  {
+    "key": "traceability-value",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Your team links every test case and bug to its requirement. Which questions can these links answer? Select all that apply.",
+      "vi": "Nhóm của bạn link mọi test case và bug với requirement của nó. Những liên kết này trả lời được câu hỏi nào? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "coverage",
+          "text": {
+            "en": "Which requirements have no test yet?",
+            "vi": "Requirement nào chưa có test?"
+          }
+        },
+        {
+          "id": "impact",
+          "text": {
+            "en": "Which tests must change if a requirement changes?",
+            "vi": "Test nào phải sửa nếu một requirement thay đổi?"
+          }
+        },
+        {
+          "id": "risk",
+          "text": {
+            "en": "Which requirements still have failing tests or open bugs before release?",
+            "vi": "Requirement nào còn test fail hoặc bug mở trước khi release?"
+          }
+        },
+        {
+          "id": "no-defects",
+          "text": {
+            "en": "Is the product now free of defects?",
+            "vi": "Sản phẩm giờ đã hết defect chưa?"
+          }
+        },
+        {
+          "id": "who-wrote",
+          "text": {
+            "en": "Which developer wrote the most bugs this sprint?",
+            "vi": "Developer nào gây ra nhiều bug nhất sprint này?"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "coverage",
+        "impact",
+        "risk"
+      ]
+    },
+    "explanation": {
+      "en": "Traceability supports **coverage** (requirements without tests), **impact analysis** (tests to update when a requirement changes) and **residual risk** (requirements with failures or open bugs). It cannot prove there are no defects (testing never can), and it links tests to requirements, not bugs to people: using it to rank developers would damage trust in the team.",
+      "vi": "Traceability hỗ trợ **coverage** (requirement chưa có test), **phân tích ảnh hưởng** (test phải cập nhật khi requirement đổi) và **rủi ro còn lại** (requirement còn fail hoặc bug mở). Nó không chứng minh được là hết defect (kiểm thử không bao giờ làm được điều đó), và nó nối test với requirement chứ không nối bug với con người: dùng nó để xếp hạng developer sẽ phá vỡ lòng tin trong nhóm."
+    }
+  },
+  {
+    "key": "test-roles",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "In a small Agile team there is no test manager. Who takes care of test planning, monitoring and control?",
+      "vi": "Trong một nhóm Agile nhỏ không có test manager. Ai lo test planning, monitoring và control?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "team",
+          "text": {
+            "en": "The team shares the test management tasks; it is a role, not a job title",
+            "vi": "Cả nhóm chia nhau các việc quản lý test; đây là vai trò, không phải chức danh"
+          }
+        },
+        {
+          "id": "nobody",
+          "text": {
+            "en": "Nobody: Agile teams do not plan or monitor testing",
+            "vi": "Không ai cả: nhóm Agile không lập kế hoạch hay theo dõi kiểm thử"
+          }
+        },
+        {
+          "id": "hire",
+          "text": {
+            "en": "Testing must wait until a test manager is hired",
+            "vi": "Phải đợi tuyển được test manager mới test được"
+          }
+        },
+        {
+          "id": "developers-only",
+          "text": {
+            "en": "Only developers, because testers may only execute tests",
+            "vi": "Chỉ developer, vì tester chỉ được chạy test"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "team"
+      ]
+    },
+    "explanation": {
+      "en": "The test management role (planning, monitoring and control, completion) can be held by different people: a test manager, a team lead or, in Agile, the team itself. Planning and monitoring still happen, just lighter. Testers are not limited to execution: the testing role covers analysis, design and implementation too.",
+      "vi": "Vai trò quản lý test (planning, monitoring và control, completion) có thể do nhiều người đảm nhận: test manager, team lead hoặc, trong Agile, chính cả nhóm. Planning và monitoring vẫn diễn ra, chỉ nhẹ hơn. Tester cũng không chỉ chạy test: vai trò kiểm thử bao gồm cả analysis, design và implementation."
+    }
+  }
+]

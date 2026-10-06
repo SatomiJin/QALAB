@@ -31,7 +31,7 @@
             "en": "Why we test",
             "vi": "Vì sao cần kiểm thử"
           },
-          "minutes": 6
+          "minutes": 9
         },
         {
           "slug": "errors-defects-failures",
@@ -40,7 +40,7 @@
             "en": "Errors, defects and failures",
             "vi": "Error, defect và failure"
           },
-          "minutes": 7
+          "minutes": 8
         }
       ]
     },
@@ -63,7 +63,7 @@
             "en": "The seven testing principles",
             "vi": "Bảy nguyên tắc kiểm thử"
           },
-          "minutes": 8
+          "minutes": 9
         },
         {
           "slug": "stlc-test-process",
@@ -72,7 +72,25 @@
             "en": "STLC: the test process",
             "vi": "STLC: quy trình kiểm thử"
           },
-          "minutes": 10
+          "minutes": 12
+        },
+        {
+          "slug": "testware-traceability-roles",
+          "title": {
+            "en": "Testware, traceability and test roles",
+            "vi": "Testware, traceability và vai trò trong kiểm thử"
+          },
+          "minutes": 10,
+          "status": "draft"
+        },
+        {
+          "slug": "tester-skills-and-independence",
+          "title": {
+            "en": "Tester skills, the whole team and independence",
+            "vi": "Kỹ năng tester, whole team và tính độc lập"
+          },
+          "minutes": 9,
+          "status": "draft"
         }
       ]
     }

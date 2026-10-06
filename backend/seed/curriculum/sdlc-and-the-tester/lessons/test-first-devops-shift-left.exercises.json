@@ -1,0 +1,205 @@
+[
+  {
+    "key": "tdd-atdd-bdd",
+    "type": "classification",
+    "difficulty": "medium",
+    "question": {
+      "en": "Match each practice to the test-first approach it describes best.",
+      "vi": "Ghép mỗi cách làm với cách tiếp cận test-first mà nó mô tả đúng nhất."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "tdd",
+          "text": {
+            "en": "TDD",
+            "vi": "TDD"
+          }
+        },
+        {
+          "id": "atdd",
+          "text": {
+            "en": "ATDD",
+            "vi": "ATDD"
+          }
+        },
+        {
+          "id": "bdd",
+          "text": {
+            "en": "BDD",
+            "vi": "BDD"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "red-green",
+          "text": {
+            "en": "A developer writes a failing unit test, makes it pass, then refactors",
+            "vi": "Developer viết một unit test fail, làm cho nó pass, rồi refactor"
+          }
+        },
+        {
+          "id": "unit-design",
+          "text": {
+            "en": "Small unit tests guide the design of a single function",
+            "vi": "Các unit test nhỏ định hướng thiết kế của một hàm"
+          }
+        },
+        {
+          "id": "ac-tests",
+          "text": {
+            "en": "Before the sprint, the team and the Product Owner turn acceptance criteria into acceptance tests",
+            "vi": "Trước sprint, nhóm và Product Owner biến acceptance criteria thành acceptance test"
+          }
+        },
+        {
+          "id": "story-done",
+          "text": {
+            "en": "The story is built until its agreed acceptance tests pass",
+            "vi": "Story được làm cho đến khi các acceptance test đã thống nhất đều pass"
+          }
+        },
+        {
+          "id": "given-when",
+          "text": {
+            "en": "Behaviour is written as Given / When / Then scenarios the business can read",
+            "vi": "Hành vi được viết thành các scenario Given / When / Then mà phía business đọc được"
+          }
+        },
+        {
+          "id": "gherkin-run",
+          "text": {
+            "en": "Plain-language scenarios are later executed by a tool such as Cucumber",
+            "vi": "Các scenario bằng ngôn ngữ thường sau đó được chạy bằng công cụ như Cucumber"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "red-green": "tdd",
+        "unit-design": "tdd",
+        "ac-tests": "atdd",
+        "story-done": "atdd",
+        "given-when": "bdd",
+        "gherkin-run": "bdd"
+      }
+    },
+    "explanation": {
+      "en": "**TDD** works at code level: red, green, refactor, with unit tests driving the design. **ATDD** starts from the **acceptance criteria** of a story: tests are agreed with the business before the story is built. **BDD** describes behaviour in **Given / When / Then** language that stakeholders can read, and automates it. ATDD and BDD are close; the clue for BDD is the plain-language scenario format.",
+      "vi": "**TDD** làm ở mức code: red, green, refactor, với unit test định hướng thiết kế. **ATDD** bắt đầu từ **acceptance criteria** của story: test được thống nhất với phía business trước khi làm story. **BDD** mô tả hành vi bằng ngôn ngữ **Given / When / Then** mà các bên liên quan đọc được, rồi tự động hóa nó. ATDD và BDD rất gần nhau; dấu hiệu nhận ra BDD là định dạng scenario bằng ngôn ngữ thường."
+    }
+  },
+  {
+    "key": "shift-left-practices",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which of these are examples of shifting testing left? Select all that apply.",
+      "vi": "Những việc nào dưới đây là ví dụ của shift left? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "review-story",
+          "text": {
+            "en": "The tester reviews user stories for gaps in backlog refinement",
+            "vi": "Tester review user story để tìm chỗ thiếu trong buổi backlog refinement"
+          }
+        },
+        {
+          "id": "ci-unit",
+          "text": {
+            "en": "Unit tests and static analysis run in CI on every commit",
+            "vi": "Unit test và static analysis chạy trong CI ở mỗi commit"
+          }
+        },
+        {
+          "id": "perf-component",
+          "text": {
+            "en": "A performance check runs on the search service before the full system exists",
+            "vi": "Một bài kiểm tra hiệu năng chạy trên search service trước khi có cả hệ thống"
+          }
+        },
+        {
+          "id": "skip-system",
+          "text": {
+            "en": "System testing is dropped because unit tests now run early",
+            "vi": "Bỏ system test vì unit test đã chạy sớm"
+          }
+        },
+        {
+          "id": "test-at-end",
+          "text": {
+            "en": "All testing is moved to a two-week phase after development",
+            "vi": "Dồn toàn bộ kiểm thử vào một giai đoạn hai tuần sau khi phát triển xong"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "review-story",
+        "ci-unit",
+        "perf-component"
+      ]
+    },
+    "explanation": {
+      "en": "Shift left means testing **earlier**: reviewing stories before code, running component tests and static analysis in CI, starting non-functional testing at component level. It does **not** mean dropping later testing: system testing is still needed. Moving all testing to the end is the opposite of shift left.",
+      "vi": "Shift left nghĩa là kiểm thử **sớm hơn**: review story trước khi có code, chạy component test và static analysis trong CI, bắt đầu non-functional testing ở mức component. Nó **không** có nghĩa là bỏ kiểm thử ở giai đoạn sau: vẫn cần system test. Dồn toàn bộ kiểm thử về cuối là ngược lại với shift left."
+    }
+  },
+  {
+    "key": "devops-manual",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Your company moves to DevOps with a full CI/CD pipeline and hundreds of automated tests. What happens to manual testing?",
+      "vi": "Công ty bạn chuyển sang DevOps với một CI/CD pipeline đầy đủ và hàng trăm automated test. Test thủ công sẽ ra sao?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "still-needed",
+          "text": {
+            "en": "Repetitive manual checks shrink, but manual testing from the user's point of view is still needed",
+            "vi": "Các kiểm tra thủ công lặp lại giảm đi, nhưng vẫn cần test thủ công từ góc nhìn người dùng"
+          }
+        },
+        {
+          "id": "gone",
+          "text": {
+            "en": "It disappears: the pipeline tests everything",
+            "vi": "Nó biến mất: pipeline test hết mọi thứ"
+          }
+        },
+        {
+          "id": "unchanged",
+          "text": {
+            "en": "Nothing changes: every release still needs the full manual regression",
+            "vi": "Không gì thay đổi: mỗi release vẫn cần chạy toàn bộ regression thủ công"
+          }
+        },
+        {
+          "id": "only-prod",
+          "text": {
+            "en": "Manual testing moves to production only",
+            "vi": "Test thủ công chỉ còn làm trên production"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "still-needed"
+      ]
+    },
+    "explanation": {
+      "en": "A delivery pipeline takes over repetitive regression checks, which lowers the regression risk and frees testers. But automated tests only check what someone thought to automate: **exploratory testing**, usability and the user's view still need people. Keeping the full manual regression would waste the pipeline's benefit.",
+      "vi": "Delivery pipeline đảm nhận các kiểm tra regression lặp lại, giúp giảm rủi ro regression và giải phóng tester. Nhưng automated test chỉ kiểm tra những gì người ta đã nghĩ tới để tự động hóa: **exploratory testing**, usability và góc nhìn người dùng vẫn cần con người. Giữ nguyên toàn bộ regression thủ công sẽ lãng phí lợi ích của pipeline."
+    }
+  }
+]

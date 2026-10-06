@@ -71,4 +71,9 @@ Một story chỉ được coi là done khi đạt **cả hai**.
 
 **Shift-left** nghĩa là đưa các hoạt động kiểm thử lên sớm hơn, dịch sang bên trái trên trục thời gian: review story khi refinement, thống nhất ví dụ trước khi code, developer viết unit test, test liên tục từng phần nhỏ. Đây là cách áp dụng nguyên tắc kiểm thử sớm bạn đã học ở khoá trước: một câu hỏi đặt ra khi refinement tốn vài phút, còn cùng bug đó nếu phát hiện sau release có thể tốn vài ngày.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 1.5.2 "Whole team approach", 2.1.1 và 2.1.5 "Shift left". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+* [The Scrum Guide](https://scrumguides.org/scrum-guide.html) (tháng 11/2020) của Ken Schwaber và Jeff Sutherland, giấy phép [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/): các vai trò, sự kiện của Scrum và Definition of Done. Tóm tắt bằng lời của team.
+
 > Ý chính: trong Scrum, tester là một phần của nhóm ngay từ cuộc trao đổi đầu tiên về một story. Acceptance criteria nói một story phải làm gì, Definition of Done nói mọi story cần gì để được coi là xong, và shift-left đưa việc kiểm thử lên sớm nhất có thể.

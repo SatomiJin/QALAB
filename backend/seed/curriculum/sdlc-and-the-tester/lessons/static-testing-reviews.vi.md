@@ -71,4 +71,8 @@ Ghi chú review của tester:
 
 Bảy defect hoặc câu hỏi, tìm ra trong mười phút, chưa cần viết dòng code nào. Mỗi câu trả lời trở thành một acceptance criterion và sau này là một test case: boundary value cho giới hạn kích thước, định dạng không hợp lệ, thông báo lỗi.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 3.1 "Static testing basics" và 3.2.4 "Review types". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+
 > Ý chính: static testing tìm defect bằng cách xem xét sản phẩm công việc thay vì chạy chúng. Review trải dài từ kiểm tra không chính thức đến inspection chính thức, công cụ thực hiện static analysis trên code, và review requirement để tìm chỗ mơ hồ và case bị thiếu là nơi tester ngăn được nhiều defect nhất với chi phí thấp nhất.

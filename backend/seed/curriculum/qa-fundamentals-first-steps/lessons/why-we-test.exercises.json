@@ -49,5 +49,90 @@
       "en": "Reviewing requirements is **static testing**: you look for problems without running anything. It finds defects at the cheapest possible moment, before any code is written. Coding, deploying and estimating are not testing activities.",
       "vi": "Review requirement là **static testing**: bạn tìm vấn đề mà không cần chạy gì cả. Nó tìm ra defect ở thời điểm rẻ nhất, trước khi có dòng code nào. Viết code, deploy và ước lượng không phải là hoạt động kiểm thử."
     }
+  },
+  {
+    "key": "testing-or-debugging",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "A customer reports that the order total is wrong. Classify each step as **testing** (shows that something is wrong, or checks a fix) or **debugging** (finds and removes the cause).",
+      "vi": "Một khách hàng báo tổng tiền đơn hàng bị sai. Xếp mỗi bước vào **testing** (cho thấy có gì đó sai, hoặc kiểm tra bản sửa) hoặc **debugging** (tìm và loại bỏ nguyên nhân)."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "testing",
+          "text": {
+            "en": "Testing",
+            "vi": "Testing"
+          }
+        },
+        {
+          "id": "debugging",
+          "text": {
+            "en": "Debugging",
+            "vi": "Debugging"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "run-checkout",
+          "text": {
+            "en": "Running the checkout test cases and seeing the total test fail",
+            "vi": "Chạy các test case checkout và thấy test về tổng tiền bị fail"
+          }
+        },
+        {
+          "id": "reproduce",
+          "text": {
+            "en": "The developer reproduces the failure on their machine",
+            "vi": "Developer tái hiện failure trên máy của mình"
+          }
+        },
+        {
+          "id": "find-line",
+          "text": {
+            "en": "The developer finds the rounding line that causes it",
+            "vi": "Developer tìm ra dòng code làm tròn gây ra lỗi"
+          }
+        },
+        {
+          "id": "fix-code",
+          "text": {
+            "en": "The developer changes the rounding code",
+            "vi": "Developer sửa đoạn code làm tròn"
+          }
+        },
+        {
+          "id": "retest",
+          "text": {
+            "en": "The tester re-runs the failed test on the new build",
+            "vi": "Tester chạy lại test bị fail trên build mới"
+          }
+        },
+        {
+          "id": "regression",
+          "text": {
+            "en": "The tester runs the regression suite to check nothing else broke",
+            "vi": "Tester chạy regression suite để kiểm tra không có chỗ nào khác bị hỏng"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "run-checkout": "testing",
+        "reproduce": "debugging",
+        "find-line": "debugging",
+        "fix-code": "debugging",
+        "retest": "testing",
+        "regression": "testing"
+      }
+    },
+    "explanation": {
+      "en": "**Testing** shows that a failure exists (the failing checkout test) and later checks the fix: **confirmation testing** (re-running the failed test) and **regression testing** (nothing else broke). **Debugging** is the work in between: reproduce the failure, find the defect, fix it. Reproducing the failure feels like testing, but it is the first step of debugging: its goal is to find the cause, not to evaluate the product.",
+      "vi": "**Testing** cho thấy có failure (test checkout bị fail) và sau đó kiểm tra bản sửa: **confirmation testing** (chạy lại test đã fail) và **regression testing** (không có chỗ nào khác bị hỏng). **Debugging** là phần việc ở giữa: tái hiện failure, tìm defect, sửa nó. Tái hiện failure trông giống testing, nhưng nó là bước đầu của debugging: mục tiêu là tìm nguyên nhân, không phải đánh giá sản phẩm."
+    }
   }
 ]

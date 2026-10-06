@@ -60,4 +60,8 @@ Both are needed. Detection without prevention means finding the same kind of bug
 
 Even with the title "QA engineer", you do not *own* quality alone, and you cannot test it into a product at the end. Developers prevent defects with reviews and unit tests, the Product Owner with clear stories, and the tester supports all of them, which links directly to shift-left from the previous lesson.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 1.2.2 "Testing and quality assurance (QA)". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+
 > Key idea: QA improves the process to prevent defects, QC checks the product to detect them, and testing is the main QC activity. A good QA engineer does both: finds bugs in the product and helps change the process so they are not made again.

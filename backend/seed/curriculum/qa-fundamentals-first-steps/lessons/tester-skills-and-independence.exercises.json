@@ -1,0 +1,252 @@
+[
+  {
+    "key": "independence-levels",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each situation by its level of test independence.",
+      "vi": "Xếp mỗi tình huống theo mức độc lập của kiểm thử."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "none",
+          "text": {
+            "en": "None (the author)",
+            "vi": "Không có (chính tác giả)"
+          }
+        },
+        {
+          "id": "some",
+          "text": {
+            "en": "Some (a peer in the same team)",
+            "vi": "Một phần (đồng nghiệp cùng nhóm)"
+          }
+        },
+        {
+          "id": "high",
+          "text": {
+            "en": "High (outside the team, same organisation)",
+            "vi": "Cao (ngoài nhóm, cùng tổ chức)"
+          }
+        },
+        {
+          "id": "very-high",
+          "text": {
+            "en": "Very high (outside the organisation)",
+            "vi": "Rất cao (ngoài tổ chức)"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "own-unit",
+          "text": {
+            "en": "A developer runs the unit tests for code they wrote",
+            "vi": "Developer chạy unit test cho code mình viết"
+          }
+        },
+        {
+          "id": "pr-review",
+          "text": {
+            "en": "A teammate reviews the pull request",
+            "vi": "Một đồng đội review pull request"
+          }
+        },
+        {
+          "id": "central-qa",
+          "text": {
+            "en": "The company's central QA team runs system tests",
+            "vi": "Nhóm QA trung tâm của công ty chạy system test"
+          }
+        },
+        {
+          "id": "pentest",
+          "text": {
+            "en": "An external security firm runs a penetration test",
+            "vi": "Một công ty bảo mật bên ngoài làm penetration test"
+          }
+        },
+        {
+          "id": "author-review",
+          "text": {
+            "en": "The business analyst re-reads their own specification",
+            "vi": "Business analyst đọc lại đặc tả do chính mình viết"
+          }
+        },
+        {
+          "id": "pair-tester",
+          "text": {
+            "en": "The tester in the same Scrum team tests the story",
+            "vi": "Tester trong cùng nhóm Scrum test story"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "own-unit": "none",
+        "pr-review": "some",
+        "central-qa": "high",
+        "pentest": "very-high",
+        "author-review": "none",
+        "pair-tester": "some"
+      }
+    },
+    "explanation": {
+      "en": "Independence depends on **who** tests compared with who made the work. The author (developer or analyst) has none; a peer in the same team has some; a team outside the author's team has high; another organisation has very high. The tester inside the same Scrum team is a peer: independent of the developer's thinking, but sharing the team's goals and assumptions.",
+      "vi": "Mức độc lập phụ thuộc vào **ai** test so với người làm ra sản phẩm. Tác giả (developer hay analyst) không có; đồng nghiệp cùng nhóm có một phần; nhóm bên ngoài nhóm tác giả có mức cao; tổ chức khác có mức rất cao. Tester trong cùng nhóm Scrum là đồng nghiệp: độc lập với cách nghĩ của developer, nhưng chia sẻ mục tiêu và giả định của nhóm."
+    }
+  },
+  {
+    "key": "constructive-report",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which bug report title communicates the problem most constructively?",
+      "vi": "Tiêu đề bug report nào truyền đạt vấn đề một cách xây dựng nhất?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "behaviour",
+          "text": {
+            "en": "Order total ignores the 10% voucher when the basket has 2+ items",
+            "vi": "Tổng đơn hàng bỏ qua voucher 10% khi giỏ có từ 2 sản phẩm"
+          }
+        },
+        {
+          "id": "blame",
+          "text": {
+            "en": "Minh broke the voucher again",
+            "vi": "Minh lại làm hỏng voucher"
+          }
+        },
+        {
+          "id": "vague",
+          "text": {
+            "en": "Checkout is totally broken!!!",
+            "vi": "Checkout hỏng hoàn toàn!!!"
+          }
+        },
+        {
+          "id": "opinion",
+          "text": {
+            "en": "The voucher code is badly written",
+            "vi": "Code voucher viết dở"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "behaviour"
+      ]
+    },
+    "explanation": {
+      "en": "A constructive report describes **the product's behaviour** precisely: what is wrong and under which condition. Naming a person turns a fact into blame; \"totally broken\" exaggerates and gives the developer nothing to reproduce; judging the code is an opinion, not an observation. Testers often bring bad news, so neutral, evidence-based wording keeps the team working together.",
+      "vi": "Một report mang tính xây dựng mô tả chính xác **hành vi của sản phẩm**: cái gì sai và trong điều kiện nào. Nêu tên một người biến sự thật thành lời trách móc; \"hỏng hoàn toàn\" phóng đại và không cho developer gì để tái hiện; chê code là ý kiến, không phải quan sát. Tester thường mang tin xấu, nên cách viết trung lập, dựa trên bằng chứng giúp cả nhóm tiếp tục làm việc cùng nhau."
+    }
+  },
+  {
+    "key": "works-on-my-machine",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "You reported that the \"Export to PDF\" button produces an empty file. The developer closes the bug with the comment \"Works on my machine\" and seems annoyed. What do you do and say next? Describe your approach.",
+      "vi": "Bạn đã báo bug: nút \"Export to PDF\" tạo ra file rỗng. Developer đóng bug với bình luận \"Máy tôi chạy được\" và có vẻ khó chịu. Tiếp theo bạn sẽ làm gì và nói gì? Hãy mô tả cách bạn xử lý."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Evidence and exact steps",
+          "keywords": [
+            "evidence",
+            "steps",
+            "screenshot",
+            "bang chung",
+            "cac buoc"
+          ]
+        },
+        {
+          "concept": "Compare environments",
+          "keywords": [
+            "environment",
+            "browser",
+            "version",
+            "moi truong",
+            "trinh duyet"
+          ]
+        },
+        {
+          "concept": "Talk about the behaviour, not the person",
+          "keywords": [
+            "behaviour",
+            "behavior",
+            "not the person",
+            "hanh vi",
+            "khong phai con nguoi"
+          ]
+        },
+        {
+          "concept": "Reproduce together",
+          "keywords": [
+            "together",
+            "pair",
+            "cung nhau"
+          ]
+        },
+        {
+          "concept": "Shared goal of quality for users",
+          "keywords": [
+            "shared goal",
+            "common goal",
+            "users",
+            "muc tieu chung",
+            "nguoi dung"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "I would not argue in the comments. First I reopen the bug with better **evidence**: the exact **steps**, the file I exported, a screenshot and the browser console log. Then I check the **environment**: my browser and version, the test server, the account and data I used, because \"works on my machine\" usually means our environments differ.\n\nNext I ask the developer to look at it **together** for five minutes, so I can show the failure on my setup. I keep the conversation about the product's **behaviour**, not the person: \"the export returns an empty file with this account\", not \"your code is broken\".\n\nI remind us both of the **shared goal**: users must be able to export their reports. If it turns out to be an environment problem, I update the bug with what we learned.",
+        "vi": "Tôi sẽ không tranh cãi trong phần bình luận. Trước tiên tôi mở lại bug kèm **bằng chứng** tốt hơn: **các bước** chính xác, file tôi đã export, ảnh chụp màn hình và log console. Rồi tôi kiểm tra **môi trường**: **trình duyệt** và phiên bản, server test, tài khoản và dữ liệu tôi dùng, vì \"máy tôi chạy được\" thường có nghĩa là môi trường của hai bên khác nhau.\n\nTiếp đó tôi nhờ developer **cùng nhau** xem trong năm phút, để tôi cho thấy failure trên máy của tôi. Tôi giữ cuộc trao đổi xoay quanh **hành vi** của sản phẩm, **không phải con người**: \"chức năng export trả về file rỗng với tài khoản này\", chứ không phải \"code của anh hỏng\".\n\nTôi nhắc cả hai về **mục tiêu chung**: **người dùng** phải export được báo cáo của họ. Nếu hóa ra là vấn đề môi trường, tôi cập nhật bug với những gì đã tìm hiểu được."
+      },
+      "rubric": [
+        {
+          "id": "evidence",
+          "text": {
+            "en": "I added exact steps, data and evidence (screenshot, log)",
+            "vi": "Tôi bổ sung các bước, dữ liệu và bằng chứng chính xác (ảnh chụp, log)"
+          }
+        },
+        {
+          "id": "environment",
+          "text": {
+            "en": "I compared environments (browser, version, server, account)",
+            "vi": "Tôi so sánh môi trường (trình duyệt, phiên bản, server, tài khoản)"
+          }
+        },
+        {
+          "id": "neutral",
+          "text": {
+            "en": "My wording describes the product, not the developer",
+            "vi": "Cách tôi viết mô tả sản phẩm, không nói về developer"
+          }
+        },
+        {
+          "id": "together",
+          "text": {
+            "en": "I offered to reproduce it together instead of arguing",
+            "vi": "Tôi đề nghị cùng tái hiện thay vì tranh cãi"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "This is about **communication**, one of the core tester skills. \"Works on my machine\" is often **confirmation bias** plus a real difference in environment. Better **evidence** and an **environment** comparison turn opinion into facts; reproducing it **together** is faster than a comment war; talking about the **behaviour**, not the person, keeps it constructive; and the **shared goal** reminds everyone you are on the same side. Escalating to a manager straight away, or reopening the bug with no new information, usually makes things worse.",
+      "vi": "Đây là bài về **giao tiếp**, một trong những kỹ năng cốt lõi của tester. \"Máy tôi chạy được\" thường là **confirmation bias** cộng với một khác biệt thật về môi trường. **Bằng chứng** tốt hơn và việc so sánh **môi trường** biến ý kiến thành sự thật; **cùng nhau** tái hiện nhanh hơn cãi nhau qua bình luận; nói về **hành vi** chứ không phải con người giúp giữ tính xây dựng; và **mục tiêu chung** nhắc mọi người rằng các bạn cùng một phía. Báo lên quản lý ngay, hoặc mở lại bug mà không có thông tin mới, thường khiến mọi chuyện tệ hơn."
+    }
+  }
+]
