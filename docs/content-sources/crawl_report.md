@@ -55,6 +55,6 @@ Date: 2026-10-06. Scope: `test-documentation` and `defect-management`.
 | Atlassian: advanced search (JQL) | Web fetch | Query structure (field, operator, value or function, AND / OR, ORDER BY) and example queries (not copied; the lesson's queries are self-written). |
 | Atlassian: work types | Web search only | Title and the Bug work type description seen in search results; page not opened directly. |
 
-Result: 10 existing lessons got a Sources section (6 also got new content), 3 new lessons with 9 self-written exercises. `npm run seed:curriculum -- --dry-run`: 54 lessons, 132 exercises, all valid; `npx vitest run src/curriculum`: 17 tests pass. Not imported into the database yet.
+Result: 10 existing lessons got a Sources section (6 also got new content), 3 new lessons with 9 self-written exercises. `npm run seed:curriculum -- --dry-run`: 54 lessons, 132 exercises, all valid; `npx vitest run src/curriculum`: 17 tests pass. Imported with `--update` and checked against the database the same day: all 13 lessons of both courses match the files.
 
 Test pyramid and testing quadrants (CTFL 5.1.6, 5.1.7) are left for the `test-automation` course, which already has a pyramid lesson.

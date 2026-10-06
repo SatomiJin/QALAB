@@ -91,6 +91,8 @@ Business and security rules that both sides must follow. They come from `plant.m
 * The import is idempotent and never deletes. By default it only inserts what is missing, so CMS edits survive; `--update` makes the files win, except for changes the CMS forbids too (another parent, another exercise type, new option / item / category ids on an attempted exercise), which are skipped with a warning.
 * A file's Vietnamese is written as a `manual` translation only while the stored English (trimmed) equals the file's English; `source_hash` is of the stored text.
 * Content is validated before anything is written: unknown fields, limits (same as the DB checks), the grader's prompt / answer-key parsers, a Vietnamese version for every text with the same headings and code blocks, and every model answer (en **and** vi) matching at least `PASS_SCORE` % of its own concepts. One invalid file stops the whole import.
+* **External sources** (ISTQB CTFL v4.0.1, Scrum Guide, WCAG, OWASP, Atlassian docs…): lessons are the team's own explanations and examples, never verbatim copies, and never reuse exam questions (ISTQB sample exams included) or present a self-written question as official. Every lesson built on a source ends with `## Sources` / `## Nguồn tham khảo` (link, version, sections, copyright or licence line) before the key idea. Each source, its licence and what is still unverified are recorded in `docs/content-sources/` (manifest, crawl, licence and quality reports).
+* Lessons built from official sources import as **published** (no `status` in `course.json`): `--update` writes the file's status, so a `draft` in the file would hide a lesson already published in the CMS. Content created in the CMS is published there by the admin.
 
 ## Glossary
 

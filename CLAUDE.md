@@ -29,7 +29,7 @@ QALAB/
 ├── .claude/settings.json  # Shared hooks (code-review-graph auto-update)
 ├── .mcp.json          # MCP servers (code-review-graph)
 ├── plant.md           # Spec + phases (source of truth for scope)
-├── docs/              # architecture.md, design.md, api.md, database.md, testing-strategy.md, deployment.md, curriculum.md, qa/ (test plan, scenarios, cases, regression checklist)
+├── docs/              # architecture.md, design.md, api.md, database.md, testing-strategy.md, deployment.md, curriculum.md, content-sources/ (curriculum sources, licences, quality reports), qa/ (test plan, scenarios, cases, regression checklist)
 ├── backend/           # NestJS API + Supabase project (backend/supabase)
 └── frontend/          # React + Vite + Ant Design app
 ```
