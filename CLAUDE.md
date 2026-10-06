@@ -7,8 +7,15 @@ For every new user task, before inspecting the repository, planning, using a
 tool, or editing a file, start the first user-facing reply exactly with:
 
 ```text
-Konnichiwa, watashi wa Satomi Jin desu!
+Xin chào, tôi là Jin!
 ```
+
+Then state the discovery path in one short sentence:
+
+- `Graph -> RTK -> source` when Code Review Graph is available and relevant.
+- `RTK -> source` otherwise.
+
+Do not repeat the acknowledgement during the same task.
 
 
 ## Repository layout
