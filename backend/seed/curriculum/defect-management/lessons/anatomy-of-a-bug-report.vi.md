@@ -17,6 +17,8 @@ Bug report là một lời nhắn gửi cho người không có mặt lúc bạn
 
 Severity và priority được tách thành hai trường là có chủ đích. Bài sau sẽ nói kỹ về chúng.
 
+Một defect report có ba nhiệm vụ: cho người sửa **đủ thông tin để giải quyết**, giúp **theo dõi chất lượng** sản phẩm, và gợi ý cách **cải tiến quy trình phát triển và kiểm thử**. Ngoài các trường ở trên, syllabus ISTQB liệt kê thêm vài trường mà công cụ quản lý bug thường tự điền: **ngày** và **người báo** (kèm vai trò), **trạng thái** (open, deferred, duplicate, chờ sửa, chờ confirmation testing, reopened, closed, rejected), **bối cảnh** (test case, kỹ thuật hay test data nào đã tìm ra nó) và **tham chiếu** tới test case hoặc requirement. Defect tìm được qua review và static analysis cũng đi theo cùng quy trình đó.
+
 ## Một title tốt
 
 Title là thứ mọi người đọc trong danh sách 300 bug, trong buổi triage hay trong thông báo. Một công thức hữu ích:
@@ -56,5 +58,9 @@ Các bước tối giản tiết kiệm thời gian cho developer và thường 
 * **test data** bạn đã dùng, nếu nó không hiển nhiên.
 
 Không bao giờ đính kèm mật khẩu, token hay dữ liệu thật của khách hàng. Hãy che chúng đi trước.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 5.5 "Defect management". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: một bug report là đầy đủ khi người lạ đọc nó có thể tái hiện failure và hiểu vì sao nó quan trọng, mà không cần nói chuyện với bạn.

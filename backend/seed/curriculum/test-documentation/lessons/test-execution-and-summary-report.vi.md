@@ -35,6 +35,18 @@ Trong khóa học này, một case được tính là **đã thực thi** khi n�
 
 Không một con số nào là đủ. Pass rate 98 % mà còn một defect critical đang mở ở phần thanh toán thì tệ hơn 90 % mà chỉ còn vài bug giao diện minor. Và pass rate cao trên một nửa kế hoạch sẽ che mất mọi thứ ở nửa còn lại. Luôn đọc pass rate cùng với execution progress và **defect đang mở theo severity**.
 
+## Progress report và completion report
+
+Syllabus ISTQB phân biệt hai loại báo cáo kiểm thử:
+
+| | Test progress report | Test completion report |
+|---|---|---|
+| Khi nào | Định kỳ trong lúc test (hằng ngày, hằng tuần) | Một lần, khi kết thúc một cấp độ, một vòng test, một iteration hay một dự án |
+| Mục đích | Hỗ trợ test control: điều chỉnh lịch, nguồn lực hay kế hoạch khi cần | Tổng kết hoạt động và cung cấp thông tin cho đợt sau |
+| Nội dung điển hình | Khoảng thời gian, tiến độ và độ lệch, trở ngại và cách xử lý tạm, các chỉ số, rủi ro mới hoặc thay đổi, kế hoạch cho kỳ tới | Tóm tắt, đánh giá theo mục tiêu và exit criteria, độ lệch so với kế hoạch, trở ngại, các chỉ số, rủi ro chưa xử lý và defect chưa sửa, bài học kinh nghiệm |
+
+Cái mà khóa này gọi là **test summary report** chính là completion report. Chọn kênh theo người nhận: một câu nói hay tin nhắn chat trong nhóm, một dashboard (kết quả CI, task board, burn-down chart), hoặc báo cáo chính thức cho quản lý và các nhóm làm việc phân tán.
+
 ## Test summary report
 
 Được viết khi kết thúc một vòng test, dành cho những người sẽ không đọc test case: product owner, release manager, developer.
@@ -67,5 +79,9 @@ QA đưa ra **khuyến nghị** dựa trên bằng chứng; quyết định rele
 * nêu tên các defect đang mở quan trọng theo severity, không chỉ đưa ra một con số;
 * nói rõ **rủi ro** của những gì chưa được test (blocked, not run, ngoài phạm vi);
 * nói rõ *go*, *no-go*, hoặc *go có điều kiện*, và điều gì sẽ làm thay đổi nó ("no-go cho đến khi BUG-230 được sửa và retest").
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 5.3.1 "Metrics used in testing", 5.3.2 "Purpose, content and audience for test reports" và 5.3.3 "Communicating the status of testing". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: ghi verdict theo build cho mọi lần chạy, báo cáo pass rate cùng với execution progress và defect đang mở theo severity, đối chiếu exit criteria, và kết thúc summary report bằng một khuyến nghị go/no-go rõ ràng kèm lý do.

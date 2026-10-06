@@ -61,4 +61,9 @@ Write the expected result from the **requirement**, never from what the software
 | Priority | Medium |
 | Test Type | Functional |
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 1.4.1 "Test activities and tasks" and 1.4.3 "Testware". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* The test case fields used here are a common industry template (the syllabus does not prescribe one; ISO/IEC/IEEE 29119-3 has templates, not used). The explanations and examples are the QALAB team's own.
+
 > Key idea: a good test case checks one behaviour, starts from stated preconditions, uses concrete test data, has one action per step, and ends with an expected result anyone can observe. If another tester could reach a different verdict, the case is not finished.

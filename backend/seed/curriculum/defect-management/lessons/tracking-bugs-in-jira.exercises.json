@@ -1,0 +1,202 @@
+[
+  {
+    "key": "report-to-jira",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Where does each part of your bug report usually go in a default Jira setup?",
+      "vi": "Mỗi phần của bug report thường nằm ở đâu trong Jira với cấu hình mặc định?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "summary",
+          "text": {
+            "en": "Summary",
+            "vi": "Summary"
+          }
+        },
+        {
+          "id": "description",
+          "text": {
+            "en": "Description",
+            "vi": "Description"
+          }
+        },
+        {
+          "id": "priority",
+          "text": {
+            "en": "Priority",
+            "vi": "Priority"
+          }
+        },
+        {
+          "id": "custom",
+          "text": {
+            "en": "A custom field or label (not built in)",
+            "vi": "Custom field hoặc label (không có sẵn)"
+          }
+        },
+        {
+          "id": "attachments",
+          "text": {
+            "en": "Attachments",
+            "vi": "Attachments"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "title",
+          "text": {
+            "en": "Checkout: Pay button stays disabled after a valid card",
+            "vi": "Checkout: nút Pay vẫn bị vô hiệu sau khi nhập thẻ hợp lệ"
+          }
+        },
+        {
+          "id": "steps",
+          "text": {
+            "en": "Numbered steps, actual and expected result",
+            "vi": "Các bước đánh số, actual và expected result"
+          }
+        },
+        {
+          "id": "urgency",
+          "text": {
+            "en": "High: fix before Friday's release",
+            "vi": "High: sửa trước bản release thứ Sáu"
+          }
+        },
+        {
+          "id": "impact",
+          "text": {
+            "en": "Severity: major",
+            "vi": "Severity: major"
+          }
+        },
+        {
+          "id": "video",
+          "text": {
+            "en": "pay-disabled.mp4",
+            "vi": "pay-disabled.mp4"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "title": "summary",
+        "steps": "description",
+        "urgency": "priority",
+        "impact": "custom",
+        "video": "attachments"
+      }
+    },
+    "explanation": {
+      "en": "The title is the **Summary**; steps, environment and results go in the **Description**; urgency is the built-in **Priority** (Highest to Lowest); evidence goes in **Attachments**. Jira has **no built-in severity** field, so teams add a custom field or a label. Putting severity into Priority would mix impact and urgency, which this course keeps apart.",
+      "vi": "Title là **Summary**; các bước, môi trường và kết quả nằm trong **Description**; mức khẩn cấp là trường **Priority** có sẵn (Highest đến Lowest); bằng chứng nằm trong **Attachments**. Jira **không có sẵn trường severity**, nên các nhóm thêm custom field hoặc label. Gộp severity vào Priority sẽ trộn lẫn mức ảnh hưởng và mức khẩn cấp, hai thứ mà khóa này luôn tách riêng."
+    }
+  },
+  {
+    "key": "jql-open-bugs",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "You need every **unresolved** bug in space `SHOP` with priority **Highest** or **High**, most urgent first. Which JQL query does that?",
+      "vi": "Bạn cần mọi bug **chưa được giải quyết** trong space `SHOP` có priority **Highest** hoặc **High**, khẩn cấp nhất lên đầu. Câu JQL nào làm được điều đó?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "correct",
+          "text": {
+            "en": "project = SHOP AND issuetype = Bug AND resolution = Unresolved AND priority in (Highest, High) ORDER BY priority DESC",
+            "vi": "project = SHOP AND issuetype = Bug AND resolution = Unresolved AND priority in (Highest, High) ORDER BY priority DESC"
+          }
+        },
+        {
+          "id": "or-mistake",
+          "text": {
+            "en": "project = SHOP OR issuetype = Bug AND resolution = Unresolved AND priority in (Highest, High)",
+            "vi": "project = SHOP OR issuetype = Bug AND resolution = Unresolved AND priority in (Highest, High)"
+          }
+        },
+        {
+          "id": "done",
+          "text": {
+            "en": "project = SHOP AND issuetype = Bug AND status = Done AND priority in (Highest, High)",
+            "vi": "project = SHOP AND issuetype = Bug AND status = Done AND priority in (Highest, High)"
+          }
+        },
+        {
+          "id": "asc",
+          "text": {
+            "en": "project = SHOP AND issuetype = Bug AND priority = High ORDER BY created ASC",
+            "vi": "project = SHOP AND issuetype = Bug AND priority = High ORDER BY created ASC"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "correct"
+      ]
+    },
+    "explanation": {
+      "en": "Every condition must hold, so the clauses are joined with **AND**; `resolution = Unresolved` keeps open bugs, `priority in (Highest, High)` takes both levels, and `ORDER BY priority DESC` puts the most urgent first. The **OR** version also returns every work item of SHOP, bugs or not. `status = Done` returns finished bugs, and the last query misses Highest and unresolved filtering.",
+      "vi": "Mọi điều kiện đều phải thỏa, nên các mệnh đề được nối bằng **AND**; `resolution = Unresolved` giữ lại bug còn mở, `priority in (Highest, High)` lấy cả hai mức, và `ORDER BY priority DESC` đưa bug khẩn cấp nhất lên đầu. Phiên bản dùng **OR** trả về cả mọi work item của SHOP, dù có phải bug hay không. `status = Done` trả về bug đã xong, còn câu cuối bỏ sót mức Highest và không lọc bug chưa giải quyết."
+    }
+  },
+  {
+    "key": "jira-resolution",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Triage decides that your bug is the same failure as `SHOP-118`. What is the usual way to record that in Jira?",
+      "vi": "Buổi triage kết luận bug của bạn cùng một failure với `SHOP-118`. Cách thường dùng để ghi nhận điều đó trong Jira là gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "duplicate",
+          "text": {
+            "en": "Close it with resolution Duplicate and link it to SHOP-118",
+            "vi": "Đóng nó với resolution Duplicate và link tới SHOP-118"
+          }
+        },
+        {
+          "id": "delete",
+          "text": {
+            "en": "Delete the work item",
+            "vi": "Xóa work item"
+          }
+        },
+        {
+          "id": "status",
+          "text": {
+            "en": "Create a new status called \"Duplicate\" in the workflow",
+            "vi": "Tạo một trạng thái mới tên \"Duplicate\" trong workflow"
+          }
+        },
+        {
+          "id": "keep",
+          "text": {
+            "en": "Keep both open so nothing is lost",
+            "vi": "Giữ cả hai mở để không mất gì"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "duplicate"
+      ]
+    },
+    "explanation": {
+      "en": "**Duplicate** is one of Jira's default **resolutions**: it records how the work item ended. **Linking** it to the original keeps your details reachable, and any new information belongs in the original. Deleting loses history, a new status mixes outcomes with the workflow, and two open items split the work and the discussion.",
+      "vi": "**Duplicate** là một trong các **resolution** mặc định của Jira: nó ghi lại work item kết thúc như thế nào. **Link** tới bug gốc giúp vẫn tra được thông tin của bạn, và thông tin mới nên được thêm vào bug gốc. Xóa thì mất lịch sử, tạo trạng thái mới thì trộn kết cục với workflow, còn để hai work item cùng mở thì chia đôi công việc và cuộc thảo luận."
+    }
+  }
+]

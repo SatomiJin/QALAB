@@ -87,3 +87,36 @@ Date: 2026-10-06. All lessons import as published (no draft status). No subject-
 2. The existing exercises of the edited lessons were not changed; they still match the lesson text (the additions do not contradict them).
 3. FL-4.2.x coverage formulas are explained in words; a reviewer may want worked coverage percentages in exercises.
 4. The ATDD lesson overlaps a little with *Agile and Scrum for testers* (user stories, acceptance criteria) and *Test-first, DevOps, shift left* (ATDD intro); the new lesson goes deeper (3 C's, INVEST, criteria formats, deriving test cases).
+
+# Batch 3: courses 5 and 6
+
+Date: 2026-10-06. All lessons import as published. No subject-matter review by a person yet.
+
+### `test-documentation`
+
+| Lesson | Change | ISTQB objectives / source | Exercises |
+|---|---|---|---|
+| Test plan and test strategy | Added: other test plan parts (context, assumptions, stakeholders, communication, budget), time or budget as exit criteria when the risk is accepted, Definition of Ready / Done | FL-5.1.1, 5.1.3 | unchanged |
+| Risk-based testing | **New** | FL-5.2.1–5.2.4 | classification, multiple choice, scenario |
+| Estimating and prioritising tests | **New** | FL-5.1.2, 5.1.4, 5.1.5 | multiple choice, classification, multiple choice |
+| Test scenarios, test cases and test suites | Sources added ("test scenario" is an industry term) | FL-1.4.1 | unchanged |
+| Anatomy of a good test case | Sources added (industry template) | FL-1.4.3 | unchanged |
+| Traceability and the RTM | Added: configuration management, baselines | FL-1.4.4, 5.4.1 | unchanged |
+| Test execution and the test summary report | Added: progress vs completion reports, communication channels | FL-5.3.1–5.3.3 | unchanged |
+
+### `defect-management`
+
+| Lesson | Change | ISTQB objectives / source | Exercises |
+|---|---|---|---|
+| Anatomy of a bug report | Added: the three objectives of a defect report, fields trackers fill in, static-testing defects | FL-5.5.1 | unchanged |
+| Severity vs priority | Sources added | FL-5.5.1 | unchanged |
+| Writing bug reports that get fixed | Sources added | FL-1.5.1, 5.5.1 | unchanged |
+| Bug lifecycle states | Sources added (state names are tool conventions) | FL-5.5 | unchanged |
+| Triage and the other outcomes | Added: anomaly, false positive, change request | FL-5.5, 5.3.1 | unchanged |
+| Tracking bugs in Jira | **New** | Atlassian docs + FL-5.5 | classification, multiple choice ×2 |
+
+### Points to check
+
+1. `test-execution-and-summary-report` (about 1 100 words counting table markup) and `test-plan-and-strategy` (about 990) are now above the 900-word guideline; a reviewer may split or trim them.
+2. Jira field names and defaults change over time and between instances; re-check the Jira lesson against the team's real Jira.
+3. CTFL 5.1.6 (test pyramid) and 5.1.7 (testing quadrants) belong to the automation course batch.

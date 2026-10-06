@@ -44,3 +44,8 @@ Licence **CC BY-SA 4.0** (verified on scrumguides.org). Summaries in our own wor
 * **WCAG 2.2**: © W3C under the W3C document licence. QALAB only links it and summarises the four principles and conformance levels in its own words; no text is copied.
 * **OWASP Top 10:2025**: linked as the reference list of web risks; the security checks in the lesson are the team's own examples. Read the OWASP licence before quoting or adapting any OWASP text (OWASP projects are commonly CC BY-SA, not verified for this edition).
 * **Industry practice without a single source** (smoke vs sanity, load / stress / spike / endurance, percentiles, session-based test management): written in the team's own words and marked as such in each lesson's Sources section.
+
+# Batch 3 (courses 5 and 6)
+
+* **ISTQB CTFL syllabus v4.0.1**: same terms and use as before. The estimation examples use the team's own numbers, not the syllabus examples.
+* **Atlassian documentation** (support.atlassian.com): © Atlassian, governed by Atlassian's terms of use. QALAB links the pages and summarises facts (default names, JQL structure) in its own words; the JQL queries in the lesson are self-written. Do not copy Atlassian text, screenshots or logos into lessons.

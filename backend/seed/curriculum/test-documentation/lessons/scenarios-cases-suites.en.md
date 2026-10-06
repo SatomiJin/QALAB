@@ -57,4 +57,9 @@ Test management tools (TestRail, Zephyr, Xray, a spreadsheet) let you build suit
 
 Many teams combine them: scenarios for new work, detailed test cases for the flows that matter most and for anything that must be repeated or automated.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 1.4.1 "Test activities and tasks" (test conditions, test cases, test procedures and test suites). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* "Test scenario" is a common industry term, not an ISTQB one; the closest ISTQB term is the test condition. The explanations and the checkout example are the QALAB team's own.
+
 > Key idea: scenarios give the breadth (what to check), test cases give the precision (how, with which data, and what must happen), and suites decide what is run together. Pick the level that lets the next person get the same result.

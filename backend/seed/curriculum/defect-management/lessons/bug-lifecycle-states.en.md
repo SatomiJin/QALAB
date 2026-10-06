@@ -49,4 +49,9 @@ Reopen when **the same failure** with the same steps is still present, or comes 
 
 States make the work visible. A dashboard can show how many bugs wait for a developer, how many wait for retest, and how long each step takes. A bug that stays in Retest for two weeks means testers are the bottleneck; a bug reopened three times means the fixes are not checked well enough before they come back.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 5.5 "Defect management" (a workflow from discovery to closure). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* The state names follow common tracker conventions; every team and tool (Jira, Azure DevOps, YouTrack) configures its own. The explanations are the QALAB team's own.
+
 > Key idea: the state of a bug says who acts next. The tester reports it (New), retests the fix (Retest) and then verifies or reopens it, based on the build that contains the fix.

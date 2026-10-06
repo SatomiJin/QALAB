@@ -57,4 +57,9 @@ Các công cụ quản lý test (TestRail, Zephyr, Xray, hoặc một bảng tí
 
 Nhiều team kết hợp cả ba: scenario cho phần việc mới, test case chi tiết cho các luồng quan trọng nhất và cho mọi thứ phải lặp lại hoặc tự động hóa.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 1.4.1 "Test activities and tasks" (test condition, test case, test procedure và test suite). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* "Test scenario" là thuật ngữ phổ biến trong ngành, không phải thuật ngữ ISTQB; khái niệm gần nhất trong ISTQB là test condition. Phần giải thích và ví dụ checkout do team QALAB tự biên soạn.
+
 > Ý chính: scenario cho độ rộng (kiểm tra cái gì), test case cho độ chính xác (kiểm tra thế nào, với dữ liệu nào, và điều gì phải xảy ra), còn suite quyết định những gì được chạy cùng nhau. Chọn mức giúp người tiếp theo ra cùng kết quả với bạn.

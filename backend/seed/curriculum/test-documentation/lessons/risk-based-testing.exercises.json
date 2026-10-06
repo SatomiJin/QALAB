@@ -1,0 +1,238 @@
+[
+  {
+    "key": "project-or-product-risk",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each risk as a **project risk** or a **product risk**.",
+      "vi": "Xếp mỗi rủi ro vào **project risk** hoặc **product risk**."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "project",
+          "text": {
+            "en": "Project risk",
+            "vi": "Project risk"
+          }
+        },
+        {
+          "id": "product",
+          "text": {
+            "en": "Product risk",
+            "vi": "Product risk"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "env-late",
+          "text": {
+            "en": "The staging environment will be ready two weeks late",
+            "vi": "Môi trường staging sẽ sẵn sàng trễ hai tuần"
+          }
+        },
+        {
+          "id": "wrong-tax",
+          "text": {
+            "en": "Tax may be calculated wrongly for orders shipped abroad",
+            "vi": "Thuế có thể bị tính sai cho đơn giao ra nước ngoài"
+          }
+        },
+        {
+          "id": "one-expert",
+          "text": {
+            "en": "Only one tester knows the payment module, and she leaves next month",
+            "vi": "Chỉ một tester hiểu module thanh toán, và cô ấy nghỉ việc tháng sau"
+          }
+        },
+        {
+          "id": "slow-search",
+          "text": {
+            "en": "Search may take over 5 seconds with the full product catalogue",
+            "vi": "Tìm kiếm có thể mất hơn 5 giây với toàn bộ danh mục sản phẩm"
+          }
+        },
+        {
+          "id": "vendor",
+          "text": {
+            "en": "The payment provider may deliver its new API late",
+            "vi": "Nhà cung cấp thanh toán có thể giao API mới trễ"
+          }
+        },
+        {
+          "id": "xss",
+          "text": {
+            "en": "User reviews may allow script injection",
+            "vi": "Phần đánh giá của người dùng có thể bị chèn script"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "env-late": "project",
+        "wrong-tax": "product",
+        "one-expert": "project",
+        "slow-search": "product",
+        "vendor": "project",
+        "xss": "product"
+      }
+    },
+    "explanation": {
+      "en": "**Project risks** threaten how the project runs: schedule, people, suppliers (late environment, a single expert, a late vendor API). **Product risks** are about the quality of what is built: wrong calculations, poor performance, security holes. The vendor case is tempting to call a product risk because it concerns payments, but the risk itself is a late delivery, which hits the schedule.",
+      "vi": "**Project risk** đe dọa cách dự án vận hành: lịch, con người, nhà cung cấp (môi trường trễ, chỉ một người hiểu, API của nhà cung cấp giao trễ). **Product risk** liên quan đến chất lượng của thứ được làm ra: tính sai, hiệu năng kém, lỗ hổng bảo mật. Trường hợp nhà cung cấp dễ bị xếp nhầm vào product risk vì liên quan đến thanh toán, nhưng bản thân rủi ro là việc giao trễ, ảnh hưởng tới lịch."
+    }
+  },
+  {
+    "key": "risk-level",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Using the risk matrix from the lesson, which risk should get the most test effort first?",
+      "vi": "Dùng ma trận rủi ro trong bài, rủi ro nào cần được dồn công sức test trước nhất?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "high-high",
+          "text": {
+            "en": "Refunds paid twice: likelihood medium, impact high",
+            "vi": "Hoàn tiền hai lần: khả năng trung bình, ảnh hưởng cao"
+          }
+        },
+        {
+          "id": "high-low",
+          "text": {
+            "en": "A typo on the About page: likelihood high, impact low",
+            "vi": "Lỗi chính tả ở trang Giới thiệu: khả năng cao, ảnh hưởng thấp"
+          }
+        },
+        {
+          "id": "low-med",
+          "text": {
+            "en": "Wrong icon on an old browser: likelihood low, impact medium",
+            "vi": "Sai icon trên trình duyệt cũ: khả năng thấp, ảnh hưởng trung bình"
+          }
+        },
+        {
+          "id": "med-med",
+          "text": {
+            "en": "A slow admin export: likelihood medium, impact medium",
+            "vi": "Xuất dữ liệu admin chậm: khả năng trung bình, ảnh hưởng trung bình"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "high-high"
+      ]
+    },
+    "explanation": {
+      "en": "Risk level combines **likelihood and impact**. Medium likelihood with high impact gives a **high** level, the only one here. The typo is very likely but harmless (medium), the old-browser icon is unlikely (low), and the slow export is medium. A high likelihood alone does not make a risk important.",
+      "vi": "Mức rủi ro kết hợp **khả năng xảy ra và mức ảnh hưởng**. Khả năng trung bình với ảnh hưởng cao cho mức **cao**, và đây là trường hợp duy nhất. Lỗi chính tả rất dễ xảy ra nhưng vô hại (trung bình), icon trên trình duyệt cũ khó xảy ra (thấp), còn xuất dữ liệu chậm ở mức trung bình. Chỉ riêng khả năng xảy ra cao không làm một rủi ro trở nên quan trọng."
+    }
+  },
+  {
+    "key": "risk-response",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "A new feature lets customers split a payment between a gift card and a credit card. It is new code, it moves money, and the release is in two weeks. Describe how risk analysis should shape the testing of this feature, and what else besides testing could reduce the risk.",
+      "vi": "Một tính năng mới cho phép khách chia thanh toán giữa thẻ quà tặng và thẻ tín dụng. Đây là code mới, có liên quan đến tiền, và hai tuần nữa release. Hãy mô tả phân tích rủi ro nên định hình việc test tính năng này ra sao, và ngoài kiểm thử còn cách nào giảm rủi ro."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "High risk level: likelihood and impact",
+          "keywords": [
+            "likelihood",
+            "impact",
+            "high risk",
+            "kha nang",
+            "anh huong",
+            "rui ro cao"
+          ]
+        },
+        {
+          "concept": "Test it first (priority)",
+          "keywords": [
+            "first",
+            "priorit",
+            "early",
+            "truoc",
+            "uu tien"
+          ]
+        },
+        {
+          "concept": "Thorough techniques and coverage",
+          "keywords": [
+            "boundar",
+            "decision table",
+            "coverage",
+            "gia tri bien"
+          ]
+        },
+        {
+          "concept": "Regression of existing payments",
+          "keywords": [
+            "regression",
+            "existing payment",
+            "thanh toan cu"
+          ]
+        },
+        {
+          "concept": "Measures besides testing",
+          "keywords": [
+            "review",
+            "feature flag",
+            "monitor",
+            "rollback",
+            "theo doi"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "Both the **likelihood** (new code) and the **impact** (money) are high, so this is a **high risk** item.\n\n* **Priority**: test it **first**, as soon as a build exists, so critical defects surface early.\n* **Techniques and coverage**: **boundary** values on the gift card balance (0, exactly the order total, one cent less), a **decision table** for the combinations (gift card covers all / part / nothing, card declined), and high **coverage** of the split logic.\n* **Test types**: API tests for the amounts, plus a security look at manipulating the split.\n* **Regression** of the **existing payment** flows that share the code.\n* **Besides testing**: a code **review** of the money logic, a **feature flag** to switch it off, and **monitoring** of payment errors after release, with a rollback plan.",
+        "vi": "Cả **khả năng** xảy ra (code mới) lẫn **ảnh hưởng** (tiền) đều cao, nên đây là hạng mục **rủi ro cao**.\n\n* **Ưu tiên**: test nó **trước** tiên, ngay khi có build, để defect nghiêm trọng lộ ra sớm.\n* **Kỹ thuật và coverage**: **giá trị biên** cho số dư thẻ quà tặng (0, đúng bằng tổng đơn, thiếu một cent), một **decision table** cho các tổ hợp (thẻ quà tặng trả toàn bộ / một phần / không gì, thẻ tín dụng bị từ chối), và **coverage** cao cho logic chia tiền.\n* **Loại test**: API test cho các số tiền, cộng với kiểm tra bảo mật việc chỉnh sửa phần chia.\n* **Regression** các luồng **thanh toán cũ** dùng chung code.\n* **Ngoài kiểm thử**: **review** code phần xử lý tiền, một **feature flag** để tắt tính năng, và **theo dõi** (monitoring) lỗi thanh toán sau release, kèm phương án rollback."
+      },
+      "rubric": [
+        {
+          "id": "level",
+          "text": {
+            "en": "I rated likelihood and impact and called it a high risk",
+            "vi": "Tôi đánh giá khả năng, ảnh hưởng và xếp nó là rủi ro cao"
+          }
+        },
+        {
+          "id": "priority",
+          "text": {
+            "en": "I scheduled it to be tested first",
+            "vi": "Tôi xếp lịch test nó trước tiên"
+          }
+        },
+        {
+          "id": "depth",
+          "text": {
+            "en": "I chose thorough techniques, coverage and regression",
+            "vi": "Tôi chọn kỹ thuật kỹ lưỡng, coverage và regression"
+          }
+        },
+        {
+          "id": "other",
+          "text": {
+            "en": "I named measures besides testing (review, feature flag, monitoring)",
+            "vi": "Tôi nêu biện pháp ngoài kiểm thử (review, feature flag, monitoring)"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "Product risk analysis drives **scope, priority, techniques, coverage and effort**. A high **likelihood** and **impact** item is tested **first** and most thoroughly (boundary values, decision tables, high coverage), with **regression** of what it touches. Risk control is not only testing: **reviews**, a **feature flag** and **monitoring** also mitigate the risk, and the team may decide to accept what remains.",
+      "vi": "Phân tích product risk quyết định **phạm vi, thứ tự ưu tiên, kỹ thuật, coverage và công sức**. Hạng mục có **khả năng** và **ảnh hưởng** cao được test **trước** và kỹ nhất (giá trị biên, decision table, coverage cao), kèm **regression** những gì nó chạm tới. Risk control không chỉ là kiểm thử: **review**, **feature flag** và **monitoring** cũng giảm rủi ro, và nhóm có thể quyết định chấp nhận phần còn lại."
+    }
+  }
+]

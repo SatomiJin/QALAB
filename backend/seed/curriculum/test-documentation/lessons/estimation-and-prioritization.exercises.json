@@ -1,0 +1,195 @@
+[
+  {
+    "key": "three-point",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Testers estimate the regression run of a release: optimistic a = 3 days, most likely m = 5 days, pessimistic b = 9 days. Using three-point estimation, what is the estimate?",
+      "vi": "Tester ước lượng lần chạy regression của một release: lạc quan a = 3 ngày, khả dĩ nhất m = 5 ngày, bi quan b = 9 ngày. Dùng three-point estimation, ước lượng là bao nhiêu?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "correct",
+          "text": {
+            "en": "5.33 ± 1 days",
+            "vi": "5,33 ± 1 ngày"
+          }
+        },
+        {
+          "id": "average",
+          "text": {
+            "en": "5.67 days (the plain average)",
+            "vi": "5,67 ngày (trung bình cộng thường)"
+          }
+        },
+        {
+          "id": "likely",
+          "text": {
+            "en": "5 days (the most likely value)",
+            "vi": "5 ngày (giá trị khả dĩ nhất)"
+          }
+        },
+        {
+          "id": "wrong-sd",
+          "text": {
+            "en": "5.33 ± 6 days",
+            "vi": "5,33 ± 6 ngày"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "correct"
+      ]
+    },
+    "explanation": {
+      "en": "E = (a + 4m + b) ÷ 6 = (3 + 20 + 9) ÷ 6 = 32 ÷ 6 ≈ **5.33** days, and SD = (b − a) ÷ 6 = (9 − 3) ÷ 6 = **1** day. The plain average (17 ÷ 3) ignores the extra weight on the most likely value, and taking only m ignores the risk in the pessimistic case. 6 is b − a before dividing by 6.",
+      "vi": "E = (a + 4m + b) ÷ 6 = (3 + 20 + 9) ÷ 6 = 32 ÷ 6 ≈ **5,33** ngày, và SD = (b − a) ÷ 6 = (9 − 3) ÷ 6 = **1** ngày. Trung bình cộng thường (17 ÷ 3) bỏ qua trọng số thêm cho giá trị khả dĩ nhất, còn chỉ lấy m thì bỏ qua rủi ro ở trường hợp bi quan. Số 6 là b − a trước khi chia cho 6."
+    }
+  },
+  {
+    "key": "estimation-techniques",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which estimation technique is each team using?",
+      "vi": "Mỗi nhóm đang dùng kỹ thuật ước lượng nào?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "ratios",
+          "text": {
+            "en": "Ratios",
+            "vi": "Ratios"
+          }
+        },
+        {
+          "id": "extrapolation",
+          "text": {
+            "en": "Extrapolation",
+            "vi": "Extrapolation"
+          }
+        },
+        {
+          "id": "delphi",
+          "text": {
+            "en": "Wideband Delphi / Planning Poker",
+            "vi": "Wideband Delphi / Planning Poker"
+          }
+        },
+        {
+          "id": "three-point",
+          "text": {
+            "en": "Three-point estimation",
+            "vi": "Three-point estimation"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "history",
+          "text": {
+            "en": "Past projects show test effort is 40 % of development effort, so 50 dev-days means 20 test-days",
+            "vi": "Các dự án trước cho thấy công sức test bằng 40 % công sức phát triển, nên 50 ngày dev nghĩa là 20 ngày test"
+          }
+        },
+        {
+          "id": "last-sprints",
+          "text": {
+            "en": "The last four sprints needed 5, 6, 6 and 7 test days, so the next one is planned at about 6",
+            "vi": "Bốn sprint gần nhất cần 5, 6, 6 và 7 ngày test, nên sprint tới lên kế hoạch khoảng 6"
+          }
+        },
+        {
+          "id": "cards",
+          "text": {
+            "en": "Each team member shows a numbered card at the same time; the highest and lowest explain, then they vote again",
+            "vi": "Mỗi thành viên cùng lúc giơ một lá bài có số; người cao nhất và thấp nhất giải thích, rồi cả nhóm bỏ phiếu lại"
+          }
+        },
+        {
+          "id": "abm",
+          "text": {
+            "en": "The lead asks for a best case, a most likely case and a worst case, and weights the most likely one four times",
+            "vi": "Trưởng nhóm hỏi trường hợp tốt nhất, khả dĩ nhất và tệ nhất, rồi nhân trọng số bốn cho trường hợp khả dĩ nhất"
+          }
+        },
+        {
+          "id": "experts-rounds",
+          "text": {
+            "en": "Three experts estimate alone, discuss the outliers, and re-estimate until they agree",
+            "vi": "Ba chuyên gia ước lượng riêng, thảo luận các con số lệch, rồi ước lượng lại đến khi thống nhất"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "history": "ratios",
+        "last-sprints": "extrapolation",
+        "cards": "delphi",
+        "abm": "three-point",
+        "experts-rounds": "delphi"
+      }
+    },
+    "explanation": {
+      "en": "**Ratios** use the organisation's historical proportions; **extrapolation** projects the current project's own measurements forward. **Wideband Delphi** is repeated independent expert estimates with discussion, and **Planning Poker** is its card-based Agile variant. **Three-point estimation** combines optimistic, most likely (weighted 4) and pessimistic values. Ratios and extrapolation are both metrics-based: the difference is whether the data comes from past projects or from this one.",
+      "vi": "**Ratios** dùng tỉ lệ lịch sử của tổ chức; **extrapolation** suy ra từ số đo của chính dự án hiện tại. **Wideband Delphi** là các lần ước lượng độc lập của chuyên gia được lặp lại kèm thảo luận, và **Planning Poker** là biến thể dùng lá bài trong Agile. **Three-point estimation** kết hợp giá trị lạc quan, khả dĩ nhất (trọng số 4) và bi quan. Ratios và extrapolation đều dựa trên số liệu: khác nhau ở chỗ dữ liệu lấy từ dự án cũ hay từ chính dự án này."
+    }
+  },
+  {
+    "key": "prioritization-dependency",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Risk analysis ranks \"refund an order\" as the highest-risk test and \"place an order\" as medium. In which order do you run them, and why?",
+      "vi": "Phân tích rủi ro xếp test \"hoàn tiền một đơn hàng\" có rủi ro cao nhất và \"đặt một đơn hàng\" ở mức trung bình. Bạn chạy chúng theo thứ tự nào, và vì sao?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "dependency",
+          "text": {
+            "en": "\"Place an order\" first: the refund test depends on an existing order",
+            "vi": "\"Đặt đơn hàng\" trước: test hoàn tiền phụ thuộc vào một đơn hàng đã có"
+          }
+        },
+        {
+          "id": "risk-only",
+          "text": {
+            "en": "\"Refund\" first: risk-based prioritisation always wins",
+            "vi": "\"Hoàn tiền\" trước: ưu tiên theo rủi ro luôn thắng"
+          }
+        },
+        {
+          "id": "coverage",
+          "text": {
+            "en": "Whichever has more lines of code",
+            "vi": "Test nào có nhiều dòng code hơn"
+          }
+        },
+        {
+          "id": "either",
+          "text": {
+            "en": "The order does not matter",
+            "vi": "Thứ tự không quan trọng"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "dependency"
+      ]
+    },
+    "explanation": {
+      "en": "Prioritisation strategies (risk, coverage, requirements) give the ideal order, but **dependencies** come first: a high-priority test that needs a lower-priority one must wait for it. You cannot refund an order that does not exist, so \"place an order\" runs first, immediately followed by the refund test.",
+      "vi": "Các chiến lược ưu tiên (rủi ro, coverage, requirement) cho thứ tự lý tưởng, nhưng **sự phụ thuộc** được xét trước: một test ưu tiên cao cần test ưu tiên thấp hơn thì phải đợi test đó. Không thể hoàn tiền một đơn hàng chưa tồn tại, nên \"đặt đơn hàng\" chạy trước, ngay sau đó là test hoàn tiền."
+    }
+  }
+]

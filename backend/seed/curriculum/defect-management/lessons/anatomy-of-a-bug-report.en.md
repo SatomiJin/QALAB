@@ -17,6 +17,8 @@ A bug report is a message to someone who was not there when you saw the problem.
 
 Severity and priority are two separate fields on purpose. The next lesson covers them in detail.
 
+A defect report has three jobs: give whoever fixes it **enough information to resolve it**, make it possible to **track the quality** of the product, and give ideas to **improve the development and test process**. Besides the fields above, the ISTQB syllabus lists a few that trackers usually fill in for you: the **date** and **author** (with their role), the **status** (open, deferred, duplicate, waiting to be fixed, awaiting confirmation testing, reopened, closed, rejected), the **context** (which test case, technique or test data found it) and **references** to the test case or requirement. Defects found by reviews and static analysis go through the same process.
+
 ## A good title
 
 The title is what people read in a list of 300 bugs, in a triage meeting or in a notification. A useful formula:
@@ -56,5 +58,9 @@ Attach what proves the failure and helps to find the defect:
 * the **test data** you used, if it is not obvious.
 
 Never attach passwords, tokens or real customer data. Mask them first.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 5.5 "Defect management". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: a bug report is complete when a stranger can reproduce the failure from it and understand why it matters, without talking to you.

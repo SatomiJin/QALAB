@@ -63,4 +63,9 @@ Before you press *Create*, check that:
 * environment, reproduction rate and evidence are there;
 * it is one bug, and not already reported.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 1.5.1 (communicating defects constructively) and 5.5 "Defect management". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* The checklist and the advice on reproduction rates, duplicates and evidence are common practice, written in the QALAB team's own words.
+
 > Key idea: a report gets fixed when it is easy to trust and easy to reproduce: one bug, facts only, a reproduction rate, evidence attached, and no duplicate.

@@ -23,6 +23,8 @@ Tester tham gia để giải thích bug của mình và trả lời câu hỏi. 
 
 **Rejected và Cannot Reproduce không phải lời chê.** Chúng là câu hỏi gửi lại bạn: "cho tôi xem". Hãy trả lời bằng sự thật, không bằng sự bực bội. **Won't Fix và Deferred là quyết định kinh doanh:** việc của tester là đảm bảo mức ảnh hưởng được hiểu rõ khi ra quyết định, không phải là thắng cuộc tranh luận.
 
+Theo thuật ngữ ISTQB, cái bạn báo là một **anomaly** (điểm bất thường): việc phân tích sẽ quyết định nó là defect thật hay là thứ khác, chẳng hạn **false positive** (test, dữ liệu hay môi trường bị sai) hoặc **change request** (chính requirement nên thay đổi). Các kết cục ở trên là tên mà các nhóm đặt cho những quyết định đó.
+
 ## Nhìn kỹ hơn vào Cannot Reproduce
 
 Đây là kết cục hay cần phản hồi nhất, nên hãy làm có hệ thống:
@@ -48,5 +50,9 @@ Các team theo dõi bug bằng vài con số. Chúng cho thấy xu hướng; ch�
 | Thời gian sửa trung bình | Một bug phải chờ bao lâu, theo từng priority |
 
 Nếu report của chính bạn có tỷ lệ bị từ chối cao, đó là tín hiệu cần đọc requirement kỹ hơn; tỷ lệ reopen cao là tín hiệu developer cần tự test bản sửa trước khi chuyển lại.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 5.5 "Defect management" (ghi nhận, phân tích và phân loại, quyết định cách xử lý, đóng) và 5.3.1 "Metrics used in testing" (defect metrics). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: mọi bug đều kết thúc bằng một quyết định, không phải lúc nào cũng là bản sửa. Triage quyết định tính hợp lệ, severity, priority và người phụ trách; tester trả lời Rejected và Cannot Reproduce bằng sự thật, và đảm bảo Won't Fix và Deferred được quyết định khi đã nhìn rõ mức ảnh hưởng.

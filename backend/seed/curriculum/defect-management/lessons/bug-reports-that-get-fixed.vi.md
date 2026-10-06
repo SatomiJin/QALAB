@@ -63,4 +63,9 @@ Trước khi bấm *Create*, hãy kiểm tra rằng:
 * có environment, tỷ lệ tái hiện và bằng chứng;
 * đây là một bug duy nhất, và chưa ai báo.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 1.5.1 (trao đổi về defect một cách xây dựng) và 5.5 "Defect management". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* Checklist và lời khuyên về tỉ lệ tái hiện, bug trùng và bằng chứng là cách làm phổ biến, do team QALAB tự viết.
+
 > Ý chính: một report được sửa khi nó dễ tin và dễ tái hiện: một bug, chỉ có sự thật, có tỷ lệ tái hiện, có bằng chứng, và không trùng lặp.

@@ -2,9 +2,9 @@
 
 The V1 curriculum, as imported from `backend/seed/curriculum/` (`npm run seed:curriculum`; format and writing rules in `backend/seed/README.md`). Every text exists in English and Vietnamese. After the import the content is edited in the Admin CMS, so the live content may differ from this outline; regenerate this page when the files change.
 
-Totals: 7 skills, 8 courses, 21 modules, 51 lessons, 123 exercises (53 multiple choice, 39 classification, 6 bug report, 14 scenario, 11 test case).
+Totals: 7 skills, 8 courses, 21 modules, 54 lessons, 132 exercises (58 multiple choice, 42 classification, 6 bug report, 15 scenario, 11 test case).
 
-The `fundamentals`, `testing_types` and `test_design` courses follow the ISTQB CTFL syllabus v4.0.1 (chapters 1–4) and cite their sources in each lesson's Sources section. No subject-matter review by a person yet. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
+The `fundamentals`, `testing_types`, `test_design`, `test_docs` and `defect_mgmt` courses follow the ISTQB CTFL syllabus v4.0.1 (chapters 1–5; the Jira lesson uses Atlassian documentation) and cite their sources in each lesson's Sources section. No subject-matter review by a person yet. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
 
 ## QA Fundamentals (`fundamentals`)
 
@@ -72,21 +72,23 @@ Turn a requirement into a small, strong set of tests: equivalence partitioning, 
 
 ### Test documentation — `test-documentation`
 
-Plan the testing, write test cases others can run, trace them to requirements and report the results so the team can decide whether to release.
+Plan the testing by risk, estimate and prioritise it, write test cases others can run, trace them to requirements and report the results so the team can decide whether to release.
 
 | Module | Lesson | Min | Exercises |
 |---|---|---|---|
-| Planning the testing | Test plan and test strategy | 10 | classification, multiple choice |
+| Planning the testing | Test plan and test strategy | 11 | classification, multiple choice |
+| Planning the testing | Risk-based testing | 10 | classification, multiple choice, scenario |
+| Planning the testing | Estimating and prioritising tests | 9 | multiple choice, classification, multiple choice |
 | Planning the testing | Test scenarios, test cases and test suites | 8 | classification, multiple choice, test case |
 | Writing test cases | Anatomy of a good test case | 10 | multiple choice, classification, test case |
-| Writing test cases | Traceability and the RTM | 8 | multiple choice, test case |
-| Reporting | Test execution and the test summary report | 10 | multiple choice, scenario |
+| Writing test cases | Traceability and the RTM | 9 | multiple choice, test case |
+| Reporting | Test execution and the test summary report | 11 | multiple choice, scenario |
 
 ## Defect Management (`defect_mgmt`)
 
 ### Defect management — `defect-management`
 
-Write bug reports that get fixed, rate severity and priority correctly, and follow a bug from New to Closed.
+Write bug reports that get fixed, rate severity and priority correctly, follow a bug from New to Closed, and track it in Jira.
 
 | Module | Lesson | Min | Exercises |
 |---|---|---|---|
@@ -95,6 +97,7 @@ Write bug reports that get fixed, rate severity and priority correctly, and foll
 | Bug reports | Writing bug reports that get fixed | 8 | classification, multiple choice, bug report |
 | The bug lifecycle | Bug lifecycle states | 8 | classification, multiple choice |
 | The bug lifecycle | Triage and the other outcomes | 10 | classification, scenario |
+| The bug lifecycle | Tracking bugs in Jira | 10 | classification, multiple choice, multiple choice |
 
 ## API Testing (`api_testing`)
 

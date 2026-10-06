@@ -37,6 +37,10 @@ Many teams also trace one more step: test case → defect. Then a requirement's 
 
 Coverage and results are different things. 80 % coverage says nothing about quality: REQ-02 is covered and failing. Report both: how much is covered, and of that, how much passes. Also remember that one test case per requirement is a minimum, not a target. "Lock the account after 5 failed attempts" needs at least the 4th attempt (not locked), the 5th (locked) and the end of the 15 minutes (unlocked again).
 
+## Versions: configuration management
+
+Links are only useful if everyone knows **which version** of each item they point to. **Configuration management** identifies, version-controls and tracks the testware (test plans, test cases, scripts, results, logs, reports) and the test items as **configuration items**. Once an item, such as a test environment or a build, is approved for testing it becomes a **baseline**: it changes only through a controlled change process, and you can go back to an earlier baseline to reproduce old results. That is why a test result always names the build ("Pass on 2.4.0-rc2"), and why requirement REQ-12 v2 and its test cases are updated together. In a DevOps pipeline most of this is automated (version control, build numbers, tagged environments).
+
 ## Finding untested requirements
 
 1. List every requirement with a stable ID (user stories, acceptance criteria, specifications).
@@ -46,5 +50,9 @@ Coverage and results are different things. 80 % coverage says nothing about qual
 5. When a requirement changes, update its row and mark its test cases for review.
 
 Acceptance criteria often hide several requirements in one sentence. "The user can reset the password, and the link expires after 1 hour" is two rows: reset works, and the link expires.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 1.4.4 "Traceability between the test basis and testware" and 5.4 "Configuration management". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: the RTM links each requirement to its test cases, results and defects. Read forward to find untested requirements, backward to find orphan tests, and report coverage and pass status separately.

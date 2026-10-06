@@ -49,4 +49,9 @@ Reopen khi **đúng failure đó** với đúng các bước vẫn còn, hoặc 
 
 Trạng thái làm cho công việc hiện rõ. Một dashboard có thể cho thấy bao nhiêu bug đang chờ developer, bao nhiêu đang chờ retest, và mỗi bước mất bao lâu. Một bug nằm ở Retest suốt hai tuần nghĩa là tester đang là điểm nghẽn; một bug bị reopen ba lần nghĩa là các bản sửa chưa được kiểm tra kỹ trước khi chuyển lại.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 5.5 "Defect management" (một workflow từ lúc phát hiện đến lúc đóng). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* Tên các trạng thái theo quy ước phổ biến của các công cụ; mỗi nhóm và mỗi công cụ (Jira, Azure DevOps, YouTrack) tự cấu hình workflow riêng. Phần giải thích do team QALAB tự biên soạn.
+
 > Ý chính: trạng thái của bug cho biết ai hành động tiếp theo. Tester báo bug (New), test lại bản sửa (Retest) rồi verify hoặc reopen, dựa trên build có chứa bản sửa.

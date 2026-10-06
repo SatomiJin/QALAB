@@ -23,6 +23,8 @@ Testers attend to explain their bugs and answer questions. A clear report makes 
 
 **Rejected and Cannot Reproduce are not insults.** They are questions back to you: "show me". Answer with facts, not with frustration. **Won't Fix and Deferred are business decisions:** the tester's job is to make sure the impact is understood when the decision is made, not to win the argument.
 
+In ISTQB terms, what you report is an **anomaly**: analysis decides whether it is a real defect or something else, such as a **false positive** (the test, data or environment was wrong) or a **change request** (the requirement itself should change). The outcomes above are the names teams give to those decisions.
+
 ## Cannot Reproduce: a closer look
 
 It is the most common outcome to push back on, so be systematic:
@@ -48,5 +50,9 @@ Teams track bugs with a few numbers. They show trends; they are not a score for 
 | Average time to fix | How long a bug waits, by priority |
 
 A high rejection rate of your own reports is a signal to read the requirements more closely; a high reopen rate is a signal for developers to test their fixes before handing them over.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 5.5 "Defect management" (log, analyse and classify, decide the response, close) and 5.3.1 "Metrics used in testing" (defect metrics). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: every bug ends with a decision, not always a fix. Triage decides validity, severity, priority and owner; the tester answers Rejected and Cannot Reproduce with facts, and makes sure Won't Fix and Deferred are decided with their impact in view.

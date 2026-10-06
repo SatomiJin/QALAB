@@ -43,3 +43,18 @@ Date: 2026-10-06. Scope: `testing-levels-and-types` and `test-design-techniques`
 | ISTQB glossary, term "smoke test" | Web fetch | **Failed**: the glossary is a JavaScript application and returned no content. Secondary sources say it lists "sanity test" as a synonym of "smoke test"; the lesson now says "some references treat them as synonyms" without naming ISTQB. Verify by hand. |
 
 Result: 13 existing lessons got a Sources section (8 also got new content), 3 new lessons with 9 self-written exercises. `npm run seed:curriculum -- --dry-run`: 51 lessons, 123 exercises, all valid; `npx vitest run src/curriculum`: 17 tests pass. Imported by the user with `--update`; a read-only check the same day found all 16 lessons of both courses matching the files (English text, current manual Vietnamese, exercises with Vietnamese texts, minutes, order, published status).
+
+# Batch 3: courses 5 and 6
+
+Date: 2026-10-06. Scope: `test-documentation` and `defect-management`.
+
+| Source | How | Result |
+|---|---|---|
+| ISTQB CTFL syllabus v4.0.1 | Same local copy | Chapter 5 read in full (5.1 planning, 5.2 risk, 5.3 monitoring and reports, 5.4 configuration management, 5.5 defect management). |
+| Atlassian: statuses, priorities and resolutions | Web fetch | Default statuses, priorities (Highest to Lowest) and resolutions (Done, Won't do, Duplicate); confirms that issues are now called work items. |
+| Atlassian: advanced search (JQL) | Web fetch | Query structure (field, operator, value or function, AND / OR, ORDER BY) and example queries (not copied; the lesson's queries are self-written). |
+| Atlassian: work types | Web search only | Title and the Bug work type description seen in search results; page not opened directly. |
+
+Result: 10 existing lessons got a Sources section (6 also got new content), 3 new lessons with 9 self-written exercises. `npm run seed:curriculum -- --dry-run`: 54 lessons, 132 exercises, all valid; `npx vitest run src/curriculum`: 17 tests pass. Not imported into the database yet.
+
+Test pyramid and testing quadrants (CTFL 5.1.6, 5.1.7) are left for the `test-automation` course, which already has a pyramid lesson.

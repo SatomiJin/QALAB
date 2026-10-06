@@ -35,6 +35,18 @@ In this course a case counts as **executed** when it has a Pass or Fail verdict;
 
 No single number is enough. A 98 % pass rate with one open critical defect in payment is worse than 90 % with only minor cosmetic bugs. And a high pass rate over half of the plan hides everything in the other half. Always read the pass rate together with execution progress and **open defects by severity**.
 
+## Progress reports and completion reports
+
+The ISTQB syllabus distinguishes two kinds of test report:
+
+| | Test progress report | Test completion report |
+|---|---|---|
+| When | Regularly during testing (daily, weekly) | Once, when a level, cycle, iteration or project ends |
+| Purpose | Support test control: change the schedule, resources or plan when needed | Summarise the activity and inform the next one |
+| Typical content | Period, progress and deviations, impediments and workarounds, metrics, new or changed risks, plan for the next period | Summary, evaluation against objectives and exit criteria, deviations from the plan, impediments, metrics, unmitigated risks and unfixed defects, lessons learned |
+
+What this course calls the **test summary report** is the completion report. Choose the channel for the audience: a quick word or chat inside the team, a dashboard (CI results, task board, burn-down chart), or a formal report for management and distributed teams.
+
 ## The test summary report
 
 Written at the end of a test cycle, for people who will not read the test cases: the product owner, the release manager, the developers.
@@ -67,5 +79,9 @@ QA gives a **recommendation** based on evidence; the release decision belongs to
 * names the open defects that matter by severity, not only a count;
 * states the **risks** of what was not tested (blocked, not run, out of scope);
 * says clearly *go*, *no-go*, or *go with conditions*, and what would change it ("no-go until BUG-230 is fixed and retested").
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 5.3.1 "Metrics used in testing", 5.3.2 "Purpose, content and audience for test reports" and 5.3.3 "Communicating the status of testing". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: record a verdict per build for every run, report pass rate together with execution progress and open defects by severity, check the exit criteria, and end the summary report with a clear go/no-go recommendation and its reasons.

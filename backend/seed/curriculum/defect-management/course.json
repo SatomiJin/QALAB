@@ -74,6 +74,14 @@
             "vi": "Triage và các kết cục khác"
           },
           "minutes": 10
+        },
+        {
+          "slug": "tracking-bugs-in-jira",
+          "title": {
+            "en": "Tracking bugs in Jira",
+            "vi": "Theo dõi bug trong Jira"
+          },
+          "minutes": 10
         }
       ]
     }

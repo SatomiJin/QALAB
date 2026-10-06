@@ -61,4 +61,9 @@ Viết expected result dựa trên **requirement**, đừng bao giờ dựa trê
 | Priority | Medium |
 | Test Type | Functional |
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 1.4.1 "Test activities and tasks" và 1.4.3 "Testware". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* Các trường của test case trong bài là mẫu phổ biến trong ngành (syllabus không quy định mẫu nào; ISO/IEC/IEEE 29119-3 có mẫu, nhưng không được dùng). Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: một test case tốt kiểm tra một hành vi, bắt đầu từ preconditions đã nêu rõ, dùng test data cụ thể, mỗi bước một thao tác, và kết thúc bằng expected result mà ai cũng quan sát được. Nếu một tester khác có thể ra verdict khác, test case đó chưa xong.

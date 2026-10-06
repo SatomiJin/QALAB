@@ -48,4 +48,8 @@ The two diagonal cases are the ones to remember:
 
 For severity, ask: *Does it stop a core function? Lose or expose data? Is there a workaround? How many users can hit it?* For priority, ask: *When is the release? Who is affected and how visible is it? What does it cost the business each day it stays?*
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 5.5 "Defect management" (severity as degree of impact, priority to fix). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+
 > Key idea: severity is the impact on the system, set mostly by the tester; priority is the urgency of the fix, set by the business. Rate them separately, every time.

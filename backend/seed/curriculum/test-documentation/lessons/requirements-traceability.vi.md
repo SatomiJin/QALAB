@@ -37,6 +37,10 @@ Nhiều team còn truy vết thêm một bước: test case → defect. Khi đó
 
 Coverage và kết quả là hai chuyện khác nhau. Coverage 80 % không nói gì về chất lượng: REQ-02 được bao phủ nhưng đang fail. Hãy báo cáo cả hai: bao phủ được bao nhiêu, và trong số đó bao nhiêu pass. Cũng nhớ rằng mỗi requirement một test case là mức tối thiểu, không phải mục tiêu. "Khóa tài khoản sau 5 lần thất bại" cần ít nhất lần thứ 4 (chưa khóa), lần thứ 5 (bị khóa) và lúc hết 15 phút (mở khóa lại).
 
+## Phiên bản: configuration management
+
+Liên kết chỉ có ích khi ai cũng biết nó trỏ tới **phiên bản nào** của từng thứ. **Configuration management** (quản lý cấu hình) định danh, quản lý phiên bản và theo dõi thay đổi của testware (test plan, test case, script, kết quả, log, báo cáo) cùng các test item như những **configuration item**. Khi một thứ, chẳng hạn môi trường test hay một build, được duyệt để test, nó trở thành một **baseline**: chỉ được thay đổi qua quy trình kiểm soát thay đổi, và có thể quay về baseline cũ để tái hiện kết quả trước đây. Vì vậy kết quả test luôn ghi rõ build ("Pass trên 2.4.0-rc2"), và requirement REQ-12 v2 được cập nhật cùng lúc với các test case của nó. Trong DevOps pipeline, phần lớn việc này được tự động hóa (version control, số build, môi trường có gắn tag).
+
 ## Tìm requirement chưa được test
 
 1. Liệt kê mọi requirement với ID ổn định (user story, acceptance criteria, đặc tả).
@@ -46,5 +50,9 @@ Coverage và kết quả là hai chuyện khác nhau. Coverage 80 % không nói 
 5. Khi requirement thay đổi, cập nhật dòng của nó và đánh dấu các test case liên quan cần xem lại.
 
 Acceptance criteria thường giấu nhiều requirement trong một câu. "Người dùng có thể đặt lại mật khẩu, và link hết hạn sau 1 giờ" là hai dòng: đặt lại mật khẩu hoạt động, và link hết hạn.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 1.4.4 "Traceability between the test basis and testware" và 5.4 "Configuration management". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: RTM liên kết mỗi requirement với test case, kết quả và defect của nó. Đọc xuôi để tìm requirement chưa được test, đọc ngược để tìm test mồ côi, và báo cáo coverage tách biệt với trạng thái pass.

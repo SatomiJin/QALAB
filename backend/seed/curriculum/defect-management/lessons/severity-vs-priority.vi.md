@@ -48,4 +48,8 @@ Hai trường hợp nằm chéo là những trường hợp cần nhớ:
 
 Với severity, hãy hỏi: *Nó có chặn một chức năng cốt lõi không? Có làm mất hay lộ dữ liệu không? Có workaround không? Bao nhiêu người dùng có thể gặp?* Với priority, hãy hỏi: *Khi nào release? Ai bị ảnh hưởng và lỗi có dễ thấy không? Mỗi ngày bug còn tồn tại, doanh nghiệp mất gì?*
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 5.5 "Defect management" (severity là mức độ ảnh hưởng, priority là mức ưu tiên sửa). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+
 > Ý chính: severity là mức ảnh hưởng lên hệ thống, chủ yếu do tester đánh giá; priority là mức khẩn cấp của việc sửa, do phía kinh doanh quyết định. Luôn đánh giá chúng riêng biệt.

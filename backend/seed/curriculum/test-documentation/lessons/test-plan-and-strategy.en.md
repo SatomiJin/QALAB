@@ -25,6 +25,8 @@ The strategy sets the rules; the plan applies them to a concrete piece of work. 
 | Schedule | When each activity happens | Design 3–5 March, execution 6–12 March |
 | Deliverables | What QA hands over | Test cases, bug reports, test summary report |
 
+The ISTQB syllabus lists a few more parts that bigger plans include: the **context** (test objectives, test basis), **assumptions and constraints**, the **stakeholders** and their roles, how the team will **communicate** (reports, frequency, templates), the **budget**, and any deviation from the organisation's test policy and strategy. A plan also serves as communication: writing it forces the team to think through risks, people, tools and effort before the work starts.
+
 ## Scope and out of scope
 
 Writing **out of scope** explicitly is as important as writing scope. "We will not test the mobile app" protects the team: if a mobile bug appears, everyone agreed in advance that it was not covered. Always give the reason (another team owns it, not released yet, accepted risk), so the decision can be challenged.
@@ -40,6 +42,8 @@ Criteria are useful only if anyone can say yes or no to them.
 | Quality is good enough | No open critical or major defects, pass rate ≥ 95 % |
 
 Exit criteria are not a promise of zero bugs (exhaustive testing is impossible). They are the agreed point at which the team has enough information to decide.
+
+Running out of time or budget can also be a valid reason to stop, **if the stakeholders have reviewed and accepted the risk** of releasing without further testing. In Agile teams the exit criteria are usually called the **Definition of Done**, and the entry criteria a user story must meet before work starts are the **Definition of Ready**.
 
 ## Risks drive the approach
 
@@ -59,5 +63,9 @@ List the risks, rate each by **likelihood** and **impact**, and spend most effor
 | Schedule | Design 3–5 March; execution 6–12 March; report 13 March |
 
 A plan is a living document: when the scope or the dates change, update it and tell the team.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 5.1.1 "Purpose and content of a test plan" and 5.1.3 "Entry criteria and exit criteria". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: the test strategy is the general way a team tests; the test plan applies it to one release, with a clear scope and out of scope, checkable entry and exit criteria, and risks that decide where the effort goes.

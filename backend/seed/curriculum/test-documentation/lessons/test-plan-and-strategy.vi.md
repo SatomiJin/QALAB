@@ -25,6 +25,8 @@ Strategy đặt ra quy tắc; plan áp dụng quy tắc đó vào một phần v
 | Schedule (lịch) | Mỗi hoạt động diễn ra khi nào | Thiết kế 3–5/3, thực thi 6–12/3 |
 | Deliverables (sản phẩm bàn giao) | QA bàn giao những gì | Test case, bug report, test summary report |
 
+Syllabus ISTQB liệt kê thêm vài phần mà các test plan lớn thường có: **bối cảnh** (test objective, test basis), **giả định và ràng buộc**, các **bên liên quan** và vai trò của họ, cách nhóm **trao đổi thông tin** (báo cáo, tần suất, mẫu tài liệu), **ngân sách**, và những điểm lệch khỏi test policy, test strategy của tổ chức. Test plan cũng là công cụ giao tiếp: viết nó buộc cả nhóm nghĩ trước về rủi ro, con người, công cụ và công sức trước khi bắt tay vào làm.
+
 ## Scope và out of scope
 
 Ghi rõ **out of scope** quan trọng không kém ghi scope. Câu "Chúng tôi không test mobile app" bảo vệ cả team: nếu xuất hiện bug trên mobile, mọi người đã đồng ý từ trước rằng phần đó không được bao phủ. Luôn ghi lý do (team khác phụ trách, chưa phát hành, rủi ro đã được chấp nhận) để quyết định đó có thể được xem xét lại.
@@ -40,6 +42,8 @@ Tiêu chí chỉ có ích khi ai cũng trả lời được là "đạt" hay "ch
 | Chất lượng đủ tốt | Không còn defect critical hoặc major nào mở, pass rate ≥ 95 % |
 
 Exit criteria không phải lời hứa sẽ không còn bug nào (test toàn bộ là không thể). Nó là điểm mà cả team đã thống nhất rằng có đủ thông tin để ra quyết định.
+
+Hết thời gian hoặc hết ngân sách cũng có thể là lý do hợp lệ để dừng, **nếu các bên liên quan đã xem xét và chấp nhận rủi ro** release mà không test thêm. Trong nhóm Agile, exit criteria thường được gọi là **Definition of Done**, còn entry criteria mà một user story phải đạt trước khi bắt đầu làm là **Definition of Ready**.
 
 ## Rủi ro quyết định cách tiếp cận
 
@@ -59,5 +63,9 @@ Liệt kê các rủi ro, đánh giá mỗi rủi ro theo **khả năng xảy ra
 | Schedule | Thiết kế 3–5/3; thực thi 6–12/3; báo cáo 13/3 |
 
 Test plan là tài liệu sống: khi scope hoặc lịch thay đổi, hãy cập nhật nó và báo cho cả team.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 5.1.1 "Purpose and content of a test plan" và 5.1.3 "Entry criteria and exit criteria". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: test strategy là cách test chung của một team; test plan áp dụng nó cho một release, với scope và out of scope rõ ràng, entry và exit criteria kiểm tra được, và các rủi ro quyết định công sức được dồn vào đâu.

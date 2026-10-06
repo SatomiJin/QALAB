@@ -28,7 +28,23 @@
             "en": "Test plan and test strategy",
             "vi": "Test plan và test strategy"
           },
+          "minutes": 11
+        },
+        {
+          "slug": "risk-based-testing",
+          "title": {
+            "en": "Risk-based testing",
+            "vi": "Risk-based testing: kiểm thử dựa trên rủi ro"
+          },
           "minutes": 10
+        },
+        {
+          "slug": "estimation-and-prioritization",
+          "title": {
+            "en": "Estimating and prioritising tests",
+            "vi": "Ước lượng và ưu tiên test"
+          },
+          "minutes": 9
         },
         {
           "slug": "scenarios-cases-suites",
@@ -65,7 +81,7 @@
             "en": "Traceability and the RTM",
             "vi": "Traceability và RTM"
           },
-          "minutes": 8
+          "minutes": 9
         }
       ]
     },
@@ -86,7 +102,7 @@
             "en": "Test execution and the test summary report",
             "vi": "Thực thi test và test summary report"
           },
-          "minutes": 10
+          "minutes": 11
         }
       ]
     }
