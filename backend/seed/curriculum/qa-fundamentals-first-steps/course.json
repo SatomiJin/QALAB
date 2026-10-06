@@ -80,8 +80,7 @@
             "en": "Testware, traceability and test roles",
             "vi": "Testware, traceability và vai trò trong kiểm thử"
           },
-          "minutes": 10,
-          "status": "draft"
+          "minutes": 10
         },
         {
           "slug": "tester-skills-and-independence",
@@ -89,8 +88,7 @@
             "en": "Tester skills, the whole team and independence",
             "vi": "Kỹ năng tester, whole team và tính độc lập"
           },
-          "minutes": 9,
-          "status": "draft"
+          "minutes": 9
         }
       ]
     }

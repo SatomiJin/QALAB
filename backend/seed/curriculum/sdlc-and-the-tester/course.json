@@ -44,8 +44,7 @@
             "en": "Test-first, DevOps, shift left and retrospectives",
             "vi": "Test-first, DevOps, shift left và retrospective"
           },
-          "minutes": 11,
-          "status": "draft"
+          "minutes": 11
         }
       ]
     },
@@ -82,8 +81,7 @@
             "en": "The review process and its roles",
             "vi": "Quy trình review và các vai trò"
           },
-          "minutes": 9,
-          "status": "draft"
+          "minutes": 9
         }
       ]
     }

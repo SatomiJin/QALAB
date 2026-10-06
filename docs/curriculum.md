@@ -4,7 +4,7 @@ The V1 curriculum, as imported from `backend/seed/curriculum/` (`npm run seed:cu
 
 Totals: 7 skills, 8 courses, 20 modules, 48 lessons, 114 exercises (48 multiple choice, 37 classification, 6 bug report, 12 scenario, 11 test case).
 
-The two `fundamentals` courses follow the ISTQB CTFL syllabus v4.0.1 (chapters 1, 2.1 and 3) and cite it in each lesson's Sources section; lessons marked *(draft)* wait for a human review before publishing. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
+The two `fundamentals` courses follow the ISTQB CTFL syllabus v4.0.1 (chapters 1, 2.1 and 3) and cite it in each lesson's Sources section; lessons marked wait for a human review before publishing. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
 
 ## QA Fundamentals (`fundamentals`)
 
@@ -18,8 +18,8 @@ What software testing is, why it matters, and how a tester works through a relea
 | What testing is | Errors, defects and failures | 8 | classification, bug report |
 | How testing is done | The seven testing principles | 9 | multiple choice, scenario |
 | How testing is done | STLC: the test process | 12 | test case |
-| How testing is done | Testware, traceability and test roles *(draft)* | 10 | classification, multiple choice, multiple choice |
-| How testing is done | Tester skills, the whole team and independence *(draft)* | 9 | classification, multiple choice, scenario |
+| How testing is done | Testware, traceability and test roles | 10 | classification, multiple choice, multiple choice |
+| How testing is done | Tester skills, the whole team and independence | 9 | classification, multiple choice, scenario |
 
 ### SDLC and the tester's role — `sdlc-and-the-tester`
 
@@ -29,10 +29,10 @@ How software is built in waterfall, V-model and Agile teams, where testing fits 
 |---|---|---|---|
 | Development life cycles | SDLC models: waterfall, V-model, iterative | 9 | classification, multiple choice, multiple choice |
 | Development life cycles | Agile and Scrum for testers | 10 | classification, multiple choice, test case |
-| Development life cycles | Test-first, DevOps, shift left and retrospectives *(draft)* | 11 | classification, multiple choice, multiple choice |
+| Development life cycles | Test-first, DevOps, shift left and retrospectives | 11 | classification, multiple choice, multiple choice |
 | Quality in the team | QA vs QC vs testing | 7 | classification, multiple choice |
 | Quality in the team | Static testing and reviews | 10 | multiple choice, scenario |
-| Quality in the team | The review process and its roles *(draft)* | 9 | classification, multiple choice, scenario |
+| Quality in the team | The review process and its roles | 9 | classification, multiple choice, scenario |
 
 ## Testing Types (`testing_types`)
 

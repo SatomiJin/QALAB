@@ -2,7 +2,7 @@
 
 Date: 2026-10-06. Every lesson below has: an intro, worked examples written by the team, exercises with explanations, a Sources section, English and Vietnamese. QALAB lessons have no separate "learning objectives" field, so the objectives are the ISTQB learning objectives (FL-x.y.z) each lesson covers.
 
-**Review status:** written and validated by Claude, **not yet reviewed by a person**. New lessons are `draft`; existing lessons keep their status.
+**Review status:** written and validated by Claude, **not yet reviewed by a person**. All 12 lessons are published (the 4 new ones were published in the Admin CMS on 2026-10-06; the files now import them as published too).
 
 ## Coverage of ISTQB CTFL v4.0.1 chapters 1–3
 
@@ -14,8 +14,8 @@ Date: 2026-10-06. Every lesson below has: an intro, worked examples written by t
 | Errors, defects and failures | published | Updated: where defects live, environmental causes, root cause analysis | FL-1.2.3 | classification, bug report |
 | The seven testing principles | published | Fixed: principle 7 is "absence-of-defects fallacy" in v4 (was "absence-of-errors"); principles 2–5 explained as in v4 | FL-1.3.1 | multiple choice, scenario |
 | STLC: the test process | published | Added: the seven ISTQB activity groups and their testware, impact of context | FL-1.4.1, 1.4.2 | test case |
-| Testware, traceability and test roles | **draft, new** | New | FL-1.4.3, 1.4.4, 1.4.5 | classification, multiple choice ×2 |
-| Tester skills, the whole team and independence | **draft, new** | New | FL-1.5.1, 1.5.2, 1.5.3 | classification, multiple choice, scenario |
+| Testware, traceability and test roles | published, new | New | FL-1.4.3, 1.4.4, 1.4.5 | classification, multiple choice ×2 |
+| Tester skills, the whole team and independence | published, new | New | FL-1.5.1, 1.5.2, 1.5.3 | classification, multiple choice, scenario |
 
 ### `sdlc-and-the-tester`
 
@@ -23,10 +23,10 @@ Date: 2026-10-06. Every lesson below has: an intro, worked examples written by t
 |---|---|---|---|---|
 | SDLC models | published | Sources added | FL-2.1.1, 2.1.2 | classification, multiple choice ×2 |
 | Agile and Scrum for testers | published | Sources added (ISTQB + Scrum Guide) | FL-2.1.1, 2.1.5 (intro), 1.5.2 | classification, multiple choice, test case |
-| Test-first, DevOps, shift left and retrospectives | **draft, new** | New | FL-2.1.3, 2.1.4, 2.1.5, 2.1.6 | classification, multiple choice ×2 |
+| Test-first, DevOps, shift left and retrospectives | published, new | New | FL-2.1.3, 2.1.4, 2.1.5, 2.1.6 | classification, multiple choice ×2 |
 | QA vs QC vs testing | published | Sources added | FL-1.2.2 | classification, multiple choice |
 | Static testing and reviews | published | Sources added | FL-3.1.1, 3.1.2, 3.1.3, 3.2.4 | multiple choice, scenario |
-| The review process and its roles | **draft, new** | New | FL-3.2.1, 3.2.2, 3.2.3, 3.2.5 (3.2.4 recap) | classification, multiple choice, scenario |
+| The review process and its roles | published, new | New | FL-3.2.1, 3.2.2, 3.2.3, 3.2.5 (3.2.4 recap) | classification, multiple choice, scenario |
 
 ## Gaps and points to check
 
@@ -45,15 +45,8 @@ Date: 2026-10-06. Every lesson below has: an intro, worked examples written by t
 - [x] No secrets, personal or production data.
 - [ ] Answers verified by a person.
 - [ ] Subject-matter review by a person.
-- [ ] Checked on screen in QALAB (EN + VI) after import.
+- [x] Imported and checked against the database (not yet looked at on screen).
 
-## How to import
+## Import
 
-```bash
-cd backend
-npm run seed:curriculum -- --dry-run   # already passes
-npm run seed:curriculum                # inserts only what is missing: the 4 new draft lessons, their exercises, and the new "testing-or-debugging" exercise
-npm run seed:curriculum -- --update    # also overwrites the 8 existing lessons with the updated files (CMS edits lost)
-```
-
-Both real commands write to the shared cloud database. New lessons arrive as `draft`; publish them in the Admin CMS after review.
+Imported on 2026-10-06 with `npm run seed:curriculum` and `npm run seed:curriculum -- --update` (both write to the shared cloud database). A read-only check against the database the same day found every lesson of both courses matching the files: English text, manual Vietnamese translation (current source hash), exercise count with Vietnamese texts, minutes and order. The 4 new lessons were then published in the Admin CMS, and the files were changed to import them as published, so a later `--update` keeps them visible.

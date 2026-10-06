@@ -26,7 +26,7 @@ None. No paywall, login, robots or rate-limit issue met. The syllabus PDF and th
 ## Result
 
 * 8 existing lessons checked against the syllabus; 4 updated in content, all 8 given a Sources section.
-* 4 new lessons (status `draft`) with 11 new self-written exercises, plus 1 new exercise in an existing lesson.
-* Validated with `npm run seed:curriculum -- --dry-run` (48 lessons, 114 exercises, all valid) and `npx vitest run src/curriculum` (17 tests pass). **Nothing was imported into the database.**
+* 4 new lessons with 11 new self-written exercises, plus 1 new exercise in an existing lesson.
+* Validated with `npm run seed:curriculum -- --dry-run` (48 lessons, 114 exercises, all valid) and `npx vitest run src/curriculum` (17 tests pass). Imported by the user afterwards and checked against the database (see [quality_report.md](quality_report.md#import)).
 
 Details per lesson: [quality_report.md](quality_report.md).
