@@ -30,3 +30,16 @@ None. No paywall, login, robots or rate-limit issue met. The syllabus PDF and th
 * Validated with `npm run seed:curriculum -- --dry-run` (48 lessons, 114 exercises, all valid) and `npx vitest run src/curriculum` (17 tests pass). Imported by the user afterwards and checked against the database (see [quality_report.md](quality_report.md#import)).
 
 Details per lesson: [quality_report.md](quality_report.md).
+
+# Batch 2: courses 3 and 4
+
+Date: 2026-10-06. Scope: `testing-levels-and-types` and `test-design-techniques`.
+
+| Source | How | Result |
+|---|---|---|
+| ISTQB CTFL syllabus v4.0.1 | Same local copy as batch 1 | Sections 2.2–2.3 and chapter 4 read in full; release notes (appendix) confirm that use case testing was removed from Foundation Level v4.0 and remains in the Advanced Test Analyst syllabus. |
+| WCAG 2.2 (w3.org) | Web fetch | W3C Recommendation of 12 December 2024, four principles, levels A / AA / AAA, copyright line. |
+| OWASP Top 10:2025 | Web search | Current edition (released November 2025) and its ten categories. Licence not read page by page. |
+| ISTQB glossary, term "smoke test" | Web fetch | **Failed**: the glossary is a JavaScript application and returned no content. Secondary sources say it lists "sanity test" as a synonym of "smoke test"; the lesson now says "some references treat them as synonyms" without naming ISTQB. Verify by hand. |
+
+Result: 13 existing lessons got a Sources section (8 also got new content), 3 new lessons with 9 self-written exercises. `npm run seed:curriculum -- --dry-run`: 51 lessons, 123 exercises, all valid; `npx vitest run src/curriculum`: 17 tests pass. Imported by the user with `--update`; a read-only check the same day found all 16 lessons of both courses matching the files (English text, current manual Vietnamese, exercises with Vietnamese texts, minutes, order, published status).

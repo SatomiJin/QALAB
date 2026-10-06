@@ -49,6 +49,14 @@ Three tests instead of four. Collapse only when you are sure the condition reall
 
 Some combinations cannot happen: a user cannot be both "under 18" and "over 65". Mark those rules as impossible and do not invent a test for them. But be careful: "impossible" in the requirement is not always impossible in the system. A form that lets users type both values may still accept the combination; that can be worth one negative test.
 
+## Notation and coverage
+
+Notations vary between teams. The ISTQB syllabus uses **T / F** for conditions that are true or false, **–** for a condition that does not matter, **N/A** for an infeasible combination, and **X** (or blank) for an action that does (or does not) happen. This lesson writes Y / N and "-" for an action that does not happen; what matters is that the team reads the table the same way.
+
+Tables with only true/false values are **limited-entry**. In an **extended-entry** table a condition can take several values, for example "total: < 50 / 50–99 / ≥ 100", which combines nicely with equivalence partitions.
+
+**Coverage** for decision table testing = feasible columns exercised ÷ all feasible columns. Infeasible columns are not counted.
+
 ## Where decision tables help
 
 * Pricing, discount, tax and shipping rules.
@@ -56,5 +64,9 @@ Some combinations cannot happen: a user cannot be both "under 18" and "over 65".
 * Form logic: fields that appear or become required depending on other fields.
 
 They also improve the requirement itself. Filling in the action column often reveals combinations nobody specified, and finding that before coding is the cheapest defect you will ever report.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 4.2.3 "Decision table testing". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: list every combination of conditions with its expected actions, collapse only the rules where a condition truly does not matter, and test each rule.

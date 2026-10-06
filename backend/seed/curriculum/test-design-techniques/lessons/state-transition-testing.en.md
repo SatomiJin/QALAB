@@ -45,6 +45,18 @@ Each "—" is an **invalid transition**: an event the state must not react to. H
 3. **Check the counter rules** the requirement implies: does a correct password really reset the counter? Test wrong, wrong, correct, log out, wrong, wrong: the account must not be locked yet.
 4. For each step, the expected result names the **new state**, not only the message on screen.
 
+## Three coverage criteria
+
+| Criterion | Coverage items | 100 % means |
+|---|---|---|
+| **All states** | States | Every state is reached at least once |
+| **Valid transitions** (0-switch) | Valid transitions | Every valid transition is exercised; the most widely used criterion |
+| **All transitions** | Valid and invalid transitions in the state table | Every valid transition exercised and every invalid one attempted |
+
+All states is the weakest: you can visit every state without trying every transition. Full valid transitions coverage guarantees all states; full all transitions coverage guarantees both, and is the minimum for mission- and safety-critical software. Try **one invalid transition per test case**: if a test hits two, the first failure can hide the second (**defect masking**).
+
+In diagrams, transitions are often labelled `event [guard condition] / action`, for example `wrong password [failures = 2] / show "Account locked"`.
+
 ## Other places to use it
 
 * **Order status**: Created → Paid → Shipped → Delivered, with Cancelled reachable only from some states.
@@ -52,5 +64,9 @@ Each "—" is an **invalid transition**: an event the state must not react to. H
 * **Devices and sessions**: a timer that logs out after 15 minutes idle, a payment that times out.
 
 Ask "what states does this have?" whenever a feature has a status field, a counter or a timer. If the team has no diagram, drawing one is already a useful review: missing transitions are missing requirements.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 4.2.4 "State transition testing". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: model the states and events, test every valid transition, and prove that the invalid ones are refused.

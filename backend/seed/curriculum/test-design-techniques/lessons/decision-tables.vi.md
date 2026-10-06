@@ -49,6 +49,14 @@ Ba test thay vì bốn. Chỉ rút gọn khi bạn chắc chắn điều kiện 
 
 Có những tổ hợp không thể xảy ra: một người không thể vừa "dưới 18 tuổi" vừa "trên 65 tuổi". Đánh dấu các rule đó là không thể xảy ra và đừng bịa test cho chúng. Nhưng hãy cẩn thận: "không thể" trong requirement chưa chắc là không thể trong hệ thống. Một form cho người dùng nhập cả hai giá trị vẫn có thể chấp nhận tổ hợp đó; việc này có thể đáng một negative test.
 
+## Ký hiệu và coverage
+
+Ký hiệu khác nhau tùy nhóm. Syllabus ISTQB dùng **T / F** cho điều kiện đúng hoặc sai, **–** cho điều kiện không ảnh hưởng, **N/A** cho tổ hợp không khả thi, và **X** (hoặc để trống) cho hành động có (hoặc không) xảy ra. Bài này viết Y / N và "-" cho hành động không xảy ra; điều quan trọng là cả nhóm đọc bảng theo cùng một cách.
+
+Bảng chỉ có giá trị đúng/sai là **limited-entry**. Trong bảng **extended-entry**, một điều kiện có thể nhận nhiều giá trị, ví dụ "tổng tiền: < 50 / 50–99 / ≥ 100", rất hợp để kết hợp với equivalence partition.
+
+**Coverage** của decision table testing = số cột khả thi đã chạy ÷ tổng số cột khả thi. Cột không khả thi không được tính.
+
 ## Decision table hữu ích ở đâu
 
 * Quy tắc giá, giảm giá, thuế và phí giao hàng.
@@ -56,5 +64,9 @@ Có những tổ hợp không thể xảy ra: một người không thể vừa 
 * Logic của form: field xuất hiện hoặc trở thành bắt buộc tùy theo field khác.
 
 Chúng còn cải thiện chính requirement. Việc điền cột action thường làm lộ ra những tổ hợp chưa ai đặc tả, và phát hiện điều đó trước khi code là defect rẻ nhất bạn từng báo cáo.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 4.2.3 "Decision table testing". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: liệt kê mọi tổ hợp điều kiện cùng các action mong đợi, chỉ rút gọn những rule mà điều kiện thật sự không quan trọng, và test từng rule.

@@ -52,4 +52,8 @@ Một cách tổ chức suite phổ biến:
 
 Regression suite cần được bảo trì: thêm một test cho mỗi bug quan trọng đã fix (để nó không thể quay lại mà không ai biết), bỏ các test lỗi thời, và cập nhật test khi tính năng thay đổi.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.2.3 "Confirmation testing and regression testing" (và nguyên tắc 4, defect tập trung thành cụm, ở mục 1.3). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+
 > Ý chính: retesting chứng minh *bug đã hết*; regression testing chứng minh *không có gì khác bị hỏng*. Hãy chọn regression test theo ảnh hưởng và rủi ro, không theo thói quen.

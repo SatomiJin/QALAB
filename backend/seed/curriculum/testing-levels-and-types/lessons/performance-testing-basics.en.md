@@ -47,4 +47,9 @@ Even without running load tests yourself, you can:
 
 Performance tests must run on an environment close to production in size and data. Results from a laptop or an empty test database say very little about real users.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 2.2.2 "Test types" (performance efficiency as a non-functional quality characteristic). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* The load, stress, spike and endurance types, the measurements and the percentile advice are common performance-testing practice, explained in the QALAB team's own words. The CTFL syllabus does not cover them in detail.
+
 > Key idea: load, stress, spike and endurance tests ask different questions about the same system. Judge results with percentiles, throughput and error rate, never with the average alone.

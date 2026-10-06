@@ -59,4 +59,8 @@ The precondition makes the exception happen on purpose: you must set up a balanc
 * If the use case has no exception flows, that is a review finding: ask what happens when the card is declined, the network drops, or the user goes back.
 * Use cases describe system behaviour from the user's side, so they are also a good base for acceptance tests.
 
+## Sources
+
+* Use case testing was part of the ISTQB Foundation syllabus up to v3.1. The [CTFL syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) release notes state it was removed from Foundation Level and is still covered in the Advanced Level Test Analyst syllabus. QALAB keeps it because use cases are still common at work. © International Software Testing Qualifications Board (ISTQB®). The explanations and examples are the QALAB team's own.
+
 > Key idea: one test for the main flow, one for each alternative and exception flow, and always check what must not happen in the exceptions.

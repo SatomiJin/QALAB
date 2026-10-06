@@ -57,4 +57,10 @@ Penetration testing is a specialist job, but many security defects can be found 
 * Responses in the Network tab do not contain more data than the screen needs (no password hashes, no other users' emails).
 * Sensitive data is never in the URL (tokens, passwords) and pages use **HTTPS**.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 2.2.2 "Test types" (usability and security as quality characteristics). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/), W3C Recommendation, 12 December 2024. © W3C; W3C document licence. Linked and summarised, not copied.
+* [OWASP Top 10:2025](https://owasp.org/Top10/2025/), the OWASP Foundation's list of the most critical web application security risks (released November 2025). The checks in this lesson are the team's own examples.
+
 > Key idea: usability, accessibility and security are part of quality, not extras. A keyboard, a contrast checker, the Network tab and a curious mind already find serious defects.

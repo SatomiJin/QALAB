@@ -36,6 +36,12 @@ Bốn partition, bốn test. Mỗi giá trị test đại diện cho cả nhóm 
 4. **Danh sách cũng là partition.** Dropdown "quốc gia" với quy tắc giao hàng "EU" và "ngoài EU" có hai partition hợp lệ, dù nó có 200 quốc gia.
 5. **Ghi lại giả định.** Nếu bạn không chắc hai giá trị có hành xử giống nhau, có thể chúng thuộc hai partition khác nhau: hãy hỏi, hoặc test cả hai.
 
+## Nhiều input: Each Choice coverage
+
+Một form thường có nhiều field, mỗi field có các partition riêng. Khi đó một test case cùng lúc cover một partition của **mỗi** field. Mục tiêu đơn giản nhất là **Each Choice coverage**: mọi partition của mọi field đều xuất hiện trong ít nhất một test. Nó không thử mọi *tổ hợp* partition; khi tổ hợp quan trọng (một quy tắc phụ thuộc cùng lúc vào hai field), hãy dùng decision table.
+
+Ví dụ: số lượng (hợp lệ 1–10, không hợp lệ 0, không hợp lệ 11) và quốc gia giao hàng (EU, ngoài EU). Ghép (0, ngoài EU) sẽ trộn một giá trị không hợp lệ với một partition hợp lệ chưa được test, nên hãy để partition không hợp lệ đứng riêng: (5, EU), (7, ngoài EU), (0, EU), (11, EU). Bốn test: partition nào cũng xuất hiện, và mỗi giá trị không hợp lệ được test riêng.
+
 ## EP mang lại gì
 
 * **Ít test hơn mà phạm vi vẫn vậy.** Mười số lượng hợp lệ trở thành một test.
@@ -43,5 +49,9 @@ Bốn partition, bốn test. Mỗi giá trị test đại diện cho cả nhóm 
 * **Nền tảng cho boundary value.** EP chọn một giá trị ở giữa mỗi nhóm; bài sau sẽ test các biên của nhóm.
 
 EP không nói gì về biên của các partition, nơi các lỗi lệch một đơn vị (off-by-one) ẩn nấp. Vì thế nó gần như luôn được dùng cùng boundary value analysis.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 4.2.1 "Equivalence partitioning". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: chia đầu vào thành các nhóm mà hệ thống xử lý giống nhau, cả hợp lệ và không hợp lệ, rồi test một giá trị của mỗi nhóm.

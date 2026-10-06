@@ -28,7 +28,7 @@
             "en": "Equivalence partitioning",
             "vi": "Equivalence partitioning (phân vùng tương đương)"
           },
-          "minutes": 8
+          "minutes": 9
         },
         {
           "slug": "boundary-value-analysis",
@@ -57,7 +57,7 @@
             "en": "Decision tables",
             "vi": "Decision table (bảng quyết định)"
           },
-          "minutes": 10
+          "minutes": 11
         },
         {
           "slug": "state-transition-testing",
@@ -65,7 +65,7 @@
             "en": "State transition testing",
             "vi": "State transition testing (kiểm thử chuyển trạng thái)"
           },
-          "minutes": 10
+          "minutes": 12
         },
         {
           "slug": "use-case-testing",
@@ -74,6 +74,35 @@
             "vi": "Use case testing"
           },
           "minutes": 8
+        }
+      ]
+    },
+    {
+      "key": "code-and-collaboration",
+      "title": {
+        "en": "Code coverage and collaboration",
+        "vi": "Code coverage và cộng tác"
+      },
+      "description": {
+        "en": "White-box techniques that measure the code the tests run, and collaboration-based approaches that agree on examples before coding.",
+        "vi": "Kỹ thuật white-box đo phần code mà test chạy qua, và các cách tiếp cận dựa trên cộng tác để thống nhất ví dụ trước khi code."
+      },
+      "lessons": [
+        {
+          "slug": "statement-and-branch-coverage",
+          "title": {
+            "en": "Statement and branch coverage",
+            "vi": "Statement coverage và branch coverage"
+          },
+          "minutes": 10
+        },
+        {
+          "slug": "acceptance-criteria-and-atdd",
+          "title": {
+            "en": "User stories, acceptance criteria and ATDD",
+            "vi": "User story, acceptance criteria và ATDD"
+          },
+          "minutes": 10
         }
       ]
     },
@@ -94,7 +123,7 @@
             "en": "Error guessing and exploratory testing",
             "vi": "Error guessing và exploratory testing"
           },
-          "minutes": 9
+          "minutes": 11
         },
         {
           "slug": "choosing-a-technique",
@@ -102,7 +131,7 @@
             "en": "Positive vs negative testing and choosing a technique",
             "vi": "Positive và negative testing, chọn kỹ thuật phù hợp"
           },
-          "minutes": 8
+          "minutes": 9
         }
       ]
     }

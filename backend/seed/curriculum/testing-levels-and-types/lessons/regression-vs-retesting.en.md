@@ -52,4 +52,8 @@ A common way to organise the suite:
 
 The regression suite needs maintenance: add a test for every important bug fixed (so it cannot come back unnoticed), remove obsolete tests, and update tests when features change.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 2.2.3 "Confirmation testing and regression testing" (and principle 4, defects cluster together, in 1.3). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+
 > Key idea: retesting proves *the bug is gone*; regression testing proves *nothing else broke*. Choose regression tests by impact and risk, not by habit.

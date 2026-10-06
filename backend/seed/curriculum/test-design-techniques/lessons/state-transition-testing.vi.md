@@ -45,6 +45,18 @@ Mỗi ô "—" là một **invalid transition** (chuyển trạng thái không h
 3. **Kiểm tra các quy tắc của bộ đếm** mà requirement ngụ ý: mật khẩu đúng có thực sự đặt lại bộ đếm không? Test sai, sai, đúng, đăng xuất, sai, sai: tài khoản chưa được phép bị khóa.
 4. Với mỗi bước, expected result nêu **state mới**, không chỉ thông báo trên màn hình.
 
+## Ba tiêu chí coverage
+
+| Tiêu chí | Coverage item | 100 % nghĩa là |
+|---|---|---|
+| **All states** | Các state | Mọi state được đi tới ít nhất một lần |
+| **Valid transitions** (0-switch) | Các transition hợp lệ | Mọi transition hợp lệ được chạy; tiêu chí được dùng nhiều nhất |
+| **All transitions** | Các transition hợp lệ và không hợp lệ trong state table | Mọi transition hợp lệ được chạy và mọi transition không hợp lệ được thử |
+
+All states là yếu nhất: bạn có thể đi qua mọi state mà không thử hết các transition. Đạt đủ valid transitions coverage thì chắc chắn đạt all states; đạt đủ all transitions coverage thì đạt cả hai, và đây là mức tối thiểu cho phần mềm mission-critical và safety-critical. Mỗi test case chỉ thử **một transition không hợp lệ**: nếu một test chạm hai cái, failure đầu tiên có thể che mất cái thứ hai (**defect masking**).
+
+Trong sơ đồ, transition thường được ghi dạng `event [guard condition] / action`, ví dụ `wrong password [failures = 2] / show "Account locked"`.
+
 ## Những chỗ khác nên dùng
 
 * **Trạng thái đơn hàng**: Created → Paid → Shipped → Delivered, và chỉ một số state mới chuyển được sang Cancelled.
@@ -52,5 +64,9 @@ Mỗi ô "—" là một **invalid transition** (chuyển trạng thái không h
 * **Thiết bị và phiên làm việc**: bộ hẹn giờ đăng xuất sau 15 phút không thao tác, một giao dịch thanh toán bị timeout.
 
 Hãy hỏi "tính năng này có những state nào?" mỗi khi nó có một field trạng thái, một bộ đếm hay một bộ hẹn giờ. Nếu nhóm chưa có sơ đồ, việc vẽ một sơ đồ đã là một lần review hữu ích: transition bị thiếu chính là requirement bị thiếu.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 4.2.4 "State transition testing". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: mô hình hóa các state và event, test mọi transition hợp lệ, và chứng minh rằng các transition không hợp lệ bị từ chối.

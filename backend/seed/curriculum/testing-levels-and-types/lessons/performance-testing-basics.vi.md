@@ -47,4 +47,9 @@ Kể cả khi không tự chạy load test, bạn vẫn có thể:
 
 Performance test phải chạy trên môi trường gần với production về quy mô và dữ liệu. Kết quả đo trên laptop hoặc trên một database test trống nói rất ít về người dùng thật.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.2.2 "Test types" (performance efficiency là một đặc tính chất lượng non-functional). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* Các loại load, stress, spike, endurance, các chỉ số đo và lời khuyên về percentile là cách làm phổ biến trong performance testing, do team QALAB tự diễn giải. Syllabus CTFL không đi vào chi tiết các nội dung này.
+
 > Ý chính: load, stress, spike và endurance test đặt ra những câu hỏi khác nhau về cùng một hệ thống. Hãy đánh giá kết quả bằng percentile, throughput và error rate, đừng bao giờ chỉ dựa vào số trung bình.

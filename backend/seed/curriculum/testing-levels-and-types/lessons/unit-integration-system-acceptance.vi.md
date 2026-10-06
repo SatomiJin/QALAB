@@ -43,6 +43,18 @@ Ví dụ: đăng ký, xác minh email, đăng nhập, thêm hai sản phẩm và
 * **Test basis:** quy trình nghiệp vụ, yêu cầu của người dùng, hợp đồng, quy định.
 * **Defect điển hình:** hệ thống làm đúng như đặc tả, nhưng đặc tả lại không khớp với cách mọi người thực sự làm việc.
 
+## Năm cấp độ theo thuật ngữ ISTQB
+
+Syllabus ISTQB gọi tên năm cấp độ test, vì tách integration làm hai:
+
+1. **Component testing** (unit testing).
+2. **Component integration testing**: giao tiếp giữa các thành phần trong cùng một hệ thống.
+3. **System testing**.
+4. **System integration testing**: giao tiếp với hệ thống khác và dịch vụ bên ngoài, trong môi trường gần giống production.
+5. **Acceptance testing**.
+
+Các cấp độ được phân biệt bằng **test object**, **test objective**, **test basis**, loại **defect và failure** nhắm tới, và **cách tiếp cận cùng trách nhiệm**: đúng các hàng của bảng bên dưới. Trong các mô hình tuần tự, exit criteria của cấp độ này thường là một phần entry criteria của cấp độ sau.
+
 ## So sánh các cấp độ
 
 | Cấp độ | Câu hỏi | Ai làm | Test basis | Defect điển hình |
@@ -53,5 +65,9 @@ Ví dụ: đăng ký, xác minh email, đăng nhập, thêm hai sản phẩm và
 | Acceptance | Có dùng được cho công việc thật không? | Người dùng, khách hàng, vận hành | Quy trình nghiệp vụ, hợp đồng | Không khớp với quy trình làm việc thật |
 
 Các cấp độ không phải lúc nào cũng là những giai đoạn nối tiếp nhau. Trong đội agile, tất cả có thể diễn ra trong cùng một sprint. Điều không đổi là ý tưởng: tìm mỗi loại defect ở cấp độ rẻ nhất có thể tìm thấy nó.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.2 "Test levels and test types" và 2.2.1 "Test levels". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: mỗi cấp độ kiểm thử có mục tiêu, người thực hiện và test basis riêng. Một bug bị phát hiện ở UAT mà lẽ ra unit test đã bắt được là một bug bị phát hiện quá muộn.

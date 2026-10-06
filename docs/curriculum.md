@@ -2,9 +2,9 @@
 
 The V1 curriculum, as imported from `backend/seed/curriculum/` (`npm run seed:curriculum`; format and writing rules in `backend/seed/README.md`). Every text exists in English and Vietnamese. After the import the content is edited in the Admin CMS, so the live content may differ from this outline; regenerate this page when the files change.
 
-Totals: 7 skills, 8 courses, 20 modules, 48 lessons, 114 exercises (48 multiple choice, 37 classification, 6 bug report, 12 scenario, 11 test case).
+Totals: 7 skills, 8 courses, 21 modules, 51 lessons, 123 exercises (53 multiple choice, 39 classification, 6 bug report, 14 scenario, 11 test case).
 
-The two `fundamentals` courses follow the ISTQB CTFL syllabus v4.0.1 (chapters 1, 2.1 and 3) and cite it in each lesson's Sources section; lessons marked wait for a human review before publishing. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
+The `fundamentals`, `testing_types` and `test_design` courses follow the ISTQB CTFL syllabus v4.0.1 (chapters 1–4) and cite their sources in each lesson's Sources section. No subject-matter review by a person yet. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
 
 ## QA Fundamentals (`fundamentals`)
 
@@ -42,10 +42,11 @@ Where testing happens (unit to acceptance), what it checks (functional and non-f
 
 | Module | Lesson | Min | Exercises |
 |---|---|---|---|
-| Test levels | Unit, integration, system and acceptance testing | 10 | classification, multiple choice, multiple choice |
-| Test levels | Functional vs non-functional, black-box vs white-box | 9 | classification, multiple choice |
+| Test levels | Unit, integration, system and acceptance testing | 11 | classification, multiple choice, multiple choice |
+| Test levels | Functional vs non-functional, black-box vs white-box | 10 | classification, multiple choice |
 | Change-related testing | Regression testing vs retesting | 9 | classification, multiple choice, scenario |
 | Change-related testing | Smoke vs sanity testing | 8 | classification, multiple choice |
+| Change-related testing | Maintenance testing | 9 | classification, multiple choice, scenario |
 | Non-functional testing | Performance testing basics | 10 | classification, multiple choice |
 | Non-functional testing | Usability, accessibility and security basics | 11 | multiple choice, test case |
 
@@ -53,17 +54,19 @@ Where testing happens (unit to acceptance), what it checks (functional and non-f
 
 ### Test design techniques — `test-design-techniques`
 
-Turn a requirement into a small, strong set of tests: equivalence partitioning, boundary values, decision tables, state transitions, use cases, error guessing and exploratory testing.
+Turn a requirement into a small, strong set of tests: equivalence partitioning, boundary values, decision tables, state transitions, use cases, statement and branch coverage, ATDD, error guessing, exploratory and checklist-based testing.
 
 | Module | Lesson | Min | Exercises |
 |---|---|---|---|
-| Input techniques | Equivalence partitioning | 8 | classification, multiple choice, test case |
+| Input techniques | Equivalence partitioning | 9 | classification, multiple choice, test case |
 | Input techniques | Boundary value analysis | 9 | multiple choice, classification, test case |
-| Logic and behaviour | Decision tables | 10 | multiple choice, scenario |
-| Logic and behaviour | State transition testing | 10 | classification, scenario |
+| Logic and behaviour | Decision tables | 11 | multiple choice, scenario |
+| Logic and behaviour | State transition testing | 12 | classification, scenario |
 | Logic and behaviour | Use case testing | 8 | multiple choice, test case |
-| Experience-based techniques | Error guessing and exploratory testing | 9 | multiple choice, classification, scenario |
-| Experience-based techniques | Positive vs negative testing and choosing a technique | 8 | classification, multiple choice |
+| Code coverage and collaboration | Statement and branch coverage | 10 | multiple choice, multiple choice, multiple choice |
+| Code coverage and collaboration | User stories, acceptance criteria and ATDD | 10 | classification, multiple choice, scenario |
+| Experience-based techniques | Error guessing and exploratory testing | 11 | multiple choice, classification, scenario |
+| Experience-based techniques | Positive vs negative testing and choosing a technique | 9 | classification, multiple choice |
 
 ## Test Documentation (`test_docs`)
 

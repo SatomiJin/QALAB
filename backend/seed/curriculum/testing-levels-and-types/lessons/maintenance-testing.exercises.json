@@ -1,0 +1,257 @@
+[
+  {
+    "key": "maintenance-triggers",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each event by the maintenance testing trigger it belongs to.",
+      "vi": "Xếp mỗi sự kiện vào trigger của maintenance testing mà nó thuộc về."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "modification",
+          "text": {
+            "en": "Modification",
+            "vi": "Modification (sửa đổi)"
+          }
+        },
+        {
+          "id": "migration",
+          "text": {
+            "en": "Upgrade or migration",
+            "vi": "Upgrade hoặc migration"
+          }
+        },
+        {
+          "id": "retirement",
+          "text": {
+            "en": "Retirement",
+            "vi": "Retirement (ngừng sử dụng)"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "hotfix",
+          "text": {
+            "en": "An emergency fix for a checkout crash in production",
+            "vi": "Một bản sửa khẩn cấp cho lỗi crash ở checkout trên production"
+          }
+        },
+        {
+          "id": "feature",
+          "text": {
+            "en": "The planned release that adds gift cards",
+            "vi": "Bản release theo kế hoạch thêm tính năng thẻ quà tặng"
+          }
+        },
+        {
+          "id": "cloud",
+          "text": {
+            "en": "Moving the application from an own server to a cloud platform",
+            "vi": "Chuyển ứng dụng từ server riêng sang một nền tảng cloud"
+          }
+        },
+        {
+          "id": "db-upgrade",
+          "text": {
+            "en": "Upgrading the database to a new major version",
+            "vi": "Nâng cấp database lên một phiên bản chính mới"
+          }
+        },
+        {
+          "id": "import",
+          "text": {
+            "en": "Importing customers from the old shop system",
+            "vi": "Nhập dữ liệu khách hàng từ hệ thống cửa hàng cũ"
+          }
+        },
+        {
+          "id": "switch-off",
+          "text": {
+            "en": "Switching off the old invoicing app, keeping its invoices for 10 years",
+            "vi": "Tắt ứng dụng hóa đơn cũ, giữ lại hóa đơn của nó trong 10 năm"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "hotfix": "modification",
+        "feature": "modification",
+        "cloud": "migration",
+        "db-upgrade": "migration",
+        "import": "migration",
+        "switch-off": "retirement"
+      }
+    },
+    "explanation": {
+      "en": "**Modifications** are planned enhancements, corrective changes and hot fixes. **Upgrades and migrations** change the operational environment or move data in from another application, so they also need tests of the new environment and of **data conversion**. **Retirement** ends the application; long retention periods mean testing **archiving** and **restore and retrieval**. Importing customers is easy to mistake for a modification, but it is a data migration.",
+      "vi": "**Modification** gồm cải tiến theo kế hoạch, sửa lỗi và hot fix. **Upgrade và migration** thay đổi môi trường vận hành hoặc chuyển dữ liệu từ ứng dụng khác sang, nên cần test cả môi trường mới và việc **chuyển đổi dữ liệu**. **Retirement** là kết thúc ứng dụng; thời gian lưu trữ dài nghĩa là phải test **archiving** cùng **khôi phục và truy xuất**. Nhập dữ liệu khách hàng dễ bị nhầm là modification, nhưng thực ra là migration dữ liệu."
+    }
+  },
+  {
+    "key": "maintenance-scope",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which factors determine how much maintenance testing a change needs? Select all that apply.",
+      "vi": "Những yếu tố nào quyết định một thay đổi cần maintenance testing nhiều hay ít? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "risk",
+          "text": {
+            "en": "The risk of the change",
+            "vi": "Mức rủi ro của thay đổi"
+          }
+        },
+        {
+          "id": "system-size",
+          "text": {
+            "en": "The size of the existing system",
+            "vi": "Kích thước của hệ thống hiện có"
+          }
+        },
+        {
+          "id": "change-size",
+          "text": {
+            "en": "The size of the change",
+            "vi": "Kích thước của thay đổi"
+          }
+        },
+        {
+          "id": "dev-seniority",
+          "text": {
+            "en": "How senior the developer who made the change is",
+            "vi": "Developer làm thay đổi có thâm niên đến đâu"
+          }
+        },
+        {
+          "id": "only-changed",
+          "text": {
+            "en": "Nothing: only the changed lines need testing",
+            "vi": "Không gì cả: chỉ cần test những dòng đã thay đổi"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "risk",
+        "system-size",
+        "change-size"
+      ]
+    },
+    "explanation": {
+      "en": "The scope depends on the **risk** of the change, the **size of the existing system** and the **size of the change**; impact analysis turns these into a concrete list of areas. Testing only the changed lines ignores regression, which is usually most of the work. A senior developer still makes mistakes, so seniority is not a reason to test less.",
+      "vi": "Phạm vi phụ thuộc vào **rủi ro** của thay đổi, **kích thước hệ thống hiện có** và **kích thước của thay đổi**; impact analysis biến những yếu tố này thành danh sách khu vực cụ thể. Chỉ test những dòng đã thay đổi là bỏ qua regression, thường là phần lớn công việc. Developer giàu kinh nghiệm vẫn mắc lỗi, nên thâm niên không phải lý do để test ít đi."
+    }
+  },
+  {
+    "key": "migration-plan",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "Your company moves its online shop to a new platform this weekend. 40 000 customer accounts and five years of orders are migrated from the old database. Describe what you would test, beyond checking that the new shop works.",
+      "vi": "Cuối tuần này công ty bạn chuyển cửa hàng online sang một nền tảng mới. 40 000 tài khoản khách hàng và đơn hàng của năm năm được chuyển từ database cũ. Hãy mô tả bạn sẽ test những gì, ngoài việc kiểm tra cửa hàng mới chạy được."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Data conversion completeness (record counts)",
+          "keywords": [
+            "count",
+            "complete",
+            "missing record",
+            "so luong",
+            "day du"
+          ]
+        },
+        {
+          "concept": "Data correctness of sample records",
+          "keywords": [
+            "accent",
+            "special character",
+            "correct",
+            "compare",
+            "dau",
+            "so sanh"
+          ]
+        },
+        {
+          "concept": "Existing users can still log in",
+          "keywords": [
+            "log in",
+            "login",
+            "password",
+            "dang nhap",
+            "mat khau"
+          ]
+        },
+        {
+          "concept": "Regression of critical flows",
+          "keywords": [
+            "regression",
+            "checkout",
+            "critical flow",
+            "luong quan trong"
+          ]
+        },
+        {
+          "concept": "Rollback or backup plan",
+          "keywords": [
+            "rollback",
+            "backup",
+            "roll back",
+            "restore",
+            "sao luu",
+            "khoi phuc"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "Besides the new shop itself, the migration is the risk:\n\n1. **Completeness**: compare record **counts** for customers, orders and order lines between old and new databases; no missing record.\n2. **Correctness**: **compare** a sample of records field by field, especially names with **accents** and special characters, old addresses, orders with discounts and refunds, and totals.\n3. **Log in**: existing customers can **log in** with their old **password**, or get the agreed reset email.\n4. **Regression** of the critical flows on the new platform with migrated data: **checkout**, order history, returns.\n5. **Rollback**: agree what happens if the migration fails, and test that the **backup** can be **restored**.",
+        "vi": "Ngoài bản thân cửa hàng mới, rủi ro nằm ở việc chuyển dữ liệu:\n\n1. **Đầy đủ**: so sánh **số lượng** bản ghi khách hàng, đơn hàng và dòng đơn hàng giữa database cũ và mới; bảo đảm **đầy đủ**, không thiếu bản ghi nào.\n2. **Chính xác**: **so sánh** từng field trên một mẫu bản ghi, nhất là tên có **dấu** và ký tự đặc biệt, địa chỉ cũ, đơn có giảm giá và hoàn tiền, và tổng tiền.\n3. **Đăng nhập**: khách hàng cũ **đăng nhập** được bằng **mật khẩu** cũ, hoặc nhận email đặt lại như đã thống nhất.\n4. **Regression** các luồng quan trọng trên nền tảng mới với dữ liệu đã chuyển: **checkout**, lịch sử đơn hàng, trả hàng.\n5. **Rollback**: thống nhất phương án nếu migration thất bại, và test rằng bản **sao lưu** có thể **khôi phục** được."
+      },
+      "rubric": [
+        {
+          "id": "counts",
+          "text": {
+            "en": "I compared record counts between the old and new data",
+            "vi": "Tôi so sánh số lượng bản ghi giữa dữ liệu cũ và mới"
+          }
+        },
+        {
+          "id": "sample",
+          "text": {
+            "en": "I checked a sample of records field by field, including tricky data",
+            "vi": "Tôi kiểm tra một mẫu bản ghi từng field, kể cả dữ liệu khó"
+          }
+        },
+        {
+          "id": "login",
+          "text": {
+            "en": "I checked that existing customers can still log in",
+            "vi": "Tôi kiểm tra khách hàng cũ vẫn đăng nhập được"
+          }
+        },
+        {
+          "id": "rollback",
+          "text": {
+            "en": "I planned regression and a rollback test",
+            "vi": "Tôi lên kế hoạch regression và test rollback"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "A migration is a **maintenance testing trigger**: besides the new environment, **data conversion** must be tested. Check **completeness** (counts) and **correctness** (field-by-field samples with tricky data), that existing users can still **log in**, **regression** of critical flows with real migrated data, and a tested **rollback** plan. Testing only the new shop with fresh test data would miss every migration defect.",
+      "vi": "Migration là một **trigger của maintenance testing**: ngoài môi trường mới, phải test việc **chuyển đổi dữ liệu**. Kiểm tra **độ đầy đủ** (số lượng) và **độ chính xác** (mẫu từng field với dữ liệu khó), người dùng cũ vẫn **đăng nhập** được, **regression** các luồng quan trọng với dữ liệu thật đã chuyển, và một phương án **rollback** đã được test. Chỉ test cửa hàng mới với dữ liệu test mới tạo sẽ bỏ sót mọi defect của migration."
+    }
+  }
+]

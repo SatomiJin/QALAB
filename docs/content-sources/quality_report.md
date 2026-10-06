@@ -50,3 +50,40 @@ Date: 2026-10-06. Every lesson below has: an intro, worked examples written by t
 ## Import
 
 Imported on 2026-10-06 with `npm run seed:curriculum` and `npm run seed:curriculum -- --update` (both write to the shared cloud database). A read-only check against the database the same day found every lesson of both courses matching the files: English text, manual Vietnamese translation (current source hash), exercise count with Vietnamese texts, minutes and order. The 4 new lessons were then published in the Admin CMS, and the files were changed to import them as published, so a later `--update` keeps them visible.
+
+# Batch 2: courses 3 and 4
+
+Date: 2026-10-06. All lessons import as published (no draft status). No subject-matter review by a person yet.
+
+### `testing-levels-and-types`
+
+| Lesson | Change | ISTQB objectives / source | Exercises |
+|---|---|---|---|
+| Unit, integration, system and acceptance testing | Added: ISTQB's five levels (component integration and system integration separate), what distinguishes levels | FL-2.2.1 | unchanged |
+| Functional vs non-functional, black-box vs white-box | Added: the eight ISO/IEC 25010 characteristics listed by the syllabus | FL-2.2.2 | unchanged |
+| Regression testing vs retesting | Sources added | FL-2.2.3 | unchanged |
+| Smoke vs sanity testing | Added: some references treat the terms as synonyms; sources (industry practice) | not in CTFL | unchanged |
+| Maintenance testing | **New** | FL-2.3.1 | classification, multiple choice, scenario |
+| Performance testing basics | Sources added (CTFL 2.2.2 + industry practice) | FL-2.2.2 (partly) | unchanged |
+| Usability, accessibility and security basics | Sources added (CTFL, WCAG 2.2, OWASP Top 10:2025) | FL-2.2.2 (partly) | unchanged |
+
+### `test-design-techniques`
+
+| Lesson | Change | ISTQB objectives / source | Exercises |
+|---|---|---|---|
+| Equivalence partitioning | Added: Each Choice coverage for several inputs | FL-4.2.1 | unchanged |
+| Boundary value analysis | Sources added (already covered 2- and 3-value BVA) | FL-4.2.2 | unchanged |
+| Decision tables | Added: ISTQB notation, limited / extended entry, coverage of feasible columns | FL-4.2.3 | unchanged |
+| State transition testing | Added: all states / valid transitions / all transitions coverage, defect masking, `event [guard] / action` | FL-4.2.4 | unchanged |
+| Use case testing | Sources added: removed from CTFL v4, still in Advanced Test Analyst; kept on purpose | not in CTFL v4 | unchanged |
+| Statement and branch coverage | **New** | FL-4.3.1, 4.3.2, 4.3.3 | multiple choice ×3 |
+| User stories, acceptance criteria and ATDD | **New** | FL-4.5.1, 4.5.2, 4.5.3 | classification, multiple choice, scenario |
+| Error guessing and exploratory testing | Added: checklist-based testing | FL-4.4.1, 4.4.2, 4.4.3 | unchanged |
+| Positive vs negative testing and choosing a technique | Added: black-box / white-box / experience-based families, rows and coverage for the new techniques | FL-4.1.1 | unchanged |
+
+### Points to check
+
+1. The ISTQB glossary could not be read (JavaScript app): confirm by hand how it defines smoke and sanity test.
+2. The existing exercises of the edited lessons were not changed; they still match the lesson text (the additions do not contradict them).
+3. FL-4.2.x coverage formulas are explained in words; a reviewer may want worked coverage percentages in exercises.
+4. The ATDD lesson overlaps a little with *Agile and Scrum for testers* (user stories, acceptance criteria) and *Test-first, DevOps, shift left* (ATDD intro); the new lesson goes deeper (3 C's, INVEST, criteria formats, deriving test cases).

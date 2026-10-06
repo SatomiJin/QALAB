@@ -28,7 +28,7 @@
             "en": "Unit, integration, system and acceptance testing",
             "vi": "Unit, integration, system và acceptance testing"
           },
-          "minutes": 10
+          "minutes": 11
         },
         {
           "slug": "functional-non-functional-black-white-box",
@@ -36,7 +36,7 @@
             "en": "Functional vs non-functional, black-box vs white-box",
             "vi": "Functional và non-functional, black-box và white-box"
           },
-          "minutes": 9
+          "minutes": 10
         }
       ]
     },
@@ -66,6 +66,14 @@
             "vi": "Smoke testing và sanity testing"
           },
           "minutes": 8
+        },
+        {
+          "slug": "maintenance-testing",
+          "title": {
+            "en": "Maintenance testing",
+            "vi": "Maintenance testing: kiểm thử khi hệ thống đã chạy"
+          },
+          "minutes": 9
         }
       ]
     },

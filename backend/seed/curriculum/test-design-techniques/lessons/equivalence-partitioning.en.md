@@ -36,6 +36,12 @@ Four partitions, four tests. Each test value stands for its whole group. Notice 
 4. **Lists are partitions too.** A "country" dropdown with "EU" and "non-EU" shipping rules has two valid partitions, even if it has 200 countries.
 5. **Write down the assumption.** If you are not sure two values behave the same, they may belong to different partitions: ask, or test both.
 
+## Several inputs: Each Choice coverage
+
+A form usually has several fields, each with its own partitions. One test case then covers one partition of **each** field at the same time. The simplest goal is **Each Choice coverage**: every partition of every field appears in at least one test. It does not try every *combination* of partitions; when combinations matter (a rule depends on two fields at once), use a decision table.
+
+Example: quantity (valid 1–10, invalid 0, invalid 11) and delivery country (EU, non-EU). Pairing (0, non-EU) would mix an invalid value with a valid partition that is not tested yet, so keep invalid partitions on their own: (5, EU), (7, non-EU), (0, EU), (11, EU). Four tests: every partition appears, and each invalid value is tested on its own.
+
 ## What EP gives you
 
 * **Fewer tests with the same reach.** Ten valid quantities become one test.
@@ -43,5 +49,9 @@ Four partitions, four tests. Each test value stands for its whole group. Notice 
 * **A base for boundary values.** EP picks a value from the middle of each group; the next lesson tests its edges.
 
 EP does not tell you about the edges of the partitions, where off-by-one mistakes hide. That is why it is almost always combined with boundary value analysis.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 4.2.1 "Equivalence partitioning". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: split the inputs into groups the system treats the same, valid and invalid, and test one value from each group.

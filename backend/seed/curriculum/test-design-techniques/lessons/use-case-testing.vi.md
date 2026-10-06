@@ -59,4 +59,8 @@ Precondition giúp exception xảy ra có chủ đích: bạn phải chuẩn b�
 * Nếu use case không có exception flow nào, đó là một phát hiện khi review: hãy hỏi chuyện gì xảy ra khi thẻ bị từ chối, mất mạng, hay người dùng bấm quay lại.
 * Use case mô tả hành vi hệ thống từ phía người dùng, nên chúng cũng là nền tảng tốt cho acceptance test.
 
+## Nguồn tham khảo
+
+* Use case testing có trong syllabus ISTQB Foundation đến phiên bản v3.1. Release notes của [syllabus CTFL v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) ghi rằng nó đã bị bỏ khỏi Foundation Level và vẫn có trong syllabus Advanced Level Test Analyst. QALAB giữ bài này vì use case vẫn rất phổ biến trong công việc. © International Software Testing Qualifications Board (ISTQB®). Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: một test cho main flow, một test cho mỗi alternative flow và exception flow, và luôn kiểm tra những gì không được xảy ra trong exception.

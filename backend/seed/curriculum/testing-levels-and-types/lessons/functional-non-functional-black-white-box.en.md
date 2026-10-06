@@ -15,6 +15,8 @@ Test levels say **where** you test. Test types say **what** you test and **how**
 
 Non-functional requirements are often missing from user stories. Ask for them ("how fast is fast enough?") rather than guessing.
 
+The ISTQB syllabus lists the non-functional quality characteristics of the ISO/IEC 25010 standard: **performance efficiency**, **compatibility**, **usability** (interaction capability), **reliability**, **security**, **maintainability**, **portability** (flexibility) and **safety**. Functional testing, for its part, checks that the functions are complete, correct and appropriate. Non-functional testing can start early (in reviews or unit tests), and non-functional defects found late are often expensive.
+
 ## Black-box vs white-box
 
 These words describe **how a test is designed**, not who runs it.
@@ -48,5 +50,9 @@ Beginners tend to write only positive tests because the requirements describe th
 ## Putting the words together
 
 One test can be described with all three pairs. "Enter a 7-character password and expect the error *Password must be at least 8 characters*" is a **functional**, **black-box**, **negative** test, run at the **system** level.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 2.2.2 "Test types". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: functional is *what* the system does, non-functional is *how well*; black-box designs tests from behaviour, white-box from code; negative tests check that bad input is handled, and they pass when it is.

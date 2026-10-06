@@ -57,4 +57,10 @@ Penetration testing là công việc của chuyên gia, nhưng nhiều defect b�
 * Response trong tab Network không chứa nhiều dữ liệu hơn màn hình cần (không có password hash, không có email của người dùng khác).
 * Dữ liệu nhạy cảm không bao giờ nằm trên URL (token, mật khẩu) và các trang dùng **HTTPS**.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.2.2 "Test types" (usability và security là các đặc tính chất lượng). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/), W3C Recommendation, ngày 12/12/2024. © W3C; giấy phép tài liệu của W3C. Chỉ dẫn link và tóm tắt, không sao chép.
+* [OWASP Top 10:2025](https://owasp.org/Top10/2025/), danh sách các rủi ro bảo mật ứng dụng web nghiêm trọng nhất của OWASP Foundation (phát hành tháng 11/2025). Các kiểm tra trong bài là ví dụ do team tự viết.
+
 > Ý chính: usability, accessibility và security là một phần của chất lượng, không phải phần thêm. Một bàn phím, một công cụ kiểm tra contrast, tab Network và sự tò mò đã đủ để tìm ra những defect nghiêm trọng.

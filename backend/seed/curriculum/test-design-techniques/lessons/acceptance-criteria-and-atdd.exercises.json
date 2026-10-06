@@ -1,0 +1,230 @@
+[
+  {
+    "key": "criteria-format",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Classify each acceptance criterion as **scenario-oriented** or **rule-oriented**.",
+      "vi": "Xếp mỗi acceptance criterion vào dạng **kịch bản** (scenario-oriented) hoặc dạng **quy tắc** (rule-oriented)."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "scenario",
+          "text": {
+            "en": "Scenario-oriented",
+            "vi": "Dạng kịch bản (scenario-oriented)"
+          }
+        },
+        {
+          "id": "rule",
+          "text": {
+            "en": "Rule-oriented",
+            "vi": "Dạng quy tắc (rule-oriented)"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "gwt-login",
+          "text": {
+            "en": "Given a locked account, when the user enters the right password, then login is refused",
+            "vi": "Given một tài khoản bị khóa, when người dùng nhập đúng mật khẩu, then đăng nhập bị từ chối"
+          }
+        },
+        {
+          "id": "bullet-length",
+          "text": {
+            "en": "The password is 8 to 72 characters long",
+            "vi": "Mật khẩu dài từ 8 đến 72 ký tự"
+          }
+        },
+        {
+          "id": "table-shipping",
+          "text": {
+            "en": "A table: total < 50 → 5 USD shipping; total ≥ 50 → free",
+            "vi": "Một bảng: tổng < 50 → phí 5 USD; tổng ≥ 50 → miễn phí"
+          }
+        },
+        {
+          "id": "gwt-cart",
+          "text": {
+            "en": "Given an empty basket, when I open checkout, then I see \"Your basket is empty\"",
+            "vi": "Given giỏ hàng trống, when tôi mở checkout, then tôi thấy \"Your basket is empty\""
+          }
+        },
+        {
+          "id": "bullet-one-code",
+          "text": {
+            "en": "Only one discount code per order",
+            "vi": "Mỗi đơn hàng chỉ một mã giảm giá"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "gwt-login": "scenario",
+        "bullet-length": "rule",
+        "table-shipping": "rule",
+        "gwt-cart": "scenario",
+        "bullet-one-code": "rule"
+      }
+    },
+    "explanation": {
+      "en": "**Scenario-oriented** criteria describe one situation and its outcome, typically as **Given / When / Then**. **Rule-oriented** criteria state rules as a bullet list or a table of inputs and outputs. The shipping table is rule-oriented even though it gives examples: it is an input-output mapping, not a scenario. Both formats are fine if they are clear and unambiguous.",
+      "vi": "Criteria **dạng kịch bản** mô tả một tình huống và kết quả của nó, thường theo **Given / When / Then**. Criteria **dạng quy tắc** nêu quy tắc dưới dạng danh sách gạch đầu dòng hoặc bảng input và output. Bảng phí vận chuyển là dạng quy tắc dù có ví dụ: đó là một bảng ánh xạ input sang output, không phải một kịch bản. Cả hai dạng đều được nếu rõ ràng và không mơ hồ."
+    }
+  },
+  {
+    "key": "invest-testable",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Which user story most clearly fails the **Testable** part of INVEST?",
+      "vi": "User story nào vi phạm rõ nhất chữ **Testable** trong INVEST?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "vague",
+          "text": {
+            "en": "As a user, I want the app to feel modern, so that I enjoy using it",
+            "vi": "Là người dùng, tôi muốn ứng dụng mang cảm giác hiện đại, để tôi thích dùng nó"
+          }
+        },
+        {
+          "id": "export",
+          "text": {
+            "en": "As an accountant, I want to export the monthly invoices as CSV, so that I can import them into my tool",
+            "vi": "Là kế toán, tôi muốn export hóa đơn hàng tháng ra CSV, để nhập vào công cụ của tôi"
+          }
+        },
+        {
+          "id": "reset",
+          "text": {
+            "en": "As a user, I want to reset my password by e-mail, so that I can log in again",
+            "vi": "Là người dùng, tôi muốn đặt lại mật khẩu qua email, để đăng nhập lại được"
+          }
+        },
+        {
+          "id": "filter",
+          "text": {
+            "en": "As a shopper, I want to filter products by price range, so that I find affordable items",
+            "vi": "Là người mua hàng, tôi muốn lọc sản phẩm theo khoảng giá, để tìm món vừa túi tiền"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "vague"
+      ]
+    },
+    "explanation": {
+      "en": "\"Feel modern\" gives no condition a test could pass or fail: nobody can say how to confirm it, which is the sign of an unclear story. The other three have observable results (a CSV file, a reset e-mail, a filtered list) and can get concrete acceptance criteria in the Conversation.",
+      "vi": "\"Mang cảm giác hiện đại\" không đưa ra điều kiện nào để một test có thể pass hay fail: không ai nói được cách xác nhận nó, đó là dấu hiệu của một story chưa rõ. Ba story còn lại đều có kết quả quan sát được (một file CSV, một email đặt lại, một danh sách đã lọc) và có thể có acceptance criteria cụ thể qua phần Conversation."
+    }
+  },
+  {
+    "key": "atdd-wishlist",
+    "type": "scenario",
+    "difficulty": "medium",
+    "question": {
+      "en": "Story: *As a logged-in shopper, I want to save products to a wishlist, so that I can buy them later.* Acceptance criteria: a product can be added once; the wishlist holds at most 50 products; items can be removed.\n\nIn the specification workshop you write the first ATDD test cases. List them in the order ATDD recommends, and name one question you would raise.",
+      "vi": "Story: *Là người mua đã đăng nhập, tôi muốn lưu sản phẩm vào wishlist, để mua sau.* Acceptance criteria: mỗi sản phẩm chỉ thêm được một lần; wishlist chứa tối đa 50 sản phẩm; có thể xóa sản phẩm.\n\nTrong specification workshop, bạn viết các test case ATDD đầu tiên. Hãy liệt kê chúng theo thứ tự ATDD khuyến nghị, và nêu một câu hỏi bạn sẽ đặt ra."
+    },
+    "prompt": {},
+    "answer": {
+      "expectedConcepts": [
+        {
+          "concept": "Positive test first (add and remove work)",
+          "keywords": [
+            "positive",
+            "add a product",
+            "happy path",
+            "thanh cong"
+          ]
+        },
+        {
+          "concept": "Negative test: duplicate product",
+          "keywords": [
+            "duplicate",
+            "twice",
+            "same product",
+            "hai lan",
+            "trung"
+          ]
+        },
+        {
+          "concept": "Boundary at 50 items",
+          "keywords": [
+            "50",
+            "51",
+            "limit",
+            "gioi han"
+          ]
+        },
+        {
+          "concept": "Non-functional characteristic last",
+          "keywords": [
+            "non-functional",
+            "performance",
+            "second",
+            "giay"
+          ]
+        },
+        {
+          "concept": "Question for the workshop",
+          "keywords": [
+            "question",
+            "logged out",
+            "not logged",
+            "out of stock",
+            "cau hoi",
+            "chua dang nhap"
+          ]
+        }
+      ],
+      "modelAnswer": {
+        "en": "**Positive** tests first:\n1. Given I am logged in, when I add a product, then it appears in my wishlist.\n2. Given a product in my wishlist, when I remove it, then it is gone.\n\nThen **negative** tests:\n3. Given a product already in the wishlist, when I add the same product **twice**, then it is listed once and I see a message (**duplicate**).\n4. Given 50 products (the **limit**), when I add a 51st, then it is refused with a message; with 49, adding one more works.\n\nThen **non-functional**:\n5. Adding a product updates the wishlist within one **second**.\n\n**Question** for the workshop: what happens for a shopper who is **not logged** in, and what does the wishlist show when a saved product is out of stock?",
+        "vi": "Trước hết là test **positive**:\n1. Given tôi đã đăng nhập, when tôi thêm một sản phẩm, then nó xuất hiện trong wishlist: thêm **thành công**.\n2. Given một sản phẩm trong wishlist, when tôi xóa nó, then nó biến mất.\n\nRồi đến test **negative**:\n3. Given một sản phẩm đã có trong wishlist, when tôi thêm sản phẩm đó **hai lần**, then nó chỉ hiện một lần và có thông báo (**trùng**).\n4. Given 50 sản phẩm (**giới hạn**), when tôi thêm sản phẩm thứ 51, then bị từ chối kèm thông báo; với 49 thì thêm một sản phẩm vẫn được.\n\nSau cùng là **non-functional**:\n5. Thêm sản phẩm cập nhật wishlist trong vòng một **giây**.\n\n**Câu hỏi** cho workshop: chuyện gì xảy ra với người mua **chưa đăng nhập**, và wishlist hiển thị gì khi một sản phẩm đã lưu hết hàng?"
+      },
+      "rubric": [
+        {
+          "id": "order",
+          "text": {
+            "en": "My tests go positive, then negative, then non-functional",
+            "vi": "Test của tôi theo thứ tự positive, rồi negative, rồi non-functional"
+          }
+        },
+        {
+          "id": "duplicate",
+          "text": {
+            "en": "I tested adding the same product twice",
+            "vi": "Tôi test việc thêm cùng một sản phẩm hai lần"
+          }
+        },
+        {
+          "id": "limit",
+          "text": {
+            "en": "I tested the 50-item limit at its boundary",
+            "vi": "Tôi test giới hạn 50 sản phẩm ở giá trị biên"
+          }
+        },
+        {
+          "id": "question",
+          "text": {
+            "en": "I raised a question about a gap in the story",
+            "vi": "Tôi nêu một câu hỏi về chỗ còn thiếu trong story"
+          }
+        }
+      ]
+    },
+    "explanation": {
+      "en": "ATDD orders the tests **positive** first (add and remove work), then **negative** (a **duplicate**, going past the **limit** of 50, where boundary value analysis gives 50 and 51), then **non-functional** characteristics. Each test is an example in Given / When / Then language the stakeholders understand, and stays within the story. The workshop is also the place to ask about gaps, such as a shopper who is not logged in.",
+      "vi": "ATDD sắp xếp test **positive** trước (thêm và xóa chạy được), rồi **negative** (sản phẩm **trùng**, vượt **giới hạn** 50, nơi boundary value analysis cho giá trị 50 và 51), rồi các đặc tính **non-functional**. Mỗi test là một ví dụ bằng ngôn ngữ Given / When / Then mà các bên liên quan hiểu, và không vượt ra ngoài story. Workshop cũng là nơi hỏi về các chỗ thiếu, chẳng hạn người mua chưa đăng nhập."
+    }
+  }
+]

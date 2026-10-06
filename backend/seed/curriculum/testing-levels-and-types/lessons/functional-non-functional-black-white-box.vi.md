@@ -15,6 +15,8 @@ Test level cho biết test **ở đâu**. Test type cho biết test **cái gì**
 
 Yêu cầu non-functional thường bị thiếu trong user story. Hãy hỏi ("nhanh thế nào là đủ nhanh?") thay vì tự đoán.
 
+Syllabus ISTQB liệt kê các đặc tính chất lượng non-functional theo tiêu chuẩn ISO/IEC 25010: **performance efficiency** (hiệu năng), **compatibility** (tương thích), **usability** (khả năng tương tác), **reliability** (độ tin cậy), **security** (bảo mật), **maintainability** (khả năng bảo trì), **portability** (khả năng chuyển đổi môi trường) và **safety** (an toàn). Còn functional testing kiểm tra chức năng có đầy đủ, đúng và phù hợp hay không. Non-functional testing có thể bắt đầu sớm (trong review hoặc unit test), và defect non-functional phát hiện muộn thường tốn kém.
+
 ## Black-box và white-box
 
 Hai từ này mô tả **cách thiết kế test**, không phải ai là người chạy test.
@@ -48,5 +50,9 @@ Người mới thường chỉ viết positive test vì requirement mô tả hap
 ## Ghép các từ lại với nhau
 
 Một test có thể được mô tả bằng cả ba cặp. "Nhập mật khẩu 7 ký tự và mong đợi lỗi *Password must be at least 8 characters*" là một test **functional**, **black-box**, **negative**, chạy ở cấp **system**.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.2.2 "Test types". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: functional là hệ thống làm *cái gì*, non-functional là làm *tốt đến đâu*; black-box thiết kế test từ hành vi, white-box từ code; negative test kiểm tra input xấu được xử lý đúng, và nó pass khi điều đó xảy ra.

@@ -45,6 +45,18 @@ Example: *Explore the checkout coupon field with expired, reused and very long c
 
 A good charter is focused enough to finish in one session ("the coupon field", not "checkout") and open enough to let you follow what you find.
 
+## Checklist-based testing
+
+**Checklist-based testing** is a third experience-based technique: the tester designs and runs tests to cover the items of a checklist. Checklists come from experience, from knowing what matters to users, and from understanding why software fails (the fault-attack list above is one).
+
+Good checklist items:
+
+* are phrased as **questions** that can be checked one by one: "Does every required field show an error when left empty?";
+* are not things a tool checks automatically, not entry or exit criteria, and not too general ("Is it user-friendly?");
+* are **kept up to date**: items stop finding defects once developers learn to avoid them, and new high-severity defects add new items. Keep the list short enough to be used.
+
+Without detailed test cases, a checklist gives guidance and some consistency. A high-level checklist leads to more variation between testers: potentially more coverage, but less repeatability.
+
 ## How they work together
 
 Error guessing gives you the attacks; exploratory sessions give you the time and structure to use them, and to follow surprises. Both **complement** scripted tests, they do not replace them: scripted tests prove the requirement is met and are repeatable for regression; exploratory sessions find what the script did not imagine.
@@ -55,5 +67,10 @@ Error guessing gives you the attacks; exploratory sessions give you the time and
 | Strength | Repeatable, measurable coverage | Finds unexpected defects quickly |
 | Weakness | Only finds what was foreseen | Depends on the tester's skill; harder to repeat |
 | Evidence | Pass/fail per test case | Charter, session notes, defects, debrief |
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 4.4.1 "Error guessing", 4.4.2 "Exploratory testing" and 4.4.3 "Checklist-based testing". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+* The session-based test management structure and the charter template ("Explore… with… to discover…") are common practice in the exploratory testing community; the syllabus describes sessions, charters and debriefs in general terms.
 
 > Key idea: use a growing checklist of fault attacks, and explore in time-boxed sessions with a clear charter, notes and a debrief.

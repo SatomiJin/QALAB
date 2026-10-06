@@ -1,0 +1,164 @@
+[
+  {
+    "key": "coverage-one-test",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "```ts\nfunction shippingCost(total: number, isMember: boolean): number {\n  let cost = 5;\n  if (isMember) {\n    cost = 0;\n  }\n  if (total >= 50) {\n    cost = 0;\n  }\n  return cost;\n}\n```\n\nThe only test is `shippingCost(60, true)`. Which statement is correct?",
+      "vi": "```ts\nfunction shippingCost(total: number, isMember: boolean): number {\n  let cost = 5;\n  if (isMember) {\n    cost = 0;\n  }\n  if (total >= 50) {\n    cost = 0;\n  }\n  return cost;\n}\n```\n\nTest duy nhất là `shippingCost(60, true)`. Phát biểu nào đúng?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "stmt-100",
+          "text": {
+            "en": "100 % statement coverage, 50 % branch coverage (decision outcomes)",
+            "vi": "Statement coverage 100 %, branch coverage 50 % (kết quả của quyết định)"
+          }
+        },
+        {
+          "id": "both-100",
+          "text": {
+            "en": "100 % statement coverage and 100 % branch coverage",
+            "vi": "Statement coverage 100 % và branch coverage 100 %"
+          }
+        },
+        {
+          "id": "stmt-50",
+          "text": {
+            "en": "50 % statement coverage, 50 % branch coverage",
+            "vi": "Statement coverage 50 %, branch coverage 50 %"
+          }
+        },
+        {
+          "id": "branch-100",
+          "text": {
+            "en": "50 % statement coverage, 100 % branch coverage",
+            "vi": "Statement coverage 50 %, branch coverage 100 %"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "stmt-100"
+      ]
+    },
+    "explanation": {
+      "en": "With `(60, true)` both `if` conditions are true, so every line runs: **100 % statement coverage**. But each decision only took its **true** outcome: 2 of 4 decision outcomes, **50 % branch coverage**. Full branch coverage needs a test where both decisions are false too, such as `(20, false)`. The reverse always holds: 100 % branch coverage always gives 100 % statement coverage.",
+      "vi": "Với `(60, true)`, cả hai điều kiện `if` đều đúng, nên mọi dòng đều chạy: **statement coverage 100 %**. Nhưng mỗi quyết định chỉ đi theo kết quả **true**: 2 trên 4 kết quả, **branch coverage 50 %**. Muốn đủ branch coverage cần thêm một test mà cả hai quyết định đều false, như `(20, false)`. Ngược lại thì không xảy ra: branch coverage 100 % luôn kéo theo statement coverage 100 %."
+    }
+  },
+  {
+    "key": "coverage-claims",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Which statements about coverage are true? Select all that apply.",
+      "vi": "Những phát biểu nào về coverage là đúng? Chọn tất cả đáp án đúng."
+    },
+    "prompt": {
+      "multiple": true,
+      "options": [
+        {
+          "id": "subsumes",
+          "text": {
+            "en": "100 % branch coverage always means 100 % statement coverage",
+            "vi": "Branch coverage 100 % luôn có nghĩa là statement coverage 100 %"
+          }
+        },
+        {
+          "id": "omission",
+          "text": {
+            "en": "100 % branch coverage cannot reveal a requirement that was never implemented",
+            "vi": "Branch coverage 100 % không thể phát hiện một requirement chưa từng được cài đặt"
+          }
+        },
+        {
+          "id": "untested",
+          "text": {
+            "en": "A coverage report shows which code the tests never executed",
+            "vi": "Báo cáo coverage cho thấy phần code nào test chưa từng chạy qua"
+          }
+        },
+        {
+          "id": "no-defects",
+          "text": {
+            "en": "100 % statement coverage proves the function has no defects",
+            "vi": "Statement coverage 100 % chứng minh hàm không còn defect"
+          }
+        },
+        {
+          "id": "reverse",
+          "text": {
+            "en": "100 % statement coverage always means 100 % branch coverage",
+            "vi": "Statement coverage 100 % luôn có nghĩa là branch coverage 100 %"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "subsumes",
+        "omission",
+        "untested"
+      ]
+    },
+    "explanation": {
+      "en": "Branch coverage **subsumes** statement coverage, not the other way round (one test can run every line while every `if` stays true). Coverage measures code that **exists**, so missing code (defects of **omission**) stays invisible. Its real use is to show **untested code**. No coverage figure proves the absence of defects: a wrong boundary such as `>` instead of `>=` survives 100 % branch coverage.",
+      "vi": "Branch coverage **bao hàm** statement coverage, ngược lại thì không (một test có thể chạy mọi dòng trong khi mọi `if` đều true). Coverage đo phần code **đang có**, nên phần code bị thiếu (defect do **bỏ sót**) vẫn vô hình. Công dụng thật của nó là chỉ ra **code chưa được test**. Không con số coverage nào chứng minh được là hết defect: một biên sai như `>` thay vì `>=` vẫn tồn tại dù branch coverage 100 %."
+    }
+  },
+  {
+    "key": "coverage-vs-boundary",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "A developer wrote `if (total > 50)` instead of `if (total >= 50)`. The tests `(60, true)` and `(20, false)` reach 100 % branch coverage and pass. Which extra test finds the defect?",
+      "vi": "Developer viết `if (total > 50)` thay vì `if (total >= 50)`. Hai test `(60, true)` và `(20, false)` đạt branch coverage 100 % và đều pass. Test bổ sung nào tìm ra defect?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "boundary",
+          "text": {
+            "en": "`shippingCost(50, false)`, expecting 0",
+            "vi": "`shippingCost(50, false)`, mong đợi 0"
+          }
+        },
+        {
+          "id": "member-50",
+          "text": {
+            "en": "`shippingCost(50, true)`, expecting 0",
+            "vi": "`shippingCost(50, true)`, mong đợi 0"
+          }
+        },
+        {
+          "id": "big",
+          "text": {
+            "en": "`shippingCost(500, false)`, expecting 0",
+            "vi": "`shippingCost(500, false)`, mong đợi 0"
+          }
+        },
+        {
+          "id": "none",
+          "text": {
+            "en": "None needed: 100 % branch coverage means the code is correct",
+            "vi": "Không cần: branch coverage 100 % nghĩa là code đã đúng"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "boundary"
+      ]
+    },
+    "explanation": {
+      "en": "The defect sits exactly on the **boundary** 50. `(50, false)` returns 5 instead of 0 and fails. `(50, true)` hides it, because the member rule already sets the cost to 0: the test must isolate the condition under test. 500 is far from the boundary. This is why coverage, a white-box measure, is combined with **boundary value analysis**.",
+      "vi": "Defect nằm đúng ở **biên** 50. `(50, false)` trả về 5 thay vì 0 và fail. `(50, true)` che mất defect, vì quy tắc thành viên đã đặt phí về 0: test phải cô lập điều kiện đang được kiểm tra. 500 ở rất xa biên. Đó là lý do coverage, một thước đo white-box, được kết hợp với **boundary value analysis**."
+    }
+  }
+]

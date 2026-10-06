@@ -33,6 +33,8 @@ Sanity test sau bản fix tính năng "đổi địa chỉ giao hàng": đổi �
 
 Sanity testing thường không có kịch bản hoặc chỉ có kịch bản sơ lược, dựa trên hiểu biết của tester về thay đổi.
 
+Lưu ý rằng một số tài liệu tham khảo, kể cả các bảng thuật ngữ, coi *sanity test* chỉ là tên gọi khác của *smoke test*. Cách phân biệt dưới đây là cách hầu hết các nhóm dùng hằng ngày; khi chưa chắc, hãy thống nhất cách gọi với nhóm của bạn.
+
 ## So sánh
 
 | | Smoke testing | Sanity testing |
@@ -57,5 +59,10 @@ Release 3.2 của một shop thêm Apple Pay và sửa một bug khiến bộ đ
 5. Sau khi deploy lên production, chạy lại một lượt **smoke test** ngắn trên production.
 
 Nếu bước 1 fail (ví dụ đăng nhập trả về lỗi), các bước 2 đến 5 sẽ không được bắt đầu.
+
+## Nguồn tham khảo
+
+* Smoke testing và sanity testing không phải là chủ đề riêng trong syllabus ISTQB Foundation; bài này mô tả cách làm phổ biến trong ngành, do team QALAB tự viết.
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.1.4 "DevOps and testing" (phản hồi nhanh trong pipeline) và 2.2.3 "Confirmation testing and regression testing", cho các thuật ngữ liên quan. © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
 
 > Ý chính: smoke testing rộng và nông, hỏi "có test được build này không?"; sanity testing hẹp và sâu, hỏi "thay đổi này có hợp lý không?". Cả hai là những cửa kiểm soát nhanh trước công việc test thật sự.

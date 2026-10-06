@@ -1,4 +1,4 @@
-You now know seven techniques. Real features need a mix of them, plus a decision on how far to go. This lesson covers the last pair of ideas you need: **positive and negative tests**, and how to **choose and combine techniques** based on risk.
+You now know the main test techniques. Real features need a mix of them, plus a decision on how far to go. This lesson covers the last pair of ideas you need: **positive and negative tests**, and how to **choose and combine techniques** based on risk.
 
 ## Positive and negative testing
 
@@ -13,6 +13,16 @@ Both are needed. Positive tests prove the feature delivers value; negative tests
 
 The techniques give you both kinds naturally: invalid partitions and values just outside a boundary are negative tests, exception flows and invalid transitions too.
 
+## Three families of techniques
+
+| Family | Tests come from | Techniques in this course |
+|---|---|---|
+| **Black-box** (specification-based) | The specified behaviour, not the code; tests stay valid if the code changes but the behaviour does not | EP, BVA, decision tables, state transitions, use cases |
+| **White-box** (structure-based) | The code and its structure; only possible once the design or code exists | Statement and branch testing |
+| **Experience-based** | The tester's knowledge and skill; finds what the other two miss | Error guessing, exploratory testing, checklists |
+
+Collaboration-based approaches (user stories, acceptance criteria, ATDD) add a fourth angle: avoiding defects by agreeing on examples before the code is written.
+
 ## Which technique for which problem
 
 | What the requirement looks like | Technique |
@@ -21,6 +31,8 @@ The techniques give you both kinds naturally: invalid partitions and values just
 | Several conditions combined into different outcomes | Decision table |
 | A status, counter or timer that changes behaviour | State transition testing |
 | A user goal with steps and things that can go wrong | Use case testing |
+| Code you can read, where you need measurable coverage | Statement and branch testing |
+| A user story with acceptance criteria to agree before coding | ATDD |
 | Thin requirements, a new feature, or known weak spots | Error guessing + exploratory testing |
 
 Most features combine several rows. A checkout has a quantity field (EP, BVA), discount rules (decision table), order statuses (state transition), a payment journey (use case), and a history of double-charge defects (error guessing).
@@ -47,6 +59,7 @@ Each technique comes with its own measurable coverage, which turns "I tested it"
 * **Decision table coverage**: every rule has a test.
 * **Transition coverage**: every valid transition is exercised at least once, plus the invalid ones you chose.
 * **Use case coverage**: the main flow and every alternative and exception flow.
+* **Statement and branch coverage**: the share of the code's statements or branches that tests executed.
 
 100 % coverage of a technique does not mean the feature is defect-free; it means that model of the feature is fully tested. Combining techniques covers the gaps of each one.
 
@@ -60,5 +73,9 @@ For a new "Number of guests: 1 to 8" field on a booking form:
 4. Error guessing: leading spaces " 4", the value -1, pasting "4 guests".
 
 About ten tests, chosen for reasons you can explain. That is what test design means.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 4.1 "Test techniques overview" and 4.2–4.5, and the risk-based testing principle of 1.3 (exhaustive testing is impossible). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: test both that the feature works and that it fails safely, pick the technique that fits the shape of the requirement, and let risk decide how deep to go.

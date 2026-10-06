@@ -37,3 +37,10 @@ Licence **CC BY-SA 4.0** (verified on scrumguides.org). Summaries in our own wor
 | Source | Next step |
 |---|---|
 | ISTQB glossary (glossary.istqb.org) | Read its terms before importing any definition into `backend/seed/glossary`. Until then, glossary definitions stay in our own words. |
+
+# Batch 2 (courses 3 and 4)
+
+* **ISTQB CTFL syllabus v4.0.1**: same terms and same use as batch 1 (basis for own explanations, attribution in every lesson). The use case lesson cites the syllabus release notes for the fact that the topic left Foundation Level.
+* **WCAG 2.2**: © W3C under the W3C document licence. QALAB only links it and summarises the four principles and conformance levels in its own words; no text is copied.
+* **OWASP Top 10:2025**: linked as the reference list of web risks; the security checks in the lesson are the team's own examples. Read the OWASP licence before quoting or adapting any OWASP text (OWASP projects are commonly CC BY-SA, not verified for this edition).
+* **Industry practice without a single source** (smoke vs sanity, load / stress / spike / endurance, percentiles, session-based test management): written in the team's own words and marked as such in each lesson's Sources section.

@@ -1,4 +1,4 @@
-Giờ bạn đã biết bảy kỹ thuật. Tính năng thực tế cần kết hợp nhiều kỹ thuật, cùng với quyết định nên test sâu đến đâu. Bài này bàn về cặp ý tưởng cuối cùng bạn cần: **positive test và negative test**, và cách **chọn và kết hợp kỹ thuật** dựa trên rủi ro.
+Giờ bạn đã biết các kỹ thuật test chính. Tính năng thực tế cần kết hợp nhiều kỹ thuật, cùng với quyết định nên test sâu đến đâu. Bài này bàn về cặp ý tưởng cuối cùng bạn cần: **positive test và negative test**, và cách **chọn và kết hợp kỹ thuật** dựa trên rủi ro.
 
 ## Positive testing và negative testing
 
@@ -13,6 +13,16 @@ Cả hai đều cần. Positive test chứng minh tính năng mang lại giá tr
 
 Các kỹ thuật tự nhiên cho bạn cả hai loại: partition không hợp lệ và giá trị nằm ngay ngoài biên là negative test, exception flow và invalid transition cũng vậy.
 
+## Ba nhóm kỹ thuật
+
+| Nhóm | Test xuất phát từ | Kỹ thuật trong khóa này |
+|---|---|---|
+| **Black-box** (dựa trên đặc tả) | Hành vi được đặc tả, không phải code; test vẫn dùng được nếu code đổi mà hành vi không đổi | EP, BVA, decision table, state transition, use case |
+| **White-box** (dựa trên cấu trúc) | Code và cấu trúc của nó; chỉ làm được khi đã có thiết kế hoặc code | Statement testing và branch testing |
+| **Experience-based** (dựa trên kinh nghiệm) | Kiến thức và kỹ năng của tester; tìm ra cái hai nhóm kia bỏ sót | Error guessing, exploratory testing, checklist |
+
+Các cách tiếp cận dựa trên cộng tác (user story, acceptance criteria, ATDD) thêm góc nhìn thứ tư: tránh defect bằng cách thống nhất ví dụ trước khi viết code.
+
 ## Kỹ thuật nào cho vấn đề nào
 
 | Requirement trông như thế nào | Kỹ thuật |
@@ -21,6 +31,8 @@ Các kỹ thuật tự nhiên cho bạn cả hai loại: partition không hợp 
 | Nhiều điều kiện kết hợp thành các kết quả khác nhau | Decision table |
 | Một trạng thái, bộ đếm hay bộ hẹn giờ làm thay đổi hành vi | State transition testing |
 | Một mục tiêu của người dùng có các bước và những chỗ có thể hỏng | Use case testing |
+| Code đọc được, cần coverage đo được | Statement testing và branch testing |
+| Một user story có acceptance criteria cần thống nhất trước khi code | ATDD |
 | Requirement sơ sài, tính năng mới, hoặc điểm yếu đã biết | Error guessing + exploratory testing |
 
 Hầu hết tính năng kết hợp nhiều dòng trong bảng. Một trang checkout có field số lượng (EP, BVA), quy tắc giảm giá (decision table), trạng thái đơn hàng (state transition), hành trình thanh toán (use case), và tiền sử defect trừ tiền hai lần (error guessing).
@@ -47,6 +59,7 @@ Mỗi kỹ thuật đi kèm một loại coverage đo được, biến câu "tô
 * **Decision table coverage**: rule nào cũng có test.
 * **Transition coverage**: mỗi transition hợp lệ được chạy ít nhất một lần, cộng với các transition không hợp lệ bạn đã chọn.
 * **Use case coverage**: main flow và mọi alternative flow, exception flow.
+* **Statement coverage và branch coverage**: tỉ lệ câu lệnh hoặc nhánh của code đã được test chạy qua.
 
 Coverage 100 % của một kỹ thuật không có nghĩa là tính năng không còn defect; nó có nghĩa là mô hình đó của tính năng đã được test trọn vẹn. Kết hợp nhiều kỹ thuật sẽ lấp chỗ trống của từng kỹ thuật.
 
@@ -60,5 +73,9 @@ Với field mới "Số khách: 1 đến 8" trên form đặt chỗ:
 4. Error guessing: dấu cách ở đầu " 4", giá trị -1, dán chuỗi "4 guests".
 
 Khoảng mười test, được chọn với những lý do bạn giải thích được. Đó chính là thiết kế test.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 4.1 "Test techniques overview" và 4.2–4.5, cùng nguyên tắc 1.3 (không thể test toàn bộ) cho risk-based testing. © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: test cả việc tính năng chạy đúng lẫn việc nó hỏng một cách an toàn, chọn kỹ thuật hợp với hình dạng của requirement, và để rủi ro quyết định test sâu đến đâu.

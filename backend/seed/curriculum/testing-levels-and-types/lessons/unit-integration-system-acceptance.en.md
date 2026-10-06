@@ -43,6 +43,18 @@ Example: register, verify the email, log in, add two items to the basket, pay wi
 * **Test basis:** business processes, user requirements, contracts, regulations.
 * **Typical defects:** the system does what the specification says, but the specification does not match how people really work.
 
+## The five levels in ISTQB terms
+
+The ISTQB syllabus names five test levels, because it splits integration in two:
+
+1. **Component testing** (unit testing).
+2. **Component integration testing**: interfaces between components of one system.
+3. **System testing**.
+4. **System integration testing**: interfaces with other systems and external services, in an environment close to production.
+5. **Acceptance testing**.
+
+Levels are told apart by their **test object**, **test objectives**, **test basis**, the **defects and failures** they target, and the **approach and responsibilities**: exactly the rows of the table below. In sequential models the exit criteria of one level are often part of the entry criteria of the next.
+
 ## The levels side by side
 
 | Level | Question | Who | Test basis | Typical defect |
@@ -53,5 +65,9 @@ Example: register, verify the email, log in, add two items to the basket, pay wi
 | Acceptance | Is it fit for use? | Users, customer, operations | Business processes, contracts | Does not fit the real workflow |
 
 Levels are not always phases one after the other. In agile teams all of them can happen inside one sprint. What stays the same is the idea: find each kind of defect at the cheapest level where it can be found.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 2.2 "Test levels and test types" and 2.2.1 "Test levels". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: each test level has its own goal, people and test basis. A bug found in UAT that a unit test could have caught is a bug found too late.

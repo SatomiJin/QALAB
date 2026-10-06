@@ -59,4 +59,8 @@ In practice the BVA values already cover the invalid number partitions (0 and 11
 * **Open boundaries** ("100 or more") have only one edge to test from the requirement; check whether the system has a hidden technical maximum too (database column, integer size).
 * Write the boundary value **and** the expected result in the test case: "8 characters → accepted" is a test; "8 characters" is only data.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), section 4.2.2 "Boundary value analysis". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
+
 > Key idea: test the edges of each partition, on the boundary and just across it, because that is where off-by-one defects live.

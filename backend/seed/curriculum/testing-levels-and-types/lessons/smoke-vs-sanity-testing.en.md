@@ -33,6 +33,8 @@ Sanity test after a fix to the "change delivery address" feature: change the add
 
 Sanity testing is usually unscripted or lightly scripted, based on the tester's understanding of the change.
 
+Be aware that some references, including glossaries, treat *sanity test* simply as another name for *smoke test*. The distinction below is the one most teams use day to day; when in doubt, agree on the words with your team.
+
 ## Side by side
 
 | | Smoke testing | Sanity testing |
@@ -57,5 +59,10 @@ Release 3.2 of a shop adds Apple Pay and fixes a bug where the basket counter sh
 5. After deployment to production, a short **smoke test** again on production.
 
 If step 1 had failed (for example, login returned an error), steps 2 to 5 would not have started.
+
+## Sources
+
+* Smoke and sanity testing are not separate topics in the ISTQB Foundation syllabus; this lesson describes common industry practice in the QALAB team's own words.
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 2.1.4 "DevOps and testing" (fast feedback in the pipeline) and 2.2.3 "Confirmation testing and regression testing", for the related terms. © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
 
 > Key idea: smoke testing is wide and shallow and asks "can we test this build?"; sanity testing is narrow and deep and asks "does this change make sense?". Both are quick gates before the real testing work.

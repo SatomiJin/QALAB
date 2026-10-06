@@ -59,4 +59,8 @@ Thực tế, các giá trị BVA đã phủ luôn các partition số không h�
 * **Biên mở** ("từ 100 trở lên") chỉ có một biên lấy từ requirement; hãy kiểm tra xem hệ thống có giới hạn kỹ thuật ẩn nào không (cột database, kích thước kiểu số nguyên).
 * Ghi cả giá trị biên **và** kết quả mong đợi trong test case: "8 ký tự → được chấp nhận" là một test; "8 ký tự" mới chỉ là dữ liệu.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 4.2.2 "Boundary value analysis". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+
 > Ý chính: test các biên của mỗi partition, ngay trên biên và vừa vượt qua biên, vì đó là nơi defect off-by-one trú ngụ.

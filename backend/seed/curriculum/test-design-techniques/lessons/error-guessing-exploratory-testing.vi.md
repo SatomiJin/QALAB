@@ -45,6 +45,18 @@ Ví dụ: *Khám phá field coupon ở checkout với các mã hết hạn, mã 
 
 Một charter tốt đủ tập trung để xong trong một session ("field coupon", không phải "checkout") và đủ mở để bạn đi theo những gì mình phát hiện.
 
+## Checklist-based testing
+
+**Checklist-based testing** là kỹ thuật dựa trên kinh nghiệm thứ ba: tester thiết kế và chạy test để cover các mục trong một checklist. Checklist đến từ kinh nghiệm, từ hiểu biết điều gì quan trọng với người dùng, và từ việc hiểu vì sao phần mềm hỏng (danh sách fault attack ở trên là một ví dụ).
+
+Mục checklist tốt:
+
+* được viết dưới dạng **câu hỏi** kiểm tra được từng cái một: "Mọi field bắt buộc có hiện lỗi khi để trống không?";
+* không phải thứ công cụ tự kiểm tra được, không phải entry hay exit criteria, và không quá chung chung ("Có thân thiện với người dùng không?");
+* được **cập nhật thường xuyên**: một mục sẽ thôi tìm ra defect khi developer đã học cách tránh lỗi đó, và defect nghiêm trọng mới sẽ thêm mục mới. Giữ danh sách đủ ngắn để còn dùng được.
+
+Khi không có test case chi tiết, checklist cho định hướng và một mức nhất quán. Checklist ở mức cao khiến các tester làm khác nhau nhiều hơn: có thể cover rộng hơn, nhưng khó lặp lại hơn.
+
 ## Chúng phối hợp với nhau thế nào
 
 Error guessing cho bạn các attack; các session khám phá cho bạn thời gian và cấu trúc để dùng chúng, và để lần theo những điều bất ngờ. Cả hai **bổ sung** cho test theo kịch bản chứ không thay thế: test theo kịch bản chứng minh requirement được đáp ứng và lặp lại được cho regression; session khám phá tìm ra những gì kịch bản không lường trước.
@@ -55,5 +67,10 @@ Error guessing cho bạn các attack; các session khám phá cho bạn thời g
 | Điểm mạnh | Lặp lại được, coverage đo được | Tìm defect bất ngờ nhanh |
 | Điểm yếu | Chỉ tìm được những gì đã lường trước | Phụ thuộc kỹ năng tester; khó lặp lại |
 | Bằng chứng | Pass/fail cho từng test case | Charter, ghi chú session, defect, debrief |
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 4.4.1 "Error guessing", 4.4.2 "Exploratory testing" và 4.4.3 "Checklist-based testing". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
+* Cấu trúc session-based test management và mẫu charter ("Explore… with… to discover…") là cách làm phổ biến trong cộng đồng exploratory testing; syllabus mô tả session, charter và debrief ở mức tổng quát.
 
 > Ý chính: dùng một checklist fault attack ngày càng dày thêm, và khám phá trong các session có time box với charter rõ ràng, ghi chú và debrief.
