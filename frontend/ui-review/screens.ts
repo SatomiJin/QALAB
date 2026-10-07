@@ -147,6 +147,57 @@ for (const c of COMBOS) {
     );
   });
 
+  // Real curriculum Markdown (code blocks, tables, Sources) in the lesson page.
+  test(`curriculum ${c.theme} ${c.lang}`, async ({ page }, info) => {
+    await prefs(page, c);
+    const { api } = await signedIn(page);
+    const LESSON = '6f1d2a4e-0c1b-4d7e-9a3f-000000001001';
+    let source = '';
+    const mock = api as unknown as {
+      handle: (
+        m: string,
+        p: string,
+        b: Record<string, unknown>,
+        r: unknown,
+      ) => { status: number; json: Record<string, unknown> };
+    };
+    await page.route(
+      new RegExp(`/api/v1/lessons/${LESSON}(\\?|$)`),
+      async (route) => {
+        if (route.request().method() !== 'GET') return route.fallback();
+        const res = mock.handle('GET', `/lessons/${LESSON}`, {}, route);
+        const lang = new URL(route.request().url()).searchParams.get('lang');
+        const md = readFileSync(
+          `../backend/seed/curriculum/${source}.${lang === 'vi' ? 'vi' : 'en'}.md`,
+          'utf8',
+        );
+        return route.fulfill({
+          status: res.status,
+          json: { ...res.json, contentMd: md },
+        });
+      },
+    );
+    const open = (file: string) => async (p: Page) => {
+      source = file;
+      await p.goto('/dashboard');
+      await p.waitForLoadState('networkidle');
+      await p.goto(`/learning/lessons/${LESSON}`);
+    };
+    await run(
+      page,
+      [
+        [
+          'lesson-playwright',
+          open('test-automation/lessons/getting-started-with-playwright'),
+        ],
+        ['lesson-postman', open('api-testing/lessons/testing-with-postman')],
+        ['lesson-pyramid', open('test-automation/lessons/automation-pyramid')],
+      ],
+      c,
+      info.project.name,
+    );
+  });
+
   test(`states ${c.theme} ${c.lang}`, async ({ page }, info) => {
     await prefs(page, c);
     const { api } = await signedIn(page);

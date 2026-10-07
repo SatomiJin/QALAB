@@ -65,7 +65,7 @@ The pyramid is a team effort. Developers usually write the unit tests; QA engine
 
 The pyramid is about **how many** tests of each size. The **testing quadrants** (Brian Marick, popularised for Agile teams) are about **which kinds** of tests a team needs. Tests are either **business facing** or **technology facing**, and they either **support the team** (guide development) or **critique the product** (measure it against expectations):
 
-| | Support the team | Critique the product |
+| Facing | Support the team | Critique the product |
 |---|---|---|
 | **Business facing** | **Q2**: functional tests, examples, user story tests, UX prototypes, API tests, simulations; manual or automated | **Q3**: exploratory testing, usability testing, user acceptance testing; user-oriented, often manual |
 | **Technology facing** | **Q1**: component and component integration tests; automated, in CI | **Q4**: smoke tests and non-functional tests (except usability); often automated |

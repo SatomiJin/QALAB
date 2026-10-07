@@ -36,6 +36,19 @@ const LONG_BODY = Array.from(
     `Paragraph ${i + 1}. A tester produces information: what works, what does not, and what has not been checked yet.`,
 ).join('\n\n');
 
+// Wider than a phone: code and tables must scroll in their own focusable box
+// (axe `scrollable-region-focusable`).
+const WIDE_BLOCKS = [
+  '```bash',
+  'npx playwright test --project=chromium --reporter=html --retries=2 tests/e2e/checkout.spec.ts',
+  '```',
+  '',
+  '| Concept | What it is | Example |',
+  '|---|---|---|',
+  '| Collection | A folder of saved requests that run together in order | `npx newman run collection.json --environment staging.json` |',
+  '| Environment | Variables for one target system, swapped without editing requests | `baseUrl = https://staging.example.com/api/v1` |',
+].join('\n');
+
 const COURSE = {
   id: '6f1d2a4e-0c1b-4d7e-9a3f-000000000001',
   slug: 'qa-fundamentals-first-steps',
@@ -56,7 +69,7 @@ const MODULES = [
         slug: 'why-we-test',
         title: 'Why we test',
         estimatedMinutes: 6,
-        contentMd: `## Testing is about information\n\n| Found during | Cost |\n|---|---|\n| Review | Minutes |\n| Production | Days |\n\n${LONG_BODY}`,
+        contentMd: `## Testing is about information\n\n| Found during | Cost |\n|---|---|\n| Review | Minutes |\n| Production | Days |\n\n${WIDE_BLOCKS}\n\n${LONG_BODY}`,
       },
       {
         id: '6f1d2a4e-0c1b-4d7e-9a3f-000000001002',

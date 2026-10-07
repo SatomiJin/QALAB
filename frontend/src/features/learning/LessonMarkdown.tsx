@@ -31,12 +31,14 @@ function markdownComponents(linker: TermLinker | null): Components {
         />
       );
     },
-    // Wide tables scroll inside their own box, never the page.
+    // Wide tables and code scroll inside their own box, never the page. The
+    // box takes keyboard focus so it can be scrolled without a pointer.
     table: ({ node: _node, ...props }) => (
-      <div className={styles.tableWrap}>
+      <div className={styles.tableWrap} tabIndex={0}>
         <table {...props} />
       </div>
     ),
+    pre: ({ node: _node, ...props }) => <pre tabIndex={0} {...props} />,
   };
 }
 

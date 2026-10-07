@@ -109,7 +109,8 @@ test.describe('Learning', () => {
         level: 2,
       }),
     ).toBeVisible();
-    await expect(content.getByRole('table')).toBeVisible();
+    await expect(content.getByRole('table')).toHaveCount(2);
+    await expect(content.getByRole('table').first()).toBeVisible();
 
     await expect(page.getByTestId('lesson-status')).toHaveAttribute(
       'data-state',

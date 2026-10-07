@@ -99,8 +99,11 @@
     font-variant-numeric: tabular-nums;
   }
 
+  // Columns keep a readable width; past that the wrapper scrolls instead of
+  // squeezing words onto one line each.
   th,
   td {
+    min-width: 12ch;
     padding: $space-2 $space-3;
     border-bottom: 1px solid $color-rule;
     text-align: left;
@@ -110,5 +113,10 @@
   th {
     font-weight: 600;
     border-bottom-color: $color-ink-muted;
+  }
+
+  // A command in a cell reads as one unit; the wrapper scrolls if needed.
+  td code {
+    white-space: nowrap;
   }
 }

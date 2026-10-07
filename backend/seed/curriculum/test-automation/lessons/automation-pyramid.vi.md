@@ -65,7 +65,7 @@ Kim tự tháp là việc của cả team. Developer thường viết unit test;
 
 Kim tự tháp nói về **số lượng** test ở mỗi kích cỡ. **Testing quadrants** (bốn góc phần tư kiểm thử, của Brian Marick, phổ biến trong các nhóm Agile) nói về **những loại** test mà nhóm cần. Test hoặc **hướng về business** hoặc **hướng về công nghệ**, và hoặc **hỗ trợ nhóm** (định hướng việc phát triển) hoặc **phản biện sản phẩm** (đo nó so với kỳ vọng):
 
-| | Hỗ trợ nhóm | Phản biện sản phẩm |
+| Hướng | Hỗ trợ nhóm | Phản biện sản phẩm |
 |---|---|---|
 | **Hướng về business** | **Q2**: functional test, ví dụ, user story test, prototype UX, API test, mô phỏng; thủ công hoặc tự động | **Q3**: exploratory testing, usability testing, user acceptance testing; hướng về người dùng, thường thủ công |
 | **Hướng về công nghệ** | **Q1**: component test và component integration test; tự động, chạy trong CI | **Q4**: smoke test và non-functional test (trừ usability); thường tự động |
