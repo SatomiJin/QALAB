@@ -33,7 +33,7 @@ Browser ──► qalab-web (frontend/, static)      https://<frontend-domain>
 ## 2. Frontend project (`qalab-web`)
 
 * Import the same repository again, **Root Directory `frontend`**. Framework: Vite (detected), output `dist`.
-* `frontend/vercel.json`: every path falls back to `index.html` (client-side routes such as `/dashboard` survive a reload), hashed `/assets/*` are cached for a year, and basic security headers (`nosniff`, `DENY` framing, referrer policy).
+* `frontend/vercel.json`: every path except `/assets/*` falls back to `index.html` (client-side routes such as `/dashboard` survive a reload), hashed `/assets/*` are cached for a year (a missing asset is a `404`: falling back would serve `index.html` as a JS file with the one-year cache, and a tab that asked for a chunk during a deploy kept failing after reloads, seen on 2026-10-07), and basic security headers (`nosniff`, `DENY` framing, referrer policy).
 * One variable, for Production **and** Preview: `VITE_API_BASE_URL=https://<backend-domain>/api/v1`. It is baked into the bundle at build time: redeploy after changing it. It is public; never put a key in a `VITE_` variable.
 
 ## 3. Supabase dashboard

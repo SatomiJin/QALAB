@@ -94,3 +94,33 @@ test.describe('States', () => {
     await expect(page.getByTestId('summary')).toBeVisible();
   });
 });
+
+test.describe('Deploys', () => {
+  test('an app chunk that fails once (new deploy) reloads instead of a dead page', async ({
+    page,
+  }) => {
+    await signedIn(page);
+    let blocked = 0;
+    await page.route(/\/assets\/App-[\w-]+\.js$/, async (route) => {
+      if (blocked++ === 0) return route.abort('failed');
+      return route.continue();
+    });
+    await page.goto('/dashboard');
+    await expect(page.getByTestId('summary')).toBeVisible({ timeout: 15_000 });
+    expect(blocked).toBe(2);
+  });
+
+  test('an app chunk that keeps failing says so, without a reload loop', async ({
+    page,
+  }) => {
+    await signedIn(page);
+    let requests = 0;
+    await page.route(/\/assets\/App-[\w-]+\.js$/, (route) => {
+      requests++;
+      return route.abort('failed');
+    });
+    await page.goto('/dashboard');
+    await expect(page.getByRole('alert')).toContainText('could not load');
+    expect(requests).toBe(2);
+  });
+});
