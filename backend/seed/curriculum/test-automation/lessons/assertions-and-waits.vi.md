@@ -79,4 +79,8 @@ Bắt đầu chờ **trước** thao tác kích hoạt nó, nếu không respons
 
 Timeout nói rằng "bỏ cuộc sau chừng này thời gian". Tăng timeout cho một trang thực sự chậm là được; dùng nó để che một bug trong ứng dụng hay một chỗ thiếu chờ trong test thì không. Nếu một bước thường xuyên cần 20 giây, đó là vấn đề hiệu năng đáng được báo cáo.
 
+## Nguồn tham khảo
+
+* Tài liệu Playwright: [Auto-waiting (actionability)](https://playwright.dev/docs/actionability), [Assertions](https://playwright.dev/docs/test-assertions). © Microsoft; Playwright và tài liệu của nó theo giấy phép Apache License 2.0. Code trong bài do team QALAB tự viết.
+
 > Ý chính: assert những kết quả cụ thể mà người dùng quan tâm, và chờ điều kiện (auto-waiting, web-first assertion, response mong đợi) thay vì chờ cố định, vốn vừa chậm vừa flaky.

@@ -61,8 +61,23 @@ Moving checks down the pyramid (a UI test becomes an API test plus a unit test) 
 
 The pyramid is a team effort. Developers usually write the unit tests; QA engineers often own API and UI automation and review whether the levels are balanced. A QA engineer who can read unit tests and say "this rule is already covered below, we do not need a UI test for every case" saves the team a lot of time.
 
+## The testing quadrants
+
+The pyramid is about **how many** tests of each size. The **testing quadrants** (Brian Marick, popularised for Agile teams) are about **which kinds** of tests a team needs. Tests are either **business facing** or **technology facing**, and they either **support the team** (guide development) or **critique the product** (measure it against expectations):
+
+| | Support the team | Critique the product |
+|---|---|---|
+| **Business facing** | **Q2**: functional tests, examples, user story tests, UX prototypes, API tests, simulations; manual or automated | **Q3**: exploratory testing, usability testing, user acceptance testing; user-oriented, often manual |
+| **Technology facing** | **Q1**: component and component integration tests; automated, in CI | **Q4**: smoke tests and non-functional tests (except usability); often automated |
+
+A team that only fills Q1 and Q2 has a well-built product nobody has tried as a user; a team that only does Q3 finds problems late and slowly. Use the quadrants to check that every kind of testing has a place in the plan.
+
 ## It is a model, not a law
 
 The exact proportions depend on the product. An app that is mostly a thin screen over a third-party API may have few unit tests and more API tests (sometimes drawn as a "trophy" with a wide middle). The principle stays the same: prefer the fastest, most precise test that can catch the bug, and keep slow, broad tests for the journeys that matter most.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 5.1.6 "Test pyramid" and 5.1.7 "Testing quadrants". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: many fast unit tests, fewer API tests, a small set of UI journeys; avoid the ice-cream cone, where slow UI and manual tests carry everything.

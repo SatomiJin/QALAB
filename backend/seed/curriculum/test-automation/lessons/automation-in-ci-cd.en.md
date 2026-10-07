@@ -87,4 +87,9 @@ Smoke tests on production must be safe: read-only checks or dedicated test accou
 
 QA engineers often design which tests run where (per PR, nightly, after deploy), watch the flaky-test list, keep the suite fast, and make sure failures are investigated, not just rerun.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 2.1.4 "DevOps and testing" and 2.2.3 (automated regression tests in CI). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* Playwright documentation: [Parallelism](https://playwright.dev/docs/test-parallel), [Sharding](https://playwright.dev/docs/test-sharding), [Trace viewer](https://playwright.dev/docs/trace-viewer-intro), [Continuous integration](https://playwright.dev/docs/ci). © Microsoft; Playwright and its documentation are under the Apache License 2.0. The code here is written by the QALAB team.
+
 > Key idea: run fast, isolated tests on every pull request and fail the build when they fail; run in parallel to stay fast, keep reports and traces for every failure, and run a short smoke suite after each deploy.

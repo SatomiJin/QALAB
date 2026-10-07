@@ -61,4 +61,9 @@ Check that messages help the client but do not help an attacker. `"title must be
 
 On the QA Learning Lab API, call `GET /api/v1/courses?pageSize=21`, then `?page=0`, then `?page=abc`. Each must be `400` with the error shape above. Then call `GET /api/v1/lessons/abc` and `GET /api/v1/lessons/00000000-0000-0000-0000-000000000000`, and compare `400` with `404`.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), sections 4.2.1 "Equivalence partitioning" and 4.2.2 "Boundary value analysis". © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), section 15.5 "Client error 4xx". The explanations and examples are the QALAB team's own.
+
 > Key idea: for every field, try missing, wrong type, empty, too small, too big and unknown. Expect a `4xx` with a clear error, and check that nothing was saved.

@@ -61,4 +61,9 @@ Authentication proves identity; it does not decide access. For each endpoint ask
 
 In the QA Learning Lab API, every endpoint except `GET /api/v1/health` and the public `/auth/*` ones needs a Bearer token. In Swagger UI (`/api/docs`), call `GET /api/v1/courses` without authorizing, then with a valid token, then with the same token with its last character changed. You should see `401`, `200`, `401`.
 
+## Sources
+
+* [RFC 6750: The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://www.rfc-editor.org/rfc/rfc6750.html) (IETF, October 2012) and [RFC 7519: JSON Web Token (JWT)](https://www.rfc-editor.org/rfc/rfc7519.html) (IETF, May 2015).
+* [OWASP Top 10:2025](https://owasp.org/Top10/2025/), A01 Broken Access Control (link only). The explanations and examples are the QALAB team's own.
+
 > Key idea: `401` = we do not know who you are; `403` = we know, and no. Always test with two users: the most damaging bugs are one user reading or changing another user's data.

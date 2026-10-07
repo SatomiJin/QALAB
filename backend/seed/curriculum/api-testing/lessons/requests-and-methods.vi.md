@@ -59,4 +59,8 @@ curl -i -X POST "https://api.example.com/api/notes" -H "Content-Type: applicatio
 
 Backend của QA Learning Lab là một API thật mà bạn có thể test. Base path là `/api/v1`, và **Swagger UI** ở `/api/docs` liệt kê mọi endpoint cùng method, parameter và response. `GET /api/v1/health` không cần đăng nhập: gọi nó bằng curl rồi đọc status code và header. Sau đó mở Swagger, tìm `GET /api/v1/courses` và ghi lại method mà mỗi endpoint liên quan đến course sử dụng.
 
+## Nguồn tham khảo
+
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), mục 9 "Methods" (9.2.1 safe methods, 9.2.2 idempotent methods). Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: request = method + URL + header + body. Hiểu mỗi method hứa hẹn điều gì (safe, idempotent) và test xem API có giữ lời hứa đó không.

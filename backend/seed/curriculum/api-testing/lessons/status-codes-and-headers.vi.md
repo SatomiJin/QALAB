@@ -65,4 +65,8 @@ Một response lỗi mà dòng status ghi `200` còn body ghi `{"error": "Not fo
 
 Gọi `GET /api/v1/courses` trên API của QA Learning Lab mà không có header `Authorization` và ghi lại status code (mọi endpoint, trừ `GET /api/v1/health` và các endpoint `/auth/*` công khai, đều cần Bearer token). Sau đó gọi lại với token lấy từ Swagger UI (`/api/docs`, nút **Authorize**). So sánh status code và `Content-Type` của hai response.
 
+## Nguồn tham khảo
+
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), mục 15 "Status codes" (15.1 tổng quan, 15.2–15.6 năm nhóm mã) và các header field mà nó định nghĩa. Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: kiểm tra status code chính xác, rồi đến header, rồi đến body. Lỗi của client là `4xx`; trả `5xx` cho dữ liệu sai là bug.

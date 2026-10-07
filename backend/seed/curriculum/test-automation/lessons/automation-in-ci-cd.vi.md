@@ -87,4 +87,9 @@ Smoke test trên production phải an toàn: chỉ kiểm tra đọc, hoặc dù
 
 QA engineer thường thiết kế test nào chạy ở đâu (mỗi PR, hằng đêm, sau deploy), theo dõi danh sách flaky test, giữ cho bộ test nhanh, và đảm bảo các lần fail được điều tra chứ không chỉ chạy lại.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 2.1.4 "DevOps and testing" và 2.2.3 (automated regression test trong CI). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* Tài liệu Playwright: [Parallelism](https://playwright.dev/docs/test-parallel), [Sharding](https://playwright.dev/docs/test-sharding), [Trace viewer](https://playwright.dev/docs/trace-viewer-intro), [Continuous integration](https://playwright.dev/docs/ci). © Microsoft; Playwright và tài liệu của nó theo giấy phép Apache License 2.0. Code trong bài do team QALAB tự viết.
+
 > Ý chính: chạy các test nhanh, độc lập ở mọi pull request và cho build fail khi chúng fail; chạy song song để luôn nhanh, giữ report và trace cho mọi lần fail, và chạy một bộ smoke test ngắn sau mỗi lần deploy.

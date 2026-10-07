@@ -61,4 +61,9 @@ Kiểm tra rằng thông báo giúp được client nhưng không giúp kẻ t�
 
 Trên API của QA Learning Lab, gọi `GET /api/v1/courses?pageSize=21`, rồi `?page=0`, rồi `?page=abc`. Mỗi lần phải là `400` với cấu trúc lỗi như trên. Sau đó gọi `GET /api/v1/lessons/abc` và `GET /api/v1/lessons/00000000-0000-0000-0000-000000000000`, rồi so sánh `400` với `404`.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 4.2.1 "Equivalence partitioning" và 4.2.2 "Boundary value analysis". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), mục 15.5 "Client error 4xx". Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: với mỗi field, thử thiếu, sai kiểu, rỗng, quá nhỏ, quá lớn và field lạ. Mong đợi `4xx` kèm lỗi rõ ràng, và kiểm tra rằng không có gì được lưu.

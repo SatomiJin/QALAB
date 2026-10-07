@@ -54,4 +54,9 @@ test('shows the shipping estimate', async ({ page }) => {
 
 **Quarantine** means moving a known flaky test out of the blocking suite temporarily, with a ticket and an owner, so it stops blocking everyone while someone fixes it. A quarantined test that nobody fixes is just a deleted test with extra steps, so give it a deadline.
 
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), principle 1.3 and section 6.2 (relying on tools, maintenance effort). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors.
+* Playwright documentation: [Test isolation](https://playwright.dev/docs/browser-contexts), [Mock APIs](https://playwright.dev/docs/mock), [Retries](https://playwright.dev/docs/test-retries). © Microsoft; Playwright and its documentation are under the Apache License 2.0. The code here is written by the QALAB team.
+
 > Key idea: flaky tests destroy trust; make every test isolated (own data, fresh state, no order dependence, controlled external services and time), investigate failures with repeated runs and traces, and fix root causes instead of adding sleeps or retries.

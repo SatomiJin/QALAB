@@ -13,6 +13,21 @@ It pays back each time it runs and catches a **regression** (something that used
 * A check you run once a year saves almost nothing.
 * A check you run on every pull request, 20 times a day, saves hours every week.
 
+## Benefits, risks and kinds of tools
+
+The ISTQB syllabus sums up what automation can bring and what can go wrong:
+
+| Benefits | Risks |
+|---|---|
+| Less repetitive manual work (regression runs, re-entering data, comparing results) | Unrealistic expectations of what the tool can do |
+| Consistency: the same steps, data and order every time | Underestimated time and cost to introduce the tool and maintain the scripts |
+| Objective measures, such as coverage, that people cannot compute by hand | Using the tool where manual testing fits better |
+| Easier reporting: statistics on progress, failure rates, run times | Relying on the tool and forgetting critical thinking |
+| Faster feedback and earlier defect detection | Depending on a vendor, or on an open-source project that may be abandoned |
+| More time for testers to design new, deeper tests | A tool that does not fit the platform or the regulations |
+
+Automation is only one kind of tool. Testers also use **test management** tools (requirements, tests, defects), **static testing** tools (linters, review tools), **test design and data** tools, **execution and coverage** tools, **non-functional** tools (load, security), **DevOps** tools (CI/CD), **collaboration** tools and containers or virtual machines for environments. Even a spreadsheet is a test tool when it holds test data.
+
 ## Good candidates
 
 Automate checks that are:
@@ -58,5 +73,9 @@ A check that runs often, changes rarely, protects something important and has a 
 * **"Automate 100 %."** Some testing cannot be automated, and chasing the number produces fragile tests nobody trusts.
 * **Automating test cases one to one.** A manual test case written for a person is often long and mixes several checks. Split and redesign it for the machine.
 * **Automating a broken process.** If nobody looks at the results, automation only produces red reports.
+
+## Sources
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), chapter 6 "Test tools" (6.1 tool support, 6.2 benefits and risks of test automation) and principle 5 in 1.3 (tests wear out). © International Software Testing Qualifications Board (ISTQB®) and the syllabus authors. This lesson is the QALAB team's own explanation based on the syllabus, not a copy of it.
 
 > Key idea: automate what is repetitive, stable, high risk and precisely checkable; keep exploratory, usability and one-off testing in human hands.

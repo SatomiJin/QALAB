@@ -93,4 +93,8 @@ Now a renamed button is a one-line change in `LoginPage`, and every test keeps w
 
 Even with good locators and page objects, UI tests are the slowest and most expensive level. Use them for the journeys a user really takes (sign in, checkout), and check calculations and validation rules lower down.
 
+## Sources
+
+* Playwright documentation: [Locators](https://playwright.dev/docs/locators), [Page object models](https://playwright.dev/docs/pom). © Microsoft; Playwright and its documentation are under the Apache License 2.0. The code here is written by the QALAB team.
+
 > Key idea: find elements by role, label or test id rather than CSS paths, and wrap each page's locators and actions in a page object so a UI change is fixed in one place.

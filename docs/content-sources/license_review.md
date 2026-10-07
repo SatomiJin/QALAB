@@ -49,3 +49,11 @@ Licence **CC BY-SA 4.0** (verified on scrumguides.org). Summaries in our own wor
 
 * **ISTQB CTFL syllabus v4.0.1**: same terms and use as before. The estimation examples use the team's own numbers, not the syllabus examples.
 * **Atlassian documentation** (support.atlassian.com): © Atlassian, governed by Atlassian's terms of use. QALAB links the pages and summarises facts (default names, JQL structure) in its own words; the JQL queries in the lesson are self-written. Do not copy Atlassian text, screenshots or logos into lessons.
+
+# Batch 4 (courses 7 and 8)
+
+* **IETF RFCs** (9110, 6750, 7519): IETF Trust legal provisions (BCP 78); code components are under the Revised BSD licence. Linked and summarised only.
+* **OpenAPI Specification**: Apache License 2.0. Linked only.
+* **JSON Schema**: the site is "all rights reserved" and the page does not state the specification's licence; linked only (needs_review before quoting).
+* **Postman Learning Center**: © Postman under Postman's terms. Facts summarised in our own words; the scripts, collection and CLI example are self-written.
+* **Playwright documentation**: part of the microsoft/playwright repository, Apache License 2.0. All code in the lessons is written by the team; if code from the repository is ever copied, keep the Apache licence notice and attribution.

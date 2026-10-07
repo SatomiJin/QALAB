@@ -70,4 +70,8 @@ Thứ tự key trong JSON không quan trọng: `{"a": 1, "b": 2}` và `{"b": 2, 
 
 Trong Swagger UI (`/api/docs`), gọi `GET /api/v1/courses` với `pageSize=20`, rồi với `pageSize=7` và với `page=99`. So sánh status code và kiểm tra rằng `total` giữ nguyên trong khi `items` thay đổi. Sau đó thử một parameter lạ như `?sort=title`.
 
+## Nguồn tham khảo
+
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), về request target, nội dung và media type. Các kiểu phân trang là cách làm phổ biến trong API. Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: path = resource nào, query = trả về thế nào, body = dữ liệu. Test mỗi chỗ với giá trị hợp lệ, không hợp lệ và bị thiếu, và kiểm tra toàn bộ response chứ không chỉ việc nó có trả về.

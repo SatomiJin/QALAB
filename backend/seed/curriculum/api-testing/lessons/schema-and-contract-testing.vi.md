@@ -61,4 +61,9 @@ Cẩn thận: thêm field chỉ an toàn với client biết bỏ qua field lạ
 
 Mở `/api/docs` trên API của QA Learning Lab, chọn `GET /api/v1/courses` và đọc response schema trong Swagger UI. Gọi endpoint đó và so sánh từng field của response thật với schema: tên, kiểu, field bắt buộc, và mọi thứ thừa ra.
 
+## Nguồn tham khảo
+
+* [JSON Schema specification](https://json-schema.org/specification), dialect hiện hành 2020-12.
+* [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) (mới nhất: 3.2.1, tháng 9/2026), giấy phép Apache License 2.0. Contract testing được mô tả như cách làm phổ biến. Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: contract là thứ mà client dựa vào. Validate response theo schema, so sánh hành vi với spec, và coi việc đổi tên, xóa hay đổi kiểu field là breaking change.

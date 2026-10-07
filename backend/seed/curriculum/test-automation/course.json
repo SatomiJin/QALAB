@@ -28,7 +28,7 @@
             "en": "What to automate and what not to",
             "vi": "Nên và không nên tự động hóa cái gì"
           },
-          "minutes": 8
+          "minutes": 10
         },
         {
           "slug": "automation-pyramid",
@@ -36,7 +36,7 @@
             "en": "The automation pyramid",
             "vi": "Kim tự tháp automation"
           },
-          "minutes": 8
+          "minutes": 10
         }
       ]
     },
@@ -51,6 +51,14 @@
         "vi": "Test UI với page object, test API với test data sạch, và assertion biết chờ đúng cách."
       },
       "lessons": [
+        {
+          "slug": "getting-started-with-playwright",
+          "title": {
+            "en": "Getting started with Playwright",
+            "vi": "Bắt đầu với Playwright"
+          },
+          "minutes": 10
+        },
         {
           "slug": "ui-automation-page-objects",
           "title": {

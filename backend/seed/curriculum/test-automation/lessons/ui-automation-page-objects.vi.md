@@ -93,4 +93,8 @@ Giờ đổi tên nút chỉ là sửa một dòng trong `LoginPage`, và mọi 
 
 Kể cả khi có locator tốt và page object, UI test vẫn là tầng chậm và đắt nhất. Hãy dùng nó cho những hành trình người dùng thực sự đi qua (đăng nhập, checkout), còn phép tính và quy tắc validation thì kiểm tra ở tầng thấp hơn.
 
+## Nguồn tham khảo
+
+* Tài liệu Playwright: [Locators](https://playwright.dev/docs/locators), [Page object models](https://playwright.dev/docs/pom). © Microsoft; Playwright và tài liệu của nó theo giấy phép Apache License 2.0. Code trong bài do team QALAB tự viết.
+
 > Ý chính: tìm phần tử theo role, label hoặc test id thay vì đường dẫn CSS, và gói locator cùng thao tác của mỗi trang vào một page object để một thay đổi UI chỉ cần sửa ở một chỗ.

@@ -54,4 +54,9 @@ test('shows the shipping estimate', async ({ page }) => {
 
 **Quarantine** (cách ly) là tạm thời đưa một flaky test đã biết ra khỏi bộ test chặn build, kèm ticket và người phụ trách, để nó thôi chặn mọi người trong khi có người sửa. Một test bị cách ly mà không ai sửa thì chẳng khác gì một test bị xóa, chỉ thêm vài bước, nên hãy đặt hạn cho nó.
 
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), nguyên tắc 1.3 và mục 6.2 (phụ thuộc công cụ, công sức bảo trì). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus.
+* Tài liệu Playwright: [Test isolation](https://playwright.dev/docs/browser-contexts), [Mock APIs](https://playwright.dev/docs/mock), [Retries](https://playwright.dev/docs/test-retries). © Microsoft; Playwright và tài liệu của nó theo giấy phép Apache License 2.0. Code trong bài do team QALAB tự viết.
+
 > Ý chính: flaky test phá hủy niềm tin; hãy làm mọi test độc lập (dữ liệu riêng, trạng thái mới, không phụ thuộc thứ tự, kiểm soát dịch vụ bên ngoài và thời gian), điều tra lỗi bằng chạy lặp lại và trace, và sửa root cause thay vì thêm lệnh chờ hay retry.

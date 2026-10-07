@@ -1,0 +1,181 @@
+[
+  {
+    "key": "pre-or-post",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "In which part of a request's **Scripts** tab does each piece of code belong?",
+      "vi": "Mỗi đoạn code dưới đây thuộc phần nào trong tab **Scripts** của request?"
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "pre",
+          "text": {
+            "en": "Pre-request",
+            "vi": "Pre-request"
+          }
+        },
+        {
+          "id": "post",
+          "text": {
+            "en": "Post-response",
+            "vi": "Post-response"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "status",
+          "text": {
+            "en": "Check that the status is 201",
+            "vi": "Kiểm tra status là 201"
+          }
+        },
+        {
+          "id": "timestamp",
+          "text": {
+            "en": "Build a unique e-mail with the current timestamp for the sign-up body",
+            "vi": "Tạo một email duy nhất bằng timestamp hiện tại cho body đăng ký"
+          }
+        },
+        {
+          "id": "save-id",
+          "text": {
+            "en": "Save the id of the created order for the next request",
+            "vi": "Lưu id của đơn hàng vừa tạo cho request tiếp theo"
+          }
+        },
+        {
+          "id": "body-field",
+          "text": {
+            "en": "Assert that the response body has a numeric total",
+            "vi": "Assert rằng body của response có total là số"
+          }
+        },
+        {
+          "id": "time",
+          "text": {
+            "en": "Assert that the response came back within 800 ms",
+            "vi": "Assert rằng response trả về trong vòng 800 ms"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "status": "post",
+        "timestamp": "pre",
+        "save-id": "post",
+        "body-field": "post",
+        "time": "post"
+      }
+    },
+    "explanation": {
+      "en": "**Pre-request** scripts run **before** sending, so they prepare data such as a unique e-mail. Everything that needs the **response** runs in the **post-response** script: the status, body and response time tests, and saving a value from the response (the new order id) for the next request.",
+      "vi": "Script **Pre-request** chạy **trước** khi gửi, nên dùng để chuẩn bị dữ liệu như một email duy nhất. Mọi thứ cần đến **response** đều chạy trong script **Post-response**: các test về status, body và thời gian phản hồi, và việc lưu một giá trị từ response (id của đơn hàng mới) cho request tiếp theo."
+    }
+  },
+  {
+    "key": "variable-scope",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "The collection defines `baseUrl = https://staging.shop.test`. The selected environment `local` defines `baseUrl = http://localhost:3000`. Which URL does `{{baseUrl}}/orders` use?",
+      "vi": "Collection định nghĩa `baseUrl = https://staging.shop.test`. Environment đang chọn là `local` định nghĩa `baseUrl = http://localhost:3000`. `{{baseUrl}}/orders` sẽ dùng URL nào?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "env",
+          "text": {
+            "en": "http://localhost:3000/orders: the environment is the narrower scope",
+            "vi": "http://localhost:3000/orders: environment là scope hẹp hơn"
+          }
+        },
+        {
+          "id": "collection",
+          "text": {
+            "en": "https://staging.shop.test/orders: the collection always wins",
+            "vi": "https://staging.shop.test/orders: collection luôn thắng"
+          }
+        },
+        {
+          "id": "error",
+          "text": {
+            "en": "Neither: Postman reports a conflict and does not send",
+            "vi": "Không cái nào: Postman báo xung đột và không gửi"
+          }
+        },
+        {
+          "id": "first",
+          "text": {
+            "en": "Whichever variable was created first",
+            "vi": "Biến nào được tạo trước"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "env"
+      ]
+    },
+    "explanation": {
+      "en": "Scopes go from broad to narrow: global, collection, environment, data, local. When two scopes define the same name, the **narrowest wins**, so the environment's value is used. That is exactly what lets one collection target local or staging by switching the environment.",
+      "vi": "Các scope đi từ rộng đến hẹp: global, collection, environment, data, local. Khi hai scope cùng định nghĩa một tên, **scope hẹp hơn thắng**, nên giá trị của environment được dùng. Chính điều này cho phép một collection nhắm tới local hay staging chỉ bằng cách đổi environment."
+    }
+  },
+  {
+    "key": "postman-in-ci",
+    "type": "multiple_choice",
+    "difficulty": "easy",
+    "question": {
+      "en": "Your team wants the API collection to run on every pull request and fail the build when a test fails. What do you use?",
+      "vi": "Nhóm bạn muốn collection API chạy ở mỗi pull request và làm build fail khi có test fail. Bạn dùng gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "cli",
+          "text": {
+            "en": "The Postman CLI (or Newman) in the CI pipeline, with an environment file and a JUnit reporter",
+            "vi": "Postman CLI (hoặc Newman) trong CI pipeline, kèm file environment và JUnit reporter"
+          }
+        },
+        {
+          "id": "manual",
+          "text": {
+            "en": "A tester clicks Send on every request before each merge",
+            "vi": "Một tester bấm Send cho từng request trước mỗi lần merge"
+          }
+        },
+        {
+          "id": "runner",
+          "text": {
+            "en": "The Collection Runner in someone's Postman app",
+            "vi": "Collection Runner trong ứng dụng Postman của ai đó"
+          }
+        },
+        {
+          "id": "pre",
+          "text": {
+            "en": "Pre-request scripts only",
+            "vi": "Chỉ dùng pre-request script"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "cli"
+      ]
+    },
+    "explanation": {
+      "en": "CI needs a **command-line** runner: the **Postman CLI** (`postman collection run`) or **Newman** run the collection, exit with an error when a test fails, and write reports (JUnit for the CI). The Collection Runner is great for running by hand, but it lives in a person's app, not in the pipeline.",
+      "vi": "CI cần một công cụ chạy bằng **dòng lệnh**: **Postman CLI** (`postman collection run`) hoặc **Newman** chạy collection, kết thúc với lỗi khi có test fail, và xuất báo cáo (JUnit cho CI). Collection Runner rất tốt để chạy tay, nhưng nó nằm trong ứng dụng của một người, không nằm trong pipeline."
+    }
+  }
+]

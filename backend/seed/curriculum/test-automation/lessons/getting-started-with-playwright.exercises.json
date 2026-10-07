@@ -1,0 +1,187 @@
+[
+  {
+    "key": "playwright-commands",
+    "type": "classification",
+    "difficulty": "easy",
+    "question": {
+      "en": "Match each goal to the Playwright command that does it.",
+      "vi": "Ghép mỗi mục đích với lệnh Playwright làm được điều đó."
+    },
+    "prompt": {
+      "categories": [
+        {
+          "id": "test",
+          "text": {
+            "en": "npx playwright test",
+            "vi": "npx playwright test"
+          }
+        },
+        {
+          "id": "ui",
+          "text": {
+            "en": "npx playwright test --ui",
+            "vi": "npx playwright test --ui"
+          }
+        },
+        {
+          "id": "report",
+          "text": {
+            "en": "npx playwright show-report",
+            "vi": "npx playwright show-report"
+          }
+        },
+        {
+          "id": "codegen",
+          "text": {
+            "en": "npx playwright codegen",
+            "vi": "npx playwright codegen"
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "run-all",
+          "text": {
+            "en": "Run the whole suite headless, as CI does",
+            "vi": "Chạy cả bộ test không hiện giao diện, như CI"
+          }
+        },
+        {
+          "id": "step",
+          "text": {
+            "en": "Watch a test run step by step while you fix it",
+            "vi": "Xem một test chạy từng bước trong lúc sửa nó"
+          }
+        },
+        {
+          "id": "results",
+          "text": {
+            "en": "Open the results of the last run in a browser",
+            "vi": "Mở kết quả của lần chạy gần nhất trong trình duyệt"
+          }
+        },
+        {
+          "id": "record",
+          "text": {
+            "en": "Record clicks to get a first draft of a test",
+            "vi": "Ghi lại các cú click để có bản nháp đầu tiên của test"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "mapping": {
+        "run-all": "test",
+        "step": "ui",
+        "results": "report",
+        "record": "codegen"
+      }
+    },
+    "explanation": {
+      "en": "`npx playwright test` runs the suite (headless by default); `--ui` opens UI mode for writing and debugging step by step; `show-report` opens the HTML report of the last run; `codegen` records your actions as test code, a draft to clean up.",
+      "vi": "`npx playwright test` chạy bộ test (mặc định không hiện giao diện); `--ui` mở UI mode để viết và debug từng bước; `show-report` mở HTML report của lần chạy gần nhất; `codegen` ghi lại thao tác của bạn thành code test, một bản nháp cần dọn lại."
+    }
+  },
+  {
+    "key": "trace-on-first-retry",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "The config has `retries: 2` on CI and `trace: 'on-first-retry'`. A test fails on CI, then passes on its first retry. What do you get?",
+      "vi": "Config có `retries: 2` trên CI và `trace: 'on-first-retry'`. Một test fail trên CI, rồi pass ở lần chạy lại đầu tiên. Bạn nhận được gì?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "trace-flaky",
+          "text": {
+            "en": "A trace of the first retry, and the report marks the test as flaky",
+            "vi": "Một trace của lần chạy lại đầu tiên, và report đánh dấu test là flaky"
+          }
+        },
+        {
+          "id": "no-trace",
+          "text": {
+            "en": "No trace, because the test passed in the end",
+            "vi": "Không có trace, vì cuối cùng test đã pass"
+          }
+        },
+        {
+          "id": "all",
+          "text": {
+            "en": "A trace of every test in the suite",
+            "vi": "Trace của mọi test trong bộ test"
+          }
+        },
+        {
+          "id": "failed",
+          "text": {
+            "en": "The run is reported as failed",
+            "vi": "Lần chạy bị báo là failed"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "trace-flaky"
+      ]
+    },
+    "explanation": {
+      "en": "With `on-first-retry`, a trace is recorded when a failed test runs again, so you get one for the retry even though it passed. A test that fails and then passes on retry is reported as **flaky**: green build, but a real problem to investigate with that trace. Recording traces for every test would be slow and large, which is why this setting is the default.",
+      "vi": "Với `on-first-retry`, trace được ghi khi một test fail được chạy lại, nên bạn có trace cho lần chạy lại dù nó đã pass. Một test fail rồi pass khi chạy lại được báo là **flaky**: build vẫn xanh, nhưng đó là vấn đề thật cần điều tra bằng trace đó. Ghi trace cho mọi test sẽ chậm và nặng, vì vậy thiết lập này là mặc định."
+    }
+  },
+  {
+    "key": "codegen-draft",
+    "type": "multiple_choice",
+    "difficulty": "medium",
+    "question": {
+      "en": "Codegen produced this test for a bilingual app:\n\n```ts\nawait page.getByText('Đăng nhập').click();\nawait page.getByRole('textbox', { name: 'Email' }).fill('a@b.test');\n```\n\nWhat should you change first?",
+      "vi": "Codegen tạo ra test này cho một ứng dụng hai ngôn ngữ:\n\n```ts\nawait page.getByText('Đăng nhập').click();\nawait page.getByRole('textbox', { name: 'Email' }).fill('a@b.test');\n```\n\nBạn nên sửa gì trước tiên?"
+    },
+    "prompt": {
+      "multiple": false,
+      "options": [
+        {
+          "id": "assert",
+          "text": {
+            "en": "Add an assertion for what must be true afterwards, and replace the language-dependent text locator with a test id or role",
+            "vi": "Thêm assertion cho điều phải đúng sau đó, và thay locator theo text phụ thuộc ngôn ngữ bằng test id hoặc role"
+          }
+        },
+        {
+          "id": "sleep",
+          "text": {
+            "en": "Add `waitForTimeout(3000)` between the steps",
+            "vi": "Thêm `waitForTimeout(3000)` giữa các bước"
+          }
+        },
+        {
+          "id": "nothing",
+          "text": {
+            "en": "Nothing: codegen output is final",
+            "vi": "Không gì cả: kết quả của codegen là bản cuối"
+          }
+        },
+        {
+          "id": "xpath",
+          "text": {
+            "en": "Replace both locators with long XPath expressions",
+            "vi": "Thay cả hai locator bằng biểu thức XPath dài"
+          }
+        }
+      ]
+    },
+    "answer": {
+      "correct": [
+        "assert"
+      ]
+    },
+    "explanation": {
+      "en": "Codegen records **actions**, not **expectations**: without an assertion the test only proves the clicks did not crash. `getByText('Đăng nhập')` breaks as soon as the app runs in English, so a test id or a role-based locator is safer. Fixed sleeps are unnecessary (Playwright auto-waits) and make tests slow and flaky; long XPath ties the test to the page structure.",
+      "vi": "Codegen ghi lại **hành động**, không ghi lại **kỳ vọng**: không có assertion thì test chỉ chứng minh các cú click không làm sập ứng dụng. `getByText('Đăng nhập')` sẽ hỏng ngay khi ứng dụng chạy bằng tiếng Anh, nên test id hoặc locator theo role an toàn hơn. Các lần chờ cố định là không cần (Playwright tự chờ) và làm test chậm, chập chờn; XPath dài thì trói test vào cấu trúc trang."
+    }
+  }
+]

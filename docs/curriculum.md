@@ -2,9 +2,9 @@
 
 The V1 curriculum, as imported from `backend/seed/curriculum/` (`npm run seed:curriculum`; format and writing rules in `backend/seed/README.md`). Every text exists in English and Vietnamese. After the import the content is edited in the Admin CMS, so the live content may differ from this outline; regenerate this page when the files change.
 
-Totals: 7 skills, 8 courses, 21 modules, 54 lessons, 132 exercises (58 multiple choice, 42 classification, 6 bug report, 15 scenario, 11 test case).
+Totals: 7 skills, 8 courses, 21 modules, 56 lessons, 138 exercises (62 multiple choice, 44 classification, 6 bug report, 15 scenario, 11 test case).
 
-The `fundamentals`, `testing_types`, `test_design`, `test_docs` and `defect_mgmt` courses follow the ISTQB CTFL syllabus v4.0.1 (chapters 1–5; the Jira lesson uses Atlassian documentation) and cite their sources in each lesson's Sources section. No subject-matter review by a person yet. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
+All eight courses cite their sources in each lesson's Sources section: the ISTQB CTFL syllabus v4.0.1 (chapters 1–6) for the testing courses, Atlassian documentation for the Jira lesson, the HTTP RFCs, JSON Schema, OpenAPI and the Postman Learning Center for API testing, and the Playwright documentation for automation. No subject-matter review by a person yet. Sources, licences and coverage: [docs/content-sources/](content-sources/quality_report.md).
 
 ## QA Fundamentals (`fundamentals`)
 
@@ -103,7 +103,7 @@ Write bug reports that get fixed, rate severity and priority correctly, follow a
 
 ### API testing — `api-testing`
 
-How HTTP works from a tester's point of view, and how to test an API: authentication, negative and boundary cases, schemas and contracts. Practise on the QA Learning Lab API itself.
+How HTTP works from a tester's point of view, and how to test an API: authentication, negative and boundary cases, schemas and contracts, and Postman collections, scripts and runs. Practise on the QA Learning Lab API itself.
 
 | Module | Lesson | Min | Exercises |
 |---|---|---|---|
@@ -113,6 +113,7 @@ How HTTP works from a tester's point of view, and how to test an API: authentica
 | Testing an API | Authentication and authorization | 10 | classification, multiple choice, bug report |
 | Testing an API | Negative and boundary testing of an API | 11 | test case, bug report |
 | Testing an API | Schema validation and contract testing | 10 | classification, scenario |
+| Testing an API | Testing APIs with Postman | 11 | classification, multiple choice, multiple choice |
 
 ## Automation Testing (`automation`)
 
@@ -122,8 +123,9 @@ Decide what to automate, write UI and API tests that stay reliable, and run them
 
 | Module | Lesson | Min | Exercises |
 |---|---|---|---|
-| Automation strategy | What to automate and what not to | 8 | classification, multiple choice |
-| Automation strategy | The automation pyramid | 8 | classification, multiple choice |
+| Automation strategy | What to automate and what not to | 10 | classification, multiple choice |
+| Automation strategy | The automation pyramid | 10 | classification, multiple choice |
+| Writing automated tests | Getting started with Playwright | 10 | classification, multiple choice, multiple choice |
 | Writing automated tests | UI automation and the Page Object Model | 10 | classification, multiple choice, multiple choice |
 | Writing automated tests | API automation, test data and fixtures | 10 | multiple choice, test case |
 | Writing automated tests | Assertions and wait strategies | 9 | multiple choice, multiple choice |

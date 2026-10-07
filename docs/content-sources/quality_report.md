@@ -120,3 +120,39 @@ Date: 2026-10-06. All lessons import as published. No subject-matter review by a
 1. `test-execution-and-summary-report` (about 1 100 words counting table markup) and `test-plan-and-strategy` (about 990) are now above the 900-word guideline; a reviewer may split or trim them.
 2. Jira field names and defaults change over time and between instances; re-check the Jira lesson against the team's real Jira.
 3. CTFL 5.1.6 (test pyramid) and 5.1.7 (testing quadrants) belong to the automation course batch.
+
+# Batch 4: courses 7 and 8
+
+Date: 2026-10-07. All lessons import as published. No subject-matter review by a person yet.
+
+### `api-testing`
+
+| Lesson | Change | Source | Exercises |
+|---|---|---|---|
+| Requests and HTTP methods | Sources added | RFC 9110 §9 | unchanged |
+| Status codes and headers | Sources added | RFC 9110 §15 | unchanged |
+| Parameters, request and response bodies | Sources added | RFC 9110 | unchanged |
+| Authentication and authorization | Sources added | RFC 6750, RFC 7519, OWASP Top 10:2025 A01 | unchanged |
+| Negative and boundary testing of an API | Sources added | CTFL 4.2.1–4.2.2, RFC 9110 §15.5 | unchanged |
+| Schema validation and contract testing | Sources added | JSON Schema 2020-12, OpenAPI 3.2.1 | unchanged |
+| Testing APIs with Postman | **New** | Postman Learning Center v12 | classification, multiple choice ×2 |
+
+### `test-automation`
+
+| Lesson | Change | Source | Exercises |
+|---|---|---|---|
+| What to automate and what not to | Added: benefits and risks of automation, kinds of test tools | CTFL 6.1–6.2 | unchanged |
+| The automation pyramid | Added: testing quadrants Q1–Q4 | CTFL 5.1.6–5.1.7 | unchanged |
+| Getting started with Playwright | **New** | Playwright docs | classification, multiple choice ×2 |
+| UI automation and the Page Object Model | Sources added | Playwright: locators, POM | unchanged |
+| API automation, test data and fixtures | Sources added | Playwright: API testing, fixtures | unchanged |
+| Assertions and wait strategies | Sources added | Playwright: actionability, assertions | unchanged |
+| Flaky tests and test isolation | Sources added | Playwright: browser contexts, mocks, retries; CTFL 6.2 | unchanged |
+| Automation in CI/CD | Sources added | Playwright: parallelism, sharding, trace viewer, CI; CTFL 2.1.4 | unchanged |
+
+### Points to check
+
+1. `what-to-automate` (about 980 words counting table markup) and `automation-pyramid` (about 930) are above the 900-word guideline.
+2. Postman's UI and CLI change often (docs are at v12); re-check the Postman lesson against the installed version before a workshop.
+3. The Playwright Node.js requirement (22.x, 24.x, 26.x) will change; the lesson says "currently".
+4. With this batch every CTFL v4.0.1 learning objective of chapters 1–6 is covered by at least one lesson.

@@ -59,4 +59,8 @@ curl -i -X POST "https://api.example.com/api/notes" -H "Content-Type: applicatio
 
 The QA Learning Lab backend is a real API you can test. Its base path is `/api/v1`, and **Swagger UI** at `/api/docs` lists every endpoint with its methods, parameters and responses. `GET /api/v1/health` needs no login: call it with curl and read the status code and headers. Then open Swagger, find `GET /api/v1/courses` and note which method each course-related endpoint uses.
 
+## Sources
+
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), section 9 "Methods" (9.2.1 safe methods, 9.2.2 idempotent methods). The explanations and examples are the QALAB team's own.
+
 > Key idea: a request is method + URL + headers + body. Know what each method promises (safe, idempotent) and test that the API keeps the promise.

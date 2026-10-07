@@ -61,8 +61,23 @@ Nhiều team cuối cùng có một kim tự tháp lộn ngược:
 
 Kim tự tháp là việc của cả team. Developer thường viết unit test; QA engineer thường phụ trách API automation và UI automation, và xem xét các tầng có cân bằng không. Một QA engineer đọc được unit test và nói được "quy tắc này đã được kiểm tra ở tầng dưới rồi, không cần UI test cho từng trường hợp" sẽ tiết kiệm cho team rất nhiều thời gian.
 
+## Testing quadrants
+
+Kim tự tháp nói về **số lượng** test ở mỗi kích cỡ. **Testing quadrants** (bốn góc phần tư kiểm thử, của Brian Marick, phổ biến trong các nhóm Agile) nói về **những loại** test mà nhóm cần. Test hoặc **hướng về business** hoặc **hướng về công nghệ**, và hoặc **hỗ trợ nhóm** (định hướng việc phát triển) hoặc **phản biện sản phẩm** (đo nó so với kỳ vọng):
+
+| | Hỗ trợ nhóm | Phản biện sản phẩm |
+|---|---|---|
+| **Hướng về business** | **Q2**: functional test, ví dụ, user story test, prototype UX, API test, mô phỏng; thủ công hoặc tự động | **Q3**: exploratory testing, usability testing, user acceptance testing; hướng về người dùng, thường thủ công |
+| **Hướng về công nghệ** | **Q1**: component test và component integration test; tự động, chạy trong CI | **Q4**: smoke test và non-functional test (trừ usability); thường tự động |
+
+Một nhóm chỉ lấp Q1 và Q2 sẽ có sản phẩm được xây chắc chắn nhưng chưa ai thử như người dùng; một nhóm chỉ làm Q3 thì tìm ra vấn đề muộn và chậm. Dùng các quadrant để kiểm tra mọi loại kiểm thử đều có chỗ trong kế hoạch.
+
 ## Đây là mô hình, không phải định luật
 
 Tỉ lệ cụ thể tùy vào sản phẩm. Một ứng dụng chủ yếu là màn hình mỏng phía trên API của bên thứ ba có thể có ít unit test và nhiều API test hơn (đôi khi được vẽ thành hình "chiếc cúp" phình ở giữa). Nguyên tắc vẫn giữ nguyên: ưu tiên test nhanh nhất, chính xác nhất có thể bắt được bug, và để dành test chậm, bao quát cho những hành trình quan trọng nhất.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), mục 5.1.6 "Test pyramid" và 5.1.7 "Testing quadrants". © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: nhiều unit test nhanh, ít API test hơn, một nhóm nhỏ hành trình UI; tránh hình cây kem ốc quế, nơi UI test chậm và test thủ công gánh mọi thứ.

@@ -65,4 +65,8 @@ An error body that says `200` in the status line and `{"error": "Not found"}` in
 
 Call `GET /api/v1/courses` on the QA Learning Lab API without an `Authorization` header and note the status code (every endpoint except `GET /api/v1/health` and the public `/auth/*` ones needs a Bearer token). Then call it with a token from Swagger UI (`/api/docs`, button **Authorize**). Compare the status codes and the `Content-Type` of both responses.
 
+## Sources
+
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), section 15 "Status codes" (15.1 overview, 15.2–15.6 the five classes) and the header fields it defines. The explanations and examples are the QALAB team's own.
+
 > Key idea: check the status code exactly, then the headers, then the body. Client mistakes are `4xx`; a `5xx` for bad input is a bug.

@@ -61,4 +61,9 @@ Authentication chứng minh danh tính; nó không quyết định quyền truy 
 
 Trong API của QA Learning Lab, mọi endpoint trừ `GET /api/v1/health` và các endpoint `/auth/*` công khai đều cần Bearer token. Trong Swagger UI (`/api/docs`), gọi `GET /api/v1/courses` khi chưa authorize, rồi với một token hợp lệ, rồi với chính token đó nhưng đổi ký tự cuối cùng. Bạn sẽ thấy `401`, `200`, `401`.
 
+## Nguồn tham khảo
+
+* [RFC 6750: The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://www.rfc-editor.org/rfc/rfc6750.html) (IETF, tháng 10/2012) và [RFC 7519: JSON Web Token (JWT)](https://www.rfc-editor.org/rfc/rfc7519.html) (IETF, tháng 5/2015).
+* [OWASP Top 10:2025](https://owasp.org/Top10/2025/), A01 Broken Access Control (chỉ dẫn link). Phần giải thích và ví dụ do team QALAB tự biên soạn.
+
 > Ý chính: `401` = không biết bạn là ai; `403` = biết, nhưng không cho. Luôn test với hai user: những bug gây hại nhất là một user đọc hoặc sửa được dữ liệu của user khác.

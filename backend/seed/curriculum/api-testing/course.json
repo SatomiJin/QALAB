@@ -82,6 +82,14 @@
             "vi": "Schema validation và contract testing"
           },
           "minutes": 10
+        },
+        {
+          "slug": "testing-with-postman",
+          "title": {
+            "en": "Testing APIs with Postman",
+            "vi": "Test API bằng Postman"
+          },
+          "minutes": 11
         }
       ]
     }

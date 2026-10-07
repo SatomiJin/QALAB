@@ -70,4 +70,8 @@ JSON key order does not matter: `{"a": 1, "b": 2}` and `{"b": 2, "a": 1}` are th
 
 In Swagger UI (`/api/docs`), call `GET /api/v1/courses` with `pageSize=20`, then with `pageSize=7` and with `page=99`. Compare the status codes and check that `total` stays the same while `items` changes. Then try an unknown parameter such as `?sort=title`.
 
+## Sources
+
+* [RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html) (IETF, June 2022), for request targets, content and media types. Pagination styles are common API practice. The explanations and examples are the QALAB team's own.
+
 > Key idea: path = which resource, query = how to return it, body = the data. Test each place with valid, invalid and missing values, and check the whole response, not just that it arrived.

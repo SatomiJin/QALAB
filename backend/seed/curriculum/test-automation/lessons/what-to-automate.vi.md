@@ -13,6 +13,21 @@ Nó hoàn vốn mỗi lần chạy và bắt được một **regression** (th�
 * Một phép kiểm tra chạy mỗi năm một lần gần như không tiết kiệm được gì.
 * Một phép kiểm tra chạy ở mỗi pull request, 20 lần mỗi ngày, tiết kiệm hàng giờ mỗi tuần.
 
+## Lợi ích, rủi ro và các loại công cụ
+
+Syllabus ISTQB tóm tắt những gì automation mang lại và những gì có thể sai:
+
+| Lợi ích | Rủi ro |
+|---|---|
+| Bớt việc thủ công lặp lại (chạy regression, nhập lại dữ liệu, so sánh kết quả) | Kỳ vọng phi thực tế về khả năng của công cụ |
+| Nhất quán: cùng các bước, dữ liệu và thứ tự mỗi lần chạy | Đánh giá thấp thời gian và chi phí để đưa công cụ vào và bảo trì script |
+| Số đo khách quan, như coverage, mà con người không tự tính được | Dùng công cụ ở chỗ test thủ công phù hợp hơn |
+| Báo cáo dễ hơn: thống kê tiến độ, tỉ lệ fail, thời gian chạy | Phụ thuộc vào công cụ mà quên tư duy phản biện |
+| Phản hồi nhanh hơn, phát hiện defect sớm hơn | Phụ thuộc vào nhà cung cấp, hoặc vào một dự án mã nguồn mở có thể bị bỏ dở |
+| Tester có thêm thời gian để thiết kế test mới, sâu hơn | Công cụ không hợp với nền tảng hoặc với quy định |
+
+Automation chỉ là một loại công cụ. Tester còn dùng công cụ **quản lý test** (requirement, test, defect), công cụ **static testing** (linter, công cụ review), công cụ **thiết kế test và tạo dữ liệu**, công cụ **thực thi và đo coverage**, công cụ **non-functional** (tải, bảo mật), công cụ **DevOps** (CI/CD), công cụ **cộng tác**, và container hay máy ảo cho môi trường. Ngay cả một bảng tính cũng là công cụ test khi nó chứa test data.
+
 ## Ứng viên tốt
 
 Nên tự động hóa những phép kiểm tra:
@@ -58,5 +73,9 @@ Một phép kiểm tra chạy thường xuyên, ít thay đổi, bảo vệ th�
 * **"Tự động hóa 100 %."** Có những kiểm thử không thể tự động hóa, và chạy theo con số sẽ sinh ra những test mong manh mà không ai tin.
 * **Chuyển test case thủ công sang script y nguyên.** Test case viết cho người thường dài và trộn nhiều phép kiểm tra. Hãy tách và thiết kế lại cho máy.
 * **Tự động hóa một quy trình hỏng.** Nếu không ai xem kết quả, automation chỉ tạo ra những báo cáo màu đỏ.
+
+## Nguồn tham khảo
+
+* [ISTQB® Certified Tester Foundation Level syllabus v4.0.1](https://www.istqb.org/certifications/certified-tester-foundation-level-ctfl-v4-0/) (2024), chương 6 "Test tools" (6.1 công cụ hỗ trợ kiểm thử, 6.2 lợi ích và rủi ro của test automation) và nguyên tắc 5 ở mục 1.3 (test bị "nhờn"). © International Software Testing Qualifications Board (ISTQB®) và các tác giả syllabus. Bài học này là phần giải thích do team QALAB tự biên soạn dựa trên syllabus, không phải bản sao của syllabus.
 
 > Ý chính: tự động hóa những gì lặp lại, ổn định, rủi ro cao và kiểm tra được chính xác; để exploratory testing, usability và các kiểm tra một lần cho con người.

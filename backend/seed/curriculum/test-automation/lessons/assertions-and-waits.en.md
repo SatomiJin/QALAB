@@ -79,4 +79,8 @@ Start waiting **before** the action that triggers it, or the response may arrive
 
 A timeout says "give up after this long". Raising a timeout for a page that is genuinely slow is fine; using it to hide a bug in the app or a missing wait in the test is not. If a step regularly needs 20 seconds, that is worth reporting as a performance issue.
 
+## Sources
+
+* Playwright documentation: [Auto-waiting (actionability)](https://playwright.dev/docs/actionability), [Assertions](https://playwright.dev/docs/test-assertions). © Microsoft; Playwright and its documentation are under the Apache License 2.0. The code here is written by the QALAB team.
+
 > Key idea: assert specific outcomes the user cares about, and wait for conditions (auto-waiting, web-first assertions, expected responses) instead of fixed sleeps, which are both slow and flaky.

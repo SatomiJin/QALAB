@@ -61,4 +61,9 @@ Careful: adding a field is only safe for clients that ignore unknown fields. And
 
 Open `/api/docs` on the QA Learning Lab API, pick `GET /api/v1/courses` and read the response schema in Swagger UI. Call the endpoint and compare the real response field by field with the schema: names, types, required fields, and anything extra.
 
+## Sources
+
+* [JSON Schema specification](https://json-schema.org/specification), current dialect 2020-12.
+* [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) (latest: 3.2.1, September 2026), Apache License 2.0. Contract testing is described as common practice. The explanations and examples are the QALAB team's own.
+
 > Key idea: the contract is what clients rely on. Validate responses against the schema, compare behaviour with the spec, and treat renamed, removed or retyped fields as breaking changes.

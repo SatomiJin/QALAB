@@ -100,4 +100,8 @@ The test now shows what is special about its data, and the defaults are fixed in
 
 A UI test for "edit an order" does not need to click through checkout first. Create the order with one API call in a fixture, then open the edit page. The UI test gets shorter, faster and checks only the screen it is about.
 
+## Sources
+
+* Playwright documentation: [API testing](https://playwright.dev/docs/api-testing), [Fixtures](https://playwright.dev/docs/test-fixtures). © Microsoft; Playwright and its documentation are under the Apache License 2.0. The code here is written by the QALAB team.
+
 > Key idea: check status code, body and side effects; give every test its own unique data through fixtures and factories, created by API and cleaned up afterwards, so tests never depend on each other.

@@ -100,4 +100,8 @@ Giờ test cho thấy dữ liệu của nó có gì đặc biệt, và giá tr�
 
 Một UI test cho "sửa đơn hàng" không cần bấm qua toàn bộ checkout trước. Hãy tạo đơn hàng bằng một API call trong fixture, rồi mở trang sửa. UI test ngắn hơn, nhanh hơn và chỉ kiểm tra đúng màn hình nó cần.
 
+## Nguồn tham khảo
+
+* Tài liệu Playwright: [API testing](https://playwright.dev/docs/api-testing), [Fixtures](https://playwright.dev/docs/test-fixtures). © Microsoft; Playwright và tài liệu của nó theo giấy phép Apache License 2.0. Code trong bài do team QALAB tự viết.
+
 > Ý chính: kiểm tra status code, body và tác động phụ; cho mỗi test dữ liệu riêng, duy nhất qua fixture và factory, tạo bằng API và dọn dẹp sau đó, để các test không bao giờ phụ thuộc vào nhau.

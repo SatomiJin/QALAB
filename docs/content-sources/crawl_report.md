@@ -58,3 +58,17 @@ Date: 2026-10-06. Scope: `test-documentation` and `defect-management`.
 Result: 10 existing lessons got a Sources section (6 also got new content), 3 new lessons with 9 self-written exercises. `npm run seed:curriculum -- --dry-run`: 54 lessons, 132 exercises, all valid; `npx vitest run src/curriculum`: 17 tests pass. Imported with `--update` and checked against the database the same day: all 13 lessons of both courses match the files.
 
 Test pyramid and testing quadrants (CTFL 5.1.6, 5.1.7) are left for the `test-automation` course, which already has a pyramid lesson.
+
+# Batch 4: courses 7 and 8
+
+Date: 2026-10-07. Scope: `api-testing` and `test-automation`.
+
+| Source | How | Result |
+|---|---|---|
+| ISTQB CTFL syllabus v4.0.1 | Same local copy | Chapter 6 (test tools, benefits and risks of automation) and 5.1.6–5.1.7 (test pyramid, testing quadrants) read in full. |
+| RFC 9110, RFC 6750, RFC 7519 | Web fetch (rfc-editor.org) | Titles, dates, status; RFC 9110 sections 9.2.1, 9.2.2 and 15. |
+| JSON Schema, OpenAPI | Web fetch | Current dialect 2020-12; OpenAPI 3.2.1 (10 September 2026, Apache 2.0). |
+| Postman Learning Center | Web fetch and web search | Scripts tab (Pre-request, Post-response), `pm.test` / `pm.response.to.have.status` example, variable scopes and local values, `pm.collectionVariables.set` / `pm.environment.set`, `postman collection run` options. The last two pages were seen through search results only. |
+| Playwright docs | Web fetch, 16 URLs checked (all HTTP 200) | Install command, Node versions, created files, run / UI / report / update commands, codegen locator order, `trace: 'on-first-retry'`, trace contents; repository licence Apache-2.0. `devices['Pixel 7']` confirmed in the installed Playwright and in this repo's own config. |
+
+Result: 13 existing lessons got a Sources section (2 also got new content), 2 new lessons with 6 self-written exercises. `npm run seed:curriculum -- --dry-run`: 56 lessons, 138 exercises, all valid; `npx vitest run src/curriculum`: 17 tests pass. Not imported into the database yet.
