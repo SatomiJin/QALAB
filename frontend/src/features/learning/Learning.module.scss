@@ -73,13 +73,13 @@
   }
 }
 
-// The mark stroke: "this is where you are". A 3px line under the text
+// The highlighter stroke: "this is where you are". A 3px line under the text
 // (like the current tab), not a fill behind it: the text keeps full contrast.
 .mark {
   background: none;
   color: inherit;
   text-decoration-line: underline;
-  text-decoration-color: $color-mark;
+  text-decoration-color: $color-highlighter;
   text-decoration-thickness: 3px;
   text-underline-offset: 6px;
   text-decoration-skip-ink: none;
@@ -163,7 +163,7 @@
 .filterActive {
   color: $color-ink;
   font-weight: 600;
-  box-shadow: inset 0 -3px 0 $color-mark;
+  box-shadow: inset 0 -3px 0 $color-highlighter;
 }
 
 .flatList {

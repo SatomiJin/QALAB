@@ -150,7 +150,7 @@
 }
 
 // Streak days: a run of 14 cells, like a test run strip. Filled = studied,
-// outlined = not; the mark under today says "you are here".
+// outlined = not; the highlighter under today says "you are here".
 .days {
   display: grid;
   grid-template-columns: repeat(14, minmax(0, 12px));
@@ -178,7 +178,7 @@
     bottom: -6px;
     left: -1px;
     height: 3px;
-    background: $color-mark;
+    background: $color-highlighter;
   }
 }
 

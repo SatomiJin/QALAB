@@ -5,7 +5,7 @@ import { VerdictTag } from '../../components/VerdictTag';
 import type { ContinueItem } from '../../types/api';
 import styles from './Learning.module.scss';
 
-/** The one "do this next" on the page (the mark, primary button). */
+/** The one "do this next" on the page (highlighter, primary button). */
 export function ContinueBlock({ item }: { item: ContinueItem | null }) {
   const { t } = useTranslation();
   const navigate = useNavigate();

@@ -5,40 +5,37 @@ import type { ResolvedTheme } from './theme-mode';
 // See docs/design.md for what each color means.
 export const palette = {
   light: {
-    paper: '#EDF2F6',
+    paper: '#F3F4EF',
     sheet: '#FFFFFF',
     sheetRaised: '#FFFFFF',
-    ink: '#12355B',
-    inkMuted: '#4F6478',
-    rule: '#CFD9E2',
-    ruleStrong: '#A9B8C6',
-    // The one primary button: ice blue, dark enough for white text.
-    action: '#0E6B9E',
-    actionHover: '#0B5F8F',
-    onAction: '#FFFFFF',
-    // Mark tints for selected items in menus and selects.
-    markTint: 'rgba(31, 134, 196, 0.14)',
-    markTintHover: 'rgba(31, 134, 196, 0.22)',
+    ink: '#1E2A36',
+    inkMuted: '#5A6673',
+    rule: '#D6DBD4',
+    ruleStrong: '#B9C0B8',
+    highlighter: '#F4D35E',
+    highlighterHover: '#EFC93F',
+    // Highlighter tints for selected items in menus and selects.
+    highlighterTint: 'rgba(244, 211, 94, 0.38)',
+    highlighterTintHover: 'rgba(244, 211, 94, 0.52)',
     pass: '#2F7D4E',
     fail: '#C0392B',
     blocked: '#A86200',
   },
   dark: {
-    paper: '#0B2036',
-    sheet: '#10294A',
-    sheetRaised: '#173357',
-    ink: '#E8F1F8',
-    inkMuted: '#9FB4C8',
-    rule: '#24476B',
-    ruleStrong: '#3A6087',
-    action: '#8FD8FF',
-    actionHover: '#A8E1FF',
-    onAction: '#0B2036',
-    markTint: 'rgba(143, 216, 255, 0.16)',
-    markTintHover: 'rgba(143, 216, 255, 0.24)',
-    pass: '#6FD39A',
-    fail: '#FF8A7D',
-    blocked: '#F0A35E',
+    paper: '#11161C',
+    sheet: '#1B232C',
+    sheetRaised: '#232C36',
+    ink: '#E6EAED',
+    inkMuted: '#98A3AE',
+    rule: '#34404C',
+    ruleStrong: '#4C5967',
+    highlighter: '#DDBB4C',
+    highlighterHover: '#E7C85E',
+    highlighterTint: 'rgba(221, 187, 76, 0.22)',
+    highlighterTintHover: 'rgba(221, 187, 76, 0.32)',
+    pass: '#5CB880',
+    fail: '#E8776B',
+    blocked: '#E58A4E',
   },
 } as const;
 
@@ -74,12 +71,12 @@ export function buildAntdTheme(
       colorTextDescription: c.inkMuted,
       // antd's default placeholder grey is below 4.5:1 on Sheet.
       colorTextPlaceholder: c.inkMuted,
-      // Selected items (dropdown menus, select options) get a tint of the
-      // mark, not a tint derived from Ink (dark-on-dark, looked disabled).
-      controlItemBgActive: c.markTint,
-      controlItemBgActiveHover: c.markTintHover,
-      colorPrimaryBg: c.markTint,
-      colorPrimaryBgHover: c.markTintHover,
+      // Selected items (dropdown menus, select options) get the highlighter,
+      // not a tint derived from Ink (dark-on-dark, looked disabled).
+      controlItemBgActive: c.highlighterTint,
+      controlItemBgActiveHover: c.highlighterTintHover,
+      colorPrimaryBg: c.highlighterTint,
+      colorPrimaryBgHover: c.highlighterTintHover,
       fontFamily: FONT_FAMILY,
       fontSize: 15,
       borderRadius: 4,
@@ -91,14 +88,13 @@ export function buildAntdTheme(
       motionDurationMid: '0.15s',
     },
     components: {
-      // The one primary action per screen wears the ice-blue action colour.
+      // The one primary action per screen wears the highlighter.
       Button: {
-        colorPrimary: c.action,
-        colorPrimaryHover: c.actionHover,
-        colorPrimaryActive: c.action,
-        // White on the deep ice blue (light), blueprint ink on the pale one
-        // (dark): both above 4.5:1.
-        primaryColor: c.onAction,
+        colorPrimary: c.highlighter,
+        colorPrimaryHover: c.highlighterHover,
+        colorPrimaryActive: c.highlighter,
+        // Dark ink in both themes: light text on yellow would be unreadable.
+        primaryColor: palette.light.ink,
         primaryShadow: 'none',
         defaultShadow: 'none',
         dangerShadow: 'none',

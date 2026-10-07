@@ -10,48 +10,44 @@ Made with the `frontend-design` skill (`.claude/skills/frontend-design`). This f
 * **Audience:** one person. An experienced programmer, new to QA, studying in English and Vietnamese, often in the evening (dark theme matters).
 * **Primary job:** work through the curriculum in order, practise writing test artefacts, and see at a glance what is done, what failed, and what is next.
 
-## Concept: the marked-up test plan, drawn as a blueprint
+## Concept: the marked-up test plan
 
-A QA engineer's working document is a test plan that gets marked up as testing happens: every case gets a verdict (Pass, Fail, Blocked, Not run), and a mark shows where you are. Testers check software against its spec, and the classic spec is a blueprint: Prussian-blue ink on drafting paper with a faint grid, and in dark mode a real cyanotype (deep blueprint blue, pale lines). The app is **your test plan for learning QA**, marked up as you go.
+A QA engineer's working document is a test plan that gets marked up as testing happens: every case gets a verdict (Pass, Fail, Blocked, Not run), and a highlighter marks where you are. The app is **your test plan for learning QA**, marked up as you go.
 
 That gives the UI two visual devices, and only two:
 
 1. **Verdicts.** Status is the only thing that gets saturated colour. Green means passed, red means failed, amber means blocked, grey means not run yet. Lessons, exercises, and progress all use the same verdict language, so learning the UI is also learning the vocabulary of the job.
-2. **The mark.** One ice-blue mark says "you are here / do this next": the current nav item, the lesson to continue, the one primary button on a screen. Never decoration.
+2. **The highlighter.** One yellow mark says "you are here / do this next": the current nav item, the lesson to continue, the one primary button on a screen. Never decoration.
 
-Everything else is Prussian ink on drafting paper.
+Everything else is ink on paper.
 
 ## Color
 
 | Name | Light | Dark | Use |
 |---|---|---|---|
-| Paper | `#EDF2F6` | `#0B2036` | Page background, with the drafting grid |
-| Sheet | `#FFFFFF` | `#10294A` | Raised surfaces: inputs, item cards |
-| Sheet raised | `#FFFFFF` | `#173357` | Floating layers (drawer, popovers, menus), hovered item cards, the avatar |
-| Ink | `#12355B` | `#E8F1F8` | Text, icons, rules |
-| Ink muted | `#4F6478` | `#9FB4C8` | Secondary text |
-| Rule | `#CFD9E2` | `#24476B` | Borders and dividers that carry structure |
-| Rule strong | `#A9B8C6` | `#3A6087` | Table headers, section heads, side panels, the admin strip |
-| Mark | `#1F86C4` | `#8FD8FF` | Current location, next action: strokes under the current nav item / tab / entry, today in the streak strip (≥ 3:1 on Paper) |
-| Action | `#0E6B9E` | `#8FD8FF` | Fill of the one primary button; text on it is On action `#FFFFFF` / `#0B2036` (5.8:1 / 10.5:1) |
-| Grid | Ink 5% | `#9FC4E6` 7% | 24px drafting grid on Paper (`body`, scrolls with the page) |
+| Paper | `#F3F4EF` | `#11161C` | Page background |
+| Sheet | `#FFFFFF` | `#1B232C` | Raised surfaces: inputs, item cards |
+| Sheet raised | `#FFFFFF` | `#232C36` | Floating layers (drawer, popovers, menus), hovered item cards, the avatar |
+| Ink | `#1E2A36` | `#E6EAED` | Text, icons, rules |
+| Ink muted | `#5A6673` | `#98A3AE` | Secondary text |
+| Rule | `#D6DBD4` | `#34404C` | Borders and dividers that carry structure |
+| Rule strong | `#B9C0B8` | `#4C5967` | Table headers, section heads, side panels, the admin strip |
+| Highlighter | `#F4D35E` | `#DDBB4C` | Current location, next action, primary button (ink text on top) |
 
 Verdicts (text and tag colours; tags use a 14% tint of the same hue as background, and their text is the hue mixed with 25% Ink, `tinted-tag` mixin):
 
 | Verdict | Light | Dark |
 |---|---|---|
-| Pass | `#2F7D4E` | `#6FD39A` |
-| Fail | `#C0392B` | `#FF8A7D` |
-| Blocked | `#A86200` | `#F0A35E` |
-| Not run | `#5F6B78` | `#9AAABB` |
+| Pass | `#2F7D4E` | `#5CB880` |
+| Fail | `#C0392B` | `#E8776B` |
+| Blocked | `#A86200` | `#E58A4E` |
+| Not run | `#6B7580` | `#8C96A0` |
 
 **In progress** (added in Phase 2) is not a result yet, so it gets no colour: Ink text in a 1px Ink-muted outline. Lesson and course progress map to verdicts: completed → Passed, in progress → In progress, not started → Not run.
 
-Links and focus rings use Ink with an underline / 2px outline. The ice blue is the mark only; links never take it.
+Links and focus rings use Ink with an underline / 2px outline; there is no separate "brand blue".
 
-Changed on 2026-10-07 (Blueprint ice): the neutral grey-green paper, near-black ink and yellow highlighter read as a generic docs site and the owner did not like the yellow. Compared on a preview page against an "inspection stamp" violet and a proofreader's magenta; Blueprint won because it comes from the tester's own world (the spec) and its dark mode is unlike any other app. The highlighter became the *Mark* (ice blue), the primary button got its own *Action* colour (the mark at a depth that carries white text), and the brand tile was recoloured to an ice-blue "S" on Prussian. Every text pair, verdict tags included, passes AA in both themes (axe).
-
-Changed in the UI improvement pass (steps C and D): dark mode had no depth (page, cards and inputs were one flat surface, card borders invisible) and light mode read flat. Dark: Paper and Sheet moved apart, a *Sheet raised* step was added, Rule lightened so card borders show, the mark (now the Mark) toned down for large areas (Ink text still about 9:1), and Blocked moved towards orange (it was close enough to the mark to read as "do next"). Light: warmer Paper, a slightly darker Rule, and *Rule strong* instead of Ink or plain Rule for table headers and section heads. The avatar is a Sheet raised disc with a Rule border (the white Ink disc was the brightest thing on a dark screen); the brand tile gets a 1px Rule strong outline in dark; the Ink rule above the Continue block is Ink muted in dark.
+Changed in the UI improvement pass (steps C and D): dark mode had no depth (page, cards and inputs were one flat surface, card borders invisible) and light mode read flat. Dark: Paper and Sheet moved apart, a *Sheet raised* step was added, Rule lightened so card borders show, Highlighter toned down for large areas (Ink text still about 9:1), and Blocked moved towards orange (it was close enough to the highlighter to read as "do next"). Light: warmer Paper, a slightly darker Rule, and *Rule strong* instead of Ink or plain Rule for table headers and section heads. The avatar is a Sheet raised disc with a Rule border (the white Ink disc was the brightest thing on a dark screen); the brand tile gets a 1px Rule strong outline in dark; the Ink rule above the Continue block is Ink muted in dark.
 
 Changed in Phase 8 (axe review): the pure verdict hue on its own tint was below WCAG AA (Not run 3.7:1, Pass 3.9:1 in light; Not run 4.4:1 in dark). Tag text is now the hue mixed with 25% Ink (≥ 4.8:1 for every verdict, both themes); the palette itself did not change. Input placeholders use Ink muted (antd's default grey was 1.8:1).
 
@@ -79,11 +75,11 @@ Desktop (≥ 992px):
 ```text
 ┌───────────────────────────────────────────────────────────────────────┐
 │ ▣ QA Learning Lab   Dashboard  Learning  Practice  Progress   EN ☾  ◯ │  top bar, 56px, on Paper
-│                     ▔▔▔▔▔▔▔▔▔  (mark under current item)        │
+│                     ▔▔▔▔▔▔▔▔▔  (highlighter under current item)        │
 ├───────────────────────────────────────────────────────────────────────┤
 │                                                                       │
 │   Quiz   Test cases   Bug reports   Scenarios                         │  Practice sub-nav: tabs on the page
-│   ─────────────────────────────────────────────                       │  (mark under the current tab)
+│   ─────────────────────────────────────────────                       │  (highlighter under the current tab)
 │                                                                       │
 │   Bug report practice                                                 │  page title, left aligned
 │   [Not run]  Practise writing bug reports… Opens in Phase 3.          │  verdict tag + one sentence
@@ -123,11 +119,11 @@ Auth pages: brand top left, preferences top right, and the form centred on a She
 ## Components
 
 * **Verdict tag:** condensed text in a 2px-radius tinted chip. The only rounded-rectangle-with-colour in the UI.
-* **Buttons:** primary = *Action* background + *On action* text (one per screen). Secondary = Ink outline. Text buttons for low-emphasis actions. 4px radius.
+* **Buttons:** primary = Highlighter background + Ink text (one per screen). Secondary = Ink outline. Text buttons for low-emphasis actions. 4px radius.
 * **Inputs:** Sheet background, Rule border, 4px radius, 2px Ink focus ring.
 * **Radius by role:** tags 2px, controls 4px, floating layers 6px, item cards 8px. Nothing larger.
 * **Shadow:** on floating layers (drawer, dropdown), and a soft lift under a hovered item card (`--qa-shadow-hover`). Flat everywhere else.
-* **Motion:** none on load; only in answer to the person. Tokens: `$motion-fast` 120ms, `$motion-base` 180ms, `$ease-out` `cubic-bezier(0.2, 0, 0, 1)`. The mark mark grows in under the new nav item on navigation (it does not travel between items). Item cards lift on hover/focus and settle on press; tabs fade their colour (`color-transition` mixin). Everything is disabled under `prefers-reduced-motion`. While the next page's code loads (lazy routes), a 2px Ink bar slides along the top of the window, only after 200ms so fast navigations show nothing (static under reduced motion).
+* **Motion:** none on load; only in answer to the person. Tokens: `$motion-fast` 120ms, `$motion-base` 180ms, `$ease-out` `cubic-bezier(0.2, 0, 0, 1)`. The highlighter mark grows in under the new nav item on navigation (it does not travel between items). Item cards lift on hover/focus and settle on press; tabs fade their colour (`color-transition` mixin). Everything is disabled under `prefers-reduced-motion`. While the next page's code loads (lazy routes), a 2px Ink bar slides along the top of the window, only after 200ms so fast navigations show nothing (static under reduced motion).
 
 ## Copy
 
@@ -150,25 +146,25 @@ Auth pages: brand top left, preferences top right, and the form centred on a She
 Checked the first draft against what a generic "learning dashboard" prompt would produce (blue primary, sidebar, stat cards, progress rings, Inter). Changes made:
 
 1. **Sidebar → top bar + reading column.** The sidebar was the default admin shell. A learner reads more than they navigate; five items fit on one line.
-2. **Ink primary buttons → mark-coloured primary buttons.** Near-black buttons are the current default kit. The mark already means "do this next", so its colour (as *Action*) becomes the primary button instead of a new accent.
+2. **Ink primary buttons → highlighter primary buttons.** Near-black buttons are the current default kit. The highlighter already means "do this next", so it becomes the primary action colour instead of a new accent.
 3. **Monospace IDs → Archivo tabular + condensed.** Monospace for small data is a known tell; the width axis gives IDs the same "form" feel without a second face.
 4. **Cards for every section → no cards.** Structure comes from type, spacing, and rules that separate real sections.
 5. **ALL CAPS stamp tags → sentence case condensed tags.** Keeps the stamp feel from the condensed width, not from capitals.
 
-The one bold thing is the blueprint (Prussian ink, drafting grid, cyanotype dark mode) with the verdict + mark system on it. Everything else stays quiet.
+The one bold thing is the verdict + highlighter system. Everything else stays quiet.
 
 ## Implementation notes
 
 * Email inputs use `inputMode="email"`, not `type="email"`: native browser validation blocks the submit before Ant Design validates the other fields, and shows untranslated tooltips.
-* Primary button text is *On action*: white on the deep ice blue (light), blueprint Paper on the pale ice blue (dark).
+* Primary button text is always the light-theme Ink, so it stays readable on the highlighter in dark mode.
 * Auth pages: the Paper input colour comes from a nested `ConfigProvider` in `AuthLayout` (`colorBgContainer = paper`).
-* Links are Ink with an underline (global `a` style); nav links and tabs drop the underline and use the mark mark instead.
+* Links are Ink with an underline (global `a` style); nav links and tabs drop the underline and use the highlighter mark instead.
 
 * Reduced motion (OS setting): Ant Design animations are turned off with its `motion` token; our own transitions add their own `prefers-reduced-motion` rule. Never shorten animations globally (`* { animation-duration: 0.01ms }`): antd positions popups during the enter animation, and that rule left every dropdown off-screen (regression test in `tests/e2e/preferences.spec.ts`).
 
 ## Learning screens (Phase 2)
 
-* **Learning** (`/learning`): a *Continue* block first, the one "do next" on the page: a reason line (Start here / Pick up where you stopped / Up next), the lesson title marked with a mark stroke (a 3px Mark line under the text, like the current tab; changed after review: the half-height fill behind the text was hard to read, above all in dark mode), a course | module trail, one primary button. It sits under a 1px Ink rule (the top of the plan). Below it, every skill in order as a section (240px skill column + its courses), like the sections of a test plan. Skills without courses stay listed with "No courses yet." so the whole plan is visible. A course is a row: title link, description, verdict, "1 of 4 lessons", minutes.
+* **Learning** (`/learning`): a *Continue* block first, the one "do next" on the page: a reason line (Start here / Pick up where you stopped / Up next), the lesson title marked with a highlighter stroke (a 3px Highlighter line under the text, like the current tab; changed after review: the half-height fill behind the text was hard to read, above all in dark mode), a course | module trail, one primary button. It sits under a 1px Ink rule (the top of the plan). Below it, every skill in order as a section (240px skill column + its courses), like the sections of a test plan. Skills without courses stay listed with "No courses yet." so the whole plan is visible. A course is a row: title link, description, verdict, "1 of 4 lessons", minutes.
 * **Course** (`/learning/courses/:slug`): back link, title, description; verdict + count + minutes + skill; primary *Start course* / *Continue course* (secondary *Review from the first lesson* once completed). Modules are sections ("Module 1" in small tabular text, then the title). Lessons are rows of a test run: number `1.2` (tabular), title, minutes, verdict, in fixed columns so they line up.
 * **Lesson** (`/learning/lessons/:id`): course | module trail, title, verdict + reading time, an optional *Jump to where you stopped (40%)* text button, the Markdown body at 68ch, then a rule, the primary *Mark as complete* (or "Passed, Completed on …"), and previous / next lesson links with small labels and no arrows. The last lesson links back to the course.
 * Lesson Markdown: h2/h3 on the type scale, tables with Rule lines and tabular figures (cells at least 12ch wide, so on phones a wide table scrolls inside its own box instead of squeezing words onto one line each; inline code in a cell does not wrap), code blocks and table boxes take keyboard focus (`tabIndex={0}`, global focus ring) so they can be scrolled without a pointer, quotes with a 3px Rule bar in Ink muted, code on a 7% Ink tint.
@@ -178,7 +174,7 @@ The one bold thing is the blueprint (Prussian ink, drafting grid, cyanotype dark
 ## Navigation, lists and translation (Phase 2, second pass)
 
 * **Page trail** above every course and lesson title: a 32px outlined back button (arrow icon, tooltip + accessible name "Back to courses" / "Back to the lesson list") and a breadcrumb "Learning › Course › Lesson" in small text; ancestors are muted links, the current page is Ink and not a link. Separators are a small chevron icon.
-* **Learning list** replaces the per-skill sections: the Continue block, then skill tabs (same style as the Practice tabs: mark mark under the current tab, "All skills" first, scrolling sideways inside their own box on mobile), then one list of course cards (see *Item cards*; cards span the column; text keeps the 68ch measure; the skill name is in each card's meta). An empty skill says "No courses in this skill yet."
+* **Learning list** replaces the per-skill sections: the Continue block, then skill tabs (same style as the Practice tabs: highlighter mark under the current tab, "All skills" first, scrolling sideways inside their own box on mobile), then one list of course cards (see *Item cards*; cards span the column; text keeps the 68ch measure; the skill name is in each card's meta). An empty skill says "No courses in this skill yet."
 * **Pager** under the list: a tabular "1–20 of 46 courses" range on the left; our own page-size select (20 / 50 / 100) and Ant Design's pager on the right. The select is ours because Ant Design hides its size changer on small screens (changed after review: mobile users could not change the page size).
 * **Translation note** (Vietnamese UI only): one small muted sentence with a translate icon, flowing as text — "Vietnamese version. QA terms stay in English." (manual) or "Machine-translated from English. QA terms, code and links stay in English." — plus a text button to show the English original (and back). "Not available" gets its own sentence and no button. It sits under the lesson's status line, and under the title on the course and Learning pages.
 
@@ -204,7 +200,7 @@ The learner asked for each item to sit in its own rounded card with a light hove
 
 ## Brand mark
 
-* Source files: `Assets/Logos/` (the author's "S" logo). The app uses only the monochrome one (`logoiconnobg.png`): recoloured to an ice-blue (`#8FD8FF`) "S" on a Prussian (`#12355B`) tile with 4px corners, generated into `frontend/public/brand-mark.png` (top bar, 28px, `components/BrandMark.tsx`), `favicon.png` (48px) and `apple-touch-icon.png` (180px). Fixed colours, like a printed logo, the same in both themes (as the first favicon was). The name "QA Learning Lab" stays next to it.
+* Source files: `Assets/Logos/` (the author's "S" logo). The app uses only the monochrome one (`logoiconnobg.png`): recoloured to a Highlighter "S" on an Ink tile with 4px corners, generated into `frontend/public/brand-mark.png` (top bar, 28px, `components/BrandMark.tsx`), `favicon.png` (48px) and `apple-touch-icon.png` (180px). Fixed colours, like a printed logo, the same in both themes (as the first favicon was). The name "QA Learning Lab" stays next to it.
 * The neon purple versions are **not** used in the UI: saturated colour is reserved for verdicts, and a purple mark would read as one more status colour. The full-name logo ("Satomi Jin") signs the README; it can also be the GitHub social preview.
 * Changed after review: a mask of the bare strokes in Ink looked thin and grey at 24px next to the bold brand name; the filled tile holds its weight.
 
@@ -235,16 +231,16 @@ The same system, no new devices. The admin works on the plan itself, so the scre
 * **Account status is a stamp, not a verdict** (`AccountTag`), in the content-status shapes: *Active* Ink outline, *Email not verified* grey tint, *Disabled* dashed.
 * **Filters:** search field (name or email, submitted with Enter) + role and status selects, in the existing filter row; state in the URL.
 * **User page** = the settings layout read-only: trail, name as title, status line (stamp, role, email); *Account* as ruled label / value rows (200px label column, stacked on phones); the dashboard's *Skills* table without links (the links go to the viewer's own Progress); *Recent attempts* and *Change history* as test-log rows (time column, what, result with score + verdict).
-* **Side panel** (*Manage account*): role select with *Change role* under it (not beside it: the 280px panel is too narrow, and a row that wraps moved the button under the pointer), then *Disable account* as a red danger text button, or *Enable account*. Both role change and disable ask for confirmation saying what follows. No mark primary: managing an account is not the page's "do next". On your own account the panel is one muted sentence.
+* **Side panel** (*Manage account*): role select with *Change role* under it (not beside it: the 280px panel is too narrow, and a row that wraps moved the button under the pointer), then *Disable account* as a red danger text button, or *Enable account*. Both role change and disable ask for confirmation saying what follows. No highlighter primary: managing an account is not the page's "do next". On your own account the panel is one muted sentence.
 * Log lists drop the last row's bottom rule so the next section's top rule closes them (no double rule).
 
 ## Dashboard and progress (Phase 5)
 
 Checked against a generic "learning dashboard" (stat cards with icons, progress rings, a chart, a streak flame): none of those. The dashboard is the **test summary report** of your learning; Progress is its **traceability matrix**.
 
-* **Dashboard** (`/dashboard`): title and description, the Continue block (same as Learning: the page's one mark primary), then:
+* **Dashboard** (`/dashboard`): title and description, the Continue block (same as Learning: the page's one highlighter primary), then:
   * **Summary** — the one bold thing: four figures in one row between two Rules, separated by vertical Rules (no cards): *Lessons completed* `1 of 4`, *Exercises passed* `1 of 3 answered`, *Average score* (best score per exercise; `–` without answers), *Streak* `4 days`. The figure is page-title size with tabular figures, the unit small and muted beside it, one muted note below. 2 × 2 on mobile, rules only between columns and rows.
-  * **Streak strip** under the streak figure: the last 14 days as small cells like a test run strip, filled Ink = studied, Rule outline = not; today has the 3px mark line under it ("you are here"). Each cell has an accessible label with the date.
+  * **Streak strip** under the streak figure: the last 14 days as small cells like a test run strip, filled Ink = studied, Rule outline = not; today has the 3px highlighter line under it ("you are here"). Each cell has an accessible label with the date.
   * **Skills** — a read-only table with Rules and fixed columns (skill link to Progress filtered by it, lessons with a thin Ink-on-Rule bar and `1 of 4`, exercises `1 of 5 passed`, average, verdict). On mobile each row is a block: name and verdict first, the rest below, "Average" labelled.
   * **Needs retest** — the QA word for weak areas: skills below 70 with a *Failed* tag and a "Retry: Scenario — best 40" link to the worst failed exercise, and concepts missed in the best answers ("missed in 2 of 3"). Side by side from 992px. Before any answer: one sentence saying what will appear.
   * **Recent activity** — a test log: time (tabular) | event (small), item link, lesson | course trail | score + verdict (completed lesson Passed, started In progress, answer Passed / Failed).
@@ -262,7 +258,7 @@ Reviewed every screen with screenshots (light + dark × EN + VI × desktop + mob
 * **Page changes**: a new page opens at its top (it kept the previous page's scroll position); Back returns to where you were. Changing a list's filter or page keeps the position. Focus moves to the page content (`main`) after a page change, and a *Skip to content* link (hidden until focused) is the first stop for the keyboard.
 * **Empty and error states** rebuilt in the document style (see *Copy*).
 * Course page on phones: narrower lesson-number column and gap, so lesson titles wrap less.
-* Checked and kept: no page scrolls sideways on a phone (412px) or desktop (1280px); Vietnamese text fits everywhere; one mark primary per screen.
+* Checked and kept: no page scrolls sideways on a phone (412px) or desktop (1280px); Vietnamese text fits everywhere; one highlighter primary per screen.
 
 ## UI improvement pass (after Phase 8)
 
@@ -278,12 +274,12 @@ Plan and status: [ui-improvement-plan.md](ui-improvement-plan.md). Decided in th
 * **Exercise rows:** the verdict is pinned to the last column; with no attempts it slid into the middle of the card.
 * **Lesson actions, one place per size** (one primary per screen): from 1200px a sticky 240px side column next to the 68ch text (read %, *Mark as complete*, next lesson); 768–1199px the footer, as before; on phones a 56px bar fixed to the bottom (Paper, Rule on top) with *Mark as complete* and the next lesson, sliding in once 80% of the lesson is read (completed lessons keep only the next link). This changes the "one reading column" decision: at 1280px the lesson left about 450px empty.
 * **Side panel from 1200px** (`components/SideLayout`): the exercise page (verdict, difficulty, lesson link) and the admin course / lesson / exercise editors (status actions, preview, delete; the exercise editor's type note) get a sticky 280px panel with a Rule strong line on top. Below 1200px the same content stays above the main column (CSS only, so forms keep their state on resize). *Save changes* and *Submit answer* stay at the end of their form, next to its errors, instead of moving into the panel as the plan suggested.
-* **Admin area:** a 3px Rule strong strip under the top bar (not a colour: verdicts and the mark keep their meaning); the current-item mark sits on it.
+* **Admin area:** a 3px Rule strong strip under the top bar (not a colour: verdicts and the highlighter keep their meaning); the current-item mark sits on it.
 * Not done: centring the top bar content in a 1200px frame (plan 4.6, optional; it reverses an earlier decision).
 
 ## Glossary
 
 * `/glossary` reads like the index at the back of a manual: page header, search + topic select (the admin filter row), a muted tabular count, an A–Z jump row (32px outlined letter boxes, 40px on phones), then letter sections (section-title letter over a Rule strong line) with one ruled entry per term (no cards: entries are read, not opened). Entry: term in body bold, Vietnamese name small muted beside it (Vietnamese UI only), definition ≤ 68ch, meta line with the topic and *Related:* links.
-* The entry opened from a lesson (URL hash) gets the mark stroke under its name (3px line, never a fill): "you are here".
+* The entry opened from a lesson (URL hash) gets the highlighter stroke under its name (3px line, never a fill): "you are here".
 * Terms inside lesson text are Ink with a **dotted** Ink-muted underline (solid Ink on hover), so they read as "explained elsewhere" and stay distinct from normal solid-underlined links; the definition shows in a tooltip, a click opens the entry. Only the first occurrence of each term per text is linked.
 * **Admin › Glossary** follows Admin users: item cards (term link + Vietnamese name small muted, meta line with topic, phrases and "Used in N lessons", `StatusTag` stamp), the filter row (search, topic, status, course of use incl. "Not used in any lesson"), our pager. The one primary is *New term*. Term page: trail (Glossary › term), status line, form with one primary *Save changes* (*New term* on a new entry); side panel with *Used in lessons* (count, course names, a muted note on how it is counted), *Open on the glossary page* (published only) and the danger text *Delete*. Phrases are a tags input, related terms a searchable multi-select.
