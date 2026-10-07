@@ -150,8 +150,7 @@ src/
 
 ## Deployment
 
-* `frontend/vercel.json`: SPA fallback to `index.html` for every path **except `/assets/*`** (a missing chunk must be a `404`, never `index.html` with the one-year cache), long cache for hashed `/assets/*`, security headers.
-* `main.tsx` loads `App` lazily: a chunk that fails to download (deploy in between) reloads the page once (`sessionStorage` guard `qalab.chunkReload`), then shows a plain "could not load" message; any other error shows "Configuration error". Tests in `polish.spec.ts` › Deploys. `VITE_` variables are public and build-time; never put secrets there. See `docs/deployment.md`.
+* `frontend/vercel.json`: SPA fallback to `index.html`, long cache for hashed `/assets/*`, security headers. `VITE_` variables are public and build-time; never put secrets there. See `docs/deployment.md`.
 
 ## Before you finish
 
