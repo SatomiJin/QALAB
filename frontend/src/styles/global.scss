@@ -3,38 +3,49 @@
 // Theme colors (see docs/design.md). `data-theme` is set on <html> by an
 // inline script in index.html (before first paint) and then by
 // PreferencesProvider. Keep in sync with src/features/preferences/antd-theme.ts.
+// Blueprint: Prussian-blue ink on drafting paper, one ice-blue mark. Dark
+// mode is a cyanotype (deep blueprint blue, pale lines).
 :root,
 :root[data-theme='light'] {
-  --qa-paper: #f3f4ef;
+  --qa-paper: #edf2f6;
   --qa-sheet: #ffffff;
   --qa-sheet-raised: #ffffff;
-  --qa-ink: #1e2a36;
-  --qa-ink-muted: #5a6673;
-  --qa-rule: #d6dbd4;
-  --qa-rule-strong: #b9c0b8;
-  --qa-highlighter: #f4d35e;
+  --qa-ink: #12355b;
+  --qa-ink-muted: #4f6478;
+  --qa-rule: #cfd9e2;
+  --qa-rule-strong: #a9b8c6;
+  // The mark ("you are here / do this next": strokes, current nav, today).
+  --qa-mark: #1f86c4;
+  // The one primary button (darker than the mark so white text reads).
+  --qa-action: #0e6b9e;
+  --qa-on-action: #ffffff;
+  // Drafting grid on the paper.
+  --qa-grid: rgb(18 53 91 / 5%);
   --qa-pass: #2f7d4e;
   --qa-fail: #c0392b;
   --qa-blocked: #a86200;
-  --qa-not-run: #6b7580;
+  --qa-not-run: #5f6b78;
   // Soft lift under a hovered item card.
-  --qa-shadow-hover: 0 2px 10px rgb(30 42 54 / 8%);
+  --qa-shadow-hover: 0 2px 10px rgb(18 53 91 / 10%);
   color-scheme: light;
 }
 
 :root[data-theme='dark'] {
-  --qa-paper: #11161c;
-  --qa-sheet: #1b232c;
-  --qa-sheet-raised: #232c36;
-  --qa-ink: #e6eaed;
-  --qa-ink-muted: #98a3ae;
-  --qa-rule: #34404c;
-  --qa-rule-strong: #4c5967;
-  --qa-highlighter: #ddbb4c;
-  --qa-pass: #5cb880;
-  --qa-fail: #e8776b;
-  --qa-blocked: #e58a4e;
-  --qa-not-run: #8c96a0;
+  --qa-paper: #0b2036;
+  --qa-sheet: #10294a;
+  --qa-sheet-raised: #173357;
+  --qa-ink: #e8f1f8;
+  --qa-ink-muted: #9fb4c8;
+  --qa-rule: #24476b;
+  --qa-rule-strong: #3a6087;
+  --qa-mark: #8fd8ff;
+  --qa-action: #8fd8ff;
+  --qa-on-action: #0b2036;
+  --qa-grid: rgb(159 196 230 / 7%);
+  --qa-pass: #6fd39a;
+  --qa-fail: #ff8a7d;
+  --qa-blocked: #f0a35e;
+  --qa-not-run: #9aaabb;
   --qa-shadow-hover: 0 2px 12px rgb(0 0 0 / 35%);
   color-scheme: dark;
 }
@@ -53,7 +64,13 @@ body,
 
 body {
   margin: 0;
-  background: $color-paper;
+  background-color: $color-paper;
+  // Drafting grid: faint enough to read text on. It scrolls with the page
+  // (`fixed` is ignored on iOS and stopped at the first screen in captures).
+  background-image:
+    linear-gradient($color-grid 1px, transparent 1px),
+    linear-gradient(90deg, $color-grid 1px, transparent 1px);
+  background-size: 24px 24px;
   color: $color-ink;
   font-family: $font-family;
   font-size: $font-size-body;

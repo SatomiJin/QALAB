@@ -23,7 +23,7 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
   border-bottom: 1px solid $color-rule;
 
   // Admin area: a 3px Rule strong strip, not a colour (verdicts and the
-  // highlighter keep their meaning). The current-item mark sits on it.
+  // mark keep their meaning). The current-item mark sits on it.
   &[data-variant='admin'] {
     border-bottom: 3px solid $color-rule-strong;
 
@@ -101,7 +101,7 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
     color: $color-ink;
   }
 
-  // The highlighter mark: "you are here".
+  // The mark: "you are here".
   &::after {
     content: '';
     position: absolute;
@@ -109,7 +109,7 @@ $gutter: max(#{$space-6}, calc((100% - #{$content-max-width}) / 2));
     bottom: -1px;
     left: -$space-1;
     height: 4px;
-    background: $color-highlighter;
+    background: $color-mark;
     transform: scaleX(0);
     transition: transform $motion-base $ease-out;
 

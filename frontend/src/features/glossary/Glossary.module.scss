@@ -113,11 +113,11 @@
   font-weight: 650;
 }
 
-// The entry opened from a lesson: the highlighter stroke under its name
+// The entry opened from a lesson: the mark stroke under its name
 // ("you are here"), never a fill.
 .termText {
   .term[data-active] & {
-    box-shadow: inset 0 -3px 0 $color-highlighter;
+    box-shadow: inset 0 -3px 0 $color-mark;
   }
 }
 

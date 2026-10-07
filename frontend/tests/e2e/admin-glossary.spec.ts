@@ -104,14 +104,21 @@ test.describe('Admin glossary', () => {
       SAMPLE.course.title,
     );
 
-    // A draft is not shown to learners.
+    // A draft is not shown to learners. Wait for the published terms first:
+    // the count of 0 holds before the data loads too, and going back while
+    // the refresh token rotates signs out.
     await page.goto('/glossary');
+    await expect(page.locator('[data-term]').first()).toBeVisible();
     await expect(page.locator('[data-term="testing-principles"]')).toHaveCount(
       0,
     );
 
+    // Back is a full page load (session refresh, admin chunk, term): slower
+    // than 5 s when the workers are busy.
     await page.goBack();
-    await expect(page.getByTestId('term-form')).toBeVisible();
+    await expect(page.getByTestId('term-form')).toBeVisible({
+      timeout: 15_000,
+    });
     await choose(page, 'Status', 'Published');
     await page.getByTestId('save-term').click();
     await expect(page.getByTestId('status-line')).toContainText('Published');

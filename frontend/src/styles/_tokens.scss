@@ -11,7 +11,12 @@ $color-ink-muted: var(--qa-ink-muted);
 $color-rule: var(--qa-rule);
 // Table headers and section heads: stronger than Rule, quieter than Ink.
 $color-rule-strong: var(--qa-rule-strong);
-$color-highlighter: var(--qa-highlighter);
+// The ice-blue mark: "you are here / do this next". Never decoration.
+$color-mark: var(--qa-mark);
+// Fill of the one primary button, and its text.
+$color-action: var(--qa-action);
+$color-on-action: var(--qa-on-action);
+$color-grid: var(--qa-grid);
 
 $color-pass: var(--qa-pass);
 $color-fail: var(--qa-fail);
